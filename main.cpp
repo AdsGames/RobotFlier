@@ -208,6 +208,14 @@ void close_button_handler(void){
 }
 END_OF_FUNCTION(close_button_handler)
 
+//A function to streamline error reporting in file loading
+void abort_on_error(const char *message){
+	 if (screen != NULL){
+	    set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+	 }
+	 allegro_message("%s.\n %s\n", message, allegro_error);
+	 exit(-1);
+}
 
 //Convert int to string
 string convertInt(int number){
@@ -1274,63 +1282,63 @@ void changeTheme( int themeNumber){
 
 	if (!(groundOverlay = load_bitmap((string("images/ground/groundOverlay_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/groundOverlay_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(ground[0] = load_bitmap((string("images/ground/ground1_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground1_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(ground[1] = load_bitmap((string("images/ground/ground2_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground2_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(ground[2] = load_bitmap((string("images/ground/ground3_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground3_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(ground[3] = load_bitmap((string("images/ground/ground4_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground4_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(ground[4] = load_bitmap((string("images/ground/ground5_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground5_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(ground[5] = load_bitmap((string("images/ground/ground6_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground6_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(ground[6] = load_bitmap((string("images/ground/ground7_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground7_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(ground[7] = load_bitmap((string("images/ground/ground8_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground8_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(ground[8] = load_bitmap((string("images/ground/ground9_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground9_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(ground[9] = load_bitmap((string("images/ground/ground10_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground10_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(ground[10] = load_bitmap((string("images/ground/ground11_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground11_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(ground[11] = load_bitmap((string("images/ground/ground12_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground12_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(space2 = load_bitmap((string("images/ground/paralax_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/paralax_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
   if (!(asteroidImage = load_bitmap((string("images/asteroid_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/asteroid_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-    exit(-1);
+
   }
 
 
@@ -1419,44 +1427,44 @@ void setup(bool first){
 
     // Load sounds from file
     if (!(bombSound = load_sample( "audio/bombSound.wav"))){
-      allegro_message("Cannot find sound bombSound.wav\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find sound bombSound.wav\nPlease check your files and try again");
+
     }
     if (!(energySound = load_sample("audio/energySound.wav"))){
-      allegro_message("Cannot find sound energySound.wav\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find sound energySound.wav\nPlease check your files and try again");
+
     }
     if (!(asteroidSound = load_sample( "audio/asteroidSound.wav"))){
-      allegro_message("Cannot find sound asteroidSound.wav\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find sound asteroidSound.wav\nPlease check your files and try again");
+
     }
     if (!(ingame = FSOUND_Stream_Open( "audio/ingame.mp3",2,0,0))){
-      allegro_message("Cannot find soundtrack ingame.mp3\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find soundtrack ingame.mp3\nPlease check your files and try again");
+
     }
     if (!(menuMusic = FSOUND_Stream_Open( "audio/menuMusic.mp3",2,0,0))){
-      allegro_message("Cannot find soundtrack menuMusic.mp3\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find soundtrack menuMusic.mp3\nPlease check your files and try again");
+
     }
     if (!(dieAmbience = FSOUND_Stream_Open( "audio/dieAmbience.mp3",2,0,0))){
-      allegro_message("Cannot find soundtrack dieAmbience.mp3\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find soundtrack dieAmbience.mp3\nPlease check your files and try again");
+
     }
     if (!(magnetSound = load_sample( "audio/magnetSound.wav"))){
-      allegro_message("Cannot find sound magnetSound.wav\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find sound magnetSound.wav\nPlease check your files and try again");
+
     }
     if (!(starSound = load_sample( "audio/starSound.wav"))){
-      allegro_message("Cannot find sound starSound.wav\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find sound starSound.wav\nPlease check your files and try again");
+
     }
 		if (!(flame = load_sample( "audio/flame.wav"))){
-      allegro_message("Cannot find sound flame.wav\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find sound flame.wav\nPlease check your files and try again");
+
     }
     if (!(groundSmash = load_sample( "audio/groundSmash.wav"))){
-      allegro_message("Cannot find sound groundSmash.wav\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find sound groundSmash.wav\nPlease check your files and try again");
+
     }
 
     // Create buffer
@@ -1464,175 +1472,175 @@ void setup(bool first){
 
     // Load bitmaps from file
     if (!(robot = load_bitmap("images/robot/robot.png", NULL))){
-      allegro_message("Cannot find image robot/robot.png\nPlease check your files and try again");
-      exit(-1);}
+      abort_on_error("Cannot find image robot/robot.png\nPlease check your files and try again");
+      }
     if (!(robotfire = load_bitmap("images/robot/robotfire.png", NULL))){
-      allegro_message("Cannot find image robot/robotfire.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image robot/robotfire.png\nPlease check your files and try again");
+
     }
     if (!(robotInvincible = load_bitmap("images/robot/robotInvincible.png", NULL))){
-      allegro_message("Cannot find image robot/robotInvincible.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image robot/robotInvincible.png\nPlease check your files and try again");
+
     }
     if (!(robotInvincibleFire = load_bitmap("images/robot/robotInvincibleFire.png", NULL))){
-      allegro_message("Cannot find image robot/robotInvincibleFire.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image robot/robotInvincibleFire.png\nPlease check your files and try again");
+
     }
     if (!(robotDie = load_bitmap("images/robot/robotDie.png", NULL))){
-      allegro_message("Cannot find image robot/robotDie.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image robot/robotDie.png\nPlease check your files and try again");
+
     }
     if (!(robotInvincibleTop = load_bitmap("images/robot/robotInvincibleTop.png", NULL))){
-      allegro_message("Cannot find image robotInvincibleTop.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image robotInvincibleTop.png\nPlease check your files and try again");
+
     }
     if (!(menu = load_bitmap("images/backgrounds/menu.png", NULL))){
-      allegro_message("Cannot find image backgrounds/menu.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image backgrounds/menu.png\nPlease check your files and try again");
+
     }
     if (!(space = load_bitmap("images/backgrounds/space.png", NULL))){
-      allegro_message("Cannot find image backgrounds/space.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image backgrounds/space.png\nPlease check your files and try again");
+
     }
     if (!(start = load_bitmap("images/gui/start.png", NULL))){
-      allegro_message("Cannot find image gui/start.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/start.png\nPlease check your files and try again");
+
     }
     if (!(mouse = load_bitmap("images/gui/mouse.png", NULL))){
-      allegro_message("Cannot find image gui/mouse.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/mouse.png\nPlease check your files and try again");
+
     }
     if (!(mouseR = load_bitmap("images/gui/mouseR.png", NULL))){
-      allegro_message("Cannot find image gui/mouseR.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/mouseR.png\nPlease check your files and try again");
+
     }
     if (!(title = load_bitmap("images/gui/title.png", NULL))){
-      allegro_message("Cannot find image gui/title.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/title.png\nPlease check your files and try again");
+
     }
     if (!(debug = load_bitmap("images/gui/debug.png", NULL))){
-      allegro_message("Cannot find image gui/debug.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/debug.png\nPlease check your files and try again");
+
     }
     if (!(options = load_bitmap("images/gui/options.png", NULL))){
-      allegro_message("Cannot find image gui/options.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/options.png\nPlease check your files and try again");
+
     }
     if (!(soundOn = load_bitmap("images/gui/soundOn.png", NULL))){
-      allegro_message("Cannot find image gui/soundOn.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/soundOn.png\nPlease check your files and try again");
+
     }
     if (!(soundOff = load_bitmap("images/gui/soundOff.png", NULL))){
-      allegro_message("Cannot find image gui/soundOff.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/soundOff.png\nPlease check your files and try again");
+
     }
     if (!(musicOn = load_bitmap("images/gui/musicOn.png", NULL))){
-      allegro_message("Cannot find image gui/musicOn.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/musicOn.png\nPlease check your files and try again");
+
     }
     if (!(musicOff = load_bitmap("images/gui/musicOff.png", NULL))){
-      allegro_message("Cannot find image gui/musicOff.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/musicOff.png\nPlease check your files and try again");
+
     }
     if (!(pauseMenu = load_bitmap("images/gui/pauseMenu.png", NULL))){
-      allegro_message("Cannot find image gui/pauseMenu.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/pauseMenu.png\nPlease check your files and try again");
+
     }
     if (!(lose = load_bitmap("images/gui/lose.png", NULL))){
-      allegro_message("Cannot find image gui/lose.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/lose.png\nPlease check your files and try again");
+
     }
     if (!(optionButton = load_bitmap("images/gui/optionButton.png", NULL))){
-      allegro_message("Cannot find image gui/optionButton.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/optionButton.png\nPlease check your files and try again");
+
     }
     if (!(fullscreenToggle = load_bitmap("images/gui/fullscreenToggle.png", NULL))){
-      allegro_message("Cannot find image gui/fullscreenToggle.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/fullscreenToggle.png\nPlease check your files and try again");
+
     }
     if (!(windowedToggle = load_bitmap("images/gui/windowedToggle.png", NULL))){
-      allegro_message("Cannot find image gui/windowedToggle.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/windowedToggle.png\nPlease check your files and try again");
+
     }
     if (!(gearIcon = load_bitmap("images/gui/gearIcon.png", NULL))){
-      allegro_message("Cannot find image gui/gearIcon.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/gearIcon.png\nPlease check your files and try again");
+
     }
     if (!(backButton = load_bitmap("images/gui/backButton.png", NULL))){
-      allegro_message("Cannot find image gui/backButton.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/backButton.png\nPlease check your files and try again");
+
     }
     if (!(powerStar = load_bitmap("images/powerStar.png", NULL))){
-      allegro_message("Cannot find image powerStar.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image images/powerStar.png\nPlease check your files and try again");
+
     }
     if (!(credits = load_bitmap("images/gui/credits.png", NULL))){
-      allegro_message("Cannot find image gui/credits.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/credits.png\nPlease check your files and try again");
+
     }
     if (!(creditsButton = load_bitmap("images/gui/creditsButton.png", NULL))){
-      allegro_message("Cannot find image gui/creditsButton.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/creditsButton.png\nPlease check your files and try again");
+
     }
     if (!(resumeButton = load_bitmap("images/gui/resumeButton.png", NULL))){
-      allegro_message("Cannot find image gui/resumeButton.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/resumeButton.png\nPlease check your files and try again");
+
     }
     if (!(keyboardButton = load_bitmap("images/gui/keyboardButton.png", NULL))){
-      allegro_message("Cannot find image gui/keyboardButton.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/keyboardButton.png\nPlease check your files and try again");
+
     }
     if (!(mouseButton = load_bitmap("images/gui/mouseButton.png", NULL))){
-      allegro_message("Cannot find image gui/mouseButton.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/mouseButton.png\nPlease check your files and try again");
+
     }
     if (!(particleButton = load_bitmap("images/gui/particleButton.png", NULL))){
-      allegro_message("Cannot find image gui/particleButton.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/particleButton.png\nPlease check your files and try again");
+
     }
     if (!(particleOffButton = load_bitmap("images/gui/particleOffButton.png", NULL))){
-      allegro_message("Cannot find image gui/particleOffButton.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/particleOffButton.png\nPlease check your files and try again");
+
     }
     if (!(powerMagnet = load_bitmap("images/powerMagnet.png", NULL))){
-      allegro_message("Cannot find image powerMagnet.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image powerMagnet.png\nPlease check your files and try again");
+
     }
     if (!(powerMagnetTwo = load_bitmap("images/powerMagnetTwo.png", NULL))){
-      allegro_message("Cannot find image powerMagnetTwo.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image powerMagnetTwo.png\nPlease check your files and try again");
+
     }
     if (!(powerMagnetThree = load_bitmap("images/powerMagnetThree.png", NULL))){
-      allegro_message("Cannot find image powerMagnetThree.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image powerMagnetThree.png\nPlease check your files and try again");
+
     }
     if (!(powerMagnetFour = load_bitmap("images/powerMagnetFour.png", NULL))){
-      allegro_message("Cannot find image powerMagnetFour.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image powerMagnetFour.png\nPlease check your files and try again");
+
     }
     if (!(intro = load_bitmap("images/backgrounds/intro.png", NULL))){
-      allegro_message("Cannot find image backgrounds/intro.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image backgrounds/intro.png\nPlease check your files and try again");
+
     }
     if (!(forceField = load_bitmap("images/forceField.png", NULL))){
-      allegro_message("Cannot find image images/forceField.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image images/forceField.png\nPlease check your files and try again");
+
     }
     if (!(highscores_table = load_bitmap("images/gui/highscores_table.png", NULL))){
-      allegro_message("Cannot find image gui/highscores_table.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/highscores_table.png\nPlease check your files and try again");
+
     }
     if (!(helpButton = load_bitmap("images/gui/helpButton.png", NULL))){
-      allegro_message("Cannot find image gui/helpButton.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/helpButton.png\nPlease check your files and try again");
+
     }
     if (!(helpScreen = load_bitmap("images/gui/helpScreen.png", NULL))){
-      allegro_message("Cannot find image gui/helpScreen.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/helpScreen.png\nPlease check your files and try again");
+
     }
     if (!(powerOff = load_bitmap("images/gui/powerOff.png", NULL))){
-      allegro_message("Cannot find image gui/powerOff.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image gui/powerOff.png\nPlease check your files and try again");
+
     }
 
     // Load ground bitmaps from file
@@ -1669,16 +1677,16 @@ void setup(bool first){
 
     // Set object images
     if (!(energyImage = load_bitmap("images/energy.png", NULL))){
-      allegro_message("Cannot find image energy.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image energy.png\nPlease check your files and try again");
+
     }
     if (!(bombImage = load_bitmap("images/bomb.png", NULL))){
-      allegro_message("Cannot find image bomb.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image bomb.png\nPlease check your files and try again");
+
     }
     if (!(cometImage = load_bitmap("images/comet.png", NULL))){
-      allegro_message("Cannot find image comet.png\nPlease check your files and try again");
-      exit(-1);
+      abort_on_error("Cannot find image comet.png\nPlease check your files and try again");
+
     }
   }
 }
