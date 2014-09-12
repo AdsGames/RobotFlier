@@ -512,6 +512,8 @@ void game(){
               optionMenu = false;
               fade_out(8);
               FSOUND_Stream_Stop(dieAmbience);
+              smokePart.clear();
+              rocketPart.clear();
               if(musicToggle)
 								FSOUND_Stream_Play(0,menuMusic);
               gameScreen = MENU;
