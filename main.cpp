@@ -1614,8 +1614,8 @@ void setup(bool first){
       allegro_message("Cannot find image backgrounds/intro.png\nPlease check your files and try again");
       exit(-1);
     }
-    if (!(forceField = load_bitmap("images/forceFeild.png", NULL))){
-      allegro_message("Cannot find image forceFeild.png\nPlease check your files and try again");
+    if (!(forceField = load_bitmap("images/forceField.png", NULL))){
+      allegro_message("Cannot find image images/forceField.png\nPlease check your files and try again");
       exit(-1);
     }
     if (!(highscores_table = load_bitmap("images/gui/highscores_table.png", NULL))){
