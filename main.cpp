@@ -731,10 +731,11 @@ void game(){
       if( !particlesOn){
         smokePart.clear();
       }
-      if( particlesOn){
+      if( particlesOn && gameScreen==GAME && !alive){
         for( int i = 0; i < smokeParticles; i++){
           if( random(0,10) == 0){
-            particle newParticle( 300, 300, makecol(255,random(0,255),0), -2, 2, 0, 8, CIRCLE, 1);
+            int randnum=random(0,255);
+            particle newParticle(robotX+20, robotY+20, makecol(randnum,randnum,randnum), -2, 2, 0, -8, CIRCLE, 1);
             smokePart.push_back( newParticle);
           }
         }
@@ -775,14 +776,14 @@ void game(){
       }
     }
 
-    /*if(key[KEY_O])gameScreen = GAME;
+    if(key[KEY_O])gameScreen = GAME;
     if(key[KEY_I])score=score+500;
     if(key[KEY_U])score=score+50;
     if(key[KEY_Q])health=health-1;
     if(key[KEY_E])health=0;
     if(key[KEY_Y])robotDistance=robotDistance+500;
     if(key[KEY_T])score=score-2;
-    if(key[KEY_R])health=100;*/
+    if(key[KEY_R])health=100;
 
     // Pause loop code
     if(step > 10){

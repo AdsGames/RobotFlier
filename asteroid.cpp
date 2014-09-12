@@ -1,26 +1,26 @@
 #include "asteroid.h"
 
-asteroid::asteroid(BITMAP* newImage1, BITMAP* newImage2, SAMPLE* newSoundEffect, int newX, int newY, int newSize) { 
+asteroid::asteroid(BITMAP* newImage1, BITMAP* newImage2, SAMPLE* newSoundEffect, int newX, int newY, int newSize) {
   image[0] = newImage1;
   image[1] = newImage2;
   soundEffect = newSoundEffect;
   x = newX;
   y = newY;
   isDead = false;
-  
+
   int size = newSize;
   height = size * 8;
   width = size * 10;
 }
 
 asteroid::~asteroid(){
-  
+
 }
 
 void asteroid::logic(int newMotion){
   x -= newMotion;
   int collisionBuffer = height/3;
-  if(collision(x, x + width , robotX + collisionBuffer, robotX + robotWidth - collisionBuffer, y, y + height, robotY + collisionBuffer, robotY + robotHeight - collisionBuffer) && !isDead){             
+  if(collision(x, x + width , robotX + collisionBuffer, robotX + robotWidth - collisionBuffer, y, y + height, robotY + collisionBuffer, robotY + robotHeight - collisionBuffer) && !isDead){
     if(!invincible){
       health -= 5;
     }
@@ -28,17 +28,17 @@ void asteroid::logic(int newMotion){
       play_sample(soundEffect,255,125,1000,0);
     }
   }
-  
+
   if(isDead){
   	if( particlesOn){
 	    //Update particles
 	    for( int i = 0; i < debris.size(); i++){
 	      debris.at(i).logic();
 	      debris.at(i).x -= newMotion;
+
 	    }
 	  }
-  }
-  else{
+  }else{
     //Check for death
     dead();
   }
@@ -54,7 +54,7 @@ bool asteroid::dead(){
     if( particlesOn){
 	    int iteratorX = 0;
 	    int iteratorY = 0;
-	    for(int i = 0; i < width * height; i++){ 
+	    for(int i = 0; i < width * height; i++){
 	      if(iteratorX < width - 1){
 	        iteratorX ++;
 	      }
@@ -87,10 +87,10 @@ void asteroid::draw( BITMAP* tempBitmap){
   	if( particlesOn){
 	    for( int i = 0; i < debris.size(); i++){
 	      debris.at(i).draw( tempBitmap);
-	    } 
+	    }
 		}
   }
-  
+
   if(debugMode){
     rect(tempBitmap, x, y, x + width, y + height, makecol(88, 88, 88));
   }
