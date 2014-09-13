@@ -899,7 +899,10 @@ void game(){
 
       // Particles toggle
       if(mouse_b & 1 && collision(220,300,mouse_x,mouse_x,400,480,mouse_y,mouse_y)){
-        particlesOn = !particlesOn;
+        particlesOn = false;
+        rocketPart.clear();
+        mousePart.clear();
+        smokePart.clear();
         step = 0;
       }
 

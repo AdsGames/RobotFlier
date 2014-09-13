@@ -8,7 +8,7 @@ int robotX;
 int robotY;
 
 int health;
-int score;
+unsigned int score;
 
 int magneticStrength;
 int invincibleTimer;
@@ -35,15 +35,15 @@ float Get2dDistance(float x1, float y1, float x2, float y2)
 // Random number generator. Use int random(highest,lowest);
 int random(int newLowest, int newHighest)
 {
-  int lowest = newLowest, highest = newHighest; 
-  int range = (highest - lowest) + 1;    
+  int lowest = newLowest, highest = newHighest;
+  int range = (highest - lowest) + 1;
   int randomNumber = lowest+int(range*rand()/(RAND_MAX + 1.0));
-  return randomNumber; 
+  return randomNumber;
 }
 
 // Function to check for collision
 bool collision(float xMin1, float xMax1, float xMin2, float xMax2, float yMin1, float yMax1, float yMin2, float yMax2)
-{  
+{
   if (xMin1 < xMax2 && yMin1 < yMax2 && xMin2 < xMax1 && yMin2 < yMax1){
     return true;
   }
@@ -53,11 +53,11 @@ bool collision(float xMin1, float xMax1, float xMin2, float xMax2, float yMin1, 
 // Fade in
 void fade_in(BITMAP* bmp_orig, int speed){
   BITMAP* bmp_buff;
-     
+
   if((bmp_buff=create_bitmap(SCREEN_W,SCREEN_H))){
     int a;
     if (speed<=0)speed=16;
-      
+
     for(a=0;a<256;a+=speed){
       clear(bmp_buff);
       set_trans_blender(0,0,0,a);
@@ -73,13 +73,13 @@ void fade_in(BITMAP* bmp_orig, int speed){
 // Fade out
 void fade_out(int speed){
   BITMAP* bmp_orig, *bmp_buff;
-     
+
   if((bmp_orig=create_bitmap(SCREEN_W,SCREEN_H))){
     if((bmp_buff=create_bitmap(SCREEN_W,SCREEN_H))){
       int a;
       blit(screen,bmp_orig,0,0,0,0,SCREEN_W,SCREEN_H);
       if (speed<=0)speed=16;
-      
+
       for(a=255-speed;a>0;a-=speed){
          clear(bmp_buff);
          set_trans_blender(0,0,0,a);

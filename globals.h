@@ -22,10 +22,10 @@ extern int robotX;
 extern int robotY;
 
 extern int health;
-extern int score;
+extern unsigned int score;
 
 extern int magneticStrength;
-extern int magneticTimer; 
+extern int magneticTimer;
 extern int invincibleTimer;
 extern bool invincible;
 
