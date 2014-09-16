@@ -112,7 +112,15 @@ FSOUND_STREAM* menuMusic;
 FSOUND_STREAM* dieAmbience;
 
 // Declare fonts
-FONT *f1, *f2, *f3, *f4, *f5, *finalFont, *arial, *arial_black;
+FONT* f1;
+FONT* f2;
+FONT* f3;
+FONT* f4;
+FONT* f5;
+FONT* finalFont;
+FONT* arial;
+FONT* arial_black;
+FONT* orbitron;
 
 // Define constistants
 const int groundP = 13;
@@ -1057,9 +1065,9 @@ void draw( bool toScreen){
     // Draw info
     if( alive){
       // Info
-      textprintf_ex( buffer, arial_black, 10, 10, makecol(255,255,255), -1, "Score:%i", score);
+      textprintf_ex( buffer, orbitron, 10, 2, makecol(255,255,255), -1, "Score:%i", score);
       rectfill( buffer, 10, 70, 10 + (health * 1.4), 65, makecol( 255 - health * 2.5, 0 + health * 2.5, 0));
-      textprintf_ex( buffer, arial_black, 10, 35, makecol(255,255,255), -1, "Health:%i", health);
+      textprintf_ex( buffer, orbitron, 10, 27, makecol(255,255,255), -1, "Health:%i", health);
 
       // Power up timers
       if( invincibleTimer > 0){
@@ -1673,6 +1681,12 @@ void setup(bool first){
     f3 = extract_font_range(f1, 'A', 'Z');
     f4 = extract_font_range(f1, 'Z'+1, 'z');
     arial_black = merge_fonts(f4, f5 = merge_fonts(f2, f3));
+
+    f1 = load_font("fonts/orbitron.pcx", NULL, NULL);
+    f2 = extract_font_range(f1, ' ', 'A'-1);
+    f3 = extract_font_range(f1, 'A', 'Z');
+    f4 = extract_font_range(f1, 'Z'+1, 'z');
+    orbitron = merge_fonts(f4, f5 = merge_fonts(f2, f3));
 
     // Destroy temporary fonts
     destroy_font(f1);
