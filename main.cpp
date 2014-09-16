@@ -869,7 +869,7 @@ void game(){
       }
 
       // Music button toggle
-      if(mouse_b & 1 && collision(280,180,mouse_x,mouse_x,360,260,mouse_y,mouse_y)){
+      if(mouse_b & 1 && collision(280,360,mouse_x,mouse_x,180,260,mouse_y,mouse_y)){
         musicToggle = !musicToggle;
         if(musicToggle){
           if(gameScreen == GAME){
@@ -909,7 +909,7 @@ void game(){
       }
 
       // Particles toggle
-      if(mouse_b & 1 && collision(280,300,mouse_x,mouse_x,480,480,mouse_y,mouse_y)){
+      if(mouse_b & 1 && collision(280,360,mouse_x,mouse_x,400,480,mouse_y,mouse_y)){
         particlesOn = false;
         rocketPart.clear();
         mousePart.clear();
