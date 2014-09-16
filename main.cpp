@@ -1031,12 +1031,12 @@ void draw( bool toScreen){
     if(viewScores){
       //rectfill( buffer, 200, 50, 600, 550, makecol( 255, 255, 255));
       draw_sprite( buffer, highscores_table, 200, 50);
-      textout_centre_ex(buffer, arial_black, "Highscores", 400, 75, makecol(0,0,0), -1);
+      textout_centre_ex(buffer, orbitron, "Highscores", 400, 75, makecol(0,0,0), -1);
       for(int i = 0; i < 10; i++){
         string name = scores[i][0];
-        textout_ex(buffer, arial_black, name.c_str(), 275, (i * 40) + 120, makecol(0,0,0), -1);
+        textout_ex(buffer, orbitron, name.c_str(), 225, (i * 40) + 120, makecol(0,0,0), -1);
         name = scores[i][1];
-        textout_right_ex(buffer, arial_black, name.c_str(), 525, (i * 40) + 120, makecol(0,0,0), -1);
+        textout_right_ex(buffer, orbitron, name.c_str(), 575, (i * 40) + 120, makecol(0,0,0), -1);
       }
     }
   }
