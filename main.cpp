@@ -130,7 +130,7 @@ const int groundP = 13;
 
 // Declare integers
 int running;
-int startX;
+int x_start_button;
 int titleY;
 int optionX;
 int creditsY;
@@ -299,11 +299,11 @@ void game(){
   // Menu scripts
   if(gameScreen == MENU){
     //Menu animations
-    if(startX<1 && !startClicked)
-      startX=startX+20;
+    if(x_start_button<1 && !startClicked)
+      x_start_button=x_start_button+20;
 
-    if(startX>-399 && startClicked)
-      startX=startX-20;
+    if(x_start_button>-399 && startClicked)
+      x_start_button=x_start_button-20;
 
     if(titleY<20 && !startClicked)
       titleY=titleY+10;
@@ -325,7 +325,7 @@ void game(){
 
 
     // Start
-    if(startX<-399){
+    if(x_start_button<-399){
       if(!tutorialAsked){
         fade_out(8);
         changeTheme(0);
@@ -342,8 +342,11 @@ void game(){
     if(mouse_b & 1 && mouse_x>40 && mouse_x<260 && mouse_y>410 && mouse_y<510 && !optionMenu && !creditsMenu && !viewScores || joy[0].button[1].b){
       startClicked=true;
     }
-    if(joy[0].button[7].b){
+    //Controlling menu with xbox controller
+    if(control_mode==3 || joystick_enabled){
+       if(joy[0].button[7].b){
         startClicked=true;
+       }
     }
     else if(mouse_b & 1 && mouse_x>600 && mouse_x<760 && mouse_y>20 && mouse_y<180 && !optionMenu && !creditsMenu){
       while(mouse_b & 1){ }
@@ -838,6 +841,10 @@ void game(){
 
   // THIS CODE WILL RUN NO MATTER THE gameScreen TOGGLE!
 
+    //Joystick detector
+    if(num_joysticks>0 && control_mode!=2)joystick_enabled=true;
+    if(num_joysticks==0 || control_mode==2)joystick_enabled=false;
+
     // Debug console toggle
     if(key[KEY_F12] && debugMode && step > 10){
       debugMode = false;
@@ -1023,8 +1030,8 @@ void draw( bool toScreen){
     //Draw back drop
     rectfill( buffer, 0, 0, 800, 600, makecol( 0, 0, 0));
     draw_sprite(buffer,menu,0,0);
-    draw_sprite(buffer,start,startX,400);
-    if(joystick_enabled)draw_sprite(buffer,xbox_start,startX+225,430);
+    draw_sprite(buffer,start,x_start_button,400);
+    if(joystick_enabled || control_mode==3)draw_sprite(buffer,xbox_start,x_start_button+225,430);
     draw_sprite(buffer,title,20,titleY);
     if(!creditsMenu)draw_sprite(buffer,helpButton,490,creditsY - 30);
 
@@ -1041,6 +1048,7 @@ void draw( bool toScreen){
     }
 
     //Draw scores if neccisary
+    //Seriously Allan?^^^^^^^^That's a new all-time low, dude, read a dictionary or something
     if(viewScores){
       //rectfill( buffer, 200, 50, 600, 550, makecol( 255, 255, 255));
       draw_sprite( buffer, highscores_table, 200, 50);
@@ -1390,7 +1398,7 @@ void setup(bool first){
   speed = 30;
   score = 0;
   running = 0;
-  startX = -400;
+  x_start_button = -400;
   titleY = -100;
   optionX = 800;
   creditsY = 600;
