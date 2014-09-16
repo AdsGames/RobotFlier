@@ -67,8 +67,6 @@ BITMAP* backButton;
 BITMAP* credits;
 BITMAP* creditsButton;
 BITMAP* resumeButton;
-BITMAP* keyboardButton;
-BITMAP* mouseButton;
 BITMAP* particleButton;
 BITMAP* particleOffButton;
 BITMAP* helpButton;
@@ -76,6 +74,9 @@ BITMAP* helpScreen;
 BITMAP* highscores_table;
 BITMAP* powerOff;
 BITMAP* xbox_start;
+BITMAP* control_xbox;
+BITMAP* control_keyboard;
+BITMAP* control_auto;
 
 //Robot images
 BITMAP* robot;
@@ -142,6 +143,7 @@ int groundScroll;
 int tutorialStage;
 int gameScreen;
 int forceFieldAppear = 10;
+int control_mode;
 
 // Decare booleans
 bool mouseRocket;
@@ -155,7 +157,6 @@ bool alive;
 bool onGround;
 bool startClicked;
 bool creditsMenu;
-bool controlMode;
 bool deadSoundSwitch;
 bool tutorialAsked;
 bool inTutorial;
@@ -439,12 +440,12 @@ void game(){
 
       // Moving controls
       if( alive){
-        //Keyboard mode
-        if(controlMode){
+        //Controls, mouse and keyboard controls run no matter the joystick, cause why not?
+
           if( key[KEY_W] || key[KEY_UP] || joy[0].button[0].b){
           	if( game_time %2 == 0){
 	          	if(sound)
-								play_sample( flame, 20, 155, 1000, 0);
+                    play_sample( flame, 20, 155, 1000, 0);
 	          }
             if( speed < 14){
               rocket = false;
@@ -456,9 +457,9 @@ void game(){
             if( speed > -14){
               speed -= 1;
             }
-          }
+
         }
-        //Mouse mode
+
         else{
           if( mouse_b & 1){
             if(speed < 14){
@@ -695,7 +696,7 @@ void game(){
           i--;
         }
       }
-      // Comets spawning
+      // Comets spawningif(control_mode==2)stretch_sprite(buffer,control_keyboard,120,295,80,80);
       if(score > 300){
         if(random(0,200) == 0){
           comet newComet( cometImage, cometImage, asteroidSound, 800, random(30,550));
@@ -897,8 +898,11 @@ void game(){
 
       // Control Toggle
       if(mouse_b & 1 && collision(120,200,mouse_x,mouse_x,290,370,mouse_y,mouse_y)){
-        controlMode = !controlMode;
-        step = 0;
+        if(control_mode==1 && step>10){control_mode = 2; step = 0;}
+        if(control_mode==2 && step>10){control_mode = 3; step = 0;}
+        if(control_mode==3 && step>10){control_mode = 1; step = 0;}
+
+
       }
 
       // Fullscreen toggle
@@ -1223,8 +1227,10 @@ void draw( bool toScreen){
 
     // Input
     textprintf_ex(buffer,orbitron,120,260,makecol(255,250,250),-1,"Input");
-    if(!controlMode)stretch_sprite(buffer,mouseButton,120,295,80,80);
-    if(controlMode)stretch_sprite(buffer,keyboardButton,120,295,80,80);
+    if(control_mode==1)draw_sprite(buffer,control_auto,120,295);
+    if(control_mode==2)draw_sprite(buffer,control_keyboard,120,295);
+    if(control_mode==3)draw_sprite(buffer,control_xbox,120,295);
+
 
     // Video
     textprintf_ex(buffer,orbitron,110,375,makecol(255,250,250),-1,"Window Particles");
@@ -1417,7 +1423,7 @@ void setup(bool first){
   startClicked = false;
   invincible = false;
   creditsMenu = false;
-  controlMode = true;
+  control_mode=1;
   deadSoundSwitch = false;
   magnetic = false;
 
@@ -1611,14 +1617,6 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/resumeButton.png\nPlease check your files and try again");
 
     }
-    if (!(keyboardButton = load_bitmap("images/gui/keyboardButton.png", NULL))){
-      abort_on_error("Cannot find image gui/keyboardButton.png\nPlease check your files and try again");
-
-    }
-    if (!(mouseButton = load_bitmap("images/gui/mouseButton.png", NULL))){
-      abort_on_error("Cannot find image gui/mouseButton.png\nPlease check your files and try again");
-
-    }
     if (!(particleButton = load_bitmap("images/gui/particleButton.png", NULL))){
       abort_on_error("Cannot find image gui/particleButton.png\nPlease check your files and try again");
 
@@ -1671,7 +1669,18 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/xbox_start.png\nPlease check your files and try again");
 
     }
+    if (!(control_xbox = load_bitmap("images/gui/control_xbox.png", NULL))){
+      abort_on_error("Cannot find image gui/control_xbox.png\nPlease check your files and try again");
 
+    }
+    if (!(control_keyboard = load_bitmap("images/gui/control_keyboard.png", NULL))){
+      abort_on_error("Cannot find image gui/control_keyboard.png\nPlease check your files and try again");
+
+    }
+    if (!(control_auto = load_bitmap("images/gui/control_auto.png", NULL))){
+      abort_on_error("Cannot find image gui/control_auto.png\nPlease check your files and try again");
+
+    }
     // Load ground bitmaps from file
     changeTheme( 0);
 
