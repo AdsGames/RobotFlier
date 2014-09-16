@@ -75,6 +75,7 @@ BITMAP* helpButton;
 BITMAP* helpScreen;
 BITMAP* highscores_table;
 BITMAP* powerOff;
+BITMAP* xbox_start;
 
 //Robot images
 BITMAP* robot;
@@ -160,6 +161,7 @@ bool tutorialAsked;
 bool inTutorial;
 bool mouse_down;
 bool viewScores;
+bool joystick_enabled=true;
 
 string scores[10][2];
 
@@ -338,6 +340,9 @@ void game(){
     // Main Menu Buttons
     if(mouse_b & 1 && mouse_x>40 && mouse_x<260 && mouse_y>410 && mouse_y<510 && !optionMenu && !creditsMenu && !viewScores || joy[0].button[1].b){
       startClicked=true;
+    }
+    if(joy[0].button[7].b){
+        startClicked=true;
     }
     else if(mouse_b & 1 && mouse_x>600 && mouse_x<760 && mouse_y>20 && mouse_y<180 && !optionMenu && !creditsMenu){
       while(mouse_b & 1){ }
@@ -1015,6 +1020,7 @@ void draw( bool toScreen){
     rectfill( buffer, 0, 0, 800, 600, makecol( 0, 0, 0));
     draw_sprite(buffer,menu,0,0);
     draw_sprite(buffer,start,startX,400);
+    if(joystick_enabled)draw_sprite(buffer,xbox_start,startX+225,430);
     draw_sprite(buffer,title,20,titleY);
     if(!creditsMenu)draw_sprite(buffer,helpButton,490,creditsY - 30);
 
@@ -1659,6 +1665,10 @@ void setup(bool first){
     }
     if (!(powerOff = load_bitmap("images/gui/powerOff.png", NULL))){
       abort_on_error("Cannot find image gui/powerOff.png\nPlease check your files and try again");
+
+    }
+    if (!(xbox_start = load_bitmap("images/gui/xbox_start.png", NULL))){
+      abort_on_error("Cannot find image gui/xbox_start.png\nPlease check your files and try again");
 
     }
 
