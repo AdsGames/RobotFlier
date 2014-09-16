@@ -17,6 +17,7 @@ using namespace std;
 #define MENU 1
 #define TUTORIAL 2
 #define GAME 3
+#define EXIT 4
 
 // Constants
 // Maximum number of objects allowed onscreen at once
@@ -826,6 +827,11 @@ void game(){
       }
     }
 
+
+  }
+
+  // THIS CODE WILL RUN NO MATTER THE gameScreen TOGGLE!
+
     // Debug console toggle
     if(key[KEY_F12] && debugMode && step > 10){
       debugMode = false;
@@ -835,30 +841,27 @@ void game(){
       debugMode = true;
       step = 0;
     }
-  }
-
-  // THIS CODE WILL RUN NO MATTER THE gameScreen TOGGLE!
 
 	// Option Menu Scripts
   if(key[KEY_ESC]){
     while(key[KEY_ESC]){ }
-    if(optionMenu){
+    if(paused && gameScreen==GAME){
       optionMenu = false;
       paused = false;
-    }
-    else if( gameScreen != TUTORIAL){
-      optionMenu = true;
+    }else if(!paused && gameScreen==GAME){
+        paused=true;
+    }else if( gameScreen == TUTORIAL){
+      optionMenu = false;
       viewScores = false;
-      creditsMenu = false;
-      paused = true;
-    }
+    }else if(gameScreen==MENU && !optionMenu && !viewScores && !paused) gameScreen=EXIT;
+    else if(gameScreen==MENU && optionMenu) optionMenu=false;
   }
 
   if(optionMenu){
     if(mouse_b & 1 && collision(580,630,mouse_x,mouse_x,450,500,mouse_y,mouse_y) && gameScreen == GAME){
       optionMenu = false;
     }
-    if(step > 20){
+    if(step > 10){
       // Sound button toggle
       if(mouse_b & 1 && collision(120,200,mouse_x,mouse_x,180,260,mouse_y,mouse_y)){
         sound = !sound;
@@ -866,7 +869,7 @@ void game(){
       }
 
       // Music button toggle
-      if(mouse_b & 1 && collision(220,300,mouse_x,mouse_x,180,260,mouse_y,mouse_y)){
+      if(mouse_b & 1 && collision(280,180,mouse_x,mouse_x,360,260,mouse_y,mouse_y)){
         musicToggle = !musicToggle;
         if(musicToggle){
           if(gameScreen == GAME){
@@ -906,7 +909,7 @@ void game(){
       }
 
       // Particles toggle
-      if(mouse_b & 1 && collision(220,300,mouse_x,mouse_x,400,480,mouse_y,mouse_y)){
+      if(mouse_b & 1 && collision(280,300,mouse_x,mouse_x,480,480,mouse_y,mouse_y)){
         particlesOn = false;
         rocketPart.clear();
         mousePart.clear();
@@ -1166,22 +1169,7 @@ void draw( bool toScreen){
     }
 
     // Debug console
-    if(debugMode){
-      draw_sprite(buffer,debug,0,0);
-      textprintf_ex(buffer,font,225,5,makecol(255,250,250),-1,"Gravity:%i",gravity);
-      textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%i",speed);
-      textprintf_ex(buffer,font,105,25,makecol(255,250,250),-1,"Score:%i",score);
-      textprintf_ex(buffer,font,105,35,makecol(255,250,250),-1,"Running:%i",running);
-      textprintf_ex(buffer,font,105,45,makecol(255,250,250),-1,"Mouse X:%i",mouse_x);
-      textprintf_ex(buffer,font,105,55,makecol(255,250,250),-1,"Mouse Y:%i",mouse_y);
-      textprintf_ex(buffer,font,5,35,makecol(255,250,250),-1,"Robot X:20");
-      textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%i",robotY);
-      textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%i",motion);
-      textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i",invincible);
-      textprintf_ex(buffer,font,225,15,makecol(255,250,250),-1,"OptionClicked:%i",optionMenu);
-      textprintf_ex(buffer,font,225,25,makecol(255,250,250),-1,"Credits:%i",creditsMenu);
-      textprintf_ex(buffer,font,225,35,makecol(255,250,250),-1,"smokeParticles:%i",smokePart.size());
-    }
+
 
     // Lose scripts
     if( onGround){
@@ -1221,23 +1209,23 @@ void draw( bool toScreen){
     draw_sprite(buffer,options,0,0);
 
     // Audio
-    textprintf_ex(buffer,arial_black,120,150,makecol(255,250,250),-1,"Audio");
+    textprintf_ex(buffer,orbitron,110,146,makecol(255,250,250),-1,"Sounds   Music           Exit");
     if(sound)stretch_sprite(buffer,soundOn,120,180,80,80);
     if(!sound)stretch_sprite(buffer,soundOff,120,180,80,80);
-    if(musicToggle)stretch_sprite(buffer,musicOn,220,180,80,80);
-    if(!musicToggle)stretch_sprite(buffer,musicOff,220,180,80,80);
+    if(musicToggle)stretch_sprite(buffer,musicOn,280,180,80,80);
+    if(!musicToggle)stretch_sprite(buffer,musicOff,280,180,80,80);
 
     // Input
-    textprintf_ex(buffer,arial_black,120,260,makecol(255,250,250),-1,"Input");
-    if(!controlMode)stretch_sprite(buffer,mouseButton,120,290,80,80);
-    if(controlMode)stretch_sprite(buffer,keyboardButton,120,290,80,80);
+    textprintf_ex(buffer,orbitron,120,260,makecol(255,250,250),-1,"Input");
+    if(!controlMode)stretch_sprite(buffer,mouseButton,120,295,80,80);
+    if(controlMode)stretch_sprite(buffer,keyboardButton,120,295,80,80);
 
     // Video
-    textprintf_ex(buffer,arial_black,120,370,makecol(255,250,250),-1,"Video");
-    if(!fullScreen)stretch_sprite(buffer,fullscreenToggle,120,400,80,80);
-    if(fullScreen)stretch_sprite(buffer,windowedToggle,120,400,80,80);
-    if(particlesOn)stretch_sprite(buffer,particleButton,220,400,80,80);
-    if(!particlesOn)stretch_sprite(buffer,particleOffButton,220,400,80,80);
+    textprintf_ex(buffer,orbitron,110,375,makecol(255,250,250),-1,"Window Particles");
+    if(!fullScreen)stretch_sprite(buffer,fullscreenToggle,120,405,80,80);
+    if(fullScreen)stretch_sprite(buffer,windowedToggle,120,405,80,80);
+    if(particlesOn)stretch_sprite(buffer,particleButton,280,405,80,80);
+    if(!particlesOn)stretch_sprite(buffer,particleOffButton,280,405,80,80);
 
     // Power
     stretch_sprite(buffer,powerOff,540,180,80,80);
@@ -1270,6 +1258,23 @@ void draw( bool toScreen){
       menuPart.at(i).draw(buffer);
     }
   }*/
+
+   if(debugMode){
+      draw_sprite(buffer,debug,0,0);
+      textprintf_ex(buffer,font,225,5,makecol(255,250,250),-1,"Gravity:%i",gravity);
+      textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%i",speed);
+      textprintf_ex(buffer,font,105,25,makecol(255,250,250),-1,"Score:%i",score);
+      textprintf_ex(buffer,font,105,35,makecol(255,250,250),-1,"Running:%i",running);
+      textprintf_ex(buffer,font,105,45,makecol(255,250,250),-1,"Mouse X:%i",mouse_x);
+      textprintf_ex(buffer,font,105,55,makecol(255,250,250),-1,"Mouse Y:%i",mouse_y);
+      textprintf_ex(buffer,font,5,35,makecol(255,250,250),-1,"Robot X:20");
+      textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%i",robotY);
+      textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%i",motion);
+      textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i",invincible);
+      textprintf_ex(buffer,font,225,15,makecol(255,250,250),-1,"OptionClicked:%i",optionMenu);
+      textprintf_ex(buffer,font,225,25,makecol(255,250,250),-1,"Credits:%i",creditsMenu);
+      textprintf_ex(buffer,font,225,35,makecol(255,250,250),-1,"smokeParticles:%i",smokePart.size());
+    }
 
   // Draw background and buffer
   if( toScreen == true){
@@ -1728,7 +1733,7 @@ int main(){
   setup(true);
   set_window_title("Robot Flier");
 
-  while( !close_button_pressed){
+  while( !close_button_pressed && gameScreen!=EXIT){
     while(ticks == 0){
       rest(1);
     }
