@@ -444,42 +444,30 @@ void game(){
         score = 0;
 
       // Moving controls
-      if( alive){
+      if(alive){
         //Controls, mouse and keyboard controls run no matter the joystick, cause why not?
 
-          if( key[KEY_W] || key[KEY_UP] || joy[0].button[0].b){
-          	if( game_time %2 == 0){
-	          	if(sound)
-                    play_sample( flame, 20, 155, 1000, 0);
-	          }
-            if( speed < 14){
-              rocket = false;
-              speed += 1;
-            }
+          if(joy[0].button[0].b || key[KEY_W] || key[KEY_UP] || mouse_b & 1){
+          	if(joy[0].button[0].b && control_mode!=2){
+                if( game_time %2 == 0){
+                    if(sound)
+                        play_sample( flame, 20, 155, 1000, 0);
+                }
+                if( speed < 14){
+                    rocket = false;
+                    speed += 1;
+                }
+             }
           }
-          if( !key[KEY_W] && !key[KEY_UP] && !joy[0].button[0].b){
+          if( !key[KEY_W] && !key[KEY_UP] && control_mode==2 && !mouse_b & 1 ||  !mouse_b & 1 && !key[KEY_W] && !key[KEY_UP] && !joy[0].button[0].b){
             rocket = true;
             if( speed > -14){
               speed -= 1;
             }
 
+          }
         }
 
-        else{
-          if( mouse_b & 1){
-            if(speed < 14){
-              rocket=false;
-              speed += 1;
-            }
-          }
-          if( !mouse_b & 1){
-            rocket = true;
-            if(speed > -14){
-              speed -= 1;
-            }
-          }
-        }
-      }
 
       //Die
       if( health < 1){
