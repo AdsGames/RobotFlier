@@ -126,7 +126,7 @@ FONT* arial_black;
 FONT* orbitron;
 
 // Define constistants
-// You know ^^^^^^^^^^ Code::Blocks has a spellcheck right?
+// You know ^^^^^^^^^^ Code::Blocks has a spell check right?
 const int groundP = 13;
 
 // Declare integers
@@ -146,7 +146,7 @@ int gameScreen;
 int forceFieldAppear = 10;
 int control_mode;
 
-// Decare booleans
+// Declare booleans
 bool mouse_rocketocket;
 bool rocket;
 bool startMove;
@@ -163,7 +163,7 @@ bool tutorialAsked;
 bool inTutorial;
 bool mouse_down;
 bool viewScores;
-bool joystick_enabled=true;
+bool joystick_enabled;
 
 string scores[10][2];
 
@@ -350,7 +350,7 @@ void game(){
         startClicked=true;
        }
     }
-    else if(mouse_b & 1 && mouse_x>600 && mouse_x<760 && mouse_y>20 && mouse_y<180 && !optionMenu && !creditsMenu){
+    if(mouse_b & 1 && mouse_x>600 && mouse_x<760 && mouse_y>20 && mouse_y<180 && !optionMenu && !creditsMenu){
       while(mouse_b & 1){ }
       if(viewScores){
         viewScores = false;
@@ -361,7 +361,7 @@ void game(){
       }
     }
     // Credits menu
-    else if(mouse_b & 1 && mouse_x>600 && mouse_x<690 && mouse_y>creditsY && mouse_y<creditsY+50 && !optionMenu && !viewScores){
+    if(mouse_b & 1 && mouse_x>600 && mouse_x<690 && mouse_y>creditsY && mouse_y<creditsY+50 && !optionMenu && !viewScores){
       while(mouse_b & 1){ }
       if(creditsMenu){
         creditsMenu = false;
@@ -371,13 +371,13 @@ void game(){
       }
     }
     // Help screen
-    else if(mouse_b & 1 && mouse_x > 500 && mouse_x < 570 && mouse_y > creditsY - 30 && mouse_y < creditsY + 60 && !optionMenu && !viewScores){
+    if(mouse_b & 1 && mouse_x > 500 && mouse_x < 570 && mouse_y > creditsY - 30 && mouse_y < creditsY + 60 && !optionMenu && !viewScores){
       fade_out(8);
 			gameScreen = TUTORIAL;
 			fade_in(helpScreen, 8);
     }
     // Options menu
-    else if(mouse_b & 1 && collision(mouse_x,mouse_x, 715, 785, mouse_y, mouse_y, 515, 585) && !viewScores && !creditsMenu){
+    if(mouse_b & 1 && collision(mouse_x,mouse_x, 715, 785, mouse_y, mouse_y, 515, 585) && !viewScores && !creditsMenu){
       while(mouse_b & 1){ }
       if(optionMenu){
         optionMenu = false;
@@ -701,7 +701,7 @@ void game(){
           i--;
         }
       }
-      // Comets spawningif(control_mode==2)stretch_sprite(buffer,control_keyboard,120,295,80,80);
+      // Comets spawning
       if(score > 300){
         if(random(0,200) == 0){
           comet newComet( cometImage, cometImage, asteroidSound, 800, random(30,550));
@@ -1242,7 +1242,7 @@ void draw( bool toScreen){
     if(control_mode==3)draw_sprite(buffer,control_xbox,120,295);
 
 
-    // Video
+    // Videoif(control_mode==2)draw_sprite(buffer,control_keyboard,120,295);
     textprintf_ex(buffer,orbitron,110,375,makecol(255,250,250),-1,"Window Particles");
     if(!fullScreen)stretch_sprite(buffer,fullscreenToggle,120,405,80,80);
     if(fullScreen)stretch_sprite(buffer,windowedToggle,120,405,80,80);
@@ -1433,7 +1433,6 @@ void setup(bool first){
   startClicked = false;
   invincible = false;
   creditsMenu = false;
-  control_mode=1;
   deadSoundSwitch = false;
   magnetic = false;
 
@@ -1456,6 +1455,7 @@ void setup(bool first){
     musicToggle = true;
     fullScreen = false;
     particlesOn = true;
+    control_mode=1;
 
      // Setup for FPS system
     LOCK_VARIABLE(ticks);
