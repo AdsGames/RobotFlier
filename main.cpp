@@ -51,7 +51,7 @@ BITMAP* groundOverlay;
 
 // GUI Images
 BITMAP* mouse;
-BITMAP* mouseR;
+BITMAP* mouse_rocket;
 BITMAP* debug;
 BITMAP* options;
 BITMAP* soundOn;
@@ -126,12 +126,13 @@ FONT* arial_black;
 FONT* orbitron;
 
 // Define constistants
+// You know ^^^^^^^^^^ Code::Blocks has a spellcheck right?
 const int groundP = 13;
 
 // Declare integers
 int running;
 int x_start_button;
-int titleY;
+int y_title;
 int optionX;
 int creditsY;
 int mouseMove;
@@ -146,7 +147,7 @@ int forceFieldAppear = 10;
 int control_mode;
 
 // Decare booleans
-bool mouseRocket;
+bool mouse_rocketocket;
 bool rocket;
 bool startMove;
 bool optionMenu;
@@ -305,11 +306,11 @@ void game(){
     if(x_start_button>-399 && startClicked)
       x_start_button=x_start_button-20;
 
-    if(titleY<20 && !startClicked)
-      titleY=titleY+10;
+    if(y_title<20 && !startClicked)
+      y_title=y_title+10;
 
-    if(titleY>-119 && startClicked)
-      titleY=titleY-10;
+    if(y_title>-119 && startClicked)
+      y_title=y_title-10;
 
     if(creditsY>530 && !startClicked)
       creditsY=creditsY-5;
@@ -947,7 +948,7 @@ void game(){
       mousePart.clear();
     }
     if( particlesOn){
-      if( mouseRocket){
+      if( mouse_rocketocket){
         for( int i = 0; i < mouseParticles; i++){
           if( random(0,10) == 0){
             particle newParticle( mouse_x+10, mouse_y+16, makecol(255,random(0,255),0), -2, 2, 0, 8, CIRCLE, 1);
@@ -966,10 +967,10 @@ void game(){
     // Draw mouse
     draw_sprite( buffer, mouse, mouse_x, mouse_y);
     if( mouse_y < mouseMove){
-      mouseRocket = true;
+      mouse_rocketocket = true;
     }
     else{
-      mouseRocket = false;
+      mouse_rocketocket = false;
     }
     mouseMove = mouse_y;
   }
@@ -1032,7 +1033,7 @@ void draw( bool toScreen){
     draw_sprite(buffer,menu,0,0);
     draw_sprite(buffer,start,x_start_button,400);
     if(joystick_enabled || control_mode==3)draw_sprite(buffer,xbox_start,x_start_button+225,430);
-    draw_sprite(buffer,title,20,titleY);
+    draw_sprite(buffer,title,20,y_title);
     if(!creditsMenu)draw_sprite(buffer,helpButton,490,creditsY - 30);
 
     if(creditsMenu){
@@ -1257,8 +1258,8 @@ void draw( bool toScreen){
   if(optionMenu || paused || gameScreen != GAME){
     // Draw mouse particles
     if( !particlesOn){
-      if( mouseRocket){
-        draw_sprite(buffer,mouseR,mouse_x,mouse_y);
+      if( mouse_rocketocket){
+        draw_sprite(buffer,mouse_rocket,mouse_x,mouse_y);
       }
     }
     if( particlesOn){
@@ -1399,7 +1400,7 @@ void setup(bool first){
   score = 0;
   running = 0;
   x_start_button = -400;
-  titleY = -100;
+  y_title = -100;
   optionX = 800;
   creditsY = 600;
   mouseMove = 0;
@@ -1420,7 +1421,7 @@ void setup(bool first){
   scroll2 = scroll1 + 800;
 
   // Decare booleans
-  mouseRocket = false;
+  mouse_rocketocket = false;
   rocket = false;
   debugMode = false;
   startMove = false;
@@ -1446,6 +1447,10 @@ void setup(bool first){
   // Should execute only the first time
   if(first){
     // Ints that only need to be changed the first time
+    //Sets the level to 1
+    changeTheme( 0);
+
+    //Sets the default menu values
     sound = true;
     musicToggle = true;
     fullScreen = false;
@@ -1465,232 +1470,127 @@ void setup(bool first){
     set_close_button_callback(close_button_handler);
 
     // Load sounds from file
-    if (!(bombSound = load_sample( "audio/bombSound.wav"))){
+    if (!(bombSound = load_sample( "audio/bombSound.wav")))
       abort_on_error("Cannot find sound bombSound.wav\nPlease check your files and try again");
-
-    }
-    if (!(energySound = load_sample("audio/energySound.wav"))){
+    if (!(energySound = load_sample("audio/energySound.wav")))
       abort_on_error("Cannot find sound energySound.wav\nPlease check your files and try again");
-
-    }
-    if (!(asteroidSound = load_sample( "audio/asteroidSound.wav"))){
+    if (!(asteroidSound = load_sample( "audio/asteroidSound.wav")))
       abort_on_error("Cannot find sound asteroidSound.wav\nPlease check your files and try again");
-
-    }
-    if (!(ingame = FSOUND_Stream_Open( "audio/ingame.mp3",2,0,0))){
+    if (!(ingame = FSOUND_Stream_Open( "audio/ingame.mp3",2,0,0)))
       abort_on_error("Cannot find soundtrack ingame.mp3\nPlease check your files and try again");
-
-    }
-    if (!(menuMusic = FSOUND_Stream_Open( "audio/menuMusic.mp3",2,0,0))){
+    if (!(menuMusic = FSOUND_Stream_Open( "audio/menuMusic.mp3",2,0,0)))
       abort_on_error("Cannot find soundtrack menuMusic.mp3\nPlease check your files and try again");
-
-    }
-    if (!(dieAmbience = FSOUND_Stream_Open( "audio/dieAmbience.mp3",2,0,0))){
+    if (!(dieAmbience = FSOUND_Stream_Open( "audio/dieAmbience.mp3",2,0,0)))
       abort_on_error("Cannot find soundtrack dieAmbience.mp3\nPlease check your files and try again");
-
-    }
-    if (!(magnetSound = load_sample( "audio/magnetSound.wav"))){
+    if (!(magnetSound = load_sample( "audio/magnetSound.wav")))
       abort_on_error("Cannot find sound magnetSound.wav\nPlease check your files and try again");
-
-    }
-    if (!(starSound = load_sample( "audio/starSound.wav"))){
+    if (!(starSound = load_sample( "audio/starSound.wav")))
       abort_on_error("Cannot find sound starSound.wav\nPlease check your files and try again");
-
-    }
-		if (!(flame = load_sample( "audio/flame.wav"))){
+    if (!(flame = load_sample( "audio/flame.wav")))
       abort_on_error("Cannot find sound flame.wav\nPlease check your files and try again");
-
-    }
-    if (!(groundSmash = load_sample( "audio/groundSmash.wav"))){
+    if (!(groundSmash = load_sample( "audio/groundSmash.wav")))
       abort_on_error("Cannot find sound groundSmash.wav\nPlease check your files and try again");
 
-    }
-
-    // Create buffer
-    buffer = create_bitmap( 800, 600);
 
     // Load bitmaps from file
-    if (!(robot = load_bitmap("images/robot/robot.png", NULL))){
+    if (!(robot = load_bitmap("images/robot/robot.png", NULL)))
       abort_on_error("Cannot find image robot/robot.png\nPlease check your files and try again");
-      }
-    if (!(robotfire = load_bitmap("images/robot/robotfire.png", NULL))){
+    if (!(robotfire = load_bitmap("images/robot/robotfire.png", NULL)))
       abort_on_error("Cannot find image robot/robotfire.png\nPlease check your files and try again");
-
-    }
-    if (!(robotInvincible = load_bitmap("images/robot/robotInvincible.png", NULL))){
+    if (!(robotInvincible = load_bitmap("images/robot/robotInvincible.png", NULL)))
       abort_on_error("Cannot find image robot/robotInvincible.png\nPlease check your files and try again");
-
-    }
-    if (!(robotInvincibleFire = load_bitmap("images/robot/robotInvincibleFire.png", NULL))){
+    if (!(robotInvincibleFire = load_bitmap("images/robot/robotInvincibleFire.png", NULL)))
       abort_on_error("Cannot find image robot/robotInvincibleFire.png\nPlease check your files and try again");
-
-    }
-    if (!(robotDie = load_bitmap("images/robot/robotDie.png", NULL))){
+    if (!(robotDie = load_bitmap("images/robot/robotDie.png", NULL)))
       abort_on_error("Cannot find image robot/robotDie.png\nPlease check your files and try again");
-
-    }
-    if (!(robotInvincibleTop = load_bitmap("images/robot/robotInvincibleTop.png", NULL))){
+    if (!(robotInvincibleTop = load_bitmap("images/robot/robotInvincibleTop.png", NULL)))
       abort_on_error("Cannot find image robotInvincibleTop.png\nPlease check your files and try again");
-
-    }
-    if (!(menu = load_bitmap("images/backgrounds/menu.png", NULL))){
+    if (!(menu = load_bitmap("images/backgrounds/menu.png", NULL)))
       abort_on_error("Cannot find image backgrounds/menu.png\nPlease check your files and try again");
-
-    }
-    if (!(space = load_bitmap("images/backgrounds/space.png", NULL))){
+    if (!(space = load_bitmap("images/backgrounds/space.png", NULL)))
       abort_on_error("Cannot find image backgrounds/space.png\nPlease check your files and try again");
-
-    }
-    if (!(start = load_bitmap("images/gui/start.png", NULL))){
+    if (!(start = load_bitmap("images/gui/start.png", NULL)))
       abort_on_error("Cannot find image gui/start.png\nPlease check your files and try again");
-
-    }
-    if (!(mouse = load_bitmap("images/gui/mouse.png", NULL))){
+    if (!(mouse = load_bitmap("images/gui/mouse.png", NULL)))
       abort_on_error("Cannot find image gui/mouse.png\nPlease check your files and try again");
-
-    }
-    if (!(mouseR = load_bitmap("images/gui/mouseR.png", NULL))){
-      abort_on_error("Cannot find image gui/mouseR.png\nPlease check your files and try again");
-
-    }
-    if (!(title = load_bitmap("images/gui/title.png", NULL))){
+    if (!(mouse_rocket = load_bitmap("images/gui/mouse_rocket.png", NULL)))
+      abort_on_error("Cannot find image gui/mouse_rocket.png\nPlease check your files and try again");
+    if (!(title = load_bitmap("images/gui/title.png", NULL)))
       abort_on_error("Cannot find image gui/title.png\nPlease check your files and try again");
-
-    }
-    if (!(debug = load_bitmap("images/gui/debug.png", NULL))){
+    if (!(debug = load_bitmap("images/gui/debug.png", NULL)))
       abort_on_error("Cannot find image gui/debug.png\nPlease check your files and try again");
-
-    }
-    if (!(options = load_bitmap("images/gui/options.png", NULL))){
+    if (!(options = load_bitmap("images/gui/options.png", NULL)))
       abort_on_error("Cannot find image gui/options.png\nPlease check your files and try again");
-
-    }
-    if (!(soundOn = load_bitmap("images/gui/soundOn.png", NULL))){
+    if (!(soundOn = load_bitmap("images/gui/soundOn.png", NULL)))
       abort_on_error("Cannot find image gui/soundOn.png\nPlease check your files and try again");
-
-    }
-    if (!(soundOff = load_bitmap("images/gui/soundOff.png", NULL))){
+    if (!(soundOff = load_bitmap("images/gui/soundOff.png", NULL)))
       abort_on_error("Cannot find image gui/soundOff.png\nPlease check your files and try again");
-
-    }
-    if (!(musicOn = load_bitmap("images/gui/musicOn.png", NULL))){
+    if (!(musicOn = load_bitmap("images/gui/musicOn.png", NULL)))
       abort_on_error("Cannot find image gui/musicOn.png\nPlease check your files and try again");
-
-    }
-    if (!(musicOff = load_bitmap("images/gui/musicOff.png", NULL))){
+    if (!(musicOff = load_bitmap("images/gui/musicOff.png", NULL)))
       abort_on_error("Cannot find image gui/musicOff.png\nPlease check your files and try again");
-
-    }
-    if (!(pauseMenu = load_bitmap("images/gui/pauseMenu.png", NULL))){
+    if (!(pauseMenu = load_bitmap("images/gui/pauseMenu.png", NULL)))
       abort_on_error("Cannot find image gui/pauseMenu.png\nPlease check your files and try again");
-
-    }
-    if (!(lose = load_bitmap("images/gui/lose.png", NULL))){
+    if (!(lose = load_bitmap("images/gui/lose.png", NULL)))
       abort_on_error("Cannot find image gui/lose.png\nPlease check your files and try again");
-
-    }
-    if (!(optionButton = load_bitmap("images/gui/optionButton.png", NULL))){
+    if (!(optionButton = load_bitmap("images/gui/optionButton.png", NULL)))
       abort_on_error("Cannot find image gui/optionButton.png\nPlease check your files and try again");
-
-    }
-    if (!(fullscreenToggle = load_bitmap("images/gui/fullscreenToggle.png", NULL))){
+    if (!(fullscreenToggle = load_bitmap("images/gui/fullscreenToggle.png", NULL)))
       abort_on_error("Cannot find image gui/fullscreenToggle.png\nPlease check your files and try again");
-
-    }
-    if (!(windowedToggle = load_bitmap("images/gui/windowedToggle.png", NULL))){
+    if (!(windowedToggle = load_bitmap("images/gui/windowedToggle.png", NULL)))
       abort_on_error("Cannot find image gui/windowedToggle.png\nPlease check your files and try again");
-
-    }
-    if (!(gearIcon = load_bitmap("images/gui/gearIcon.png", NULL))){
+    if (!(gearIcon = load_bitmap("images/gui/gearIcon.png", NULL)))
       abort_on_error("Cannot find image gui/gearIcon.png\nPlease check your files and try again");
-
-    }
-    if (!(backButton = load_bitmap("images/gui/backButton.png", NULL))){
+    if (!(backButton = load_bitmap("images/gui/backButton.png", NULL)))
       abort_on_error("Cannot find image gui/backButton.png\nPlease check your files and try again");
-
-    }
-    if (!(powerStar = load_bitmap("images/powerStar.png", NULL))){
+    if (!(powerStar = load_bitmap("images/powerStar.png", NULL)))
       abort_on_error("Cannot find image images/powerStar.png\nPlease check your files and try again");
-
-    }
-    if (!(credits = load_bitmap("images/gui/credits.png", NULL))){
+    if (!(credits = load_bitmap("images/gui/credits.png", NULL)))
       abort_on_error("Cannot find image gui/credits.png\nPlease check your files and try again");
-
-    }
-    if (!(creditsButton = load_bitmap("images/gui/creditsButton.png", NULL))){
+    if (!(creditsButton = load_bitmap("images/gui/creditsButton.png", NULL)))
       abort_on_error("Cannot find image gui/creditsButton.png\nPlease check your files and try again");
-
-    }
-    if (!(resumeButton = load_bitmap("images/gui/resumeButton.png", NULL))){
+    if (!(resumeButton = load_bitmap("images/gui/resumeButton.png", NULL)))
       abort_on_error("Cannot find image gui/resumeButton.png\nPlease check your files and try again");
-
-    }
-    if (!(particleButton = load_bitmap("images/gui/particleButton.png", NULL))){
+    if (!(particleButton = load_bitmap("images/gui/particleButton.png", NULL)))
       abort_on_error("Cannot find image gui/particleButton.png\nPlease check your files and try again");
-
-    }
-    if (!(particleOffButton = load_bitmap("images/gui/particleOffButton.png", NULL))){
+    if (!(particleOffButton = load_bitmap("images/gui/particleOffButton.png", NULL)))
       abort_on_error("Cannot find image gui/particleOffButton.png\nPlease check your files and try again");
-
-    }
-    if (!(powerMagnet = load_bitmap("images/powerMagnet.png", NULL))){
+    if (!(powerMagnet = load_bitmap("images/powerMagnet.png", NULL)))
       abort_on_error("Cannot find image powerMagnet.png\nPlease check your files and try again");
-
-    }
-    if (!(powerMagnetTwo = load_bitmap("images/powerMagnetTwo.png", NULL))){
+    if (!(powerMagnetTwo = load_bitmap("images/powerMagnetTwo.png", NULL)))
       abort_on_error("Cannot find image powerMagnetTwo.png\nPlease check your files and try again");
-
-    }
-    if (!(powerMagnetThree = load_bitmap("images/powerMagnetThree.png", NULL))){
+    if (!(powerMagnetThree = load_bitmap("images/powerMagnetThree.png", NULL)))
       abort_on_error("Cannot find image powerMagnetThree.png\nPlease check your files and try again");
-
-    }
-    if (!(powerMagnetFour = load_bitmap("images/powerMagnetFour.png", NULL))){
+    if (!(powerMagnetFour = load_bitmap("images/powerMagnetFour.png", NULL)))
       abort_on_error("Cannot find image powerMagnetFour.png\nPlease check your files and try again");
-
-    }
-    if (!(intro = load_bitmap("images/backgrounds/intro.png", NULL))){
+    if (!(intro = load_bitmap("images/backgrounds/intro.png", NULL)))
       abort_on_error("Cannot find image backgrounds/intro.png\nPlease check your files and try again");
-
-    }
-    if (!(forceField = load_bitmap("images/forceField.png", NULL))){
+    if (!(forceField = load_bitmap("images/forceField.png", NULL)))
       abort_on_error("Cannot find image images/forceField.png\nPlease check your files and try again");
-
-    }
-    if (!(highscores_table = load_bitmap("images/gui/highscores_table.png", NULL))){
+    if (!(highscores_table = load_bitmap("images/gui/highscores_table.png", NULL)))
       abort_on_error("Cannot find image gui/highscores_table.png\nPlease check your files and try again");
-
-    }
-    if (!(helpButton = load_bitmap("images/gui/helpButton.png", NULL))){
+    if (!(helpButton = load_bitmap("images/gui/helpButton.png", NULL)))
       abort_on_error("Cannot find image gui/helpButton.png\nPlease check your files and try again");
-
-    }
-    if (!(helpScreen = load_bitmap("images/gui/helpScreen.png", NULL))){
+    if (!(helpScreen = load_bitmap("images/gui/helpScreen.png", NULL)))
       abort_on_error("Cannot find image gui/helpScreen.png\nPlease check your files and try again");
-
-    }
-    if (!(powerOff = load_bitmap("images/gui/powerOff.png", NULL))){
+    if (!(powerOff = load_bitmap("images/gui/powerOff.png", NULL)))
       abort_on_error("Cannot find image gui/powerOff.png\nPlease check your files and try again");
-
-    }
-    if (!(xbox_start = load_bitmap("images/gui/xbox_start.png", NULL))){
+    if (!(xbox_start = load_bitmap("images/gui/xbox_start.png", NULL)))
       abort_on_error("Cannot find image gui/xbox_start.png\nPlease check your files and try again");
-
-    }
-    if (!(control_xbox = load_bitmap("images/gui/control_xbox.png", NULL))){
+    if (!(control_xbox = load_bitmap("images/gui/control_xbox.png", NULL)))
       abort_on_error("Cannot find image gui/control_xbox.png\nPlease check your files and try again");
-
-    }
-    if (!(control_keyboard = load_bitmap("images/gui/control_keyboard.png", NULL))){
+    if (!(control_keyboard = load_bitmap("images/gui/control_keyboard.png", NULL)))
       abort_on_error("Cannot find image gui/control_keyboard.png\nPlease check your files and try again");
-
-    }
-    if (!(control_auto = load_bitmap("images/gui/control_auto.png", NULL))){
+    if (!(control_auto = load_bitmap("images/gui/control_auto.png", NULL)))
       abort_on_error("Cannot find image gui/control_auto.png\nPlease check your files and try again");
+    if (!(energyImage = load_bitmap("images/energy.png", NULL)))
+      abort_on_error("Cannot find image energy.png\nPlease check your files and try again");
+    if (!(bombImage = load_bitmap("images/bomb.png", NULL)))
+      abort_on_error("Cannot find image bomb.png\nPlease check your files and try again");
+    if (!(cometImage = load_bitmap("images/comet.png", NULL)))
+      abort_on_error("Cannot find image comet.png\nPlease check your files and try again");
 
-    }
-    // Load ground bitmaps from file
-    changeTheme( 0);
+
 
     // Loads fonts
     // Final Font
@@ -1714,6 +1614,7 @@ void setup(bool first){
     f4 = extract_font_range(f1, 'Z'+1, 'z');
     arial_black = merge_fonts(f4, f5 = merge_fonts(f2, f3));
 
+    // Orbitron font
     f1 = load_font("fonts/orbitron.pcx", NULL, NULL);
     f2 = extract_font_range(f1, ' ', 'A'-1);
     f3 = extract_font_range(f1, 'A', 'Z');
@@ -1727,19 +1628,11 @@ void setup(bool first){
     destroy_font(f4);
     destroy_font(f5);
 
-    // Set object images
-    if (!(energyImage = load_bitmap("images/energy.png", NULL))){
-      abort_on_error("Cannot find image energy.png\nPlease check your files and try again");
 
-    }
-    if (!(bombImage = load_bitmap("images/bomb.png", NULL))){
-      abort_on_error("Cannot find image bomb.png\nPlease check your files and try again");
+    // Create buffer
+    buffer = create_bitmap( 800, 600);
 
-    }
-    if (!(cometImage = load_bitmap("images/comet.png", NULL))){
-      abort_on_error("Cannot find image comet.png\nPlease check your files and try again");
 
-    }
   }
 }
 
