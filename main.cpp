@@ -372,9 +372,9 @@ void game(){
     }
     // Help screen
     if(mouse_b & 1 && mouse_x > 500 && mouse_x < 570 && mouse_y > creditsY - 30 && mouse_y < creditsY + 60 && !optionMenu && !viewScores){
-      fade_out(8);
+     fade_out(8);
 			gameScreen = TUTORIAL;
-			fade_in(helpScreen, 8);
+		fade_in(helpScreen, 8);
     }
     // Options menu
     if(mouse_b & 1 && collision(mouse_x,mouse_x, 715, 785, mouse_y, mouse_y, 515, 585) && !viewScores && !creditsMenu){
@@ -395,11 +395,12 @@ void game(){
 
   // Tutorial screen
   if(gameScreen == TUTORIAL){
-    if(key[KEY_ENTER] || key[KEY_SPACE] || mouse_b & 1 || joy[0].button[1].b){
-    	fade_out(8);
+    if(key[KEY_ENTER] && control_mode!=3 || key[KEY_SPACE] && control_mode!=3  || mouse_b & 1 && control_mode!=3 || joy[0].button[1].b && control_mode!=2){
+        fade_out(8);
 			gameScreen = MENU;
 			draw(false);
 			fade_in(buffer, 8);
+
     }
   }
 
@@ -1272,7 +1273,7 @@ void draw( bool toScreen){
       }
     }
     if( particlesOn){
-      if(gameScreen = GAME && !paused){
+      if(gameScreen == GAME && !paused){
         for( int i = 0; i < mousePart.size(); i++){
           mousePart.at(i).draw( buffer);
         }
