@@ -449,7 +449,7 @@ void game(){
           bool has_mr_robot_moved_yet;
 
           if(key[KEY_W] || key[KEY_UP] || mouse_b & 1){
-            if(!has_mr_robot_moved_yet){
+            if(!has_mr_robot_moved_yet && control_mode!=3){
                 has_mr_robot_moved_yet=true;
                 if( game_time %2 == 0){
                     if(sound)
@@ -476,13 +476,15 @@ void game(){
 
           }
           //If no keys pressed
-          if( !key[KEY_W] && !key[KEY_UP] && control_mode==2 && !mouse_b & 1 ||  !mouse_b & 1 && !key[KEY_W] && !key[KEY_UP] && !joy[0].button[0].b){
-            rocket = true;
-            if( speed > -14){
-              speed -= 1;
-            }
 
-          }
+          if( !key[KEY_W] && !key[KEY_UP] && ! mouse_b & 1 && control_mode==2 || !key[KEY_W] && !key[KEY_UP] && !mouse_b & 1 && control_mode==1 || control_mode==3 && !joy[0].button[0].b){
+
+                rocket = true;
+                if( speed > -14){
+                    speed -= 1;
+                }
+
+            }
         }
 
 
