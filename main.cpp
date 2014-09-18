@@ -445,10 +445,12 @@ void game(){
 
       // Moving controls
       if(alive){
-        //Controls, mouse and keyboard controls run no matter the joystick, cause why not?
+        //Controls movement up and down
+          bool has_mr_robot_moved_yet;
 
-          if(joy[0].button[0].b || key[KEY_W] || key[KEY_UP] || mouse_b & 1){
-          	if(joy[0].button[0].b && control_mode!=2){
+          if(key[KEY_W] || key[KEY_UP] || mouse_b & 1){
+            if(!has_mr_robot_moved_yet){
+                has_mr_robot_moved_yet=true;
                 if( game_time %2 == 0){
                     if(sound)
                         play_sample( flame, 20, 155, 1000, 0);
@@ -459,6 +461,21 @@ void game(){
                 }
              }
           }
+          if(joy[0].button[0].b && control_mode!=2){
+            if(!has_mr_robot_moved_yet){
+                has_mr_robot_moved_yet=true;
+                if( game_time %2 == 0){
+                    if(sound)
+                        play_sample( flame, 20, 155, 1000, 0);
+                }
+                if( speed < 14){
+                    rocket = false;
+                    speed += 1;
+                }
+             }
+
+          }
+          //If no keys pressed
           if( !key[KEY_W] && !key[KEY_UP] && control_mode==2 && !mouse_b & 1 ||  !mouse_b & 1 && !key[KEY_W] && !key[KEY_UP] && !joy[0].button[0].b){
             rocket = true;
             if( speed > -14){
@@ -830,6 +847,7 @@ void game(){
   }
 
   // THIS CODE WILL RUN NO MATTER THE gameScreen TOGGLE!
+
 
     //Joystick detector
     if(num_joysticks>0 && control_mode!=2)joystick_enabled=true;
