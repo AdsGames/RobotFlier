@@ -461,8 +461,8 @@ void game(){
                 }
              }
           }
-          if(joy[0].button[0].b && control_mode!=2){
-            if(!has_mr_robot_moved_yet){
+          if(joy[0].button[0].b){
+            if(!has_mr_robot_moved_yet && control_mode!=2){
                 has_mr_robot_moved_yet=true;
                 if( game_time %2 == 0){
                     if(sound)
@@ -477,7 +477,7 @@ void game(){
           }
           //If no keys pressed
 
-          if( !key[KEY_W] && !key[KEY_UP] && ! mouse_b & 1 && control_mode==2 || !key[KEY_W] && !key[KEY_UP] && !mouse_b & 1 && control_mode==1 || control_mode==3 && !joy[0].button[0].b){
+          if( !key[KEY_W] && !key[KEY_UP] && ! mouse_b & 1 && control_mode==2 || !key[KEY_W] && !key[KEY_UP] && !mouse_b & 1 && control_mode==1 && !joy[0].button[0].b || control_mode==3 && !joy[0].button[0].b){
 
                 rocket = true;
                 if( speed > -14){
