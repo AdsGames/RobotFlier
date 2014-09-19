@@ -141,10 +141,10 @@ int gravity, motion, speed;
 int step;
 int scroll1, scroll2;
 int groundScroll;
-int tutorialStage;
 int gameScreen;
 int forceFieldAppear = 10;
 int control_mode;
+int key_bindings[10];
 
 // Declare booleans
 bool mouse_rocketocket;
@@ -160,10 +160,10 @@ bool startClicked;
 bool creditsMenu;
 bool deadSoundSwitch;
 bool tutorialAsked;
-bool inTutorial;
 bool mouse_down;
 bool viewScores;
 bool joystick_enabled;
+bool key_binding_screen;
 
 string scores[10][2];
 
