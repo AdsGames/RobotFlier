@@ -1,25 +1,25 @@
 #include "bomb.h"
 
-bomb::bomb(BITMAP* newImage1, BITMAP* newImage2, SAMPLE* newSoundEffect, int newX, int newY){ 
+bomb::bomb(BITMAP* newImage1, BITMAP* newImage2, SAMPLE* newSoundEffect, int newX, int newY){
   image[0] = newImage1;
   image[1] = newImage2;
   soundEffect = newSoundEffect;
   x = newX;
   y = newY;
   isDead = false;
-  
+
   height = image[0] -> h;
   width = image[1] -> w;
 }
 
 bomb::~bomb(){
-  
+
 }
 
 void bomb::logic(int newMotion){
   x -= newMotion * 1.3;
-  
-  if(collision(x, x + width , robotX, robotX + robotWidth, y, y + height, robotY, robotY + robotHeight) && !isDead){
+
+  if(collision(x, x + width , robot_x, robot_x + robotWidth, y, y + height, robot_y, robot_y + robotHeight) && !isDead){
 		if(!invincible){
       health -= 10;
     }
@@ -27,7 +27,7 @@ void bomb::logic(int newMotion){
       play_sample(soundEffect,255,125,1000,0);
     }
   }
-  
+
   if(isDead){
   	if( particlesOn){
 	    //Update particles
@@ -44,7 +44,7 @@ void bomb::logic(int newMotion){
 }
 
 bool bomb::dead(){
-  if(collision(x, x + width , robotX, robotX + robotWidth, y, y + height, robotY, robotY + robotHeight)){
+  if(collision(x, x + width , robot_x, robot_x + robotWidth, y, y + height, robot_y, robot_y + robotHeight)){
   	if(!invincible){
   		isDead = true;
   		debrisCollided +=1;
@@ -52,7 +52,7 @@ bool bomb::dead(){
     if( particlesOn){
 	    int iteratorX = 0;
 	    int iteratorY = 0;
-	    for(int i = 0; i < width * height; i++){ 
+	    for(int i = 0; i < width * height; i++){
 	      if(iteratorX < width - 1){
 	        iteratorX ++;
 	      }
@@ -85,10 +85,10 @@ void bomb::draw( BITMAP* tempBitmap){
   	if( particlesOn){
 	    for( int i = 0; i < debris.size(); i++){
 	      debris.at(i).draw( tempBitmap);
-	    }  
+	    }
 		}
   }
-  
+
   if(debugMode){
     rect(tempBitmap, x, y, x + width, y + height, makecol(88, 88, 88));
   }

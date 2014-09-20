@@ -20,7 +20,7 @@ asteroid::~asteroid(){
 void asteroid::logic(int newMotion){
   x -= newMotion;
   int collisionBuffer = height/3;
-  if(collision(x, x + width , robotX + collisionBuffer, robotX + robotWidth - collisionBuffer, y, y + height, robotY + collisionBuffer, robotY + robotHeight - collisionBuffer) && !isDead){
+  if(collision(x, x + width , robot_x + collisionBuffer, robot_x + robotWidth - collisionBuffer, y, y + height, robot_y + collisionBuffer, robot_y + robotHeight - collisionBuffer) && !isDead){
     if(!invincible){
       health -= 5;
     }
@@ -46,7 +46,7 @@ void asteroid::logic(int newMotion){
 
 bool asteroid::dead(){
   int collisionBuffer = height/3;
-  if(collision(x, x + width , robotX + collisionBuffer, robotX + robotWidth - collisionBuffer, y, y + height, robotY + collisionBuffer, robotY + robotHeight - collisionBuffer)){
+  if(collision(x, x + width , robot_x + collisionBuffer, robot_x + robotWidth - collisionBuffer, y, y + height, robot_y + collisionBuffer, robot_y + robotHeight - collisionBuffer)){
     if(!invincible){
   		isDead = true;
   		debrisCollided +=1;

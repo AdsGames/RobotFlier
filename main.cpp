@@ -1,6 +1,15 @@
-// 2013(C) ADS Games
-// Written in C++ using Allegro www.allegro.cc, Dev-C++ www.bloodshed.net, Freesound www.freesound.org, Paint.net www.getpaint.net,
-// Special thanks to Allan Legemaate whom I owe my life to
+//  An
+//             _____   _____    _____
+//       /\   |  __ \ / ____|  / ____|
+//      /  \  | |  | | (___   | |  __  __ _ _ __ ___   ___  ___
+//     / /\ \ | |  | |\___ \  | | |_ |/ _` | '_ ` _ \ / _ \/ __|
+//    / ____ \| |__| |____) | | |__| | (_| | | | | | |  __/\__ \
+//   /_/    \_\_____/|_____/   \_____|\__,_|_| |_| |_|\___||___/
+//
+//  Production
+//
+//
+// Written by Danny Van Stemp and Allan Legemaate
 
 #include "energy.h"
 #include "asteroid.h"
@@ -9,8 +18,6 @@
 #include "powerup.h"
 #include "particle.h"
 #include "globals.h"
-
-using namespace std;
 
 // Game screens
 #define SPLASH 0
@@ -414,7 +421,7 @@ void game(){
   if(gameScreen == GAME){
     if(!paused){
       // Update robots y position
-      robotY += gravity - speed;
+      robot_y += gravity - speed;
 
       // Changes speed
       motion = (score/30) + 4;
@@ -550,7 +557,7 @@ void game(){
               smokePart.clear();
               rocketPart.clear();
               if(musicToggle)
-								FSOUND_Stream_Play(0,music_mainmenu);
+                FSOUND_Stream_Play(0,music_mainmenu);
               gameScreen = MENU;
               fade_in(menu,8);
               ticks = 0;
@@ -613,19 +620,19 @@ void game(){
 	    }
 
       // Dying animation
-      if( robotY < 550 && !alive && !onGround){
+      if( robot_y < 550 && !alive && !onGround){
         clear_keybuf();
-        robotY += 10;
+        robot_y += 10;
         speed = 0;
       }
-      else if( robotY >= 550 && !alive){
-        robotY = 550;
+      else if( robot_y >= 550 && !alive){
+        robot_y = 550;
         onGround = true;
         clear_keybuf();
       }
 
       // Touching top or bottom
-      if( robotY < 1 && alive){
+      if( robot_y < 1 && alive){
         speed = -10;
         forceFieldAppear=0;
       }
@@ -633,7 +640,7 @@ void game(){
       if( onGround && !alive && motion>0){
         motion = 0;
       }
-      if( robotY > 550 && alive){
+      if( robot_y > 550 && alive){
         speed = 14;
         if( !invincible){
             health -= 5;
@@ -772,7 +779,7 @@ void game(){
         for( int i = 0; i < smokeParticles; i++){
           if( random(0,10) == 0){
             int randnum=random(0,255);
-            particle newParticle(robotX+20, robotY+20, makecol(randnum,randnum,randnum), -2, 2, 0, -8, CIRCLE, 1);
+            particle newParticle(robot_x+20, robot_y+20, makecol(randnum,randnum,randnum), -2, 2, 0, -8, CIRCLE, 1);
             smokePart.push_back( newParticle);
           }
         }
@@ -792,8 +799,8 @@ void game(){
         if( !rocket){
           for( int i = 0; i < rocketParticles; i++){
             if( random(0,10) == 0){
-              particle newParticle1( robotX + 21, robotY + 55, makecol( 255, random(0,255), 0), -3, 3, 0, 4, CIRCLE, 1);
-              particle newParticle2( robotX + 52, robotY + 55, makecol( 255, random(0,255), 0), -3, 3, 0, 4, CIRCLE, 1);
+              particle newParticle1( robot_x + 21, robot_y + 55, makecol( 255, random(0,255), 0), -3, 3, 0, 4, CIRCLE, 1);
+              particle newParticle2( robot_x + 52, robot_y + 55, makecol( 255, random(0,255), 0), -3, 3, 0, 4, CIRCLE, 1);
               rocketPart.push_back( newParticle1);
               rocketPart.push_back( newParticle2);
             }
@@ -1150,7 +1157,7 @@ void draw( bool toScreen){
     // Draw rocket particles
     if( !particlesOn){
       if( !rocket){
-        draw_sprite( buffer, robotfire, robotX, robotY);
+        draw_sprite( buffer, robotfire, robot_x, robot_y);
       }
     }
     if( particlesOn){
@@ -1165,11 +1172,11 @@ void draw( bool toScreen){
 
     // Robot Invincible
     if( !rocket && alive && invincible && particlesOn)
-      draw_sprite(buffer,robotInvincible,robotX,robotY);
+      draw_sprite(buffer,robotInvincible,robot_x,robot_y);
     if( rocket && alive && invincible)
-      draw_sprite(buffer,robotInvincible,robotX,robotY);
+      draw_sprite(buffer,robotInvincible,robot_x,robot_y);
     if( !rocket && alive && invincible && !particlesOn)
-      draw_sprite(buffer,robotInvincibleFire,robotX,robotY);
+      draw_sprite(buffer,robotInvincibleFire,robot_x,robot_y);
 
     // Energy
     // Counts up for every energy and runs script with ball number as i
@@ -1203,11 +1210,11 @@ void draw( bool toScreen){
 
     // Draw robot sprite
     if( !rocket && alive && !invincible && particlesOn)
-      draw_sprite(buffer,robot,robotX,robotY);
+      draw_sprite(buffer,robot,robot_x,robot_y);
     if( rocket && alive && !invincible)
-      draw_sprite(buffer,robot,robotX,robotY);
+      draw_sprite(buffer,robot,robot_x,robot_y);
     if( !rocket && alive && !invincible && !particlesOn)
-      draw_sprite(buffer,robotfire,robotX,robotY);
+      draw_sprite(buffer,robotfire,robot_x,robot_y);
 
     // Draw the scrolling ground
     for(int i=0;i<13;i++){
@@ -1252,7 +1259,7 @@ void draw( bool toScreen){
 
     // Death image
     if(!alive){
-      draw_sprite(buffer,robotDie,robotX,robotY);
+      draw_sprite(buffer,robotDie,robot_x,robot_y);
     }
 
     //Show force field
@@ -1261,7 +1268,7 @@ void draw( bool toScreen){
 
     //See through invincibility
     if(alive && invincible)
-      draw_sprite(buffer,robotInvincibleTop,robotX,robotY);
+      draw_sprite(buffer,robotInvincibleTop,robot_x,robot_y);
   }
 
 	// Option Menu Scripts(THIS IS ONLY IN GAME MENU, THE MAIN MENU ONE IS HANDLED BY GAMESCREEN!!!!
@@ -1329,7 +1336,7 @@ void draw( bool toScreen){
       textprintf_ex(buffer,font,105,45,makecol(255,250,250),-1,"Mouse X:%i",mouse_x);
       textprintf_ex(buffer,font,105,55,makecol(255,250,250),-1,"Mouse Y:%i",mouse_y);
       textprintf_ex(buffer,font,5,35,makecol(255,250,250),-1,"Robot X:20");
-      textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%i",robotY);
+      textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%i",robot_y);
       textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%i",motion);
       textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i",invincible);
       textprintf_ex(buffer,font,225,15,makecol(255,250,250),-1,"OptionClicked:%i",optionMenu);
@@ -1431,7 +1438,9 @@ void changeTheme( int themeNumber){
 
 // Setup void
 void setup(bool first){
-	srand(time(NULL));
+
+  //Seed the random number generator with the time
+  srand(time(NULL));
 
   // Declare integers
   gravity = 2;
@@ -1447,8 +1456,8 @@ void setup(bool first){
   health = 100;
   loseCount = 0;
   robotDistance = 0;
-  robotX = 80;
-  robotY = 400;
+  robot_x = 80;
+  robot_y = 400;
   score = 0;
 
   magneticStrength = 0;

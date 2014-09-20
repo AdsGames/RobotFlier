@@ -4,8 +4,8 @@
 const int robotWidth = 70;
 const int robotHeight = 70;
 
-int robotX;
-int robotY;
+int robot_x;
+int robot_y;
 
 int health;
 unsigned int score;
