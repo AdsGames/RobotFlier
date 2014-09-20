@@ -361,19 +361,19 @@ void game(){
       }
     }
     // Credits menu
-    if(mouse_b & 1 && mouse_x>600 && mouse_x<690 && mouse_y>creditsY && mouse_y<creditsY+50 && !optionMenu && !viewScores){
+    if(mouse_b & 1 && !optionMenu && !viewScores && collision(mouse_x, mouse_x,594 ,698, mouse_y,mouse_y, 548,600)){
         fade_out(8);
         gameScreen = CREDITS;
         fade_in(credits,8);
     }
     // Help screen
-    if(mouse_b & 1 && mouse_x > 500 && mouse_x < 570 && mouse_y > creditsY - 30 && mouse_y < creditsY + 60 && !optionMenu && !viewScores){
+    if(mouse_b & 1 && !optionMenu && !viewScores && collision(mouse_x, mouse_x, 698,748, mouse_y,mouse_y, 548,600) ){
         fade_out(8);
         gameScreen = TUTORIAL;
 		fade_in(helpScreen, 8);
     }
     // Options menu
-    if(mouse_b & 1 && collision(mouse_x,mouse_x, 715, 785, mouse_y, mouse_y, 515, 585) && !viewScores){
+    if(mouse_b & 1 && !viewScores && collision(mouse_x,mouse_x, 748, 800, mouse_y, mouse_y, 548, 600) ){
       while(mouse_b & 1){ }
       if(optionMenu){
         optionMenu = false;
