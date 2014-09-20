@@ -60,17 +60,17 @@ BITMAP* soundOff;
 BITMAP* musicOn;
 BITMAP* musicOff;
 BITMAP* pauseMenu;
-BITMAP* optionButton;
+BITMAP* ui_options;
 BITMAP* fullscreenToggle;
 BITMAP* windowedToggle;
 BITMAP* gearIcon;
 BITMAP* backButton;
 BITMAP* credits;
-BITMAP* creditsButton;
+BITMAP* ui_credits;
 BITMAP* resumeButton;
 BITMAP* particleButton;
 BITMAP* particleOffButton;
-BITMAP* helpButton;
+BITMAP* ui_help;
 BITMAP* helpScreen;
 BITMAP* highscores_table;
 BITMAP* powerOff;
@@ -1040,14 +1040,11 @@ void draw( bool toScreen){
     draw_sprite(buffer,start,x_start_button,400);
     if(joystick_enabled || control_mode==3)draw_sprite(buffer,xbox_start,x_start_button+225,430);
     draw_sprite(buffer,title,20,y_title);
-    draw_sprite(buffer,helpButton,490,creditsY - 30);
-    draw_sprite(buffer,creditsButton,600,creditsY);
+    draw_sprite(buffer,ui_help,698,548);
+    draw_sprite(buffer,ui_credits,594,548);
+    draw_sprite(buffer,ui_options,748,548);
 
-    if(!optionMenu)
-      draw_sprite_v_flip(buffer,optionButton,optionX,500);
 
-    else
-      draw_sprite(buffer,optionButton,optionX,500);
 
 
     //Draw scores if neccisary
@@ -1537,8 +1534,8 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/pauseMenu.png\nPlease check your files and try again");
     if (!(lose = load_bitmap("images/gui/lose.png", NULL)))
       abort_on_error("Cannot find image gui/lose.png\nPlease check your files and try again");
-    if (!(optionButton = load_bitmap("images/gui/optionButton.png", NULL)))
-      abort_on_error("Cannot find image gui/optionButton.png\nPlease check your files and try again");
+    if (!(ui_options = load_bitmap("images/gui/ui_options.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_options.png\nPlease check your files and try again");
     if (!(fullscreenToggle = load_bitmap("images/gui/fullscreenToggle.png", NULL)))
       abort_on_error("Cannot find image gui/fullscreenToggle.png\nPlease check your files and try again");
     if (!(windowedToggle = load_bitmap("images/gui/windowedToggle.png", NULL)))
@@ -1551,8 +1548,8 @@ void setup(bool first){
       abort_on_error("Cannot find image images/powerStar.png\nPlease check your files and try again");
     if (!(credits = load_bitmap("images/gui/credits.png", NULL)))
       abort_on_error("Cannot find image gui/credits.png\nPlease check your files and try again");
-    if (!(creditsButton = load_bitmap("images/gui/creditsButton.png", NULL)))
-      abort_on_error("Cannot find image gui/creditsButton.png\nPlease check your files and try again");
+    if (!(ui_credits = load_bitmap("images/gui/ui_credits.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_credits.png\nPlease check your files and try again");
     if (!(resumeButton = load_bitmap("images/gui/resumeButton.png", NULL)))
       abort_on_error("Cannot find image gui/resumeButton.png\nPlease check your files and try again");
     if (!(particleButton = load_bitmap("images/gui/particleButton.png", NULL)))
@@ -1573,8 +1570,8 @@ void setup(bool first){
       abort_on_error("Cannot find image images/forceField.png\nPlease check your files and try again");
     if (!(highscores_table = load_bitmap("images/gui/highscores_table.png", NULL)))
       abort_on_error("Cannot find image gui/highscores_table.png\nPlease check your files and try again");
-    if (!(helpButton = load_bitmap("images/gui/helpButton.png", NULL)))
-      abort_on_error("Cannot find image gui/helpButton.png\nPlease check your files and try again");
+    if (!(ui_help = load_bitmap("images/gui/ui_help.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_help.png\nPlease check your files and try again");
     if (!(helpScreen = load_bitmap("images/gui/helpScreen.png", NULL)))
       abort_on_error("Cannot find image gui/helpScreen.png\nPlease check your files and try again");
     if (!(powerOff = load_bitmap("images/gui/powerOff.png", NULL)))
