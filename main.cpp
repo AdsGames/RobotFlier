@@ -17,8 +17,9 @@ using namespace std;
 #define MENU 1
 #define TUTORIAL 2
 #define CREDITS 3
-#define GAME 4
-#define EXIT 5
+#define OPTIONS 4
+#define GAME 5
+#define EXIT 6
 
 // Constants
 // Maximum number of objects allowed onscreen at once
@@ -54,6 +55,7 @@ BITMAP* groundOverlay;
 BITMAP* mouse;
 BITMAP* mouse_rocket;
 BITMAP* debug;
+BITMAP* options_page;
 BITMAP* options;
 BITMAP* soundOn;
 BITMAP* soundOff;
@@ -326,7 +328,7 @@ void game(){
       optionX=optionX+5;
 
 
-    // Start
+    // Start the game
     if(x_start_button<-399){
       if(!tutorialAsked){
         fade_out(8);
@@ -374,13 +376,10 @@ void game(){
     }
     // Options menu
     if(mouse_b & 1 && !viewScores && collision(mouse_x,mouse_x, 748, 800, mouse_y, mouse_y, 548, 600) ){
-      while(mouse_b & 1){ }
-      if(optionMenu){
-        optionMenu = false;
-      }
-      else{
-        optionMenu = true;
-      }
+        fade_out(8);
+        gameScreen = OPTIONS;
+        fade_in(options_page, 8);
+
     }
     else if(mouse_b & 1 && !optionMenu){
       viewScores = false;
@@ -1070,6 +1069,33 @@ void draw( bool toScreen){
   if(gameScreen == CREDITS){
   	draw_sprite( buffer, credits, 0, 0);
   }
+  if(gameScreen == OPTIONS){
+    draw_sprite(buffer,options_page,0,0);
+
+    // Audio
+    textprintf_ex(buffer,orbitron,110,146,makecol(255,250,250),-1,"Sounds   Music           Exit");
+    if(sound)stretch_sprite(buffer,soundOn,120,180,80,80);
+    if(!sound)stretch_sprite(buffer,soundOff,120,180,80,80);
+    if(musicToggle)stretch_sprite(buffer,musicOn,280,180,80,80);
+    if(!musicToggle)stretch_sprite(buffer,musicOff,280,180,80,80);
+
+    // Input
+    textprintf_ex(buffer,orbitron,120,260,makecol(255,250,250),-1,"Input");
+    if(control_mode==1)draw_sprite(buffer,control_auto,120,295);
+    if(control_mode==2)draw_sprite(buffer,control_keyboard,120,295);
+    if(control_mode==3)draw_sprite(buffer,control_xbox,120,295);
+
+
+    // Video
+    textprintf_ex(buffer,orbitron,108,375,makecol(255,250,250),-1,"Window Particles         Back");
+    if(!fullScreen)stretch_sprite(buffer,fullscreenToggle,120,407,80,80);
+    if(fullScreen)stretch_sprite(buffer,windowedToggle,120,407,80,80);
+    if(particlesOn)stretch_sprite(buffer,particleButton,280,407,80,80);
+    if(!particlesOn)stretch_sprite(buffer,particleOffButton,280,407,80,80);
+    // Exit and back
+    draw_sprite(buffer,powerOff,540,180);
+    draw_sprite(buffer,backButton,540,407);
+  }
 
   // Game screen
   if(gameScreen == GAME){
@@ -1226,7 +1252,7 @@ void draw( bool toScreen){
       draw_sprite(buffer,robotInvincibleTop,robotX,robotY);
   }
 
-	// Option Menu Scripts
+	// Option Menu Scripts(THIS IS ONLY IN GAME MENU, THE MAIN MENU ONE IS HANDLED BY GAMESCREEN!!!!
   if(optionMenu){
     draw_sprite(buffer,options,0,0);
 
@@ -1251,10 +1277,9 @@ void draw( bool toScreen){
     if(particlesOn)stretch_sprite(buffer,particleButton,280,405,80,80);
     if(!particlesOn)stretch_sprite(buffer,particleOffButton,280,405,80,80);
 
-    // Power
-    stretch_sprite(buffer,powerOff,540,180,80,80);
-
-    if(gameScreen == GAME)draw_sprite(buffer,backButton,580,450);
+    // Exit and back button
+    draw_sprite(buffer,powerOff,540,180);
+    draw_sprite(buffer,backButton,580,450);
   }
 
   // Mouse drawing routines
@@ -1520,6 +1545,8 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/title.png\nPlease check your files and try again");
     if (!(debug = load_bitmap("images/gui/debug.png", NULL)))
       abort_on_error("Cannot find image gui/debug.png\nPlease check your files and try again");
+    if (!(options_page = load_bitmap("images/gui/options_page.png", NULL)))
+      abort_on_error("Cannot find image gui/options_page.png\nPlease check your files and try again");
     if (!(options = load_bitmap("images/gui/options.png", NULL)))
       abort_on_error("Cannot find image gui/options.png\nPlease check your files and try again");
     if (!(soundOn = load_bitmap("images/gui/soundOn.png", NULL)))
