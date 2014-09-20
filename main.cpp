@@ -113,9 +113,9 @@ SAMPLE* magnetSound;
 SAMPLE* sound_star;
 SAMPLE* sound_flame;
 SAMPLE* sound_hitground;
-FSOUND_STREAM* ingame;
-FSOUND_STREAM* menuMusic;
-FSOUND_STREAM* dieAmbience;
+FSOUND_STREAM* music_ingame;
+FSOUND_STREAM* music_mainmenu;
+FSOUND_STREAM* music_death;
 
 // Declare fonts
 FONT* f1;
@@ -304,7 +304,7 @@ void game(){
     fade_in(intro,8);
     rest(2000);
     if(musicToggle)
-    	FSOUND_Stream_Play(0,menuMusic);
+    	FSOUND_Stream_Play(0,music_mainmenu);
     fade_out(8);
     gameScreen = MENU;
     fade_in(menu,8);
@@ -344,9 +344,9 @@ void game(){
       if(!tutorialAsked){
         fade_out(8);
         changeTheme(0);
-				FSOUND_Stream_Stop(menuMusic);
+				FSOUND_Stream_Stop(music_mainmenu);
         if(musicToggle)
-					FSOUND_Stream_Play(0,ingame);
+					FSOUND_Stream_Play(0,music_ingame);
         fade_in(space,8);
         gameScreen = GAME;
         ticks = 0;
@@ -546,11 +546,11 @@ void game(){
               paused = false;
               optionMenu = false;
               fade_out(8);
-              FSOUND_Stream_Stop(dieAmbience);
+              FSOUND_Stream_Stop(music_death);
               smokePart.clear();
               rocketPart.clear();
               if(musicToggle)
-								FSOUND_Stream_Play(0,menuMusic);
+								FSOUND_Stream_Play(0,music_mainmenu);
               gameScreen = MENU;
               fade_in(menu,8);
               ticks = 0;
@@ -560,9 +560,9 @@ void game(){
       }
       if( !alive && !deadSoundSwitch){
         deadSoundSwitch = true;
-        FSOUND_Stream_Stop( ingame);
+        FSOUND_Stream_Stop( music_ingame);
         if(musicToggle)
-					FSOUND_Stream_Play( 0, dieAmbience);
+					FSOUND_Stream_Play( 0, music_death);
       }
 
       //Change theme
@@ -809,7 +809,7 @@ void game(){
 
       // Death
       if(!alive){
-        FSOUND_Stream_Stop(ingame);
+        FSOUND_Stream_Stop(music_ingame);
       }
     }
 
@@ -905,18 +905,18 @@ void game(){
         if(musicToggle){
           if(gameScreen == GAME){
           	if(alive)
-							FSOUND_Stream_Play(0,ingame);
+							FSOUND_Stream_Play(0,music_ingame);
 						else
-							FSOUND_Stream_Play(0,dieAmbience);
+							FSOUND_Stream_Play(0,music_death);
           }
 
           if(gameScreen != GAME)
-            	FSOUND_Stream_Play(0,menuMusic);
+            	FSOUND_Stream_Play(0,music_mainmenu);
         }
         else{
-          FSOUND_Stream_Stop(ingame);
-          FSOUND_Stream_Stop(dieAmbience);
-          FSOUND_Stream_Stop(menuMusic);
+          FSOUND_Stream_Stop(music_ingame);
+          FSOUND_Stream_Stop(music_death);
+          FSOUND_Stream_Stop(music_mainmenu);
         }
         step = 0;
       }
@@ -1514,12 +1514,12 @@ void setup(bool first){
       abort_on_error("Cannot find sound sound_orb.wav\nPlease check your files and try again");
     if (!(sound_asteroid = load_sample( "audio/sound_asteroid.wav")))
       abort_on_error("Cannot find sound sound_asteroid.wav\nPlease check your files and try again");
-    if (!(ingame = FSOUND_Stream_Open( "audio/ingame.mp3",2,0,0)))
-      abort_on_error("Cannot find soundtrack ingame.mp3\nPlease check your files and try again");
-    if (!(menuMusic = FSOUND_Stream_Open( "audio/menuMusic.mp3",2,0,0)))
-      abort_on_error("Cannot find soundtrack menuMusic.mp3\nPlease check your files and try again");
-    if (!(dieAmbience = FSOUND_Stream_Open( "audio/dieAmbience.mp3",2,0,0)))
-      abort_on_error("Cannot find soundtrack dieAmbience.mp3\nPlease check your files and try again");
+    if (!(music_ingame = FSOUND_Stream_Open( "audio/music_ingame.mp3",2,0,0)))
+      abort_on_error("Cannot find soundtrack music_ingame.mp3\nPlease check your files and try again");
+    if (!(music_mainmenu = FSOUND_Stream_Open( "audio/music_mainmenu.mp3",2,0,0)))
+      abort_on_error("Cannot find soundtrack music_mainmenu.mp3\nPlease check your files and try again");
+    if (!(music_death = FSOUND_Stream_Open( "audio/music_death.mp3",2,0,0)))
+      abort_on_error("Cannot find soundtrack music_death.mp3\nPlease check your files and try again");
     if (!(magnetSound = load_sample( "audio/magnetSound.wav")))
       abort_on_error("Cannot find sound magnetSound.wav\nPlease check your files and try again");
     if (!(sound_star = load_sample( "audio/sound_star.wav")))
