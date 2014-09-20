@@ -16,8 +16,9 @@ using namespace std;
 #define SPLASH 0
 #define MENU 1
 #define TUTORIAL 2
-#define GAME 3
-#define EXIT 4
+#define CREDITS 3
+#define GAME 4
+#define EXIT 5
 
 // Constants
 // Maximum number of objects allowed onscreen at once
@@ -157,7 +158,6 @@ bool paused;
 bool alive;
 bool onGround;
 bool startClicked;
-bool creditsMenu;
 bool deadSoundSwitch;
 bool tutorialAsked;
 bool mouse_down;
@@ -341,7 +341,7 @@ void game(){
     }
 
     // Main Menu Buttons
-    if(mouse_b & 1 && mouse_x>40 && mouse_x<260 && mouse_y>410 && mouse_y<510 && !optionMenu && !creditsMenu && !viewScores || joy[0].button[1].b){
+    if(mouse_b & 1 && mouse_x>40 && mouse_x<260 && mouse_y>410 && mouse_y<510 && !optionMenu && !viewScores || joy[0].button[1].b){
       startClicked=true;
     }
     //Controlling menu with xbox controller
@@ -350,7 +350,7 @@ void game(){
         startClicked=true;
        }
     }
-    if(mouse_b & 1 && mouse_x>600 && mouse_x<760 && mouse_y>20 && mouse_y<180 && !optionMenu && !creditsMenu){
+    if(mouse_b & 1 && mouse_x>600 && mouse_x<760 && mouse_y>20 && mouse_y<180 && !optionMenu){
       while(mouse_b & 1){ }
       if(viewScores){
         viewScores = false;
@@ -362,22 +362,18 @@ void game(){
     }
     // Credits menu
     if(mouse_b & 1 && mouse_x>600 && mouse_x<690 && mouse_y>creditsY && mouse_y<creditsY+50 && !optionMenu && !viewScores){
-      while(mouse_b & 1){ }
-      if(creditsMenu){
-        creditsMenu = false;
-      }
-      else{
-        creditsMenu=true;
-      }
+        fade_out(8);
+        gameScreen = CREDITS;
+        fade_in(credits,8);
     }
     // Help screen
     if(mouse_b & 1 && mouse_x > 500 && mouse_x < 570 && mouse_y > creditsY - 30 && mouse_y < creditsY + 60 && !optionMenu && !viewScores){
-     fade_out(8);
-			gameScreen = TUTORIAL;
+        fade_out(8);
+        gameScreen = TUTORIAL;
 		fade_in(helpScreen, 8);
     }
     // Options menu
-    if(mouse_b & 1 && collision(mouse_x,mouse_x, 715, 785, mouse_y, mouse_y, 515, 585) && !viewScores && !creditsMenu){
+    if(mouse_b & 1 && collision(mouse_x,mouse_x, 715, 785, mouse_y, mouse_y, 515, 585) && !viewScores){
       while(mouse_b & 1){ }
       if(optionMenu){
         optionMenu = false;
@@ -388,13 +384,12 @@ void game(){
     }
     else if(mouse_b & 1 && !optionMenu){
       viewScores = false;
-      creditsMenu = false;
       optionMenu = false;
     }
   }
 
-  // Tutorial screen
-  if(gameScreen == TUTORIAL){
+  // Tutorial and credits screen
+  if(gameScreen == TUTORIAL || gameScreen == CREDITS){
     if(key[KEY_ENTER] && control_mode!=3 || key[KEY_SPACE] && control_mode!=3  || mouse_b & 1 && control_mode!=3 || joy[0].button[1].b && control_mode!=2){
         fade_out(8);
 			gameScreen = MENU;
@@ -403,6 +398,7 @@ void game(){
 
     }
   }
+
 
   // Game screen
   if(gameScreen == GAME){
@@ -1044,19 +1040,15 @@ void draw( bool toScreen){
     draw_sprite(buffer,start,x_start_button,400);
     if(joystick_enabled || control_mode==3)draw_sprite(buffer,xbox_start,x_start_button+225,430);
     draw_sprite(buffer,title,20,y_title);
-    if(!creditsMenu)draw_sprite(buffer,helpButton,490,creditsY - 30);
+    draw_sprite(buffer,helpButton,490,creditsY - 30);
+    draw_sprite(buffer,creditsButton,600,creditsY);
 
-    if(creditsMenu){
-      draw_sprite(buffer,credits,0,0);
-    }
-    if(!creditsMenu)draw_sprite(buffer,creditsButton,600,creditsY);
+    if(!optionMenu)
+      draw_sprite_v_flip(buffer,optionButton,optionX,500);
 
-    if(!optionMenu){
-      if(!creditsMenu)draw_sprite_v_flip(buffer,optionButton,optionX,500);
-    }
-    else{
-      if(!creditsMenu)draw_sprite(buffer,optionButton,optionX,500);
-    }
+    else
+      draw_sprite(buffer,optionButton,optionX,500);
+
 
     //Draw scores if neccisary
     //Seriously Allan?^^^^^^^^That's a new all-time low, dude, read a dictionary or something
@@ -1076,6 +1068,10 @@ void draw( bool toScreen){
   // Tutorial screen
   if(gameScreen == TUTORIAL){
   	draw_sprite( buffer, helpScreen, 0, 0);
+  }
+  // Credits screen
+  if(gameScreen == CREDITS){
+  	draw_sprite( buffer, credits, 0, 0);
   }
 
   // Game screen
@@ -1303,8 +1299,7 @@ void draw( bool toScreen){
       textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%i",motion);
       textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i",invincible);
       textprintf_ex(buffer,font,225,15,makecol(255,250,250),-1,"OptionClicked:%i",optionMenu);
-      textprintf_ex(buffer,font,225,25,makecol(255,250,250),-1,"Credits:%i",creditsMenu);
-      textprintf_ex(buffer,font,225,35,makecol(255,250,250),-1,"smokeParticles:%i",smokePart.size());
+      textprintf_ex(buffer,font,225,25,makecol(255,250,250),-1,"smokeParticles:%i",smokePart.size());
     }
 
   // Draw background and buffer
@@ -1441,7 +1436,6 @@ void setup(bool first){
   onGround = false;
   startClicked = false;
   invincible = false;
-  creditsMenu = false;
   deadSoundSwitch = false;
   magnetic = false;
 
