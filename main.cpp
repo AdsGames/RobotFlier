@@ -106,13 +106,13 @@ BITMAP* powerMagnetFour;
 BITMAP* ground[12];
 
 // Declare sounds
-SAMPLE* energySound;
-SAMPLE* bombSound;
-SAMPLE* asteroidSound;
+SAMPLE* sound_orb;
+SAMPLE* sound_bomb;
+SAMPLE* sound_asteroid;
 SAMPLE* magnetSound;
-SAMPLE* starSound;
-SAMPLE* flame;
-SAMPLE* groundSmash;
+SAMPLE* sound_star;
+SAMPLE* sound_flame;
+SAMPLE* sound_hitground;
 FSOUND_STREAM* ingame;
 FSOUND_STREAM* menuMusic;
 FSOUND_STREAM* dieAmbience;
@@ -249,6 +249,16 @@ void updateScores(){
     }
   }
   read.close();
+}
+//Stops all the game sounds
+void stop_all_samples(){
+    stop_sample(sound_orb);
+    stop_sample(sound_bomb);
+    stop_sample(sound_asteroid);
+    stop_sample(magnetSound);
+    stop_sample(sound_star);
+    stop_sample(sound_flame);
+    stop_sample(sound_hitground);
 }
 
 //Add score
@@ -449,7 +459,7 @@ void game(){
                 has_mr_robot_moved_yet=true;
                 if( game_time %2 == 0){
                     if(sound)
-                        play_sample( flame, 20, 155, 1000, 0);
+                        play_sample( sound_flame, 20, 155, 1000, 0);
                 }
                 if( speed < 14){
                     rocket = false;
@@ -462,7 +472,7 @@ void game(){
                 has_mr_robot_moved_yet=true;
                 if( game_time %2 == 0){
                     if(sound)
-                        play_sample( flame, 20, 155, 1000, 0);
+                        play_sample( sound_flame, 20, 155, 1000, 0);
                 }
                 if( speed < 14){
                     rocket = false;
@@ -492,6 +502,7 @@ void game(){
       // Lose scripts
       if( onGround){
         loseCount++;
+        stop_all_samples();
         //Name input
         if(keypressed()){
           int  newkey   = readkey();
@@ -625,7 +636,7 @@ void game(){
         speed = 14;
         if( !invincible){
             health -= 5;
-            play_sample( groundSmash, 255, 125, 1000, 0);
+            play_sample( sound_hitground, 255, 125, 1000, 0);
          }
       }
 
@@ -657,7 +668,7 @@ void game(){
       }
       // Energy ball spawning
       if( random(0,50) == 0){
-        energy newEnergyBall( energyImage, energyImage, energySound, 800, random(30,550));
+        energy newEnergyBall( energyImage, energyImage, sound_orb, 800, random(30,550));
         energys.push_back( newEnergyBall);
       }
 
@@ -673,7 +684,7 @@ void game(){
       // Asteroids spawning
       if( score>100){
         if( random(0,50) == 0){
-          asteroid newAsteroid( asteroidImage, asteroidImage, asteroidSound, 800, random(30,550), random(4,20));
+          asteroid newAsteroid( asteroidImage, asteroidImage, sound_asteroid, 800, random(30,550), random(4,20));
           asteroids.push_back( newAsteroid);
         }
       }
@@ -690,7 +701,7 @@ void game(){
       // Bomb spawning
       if(score > 200){
         if(random(0,80) == 0){
-          bomb newBomb( bombImage, bombImage, bombSound, 800, random(30,550));
+          bomb newBomb( bombImage, bombImage, sound_bomb, 800, random(30,550));
           bombs.push_back( newBomb);
         }
       }
@@ -707,7 +718,7 @@ void game(){
       // Comets spawning
       if(score > 300){
         if(random(0,200) == 0){
-          comet newComet( cometImage, cometImage, asteroidSound, 800, random(30,550));
+          comet newComet( cometImage, cometImage, sound_asteroid, 800, random(30,550));
           comets.push_back( newComet);
         }
       }
@@ -724,7 +735,7 @@ void game(){
       // Powerup spawning
       if(score > 0){
         if(random(0,3000) == 0 && score > 100){
-          powerup newPowerup( powerStar, powerStar, starSound, 800, random(30,600), 500, 1, 0);
+          powerup newPowerup( powerStar, powerStar, sound_star, 800, random(30,600), 500, 1, 0);
           powerups.push_back( newPowerup);
         }
         if(random(0,750) == 0 && score > 100){
@@ -1496,12 +1507,12 @@ void setup(bool first){
     set_close_button_callback(close_button_handler);
 
     // Load sounds from file
-    if (!(bombSound = load_sample( "audio/bombSound.wav")))
-      abort_on_error("Cannot find sound bombSound.wav\nPlease check your files and try again");
-    if (!(energySound = load_sample("audio/energySound.wav")))
-      abort_on_error("Cannot find sound energySound.wav\nPlease check your files and try again");
-    if (!(asteroidSound = load_sample( "audio/asteroidSound.wav")))
-      abort_on_error("Cannot find sound asteroidSound.wav\nPlease check your files and try again");
+    if (!(sound_bomb = load_sample( "audio/sound_bomb.wav")))
+      abort_on_error("Cannot find sound sound_bomb.wav\nPlease check your files and try again");
+    if (!(sound_orb = load_sample("audio/sound_orb.wav")))
+      abort_on_error("Cannot find sound sound_orb.wav\nPlease check your files and try again");
+    if (!(sound_asteroid = load_sample( "audio/sound_asteroid.wav")))
+      abort_on_error("Cannot find sound sound_asteroid.wav\nPlease check your files and try again");
     if (!(ingame = FSOUND_Stream_Open( "audio/ingame.mp3",2,0,0)))
       abort_on_error("Cannot find soundtrack ingame.mp3\nPlease check your files and try again");
     if (!(menuMusic = FSOUND_Stream_Open( "audio/menuMusic.mp3",2,0,0)))
@@ -1510,12 +1521,12 @@ void setup(bool first){
       abort_on_error("Cannot find soundtrack dieAmbience.mp3\nPlease check your files and try again");
     if (!(magnetSound = load_sample( "audio/magnetSound.wav")))
       abort_on_error("Cannot find sound magnetSound.wav\nPlease check your files and try again");
-    if (!(starSound = load_sample( "audio/starSound.wav")))
-      abort_on_error("Cannot find sound starSound.wav\nPlease check your files and try again");
-    if (!(flame = load_sample( "audio/flame.wav")))
-      abort_on_error("Cannot find sound flame.wav\nPlease check your files and try again");
-    if (!(groundSmash = load_sample( "audio/groundSmash.wav")))
-      abort_on_error("Cannot find sound groundSmash.wav\nPlease check your files and try again");
+    if (!(sound_star = load_sample( "audio/sound_star.wav")))
+      abort_on_error("Cannot find sound sound_star.wav\nPlease check your files and try again");
+    if (!(sound_flame = load_sample( "audio/sound_flame.wav")))
+      abort_on_error("Cannot find sound sound_flame.wav\nPlease check your files and try again");
+    if (!(sound_hitground = load_sample( "audio/sound_hitground.wav")))
+      abort_on_error("Cannot find sound sound_hitground.wav\nPlease check your files and try again");
 
 
     // Load bitmaps from file
