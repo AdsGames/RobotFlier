@@ -130,7 +130,8 @@ FONT* orbitron;
 
 // Define constistants
 // You know ^^^^^^^^^^ Code::Blocks has a spell check right?
-const int groundP = 13;
+
+//I removed the constant, but I'm leaving this here in memory of Allan's horrible spelling.
 
 // Declare integers
 int running;
@@ -757,7 +758,7 @@ void game(){
       }
 
       // Move the ground
-      for(int i=0;i<groundP;i++){
+      for(int i=0;i<13;i++){
         groundPieces[i].x -= motion;
         if(groundPieces[i].x <= -70){
           groundPieces[i].x = 840 + (groundPieces[i].x + 70);
@@ -1209,7 +1210,7 @@ void draw( bool toScreen){
       draw_sprite(buffer,robotfire,robotX,robotY);
 
     // Draw the scrolling ground
-    for(int i=0;i<groundP;i++){
+    for(int i=0;i<13;i++){
       draw_sprite(buffer,groundPieces[i].groundImage,groundPieces[i].x,groundPieces[i].y);
     }
 
@@ -1421,7 +1422,7 @@ void changeTheme( int themeNumber){
 
 
   // Setup ground pieces
-  for(int i = 0; i < groundP; i++){
+  for(int i = 0; i < 13; i++){
     groundPieces[i].x = i * 70;
     groundPieces[i].y = 530;
     groundPieces[i].groundImage = ground[random(0,11)];
