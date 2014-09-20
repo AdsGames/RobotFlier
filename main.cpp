@@ -1040,8 +1040,8 @@ void draw( bool toScreen){
     draw_sprite(buffer,start,x_start_button,400);
     if(joystick_enabled || control_mode==3)draw_sprite(buffer,xbox_start,x_start_button+225,430);
     draw_sprite(buffer,title,20,y_title);
-    draw_sprite(buffer,ui_help,698,548);
-    draw_sprite(buffer,ui_credits,594,548);
+    draw_sprite(buffer,ui_credits,593,548);
+    draw_sprite(buffer,ui_help,697,548);
     draw_sprite(buffer,ui_options,748,548);
 
 
