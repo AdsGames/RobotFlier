@@ -45,16 +45,16 @@ void particle::logic(){
 
 // Draw
 void particle::draw( BITMAP* tempBitmap){
-  if(type == PIXEL){
+  if(particle_type == PIXEL){
     putpixel( tempBitmap, x, y, makecol( particleRed, particleGreen, particleBlue));
   }
-  else if(type == SQUARE){
+  else if(particle_type == SQUARE){
     rectfill( tempBitmap, x, y, x + size, y + size, makecol( particleRed, particleGreen, particleBlue));
   }
-  else if(type == CIRCLE){
+  else if(particle_type == CIRCLE){
     circlefill( tempBitmap, x, y, size, makecol( particleRed, particleGreen, particleBlue));
   }
-  else if(type == RANDOM){
+  else if(particle_type == RANDOM){
     switch(random(0,3)){
       case 0:
         putpixel( tempBitmap, x, y, makecol( particleRed, particleGreen, particleBlue));
