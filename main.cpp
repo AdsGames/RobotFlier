@@ -1166,14 +1166,14 @@ void draw( bool toScreen){
       if( invincibleTimer > 0){
         circlefill( buffer, 45, 105, 20, makecol(255,255,255));
         draw_sprite( buffer, powerStar, 20, 80);
-        textprintf_centre_ex( buffer, orbitron, 43, 88, makecol(255,255,255), -1, "%i", invincibleTimer/5);
+        textprintf_centre_ex( buffer, orbitron, 44, 88, makecol(255,255,255), -1, "%i", invincibleTimer/5);
         textprintf_centre_ex( buffer, orbitron, 45, 90, makecol(0,0,0), -1, "%i", invincibleTimer/5);
       }
       if( magneticTimer > 0){
-        circlefill( buffer, 105, 105, 20, makecol(255,255,255));
-        draw_sprite( buffer, powerMagnet, 80, 80);
-        textprintf_centre_ex( buffer, orbitron, 103, 88, makecol(255,255,255), -1, "%i", magneticTimer/5);
-        textprintf_centre_ex( buffer, orbitron, 105, 90, makecol(0,0,0), -1, "%i", magneticTimer/5);
+        circlefill( buffer, 165, 105, 20, makecol(255,255,255));
+        draw_sprite( buffer, powerMagnet, 140, 80);
+        textprintf_centre_ex( buffer, orbitron, 164, 88, makecol(255,255,255), -1, "%i", magneticTimer/5);
+        textprintf_centre_ex( buffer, orbitron, 165, 90, makecol(0,0,0), -1, "%i", magneticTimer/5);
       }
     }
 
