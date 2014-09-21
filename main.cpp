@@ -581,6 +581,7 @@ void game(){
               smokePart.clear();
               rocketPart.clear();
               magnetic = false;
+              magneticTimer = 0;
               if(musicToggle)
                 FSOUND_Stream_Play(0,music_mainmenu);
               gameScreen = MENU;
@@ -852,7 +853,7 @@ void game(){
     if(key[KEY_E])health=0;
     if(key[KEY_Y])robotDistance=robotDistance+500;
     if(key[KEY_T])score=score-2;
-    if(key[KEY_R])health=100;
+    if(key[KEY_R] || joy[0].button[2].b)health=100;
 
     // Pause loop code
     if(step > 10){
@@ -905,14 +906,14 @@ void game(){
       step = 0;
     }
 
-	// Option Menu Scripts
+  //ESC key handler
   if(key[KEY_ESC] || joy[0].button[6].b && control_mode!=2){
     if(step>9){
         step=0;
         if(paused && gameScreen==GAME){
             optionMenu = false;
             paused = false;
-        }else if(!paused && gameScreen==GAME){
+        }else if(!paused && gameScreen==GAME && !onGround){
             paused=true;
         }else if( gameScreen == TUTORIAL){
             optionMenu = false;
@@ -953,7 +954,8 @@ void game(){
 
           if(gameScreen != GAME)
             	FSOUND_Stream_Play(0,music_mainmenu);
-        }else{
+        }
+        else{
           FSOUND_Stream_Stop(music_ingame);
           FSOUND_Stream_Stop(music_death);
           FSOUND_Stream_Stop(music_mainmenu);
@@ -1157,21 +1159,21 @@ void draw( bool toScreen){
     if( alive){
       // Info
       textprintf_ex( buffer, orbitron, 10, 2, makecol(255,255,255), -1, "Score:%i", score);
-      rectfill( buffer, 10, 70, 10 + (health * 1.4), 65, makecol( 255 - health * 2.5, 0 + health * 2.5, 0));
+      rectfill( buffer, 10, 65, 10 + (health * 1.7), 75, makecol( 255 - health * 2.5, 0 + health * 2.5, 0));
       textprintf_ex( buffer, orbitron, 10, 27, makecol(255,255,255), -1, "Health:%i", health);
 
       // Power up timers
       if( invincibleTimer > 0){
         circlefill( buffer, 45, 105, 20, makecol(255,255,255));
         draw_sprite( buffer, powerStar, 20, 80);
-        textprintf_centre_ex( buffer, arial_black, 43, 88, makecol(255,255,255), -1, "%i", invincibleTimer/5);
-        textprintf_centre_ex( buffer, arial_black, 45, 90, makecol(0,0,0), -1, "%i", invincibleTimer/5);
+        textprintf_centre_ex( buffer, orbitron, 43, 88, makecol(255,255,255), -1, "%i", invincibleTimer/5);
+        textprintf_centre_ex( buffer, orbitron, 45, 90, makecol(0,0,0), -1, "%i", invincibleTimer/5);
       }
       if( magneticTimer > 0){
         circlefill( buffer, 105, 105, 20, makecol(255,255,255));
         draw_sprite( buffer, powerMagnet, 80, 80);
-        textprintf_centre_ex( buffer, arial_black, 103, 88, makecol(255,255,255), -1, "%i", magneticTimer/5);
-        textprintf_centre_ex( buffer, arial_black, 105, 90, makecol(0,0,0), -1, "%i", magneticTimer/5);
+        textprintf_centre_ex( buffer, orbitron, 103, 88, makecol(255,255,255), -1, "%i", magneticTimer/5);
+        textprintf_centre_ex( buffer, orbitron, 105, 90, makecol(0,0,0), -1, "%i", magneticTimer/5);
       }
     }
 
