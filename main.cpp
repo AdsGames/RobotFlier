@@ -268,6 +268,14 @@ void stop_all_samples(){
     stop_sample(sound_flame);
     stop_sample(sound_hitground);
 }
+bool joy_buttonpressed(){
+   bool buttonpressed=false;
+   for(int i=0; i<joy[0].num_buttons; i++)
+        if(joy[0].button[i].b)buttonpressed=true;
+
+    return buttonpressed;
+}
+
 
 //Add score
 void addScore(string name){
@@ -407,7 +415,7 @@ void game(){
 
   // Tutorial and credits screen
   if(gameScreen == TUTORIAL || gameScreen == CREDITS){
-    if(key[KEY_ENTER] && control_mode!=3 || key[KEY_SPACE] && control_mode!=3  || mouse_b & 1 && control_mode!=3 || joy[0].button[1].b && control_mode!=2){
+    if(keypressed() && control_mode!=3  || mouse_b & 1 && control_mode!=3 || joy_buttonpressed() && control_mode!=2){
         fade_out(8);
 			gameScreen = MENU;
 			draw(false);
