@@ -269,10 +269,9 @@ void stop_all_samples(){
     stop_sample(sound_hitground);
 }
 bool joy_buttonpressed(){
-   bool buttonpressed=false;
-   for(int i=0; i<joy[0].num_buttons; i++)
+    bool buttonpressed=false;
+    for(int i=0; i<joy[0].num_buttons; i++)
         if(joy[0].button[i].b)buttonpressed=true;
-
     return buttonpressed;
 }
 
@@ -311,6 +310,14 @@ void addScore(string name){
   }
   saveFile.close();
 }
+
+//   _____          __  __ ______   _      ____   ____  _____
+//  / ____|   /\   |  \/  |  ____| | |    / __ \ / __ \|  __ \
+// | |  __   /  \  | \  / | |__    | |   | |  | | |  | | |__) |
+// | | |_ | / /\ \ | |\/| |  __|   | |   | |  | | |  | |  ___/
+// | |__| |/ ____ \| |  | | |____  | |___| |__| | |__| | |
+//  \_____/_/    \_\_|  |_|______| |______\____/ \____/|_|
+//
 
 // Main game loop
 void game(){
@@ -424,7 +431,6 @@ void game(){
     }
   }
   if(gameScreen == OPTIONS){
-
     if(mouse_b & 1 && collision(540,620,mouse_x,mouse_x,407,487,mouse_y,mouse_y)){
       fade_out(8);
       gameScreen=MENU;
@@ -921,10 +927,11 @@ void game(){
     }
   }
 
-  if(optionMenu){
-      if(mouse_b & 1 && collision(580,630,mouse_x,mouse_x,450,500,mouse_y,mouse_y) && gameScreen == GAME){
-      optionMenu = false;
-    }
+  if(optionMenu || gameScreen==OPTIONS){
+      if(mouse_b & 1 && collision(580,630,mouse_x,mouse_x,450,500,mouse_y,mouse_y) && gameScreen == GAME)
+        optionMenu = false;
+
+
 
     if(step > 10){
       // Sound button toggle
@@ -939,15 +946,14 @@ void game(){
         if(musicToggle){
           if(gameScreen == GAME){
           	if(alive)
-							FSOUND_Stream_Play(0,music_ingame);
-						else
-							FSOUND_Stream_Play(0,music_death);
+                FSOUND_Stream_Play(0,music_ingame);
+            else
+                FSOUND_Stream_Play(0,music_death);
           }
 
           if(gameScreen != GAME)
             	FSOUND_Stream_Play(0,music_mainmenu);
-        }
-        else{
+        }else{
           FSOUND_Stream_Stop(music_ingame);
           FSOUND_Stream_Stop(music_death);
           FSOUND_Stream_Stop(music_mainmenu);
@@ -988,6 +994,14 @@ void game(){
       // Power off
       if(mouse_b & 1 && collision(540,620,mouse_x,mouse_x,180,260,mouse_y,mouse_y)){
       	close_button_pressed = true;
+      }
+      //Exit button
+      if(mouse_b & 1 && collision(540,620,mouse_x,mouse_x,400,480,mouse_y,mouse_y)){
+        if(gameScreen==OPTIONS){
+            fade_out(8);
+            draw(false);
+            fade_in(buffer,8);
+        }else optionMenu=false;
       }
     }
   }
@@ -1070,7 +1084,14 @@ void game(){
   step++;
 }
 
-// Draw images onto the screen
+//   _____  _____       __          __  _      ____   ____  _____
+//  |  __ \|  __ \     /\ \        / / | |    / __ \ / __ \|  __ \
+//  | |  | | |__) |   /  \ \  /\  / /  | |   | |  | | |  | | |__) |
+//  | |  | |  _  /   / /\ \ \/  \/ /   | |   | |  | | |  | |  ___/
+//  | |__| | | \ \  / ____ \  /\  /    | |___| |__| | |__| | |
+//  |_____/|_|  \_\/_/    \_\/  \/     |______\____/ \____/|_|
+//
+//
 void draw( bool toScreen){
   // Splash screen
   if(gameScreen == SPLASH){
@@ -1114,34 +1135,6 @@ void draw( bool toScreen){
   // Credits screen
   if(gameScreen == CREDITS){
   	draw_sprite( buffer, credits, 0, 0);
-  }
-  // Drawing options page
-  if(gameScreen == OPTIONS){
-    draw_sprite(buffer,options_page,0,0);
-
-    // Audio
-    textprintf_ex(buffer,orbitron,110,146,makecol(255,250,250),-1,"Sounds   Music           Exit");
-    if(sound)stretch_sprite(buffer,soundOn,120,180,80,80);
-    if(!sound)stretch_sprite(buffer,soundOff,120,180,80,80);
-    if(musicToggle)stretch_sprite(buffer,musicOn,280,180,80,80);
-    if(!musicToggle)stretch_sprite(buffer,musicOff,280,180,80,80);
-
-    // Input
-    textprintf_ex(buffer,orbitron,120,260,makecol(255,250,250),-1,"Input");
-    if(control_mode==1)draw_sprite(buffer,control_auto,120,295);
-    if(control_mode==2)draw_sprite(buffer,control_keyboard,120,295);
-    if(control_mode==3)draw_sprite(buffer,control_xbox,120,295);
-
-
-    // Video
-    textprintf_ex(buffer,orbitron,108,375,makecol(255,250,250),-1,"Window Particles         Back");
-    if(!fullScreen)stretch_sprite(buffer,fullscreenToggle,120,407,80,80);
-    if(fullScreen)stretch_sprite(buffer,windowedToggle,120,407,80,80);
-    if(particlesOn)stretch_sprite(buffer,particleButton,280,407,80,80);
-    if(!particlesOn)stretch_sprite(buffer,particleOffButton,280,407,80,80);
-    // Exit and back
-    draw_sprite(buffer,powerOff,540,180);
-    draw_sprite(buffer,backButton,540,407);
   }
 
   // Game screen
@@ -1299,34 +1292,34 @@ void draw( bool toScreen){
       draw_sprite(buffer,robotInvincibleTop,robot_x,robot_y);
   }
 
-	// Option Menu Scripts(THIS IS ONLY IN GAME MENU, THE MAIN MENU ONE IS HANDLED BY GAMESCREEN!!!!
-  if(optionMenu){
-    draw_sprite(buffer,options,0,0);
+  // Option Menu drawing(page and ingame)
+    if(gameScreen == OPTIONS || optionMenu){
+        if(gameScreen==OPTIONS)draw_sprite(buffer,options_page,0,0);
+        else draw_sprite(buffer,options,0,0);
+        // Audio
+        textprintf_ex(buffer,orbitron,110,146,makecol(255,250,250),-1,"Sounds   Music           Exit");
+        if(sound)stretch_sprite(buffer,soundOn,120,180,80,80);
+        if(!sound)stretch_sprite(buffer,soundOff,120,180,80,80);
+        if(musicToggle)stretch_sprite(buffer,musicOn,280,180,80,80);
+        if(!musicToggle)stretch_sprite(buffer,musicOff,280,180,80,80);
 
-    // Audio
-    textprintf_ex(buffer,orbitron,110,146,makecol(255,250,250),-1,"Sounds   Music           Exit");
-    if(sound)stretch_sprite(buffer,soundOn,120,180,80,80);
-    if(!sound)stretch_sprite(buffer,soundOff,120,180,80,80);
-    if(musicToggle)stretch_sprite(buffer,musicOn,280,180,80,80);
-    if(!musicToggle)stretch_sprite(buffer,musicOff,280,180,80,80);
-
-    // Input
-    textprintf_ex(buffer,orbitron,120,260,makecol(255,250,250),-1,"Input");
-    if(control_mode==1)draw_sprite(buffer,control_auto,120,295);
-    if(control_mode==2)draw_sprite(buffer,control_keyboard,120,295);
-    if(control_mode==3)draw_sprite(buffer,control_xbox,120,295);
+        // Input
+        textprintf_ex(buffer,orbitron,120,260,makecol(255,250,250),-1,"Input");
+        if(control_mode==1)draw_sprite(buffer,control_auto,120,295);
+        if(control_mode==2)draw_sprite(buffer,control_keyboard,120,295);
+        if(control_mode==3)draw_sprite(buffer,control_xbox,120,295);
 
 
-    // Videoif(control_mode==2)draw_sprite(buffer,control_keyboard,120,295);
-    textprintf_ex(buffer,orbitron,110,375,makecol(255,250,250),-1,"Window Particles");
-    if(!fullScreen)stretch_sprite(buffer,fullscreenToggle,120,405,80,80);
-    if(fullScreen)stretch_sprite(buffer,windowedToggle,120,405,80,80);
-    if(particlesOn)stretch_sprite(buffer,particleButton,280,405,80,80);
-    if(!particlesOn)stretch_sprite(buffer,particleOffButton,280,405,80,80);
+        // Video
+        textprintf_ex(buffer,orbitron,108,375,makecol(255,250,250),-1,"Window Particles         Back");
+        if(!fullScreen)stretch_sprite(buffer,fullscreenToggle,120,407,80,80);
+        if(fullScreen)stretch_sprite(buffer,windowedToggle,120,407,80,80);
+        if(particlesOn)stretch_sprite(buffer,particleButton,280,407,80,80);
+        if(!particlesOn)stretch_sprite(buffer,particleOffButton,280,407,80,80);
 
-    // Exit and back button
-    draw_sprite(buffer,powerOff,540,180);
-    draw_sprite(buffer,backButton,580,450);
+        // Exit and back
+        draw_sprite(buffer,powerOff,540,180);
+        draw_sprite(buffer,backButton,540,407);
   }
 
   // Mouse drawing routines
@@ -1396,64 +1389,49 @@ void changeTheme( int themeNumber){
 
 	if (!(groundOverlay = load_bitmap((string("images/ground/groundOverlay_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/groundOverlay_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(ground[0] = load_bitmap((string("images/ground/ground1_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground1_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(ground[1] = load_bitmap((string("images/ground/ground2_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground2_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(ground[2] = load_bitmap((string("images/ground/ground3_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground3_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(ground[3] = load_bitmap((string("images/ground/ground4_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground4_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(ground[4] = load_bitmap((string("images/ground/ground5_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground5_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(ground[5] = load_bitmap((string("images/ground/ground6_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground6_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(ground[6] = load_bitmap((string("images/ground/ground7_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground7_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(ground[7] = load_bitmap((string("images/ground/ground8_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground8_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(ground[8] = load_bitmap((string("images/ground/ground9_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground9_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(ground[9] = load_bitmap((string("images/ground/ground10_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground10_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(ground[10] = load_bitmap((string("images/ground/ground11_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground11_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(ground[11] = load_bitmap((string("images/ground/ground12_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/ground12_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(space2 = load_bitmap((string("images/ground/paralax_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/paralax_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
   if (!(asteroidImage = load_bitmap((string("images/asteroid_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     allegro_message((string("Cannot find image ground/asteroid_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
-
-  }
+}
 
 
   // Setup ground pieces
