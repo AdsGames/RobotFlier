@@ -64,29 +64,29 @@ BITMAP* mouse_rocket;
 BITMAP* debug;
 BITMAP* options_page;
 BITMAP* options;
-BITMAP* soundOn;
-BITMAP* soundOff;
-BITMAP* musicOn;
-BITMAP* musicOff;
+BITMAP* ui_sound_on;
+BITMAP* ui_sound_off;
+BITMAP* ui_music_on;
+BITMAP* ui_music_off;
 BITMAP* pauseMenu;
 BITMAP* ui_options;
-BITMAP* fullscreenToggle;
-BITMAP* windowedToggle;
+BITMAP* ui_window_fullscreen;
+BITMAP* ui_window_windowed;
 BITMAP* gearIcon;
-BITMAP* backButton;
+BITMAP* ui_back;
 BITMAP* credits;
 BITMAP* ui_credits;
 BITMAP* resumeButton;
-BITMAP* particleButton;
-BITMAP* particleOffButton;
+BITMAP* ui_particle_circle;
+BITMAP* ui_particle_off;
 BITMAP* ui_help;
 BITMAP* helpScreen;
 BITMAP* highscores_table;
-BITMAP* powerOff;
+BITMAP* ui_exit;
 BITMAP* xbox_start;
-BITMAP* control_xbox;
-BITMAP* control_keyboard;
-BITMAP* control_auto;
+BITMAP* ui_control_xbox;
+BITMAP* ui_control_keyboard;
+BITMAP* ui_control_auto;
 
 //Robot images
 BITMAP* robot;
@@ -274,6 +274,13 @@ bool joy_buttonpressed(){
         if(joy[0].button[i].b)buttonpressed=true;
     return buttonpressed;
 }
+bool keyboard_keypressed(){
+    bool keypressed=false;
+    for(int i=0; i<125; i++)
+        if(key[i])keypressed=true;
+    return keypressed;
+
+}
 
 
 //Add score
@@ -376,7 +383,7 @@ void game(){
     }
 
     // Main Menu Buttons
-    if(mouse_b & 1 && mouse_x>40 && mouse_x<260 && mouse_y>410 && mouse_y<510 && !optionMenu && !viewScores || joy[0].button[1].b){
+    if(mouse_b & 1 && mouse_x>40 && mouse_x<260 && mouse_y>410 && mouse_y<510 && !viewScores || joy[0].button[1].b){
       startClicked=true;
     }
     //Controlling menu with xbox controller
@@ -385,7 +392,7 @@ void game(){
         startClicked=true;
        }
     }
-    if(mouse_b & 1 && mouse_x>600 && mouse_x<760 && mouse_y>20 && mouse_y<180 && !optionMenu){
+    if(mouse_b & 1 && mouse_x>600 && mouse_x<760 && mouse_y>20 && mouse_y<180){
       while(mouse_b & 1){ }
       if(viewScores){
         viewScores = false;
@@ -396,33 +403,29 @@ void game(){
       }
     }
     // Credits menu
-    if(mouse_b & 1 && !optionMenu && !viewScores && collision(mouse_x, mouse_x,594 ,698, mouse_y,mouse_y, 548,600)){
+    if(mouse_b & 1 && !viewScores && collision(mouse_x, mouse_x,594 ,698, mouse_y,mouse_y, 548,600)){
         fade_out(8);
         gameScreen = CREDITS;
         fade_in(credits,8);
     }
     // Help screen
-    if(mouse_b & 1 && !optionMenu && !viewScores && collision(mouse_x, mouse_x, 698,748, mouse_y,mouse_y, 548,600) ){
+    if(mouse_b & 1  && !viewScores && collision(mouse_x, mouse_x, 698,748, mouse_y,mouse_y, 548,600)){
         fade_out(8);
         gameScreen = TUTORIAL;
 		fade_in(helpScreen, 8);
     }
     // Options menu
-    if(mouse_b & 1 && !viewScores && collision(mouse_x,mouse_x, 748, 800, mouse_y, mouse_y, 548, 600) ){
+    if(mouse_b & 1 && !viewScores && collision(mouse_x,mouse_x, 748, 800, mouse_y, mouse_y, 548, 600)){
         fade_out(8);
         gameScreen = OPTIONS;
         fade_in(options_page, 8);
 
     }
-    else if(mouse_b & 1 && !optionMenu){
-      viewScores = false;
-      optionMenu = false;
-    }
   }
 
   // Tutorial and credits screen
   if(gameScreen == TUTORIAL || gameScreen == CREDITS){
-    if(keypressed() && control_mode!=3  || mouse_b & 1 && control_mode!=3 || joy_buttonpressed() && control_mode!=2){
+    if(keyboard_keypressed() && control_mode!=3  || mouse_b & 1 && control_mode!=3 || joy_buttonpressed() && control_mode!=2){
         fade_out(8);
 			gameScreen = MENU;
 			draw(false);
@@ -986,13 +989,28 @@ void game(){
 
       // Particles toggle
       if(mouse_b & 1 && collision(280,360,mouse_x,mouse_x,400,480,mouse_y,mouse_y)){
-        particlesOn = false;
-        rocketPart.clear();
-        mousePart.clear();
-        smokePart.clear();
-        step = 0;
+        if(particle_type==4){
+            particle_type=1;
+            particlesOn=true;
+            step=0;
+        }
+        if(particle_type==3 && step>9){
+            particlesOn = false;
+            rocketPart.clear();
+            mousePart.clear();
+            smokePart.clear();
+            step = 0;
+            particle_type=4;
+        }
+        if(particle_type==2 && step>9){
+            particle_type=3;
+            step=0;
+        }
+        if(particle_type==1){
+            particle_type=2;
+            step=0;
+        }
       }
-
       // Power off
       if(mouse_b & 1 && collision(540,620,mouse_x,mouse_x,180,260,mouse_y,mouse_y)){
       	close_button_pressed = true;
@@ -1300,28 +1318,28 @@ void draw( bool toScreen){
         else draw_sprite(buffer,options,0,0);
         // Audio
         textprintf_ex(buffer,orbitron,110,146,makecol(255,250,250),-1,"Sounds   Music           Exit");
-        if(sound)stretch_sprite(buffer,soundOn,120,180,80,80);
-        if(!sound)stretch_sprite(buffer,soundOff,120,180,80,80);
-        if(musicToggle)stretch_sprite(buffer,musicOn,280,180,80,80);
-        if(!musicToggle)stretch_sprite(buffer,musicOff,280,180,80,80);
+        if(sound)draw_sprite(buffer,ui_sound_on,120,180);
+        if(!sound)draw_sprite(buffer,ui_sound_off,120,180);
+        if(!musicToggle)draw_sprite(buffer,ui_music_off,280,180);
+        if(musicToggle)draw_sprite(buffer,ui_music_on,280,180);
 
         // Input
         textprintf_ex(buffer,orbitron,120,260,makecol(255,250,250),-1,"Input");
-        if(control_mode==1)draw_sprite(buffer,control_auto,120,295);
-        if(control_mode==2)draw_sprite(buffer,control_keyboard,120,295);
-        if(control_mode==3)draw_sprite(buffer,control_xbox,120,295);
+        if(control_mode==1)draw_sprite(buffer,ui_control_auto,120,295);
+        if(control_mode==2)draw_sprite(buffer,ui_control_keyboard,120,295);
+        if(control_mode==3)draw_sprite(buffer,ui_control_xbox,120,295);
 
 
         // Video
         textprintf_ex(buffer,orbitron,108,375,makecol(255,250,250),-1,"Window Particles         Back");
-        if(!fullScreen)stretch_sprite(buffer,fullscreenToggle,120,407,80,80);
-        if(fullScreen)stretch_sprite(buffer,windowedToggle,120,407,80,80);
-        if(particlesOn)stretch_sprite(buffer,particleButton,280,407,80,80);
-        if(!particlesOn)stretch_sprite(buffer,particleOffButton,280,407,80,80);
+        if(!fullScreen)draw_sprite(buffer,ui_window_fullscreen,120,407);
+        if(fullScreen)draw_sprite(buffer,ui_window_windowed,120,407);
+        if(particlesOn)draw_sprite(buffer,ui_particle_circle,280,407);
+        if(!particlesOn)draw_sprite(buffer,ui_particle_off,280,407);
 
         // Exit and back
-        draw_sprite(buffer,powerOff,540,180);
-        draw_sprite(buffer,backButton,540,407);
+        draw_sprite(buffer,ui_exit,540,180);
+        draw_sprite(buffer,ui_back,540,407);
   }
 
   // Mouse drawing routines
@@ -1578,28 +1596,28 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/options_page.png\nPlease check your files and try again");
     if (!(options = load_bitmap("images/gui/options.png", NULL)))
       abort_on_error("Cannot find image gui/options.png\nPlease check your files and try again");
-    if (!(soundOn = load_bitmap("images/gui/soundOn.png", NULL)))
-      abort_on_error("Cannot find image gui/soundOn.png\nPlease check your files and try again");
-    if (!(soundOff = load_bitmap("images/gui/soundOff.png", NULL)))
-      abort_on_error("Cannot find image gui/soundOff.png\nPlease check your files and try again");
-    if (!(musicOn = load_bitmap("images/gui/musicOn.png", NULL)))
-      abort_on_error("Cannot find image gui/musicOn.png\nPlease check your files and try again");
-    if (!(musicOff = load_bitmap("images/gui/musicOff.png", NULL)))
-      abort_on_error("Cannot find image gui/musicOff.png\nPlease check your files and try again");
+    if (!(ui_sound_on = load_bitmap("images/gui/ui_sound_on.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_sound_on.png\nPlease check your files and try again");
+    if (!(ui_sound_off = load_bitmap("images/gui/ui_sound_off.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_sound_off.png\nPlease check your files and try again");
+    if (!(ui_music_on = load_bitmap("images/gui/ui_music_on.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_music_on.png\nPlease check your files and try again");
+    if (!(ui_music_off = load_bitmap("images/gui/ui_music_off.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_music_off.png\nPlease check your files and try again");
     if (!(pauseMenu = load_bitmap("images/gui/pauseMenu.png", NULL)))
       abort_on_error("Cannot find image gui/pauseMenu.png\nPlease check your files and try again");
     if (!(lose = load_bitmap("images/gui/lose.png", NULL)))
       abort_on_error("Cannot find image gui/lose.png\nPlease check your files and try again");
     if (!(ui_options = load_bitmap("images/gui/ui_options.png", NULL)))
       abort_on_error("Cannot find image gui/ui_options.png\nPlease check your files and try again");
-    if (!(fullscreenToggle = load_bitmap("images/gui/fullscreenToggle.png", NULL)))
-      abort_on_error("Cannot find image gui/fullscreenToggle.png\nPlease check your files and try again");
-    if (!(windowedToggle = load_bitmap("images/gui/windowedToggle.png", NULL)))
-      abort_on_error("Cannot find image gui/windowedToggle.png\nPlease check your files and try again");
+    if (!(ui_window_windowed = load_bitmap("images/gui/ui_window_windowed.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_window_fullscreen.windowed.png\nPlease check your files and try again");
+    if (!(ui_window_fullscreen = load_bitmap("images/gui/ui_window_fullscreen.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_window_fullscreen.png\nPlease check your files and try again");
     if (!(gearIcon = load_bitmap("images/gui/gearIcon.png", NULL)))
       abort_on_error("Cannot find image gui/gearIcon.png\nPlease check your files and try again");
-    if (!(backButton = load_bitmap("images/gui/backButton.png", NULL)))
-      abort_on_error("Cannot find image gui/backButton.png\nPlease check your files and try again");
+    if (!(ui_back = load_bitmap("images/gui/ui_back.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_back.png\nPlease check your files and try again");
     if (!(powerStar = load_bitmap("images/powerStar.png", NULL)))
       abort_on_error("Cannot find image images/powerStar.png\nPlease check your files and try again");
     if (!(credits = load_bitmap("images/gui/credits.png", NULL)))
@@ -1608,10 +1626,10 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/ui_credits.png\nPlease check your files and try again");
     if (!(resumeButton = load_bitmap("images/gui/resumeButton.png", NULL)))
       abort_on_error("Cannot find image gui/resumeButton.png\nPlease check your files and try again");
-    if (!(particleButton = load_bitmap("images/gui/particleButton.png", NULL)))
-      abort_on_error("Cannot find image gui/particleButton.png\nPlease check your files and try again");
-    if (!(particleOffButton = load_bitmap("images/gui/particleOffButton.png", NULL)))
-      abort_on_error("Cannot find image gui/particleOffButton.png\nPlease check your files and try again");
+    if (!(ui_particle_circle = load_bitmap("images/gui/ui_particle_circle.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_particle_circle.png\nPlease check your files and try again");
+    if (!(ui_particle_off = load_bitmap("images/gui/ui_particle_off.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_particle_off.png\nPlease check your files and try again");
     if (!(powerMagnet = load_bitmap("images/powerMagnet.png", NULL)))
       abort_on_error("Cannot find image powerMagnet.png\nPlease check your files and try again");
     if (!(powerMagnetTwo = load_bitmap("images/powerMagnetTwo.png", NULL)))
@@ -1630,16 +1648,16 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/ui_help.png\nPlease check your files and try again");
     if (!(helpScreen = load_bitmap("images/gui/helpScreen.png", NULL)))
       abort_on_error("Cannot find image gui/helpScreen.png\nPlease check your files and try again");
-    if (!(powerOff = load_bitmap("images/gui/powerOff.png", NULL)))
-      abort_on_error("Cannot find image gui/powerOff.png\nPlease check your files and try again");
+    if (!(ui_exit = load_bitmap("images/gui/ui_exit.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_exit.png\nPlease check your files and try again");
     if (!(xbox_start = load_bitmap("images/gui/xbox_start.png", NULL)))
       abort_on_error("Cannot find image gui/xbox_start.png\nPlease check your files and try again");
-    if (!(control_xbox = load_bitmap("images/gui/control_xbox.png", NULL)))
-      abort_on_error("Cannot find image gui/control_xbox.png\nPlease check your files and try again");
-    if (!(control_keyboard = load_bitmap("images/gui/control_keyboard.png", NULL)))
-      abort_on_error("Cannot find image gui/control_keyboard.png\nPlease check your files and try again");
-    if (!(control_auto = load_bitmap("images/gui/control_auto.png", NULL)))
-      abort_on_error("Cannot find image gui/control_auto.png\nPlease check your files and try again");
+    if (!(ui_control_xbox = load_bitmap("images/gui/ui_control_xbox.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_control_xbox.png\nPlease check your files and try again");
+    if (!(ui_control_keyboard = load_bitmap("images/gui/ui_control_keyboard.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_control_keyboard.png\nPlease check your files and try again");
+    if (!(ui_control_auto = load_bitmap("images/gui/ui_control_auto.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_control_auto.png\nPlease check your files and try again");
     if (!(energyImage = load_bitmap("images/energy.png", NULL)))
       abort_on_error("Cannot find image energy.png\nPlease check your files and try again");
     if (!(bombImage = load_bitmap("images/bomb.png", NULL)))

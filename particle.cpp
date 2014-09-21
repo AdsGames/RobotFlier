@@ -4,15 +4,15 @@
 particle::particle(int newX, int newY, int newColor, int newXMin, int newXMax, int newYMin, int newYMax, int newType, int newSize){
   x = newX;
   y = newY;
-  
+
   particleColor = newColor;
   particleRed = getr(particleColor);
   particleGreen = getg(particleColor);
   particleBlue = getb(particleColor);
-  
+
   type = newType;
   size = newSize;
-  
+
   xMin = newXMin;
   xMax = newXMax;
   yMin = newYMin;
@@ -28,7 +28,7 @@ particle::~particle(){
 void particle::logic(){
   x += random( xMin, xMax);
   y += random( yMin, yMax);
-  
+
   if(x < 0){
     x = 0;
   }

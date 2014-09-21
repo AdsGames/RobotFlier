@@ -21,6 +21,9 @@ int energyCollected;
 int powerupsCollected;
 int debrisCollided;
 
+//Global particle type
+int particle_type = 1;
+
 bool sound;
 bool magnetic;
 bool debugMode;

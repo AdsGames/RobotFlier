@@ -34,6 +34,9 @@ extern int energyCollected;
 extern int powerupsCollected;
 extern int debrisCollided;
 
+//Global particle type
+extern int particle_type;
+
 extern bool sound;
 extern bool magnetic;
 extern bool debugMode;
