@@ -415,7 +415,17 @@ void game(){
 
     }
   }
+  if(gameScreen == OPTIONS){
 
+    if(mouse_b & 1 && collision(540,620,mouse_x,mouse_x,407,487,mouse_y,mouse_y)){
+      fade_out(8);
+      gameScreen=MENU;
+      draw(false);
+      fade_in(buffer,8);
+    }
+
+
+  }
 
   // Game screen
   if(gameScreen == GAME){
@@ -556,6 +566,7 @@ void game(){
               FSOUND_Stream_Stop(music_death);
               smokePart.clear();
               rocketPart.clear();
+              magnetic = false;
               if(musicToggle)
                 FSOUND_Stream_Play(0,music_mainmenu);
               gameScreen = MENU;
@@ -881,24 +892,32 @@ void game(){
     }
 
 	// Option Menu Scripts
-  if(key[KEY_ESC]){
-    while(key[KEY_ESC]){ }
-    if(paused && gameScreen==GAME){
-      optionMenu = false;
-      paused = false;
-    }else if(!paused && gameScreen==GAME){
-        paused=true;
-    }else if( gameScreen == TUTORIAL){
-      optionMenu = false;
-      viewScores = false;
-    }else if(gameScreen==MENU && !optionMenu && !viewScores && !paused) gameScreen=EXIT;
-    else if(gameScreen==MENU && optionMenu) optionMenu=false;
+  if(key[KEY_ESC] || joy[0].button[6].b && control_mode!=2){
+    if(step>9){
+        step=0;
+        if(paused && gameScreen==GAME){
+            optionMenu = false;
+            paused = false;
+        }else if(!paused && gameScreen==GAME){
+            paused=true;
+        }else if( gameScreen == TUTORIAL){
+            optionMenu = false;
+            viewScores = false;
+        }else if(gameScreen==MENU && !viewScores && !paused) gameScreen=EXIT;
+        else if(gameScreen==OPTIONS){
+            fade_out(8);
+            gameScreen=MENU;
+            draw(false);
+            fade_in(buffer,8);
+        }
+    }
   }
 
   if(optionMenu){
-    if(mouse_b & 1 && collision(580,630,mouse_x,mouse_x,450,500,mouse_y,mouse_y) && gameScreen == GAME){
+      if(mouse_b & 1 && collision(580,630,mouse_x,mouse_x,450,500,mouse_y,mouse_y) && gameScreen == GAME){
       optionMenu = false;
     }
+
     if(step > 10){
       // Sound button toggle
       if(mouse_b & 1 && collision(120,200,mouse_x,mouse_x,180,260,mouse_y,mouse_y)){
@@ -1088,6 +1107,7 @@ void draw( bool toScreen){
   if(gameScreen == CREDITS){
   	draw_sprite( buffer, credits, 0, 0);
   }
+  // Drawing options page
   if(gameScreen == OPTIONS){
     draw_sprite(buffer,options_page,0,0);
 
@@ -1225,10 +1245,10 @@ void draw( bool toScreen){
     if(paused){
       if(!optionMenu && alive){
         draw_sprite(buffer,pauseMenu,130,140);
-        textprintf_ex(buffer,arial,220,250,makecol(255,250,250),-1,"Distance Flown: %i ft",robotDistance/25);
-        textprintf_ex(buffer,arial,220,280,makecol(255,250,250),-1,"Energy Collected: %i",energyCollected);
-        textprintf_ex(buffer,arial,220,310,makecol(255,250,250),-1,"Powerups Received: %i",powerupsCollected);
-        textprintf_ex(buffer,arial,220,340,makecol(255,250,250),-1,"Debris Collided: %i",debrisCollided);
+        textprintf_ex(buffer,orbitron,220,250,makecol(255,250,250),-1,"Distance Flown: %i ft",robotDistance/25);
+        textprintf_ex(buffer,orbitron,220,280,makecol(255,250,250),-1,"Energy Collected: %i",energyCollected);
+        textprintf_ex(buffer,orbitron,220,310,makecol(255,250,250),-1,"Powerups Received: %i",powerupsCollected);
+        textprintf_ex(buffer,orbitron,220,340,makecol(255,250,250),-1,"Debris Collided: %i",debrisCollided);
 
         draw_sprite( buffer, gearIcon, 220, 435);
         draw_sprite( buffer, resumeButton, 450, 445);
