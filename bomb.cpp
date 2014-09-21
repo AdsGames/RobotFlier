@@ -60,7 +60,7 @@ bool bomb::dead(){
 	        iteratorX = 0;
 	        iteratorY ++;
 	      }
-	      particle newParticle( iteratorX + x, iteratorY + y, makecol( 255, random( 0, 255), 0), random(-20,-5), random(5,20), random(-20,-5), random(5,20), PIXEL, 0);
+	      particle newParticle( iteratorX + x, iteratorY + y, makecol( 255, random( 0, 255), 0), random(-20,-5), random(5,20), random(-20,-5), random(5,20),0);
 	    	debris.push_back( newParticle);
 	    }
 	  }

@@ -60,7 +60,7 @@ bool comet::dead(){
 	        iteratorX = 0;
 	        iteratorY ++;
 	      }
-	      particle newParticle( iteratorX + x, iteratorY + y, getpixel(image[0], iteratorX, iteratorY), random(-8,-1), random(1,8), random(-8,-1), random(1,8), PIXEL, 0);
+	      particle newParticle( iteratorX + x, iteratorY + y, getpixel(image[0], iteratorX, iteratorY), random(-8,-1), random(1,8), random(-8,-1), random(1,8), 0);
 	    	debris.push_back( newParticle);
 	    }
 	  }

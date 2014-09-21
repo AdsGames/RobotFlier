@@ -1,7 +1,7 @@
 #include "particle.h"
 
 // Constructor
-particle::particle(int newX, int newY, int newColor, int newXMin, int newXMax, int newYMin, int newYMax, int newType, int newSize){
+particle::particle(int newX, int newY, int newColor, int newXMin, int newXMax, int newYMin, int newYMax, int newSize){
   x = newX;
   y = newY;
 
@@ -10,7 +10,6 @@ particle::particle(int newX, int newY, int newColor, int newXMin, int newXMax, i
   particleGreen = getg(particleColor);
   particleBlue = getb(particleColor);
 
-  type = newType;
   size = newSize;
 
   xMin = newXMin;

@@ -20,7 +20,6 @@ class particle{
     int particleGreen;
     int particleBlue;
 
-    int type;
     int size;
 
     int xMax;
@@ -28,7 +27,7 @@ class particle{
     int yMin;
     int yMax;
 
-    particle(int newX, int newY, int newColor, int newXMin, int newXMax, int newYMin, int newYMax, int newType, int newSize);
+    particle(int newX, int newY, int newColor, int newXMin, int newXMax, int newYMin, int newYMax, int newSize);
     ~particle();
 
     void logic();

@@ -812,7 +812,7 @@ void game(){
         for( int i = 0; i < smokeParticles; i++){
           if( random(0,10) == 0){
             int randnum=random(0,255);
-            particle newParticle(robot_x+20, robot_y+20, makecol(randnum,randnum,randnum), -2, 2, 0, -8, CIRCLE, 1);
+            particle newParticle(robot_x+20, robot_y+20, makecol(randnum,randnum,randnum), -2, 2, 0, -8, 1);
             smokePart.push_back( newParticle);
           }
         }
@@ -832,8 +832,8 @@ void game(){
         if( !rocket){
           for( int i = 0; i < rocketParticles; i++){
             if( random(0,10) == 0){
-              particle newParticle1( robot_x + 21, robot_y + 55, makecol( 255, random(0,255), 0), -3, 3, 0, 4, CIRCLE, 1);
-              particle newParticle2( robot_x + 52, robot_y + 55, makecol( 255, random(0,255), 0), -3, 3, 0, 4, CIRCLE, 1);
+              particle newParticle1( robot_x + 21, robot_y + 55, makecol( 255, random(0,255), 0), -3, 3, 0, 4, 1);
+              particle newParticle2( robot_x + 52, robot_y + 55, makecol( 255, random(0,255), 0), -3, 3, 0, 4, 1);
               rocketPart.push_back( newParticle1);
               rocketPart.push_back( newParticle2);
             }
@@ -1040,7 +1040,7 @@ void game(){
       if( mouse_rocketocket){
         for( int i = 0; i < mouseParticles; i++){
           if( random(0,10) == 0){
-            particle newParticle( mouse_x+10, mouse_y+16, makecol(255,random(0,255),0), -2, 2, 0, 8, CIRCLE, 1);
+            particle newParticle( mouse_x+10, mouse_y+16, makecol(255,random(0,255),0), -2, 2, 0, 8, 1);
             mousePart.push_back( newParticle);
           }
         }
