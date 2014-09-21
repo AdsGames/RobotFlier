@@ -79,6 +79,8 @@ BITMAP* ui_credits;
 BITMAP* resumeButton;
 BITMAP* ui_particle_circle;
 BITMAP* ui_particle_off;
+BITMAP* ui_particle_pixel;
+BITMAP* ui_particle_square;
 BITMAP* ui_help;
 BITMAP* helpScreen;
 BITMAP* highscores_table;
@@ -268,12 +270,14 @@ void stop_all_samples(){
     stop_sample(sound_flame);
     stop_sample(sound_hitground);
 }
+//Iterates through the number of buttons in a joystick and returns true if any buttons are pressed
 bool joy_buttonpressed(){
     bool buttonpressed=false;
     for(int i=0; i<joy[0].num_buttons; i++)
         if(joy[0].button[i].b)buttonpressed=true;
     return buttonpressed;
 }
+//Iterates through the number of buttons in a joystick and returns true if any keys are pressed
 bool keyboard_keypressed(){
     bool keypressed=false;
     for(int i=0; i<125; i++)
@@ -989,25 +993,25 @@ void game(){
 
       // Particles toggle
       if(mouse_b & 1 && collision(280,360,mouse_x,mouse_x,400,480,mouse_y,mouse_y)){
-        if(particle_type==4){
-            particle_type=1;
+        if(particle_type==3){
+            particle_type=0;
             particlesOn=true;
             step=0;
         }
-        if(particle_type==3 && step>9){
+        if(particle_type==2 && step>9){
             particlesOn = false;
             rocketPart.clear();
             mousePart.clear();
             smokePart.clear();
             step = 0;
-            particle_type=4;
-        }
-        if(particle_type==2 && step>9){
             particle_type=3;
+        }
+        if(particle_type==1 && step>9){
+            particle_type=2;
             step=0;
         }
-        if(particle_type==1){
-            particle_type=2;
+        if(particle_type==0 && step>9){
+            particle_type=1;
             step=0;
         }
       }
@@ -1287,7 +1291,7 @@ void draw( bool toScreen){
         textprintf_ex( buffer, finalFont, 375, 375, makecol(255,255,97), -1, "%i", score);
         textprintf_ex( buffer, finalFont, 455, 405, makecol(255,255,97), -1, "%i", robotDistance/10);
       }
-      //Input rectangle
+      // Input rectangle
       rectfill(buffer, 300, 508, 500, 552, makecol(0,0,0));
       rectfill(buffer, 302, 510, 498, 550, makecol(255,255,255));
 
@@ -1303,11 +1307,11 @@ void draw( bool toScreen){
       draw_sprite(buffer,robotDie,robot_x,robot_y);
     }
 
-    //Show force field
+    // Show force field
     if(forceFieldAppear<8)
       draw_sprite(buffer,forceField,0,0);
 
-    //See through invincibility
+    // See through invincibility
     if(alive && invincible)
       draw_sprite(buffer,robotInvincibleTop,robot_x,robot_y);
   }
@@ -1334,8 +1338,11 @@ void draw( bool toScreen){
         textprintf_ex(buffer,orbitron,108,375,makecol(255,250,250),-1,"Window Particles         Back");
         if(!fullScreen)draw_sprite(buffer,ui_window_fullscreen,120,407);
         if(fullScreen)draw_sprite(buffer,ui_window_windowed,120,407);
-        if(particlesOn)draw_sprite(buffer,ui_particle_circle,280,407);
-        if(!particlesOn)draw_sprite(buffer,ui_particle_off,280,407);
+        if(particle_type==0)draw_sprite(buffer,ui_particle_circle,280,407);
+        if(particle_type==1)draw_sprite(buffer,ui_particle_square,280,407);
+        if(particle_type==2)draw_sprite(buffer,ui_particle_pixel,280,407);
+        if(particle_type==3)draw_sprite(buffer,ui_particle_off,280,407);
+
 
         // Exit and back
         draw_sprite(buffer,ui_exit,540,180);
@@ -1630,6 +1637,10 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/ui_particle_circle.png\nPlease check your files and try again");
     if (!(ui_particle_off = load_bitmap("images/gui/ui_particle_off.png", NULL)))
       abort_on_error("Cannot find image gui/ui_particle_off.png\nPlease check your files and try again");
+    if (!(ui_particle_pixel = load_bitmap("images/gui/ui_particle_pixel.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_particle_pixel.png\nPlease check your files and try again");
+    if (!(ui_particle_square = load_bitmap("images/gui/ui_particle_square.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_particle_square.png\nPlease check your files and try again");
     if (!(powerMagnet = load_bitmap("images/powerMagnet.png", NULL)))
       abort_on_error("Cannot find image powerMagnet.png\nPlease check your files and try again");
     if (!(powerMagnetTwo = load_bitmap("images/powerMagnetTwo.png", NULL)))
