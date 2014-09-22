@@ -89,6 +89,7 @@ BITMAP* xbox_start;
 BITMAP* ui_control_xbox;
 BITMAP* ui_control_keyboard;
 BITMAP* ui_control_auto;
+BITMAP* ui_screenshot_notification;
 
 //Robot images
 BITMAP* robot;
@@ -158,6 +159,7 @@ int gameScreen;
 int forceFieldAppear = 10;
 int control_mode;
 int key_bindings[10];
+int screenshot_notification_time;
 
 // Declare booleans
 bool mouse_rocketocket;
@@ -1064,34 +1066,14 @@ void game(){
     mouseMove = mouse_y;
   }
 
-
-  /*// Explode screen! (almost)
-  if(key[KEY_Z]){
-    int iteratorX = 0;
-    int iteratorY = 0;
-    for(int i = 0; i < screenParticles; i++){
-      if(iteratorX < 799){
-        iteratorX ++;
-      }
-      else{
-        iteratorX = 0;
-        iteratorY ++;
-      }
-      particle newParticle( iteratorX, iteratorY, getpixel(buffer, iteratorX, iteratorY), -2, 2, -2, 2, PIXEL, 2);
-      menuPart.push_back( newParticle);
-    }
-  }
-  if(key[KEY_X]){
-    for(int i = 0; i < menuPart.size(); i++){
-     menuPart.at(i).logic();
-    }
-  }*/
-
-  // Screenshots!
-  if(key[KEY_F11]){
-  	while(key[KEY_F11]){ }
+  // EVERYBODY!!
+  if(screenshot_notification_time>0)screenshot_notification_time--;
+  if(key[KEY_F11] && step>9){
+  	step=0;
 
   	int screenshotNumber;
+
+    screenshot_notification_time=100;
 
   	ifstream read("screenshots/screenshot.dat");
 	  read >> screenshotNumber;
@@ -1368,13 +1350,7 @@ void draw( bool toScreen){
     draw_sprite( buffer, mouse, mouse_x, mouse_y);
   }
 
-  /*// Explode screen! (almost)
-  if(key[KEY_X]){
-    for(int i = 0; i < menuPart.size(); i+=10){
-      menuPart.at(i).draw(buffer);
-    }
-  }*/
-
+    // Draw the debug window
    if(debugMode){
       draw_sprite(buffer,debug,0,0);
       textprintf_ex(buffer,font,225,5,makecol(255,250,250),-1,"Gravity:%i",gravity);
@@ -1390,7 +1366,7 @@ void draw( bool toScreen){
       textprintf_ex(buffer,font,225,15,makecol(255,250,250),-1,"OptionClicked:%i",optionMenu);
       textprintf_ex(buffer,font,225,25,makecol(255,250,250),-1,"smokeParticles:%i",smokePart.size());
     }
-
+  if(screenshot_notification_time>0)draw_sprite(buffer,ui_screenshot_notification,590,0);
   // Draw background and buffer
   if( toScreen == true){
 	  draw_sprite(screen,buffer,0,0);
@@ -1675,6 +1651,8 @@ void setup(bool first){
       abort_on_error("Cannot find image bomb.png\nPlease check your files and try again");
     if (!(cometImage = load_bitmap("images/comet.png", NULL)))
       abort_on_error("Cannot find image comet.png\nPlease check your files and try again");
+    if (!(ui_screenshot_notification = load_bitmap("images/gui/ui_screenshot_notification.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_screenshot_notification.png\nPlease check your files and try again");
 
 
 
