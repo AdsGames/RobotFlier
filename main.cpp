@@ -58,7 +58,6 @@ BITMAP* screenshot;
 BITMAP* forceField;
 BITMAP* space;
 BITMAP* space2;
-BITMAP* lose;
 BITMAP* groundOverlay;
 
 // GUI Images
@@ -93,6 +92,7 @@ BITMAP* ui_control_xbox;
 BITMAP* ui_control_keyboard;
 BITMAP* ui_control_auto;
 BITMAP* ui_screenshot_notification;
+BITMAP* ui_game_end;
 
 //Robot images
 BITMAP* robot;
@@ -1270,19 +1270,22 @@ void draw( bool toScreen){
     if( onGround){
       if( loseCount > 20){
 
-        draw_sprite( buffer, lose, 170, 170);
-        textprintf_ex( buffer, orbitron, 375, 375, makecol(255,255,97), -1, "%i", score);
-        textprintf_ex( buffer, orbitron, 455, 405, makecol(255,255,97), -1, "%i", robotDistance/10);
+        draw_sprite( buffer, ui_game_end, 0, 0);
+        textprintf_ex( buffer, orbitron, 130, 125, makecol(0,0,0), -1, "Final Score: %i", score);
+        textprintf_ex( buffer, orbitron, 130, 165, makecol(0,0,0), -1, "Distance Travelled: %i", robotDistance/10);
+        textprintf_ex( buffer, orbitron, 130, 205, makecol(0,0,0), -1, "Energy Collected: %i", energyCollected);
+        textprintf_ex( buffer, orbitron, 130, 245, makecol(0,0,0), -1, "Powerups Received: %i", powerupsCollected);
+        textprintf_ex( buffer, orbitron, 130, 285, makecol(0,0,0), -1, "Debris Collided: %i", debrisCollided);
       }
       // Input rectangle
-      rectfill(buffer, 100, 508, text_length(orbitron, edittext.c_str())+112, 552, makecol(0,0,0));
-      rectfill(buffer, 102, 510, text_length(orbitron, edittext.c_str())+110, 550, makecol(255,255,255));
+      rectfill(buffer, 120, 408, text_length(orbitron, edittext.c_str())+132, 452, makecol(0,0,0));
+      rectfill(buffer, 122, 410, text_length(orbitron, edittext.c_str())+130, 450, makecol(255,255,255));
 
       // output the string to the screen
-      textout_ex(buffer, orbitron, edittext.c_str(), 106, 510, makecol(0,0,0), -1);
+      textout_ex(buffer, orbitron, edittext.c_str(), 126, 410, makecol(0,0,0), -1);
 
       // draw the caret
-      vline(buffer, text_length(orbitron, edittext.c_str()) + 106, 512, 548, makecol(0,0,0));
+      vline(buffer, text_length(orbitron, edittext.c_str()) + 126, 412, 448, makecol(0,0,0));
     }
 
     // Death image
@@ -1590,8 +1593,8 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/ui_music_off.png\nPlease check your files and try again");
     if (!(pauseMenu = load_bitmap("images/gui/pauseMenu.png", NULL)))
       abort_on_error("Cannot find image gui/pauseMenu.png\nPlease check your files and try again");
-    if (!(lose = load_bitmap("images/gui/lose.png", NULL)))
-      abort_on_error("Cannot find image gui/lose.png\nPlease check your files and try again");
+    if (!(ui_game_end = load_bitmap("images/gui/ui_game_end.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_game_end.png\nPlease check your files and try again");
     if (!(ui_options = load_bitmap("images/gui/ui_options.png", NULL)))
       abort_on_error("Cannot find image gui/ui_options.png\nPlease check your files and try again");
     if (!(ui_window_windowed = load_bitmap("images/gui/ui_window_windowed.png", NULL)))
