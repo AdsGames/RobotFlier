@@ -10,6 +10,9 @@
 //
 //
 // Written by Danny Van Stemp and Allan Legemaate
+//
+//"I do not accept responsibility for any effects, adverse or otherwise, that this code may have on you,
+// your computer, your sanity, your dog, and anything else that you can think of. Use it at your own risk."
 
 #include "energy.h"
 #include "asteroid.h"
@@ -133,9 +136,7 @@ FONT* f2;
 FONT* f3;
 FONT* f4;
 FONT* f5;
-FONT* finalFont;
-FONT* arial;
-FONT* arial_black;
+FONT* orbitron_14;
 FONT* orbitron;
 
 // Define constistants
@@ -1097,7 +1098,7 @@ void game(){
 //  | |__| | | \ \  / ____ \  /\  /    | |___| |__| | |__| | |
 //  |_____/|_|  \_\/_/    \_\/  \/     |______\____/ \____/|_|
 //
-//
+
 void draw( bool toScreen){
   // Splash screen
   if(gameScreen == SPLASH){
@@ -1252,10 +1253,10 @@ void draw( bool toScreen){
     if(paused){
       if(!optionMenu && alive){
         draw_sprite(buffer,pauseMenu,130,140);
-        textprintf_ex(buffer,orbitron,220,250,makecol(255,250,250),-1,"Distance Flown: %i ft",robotDistance/25);
-        textprintf_ex(buffer,orbitron,220,280,makecol(255,250,250),-1,"Energy Collected: %i",energyCollected);
-        textprintf_ex(buffer,orbitron,220,310,makecol(255,250,250),-1,"Powerups Received: %i",powerupsCollected);
-        textprintf_ex(buffer,orbitron,220,340,makecol(255,250,250),-1,"Debris Collided: %i",debrisCollided);
+        textprintf_ex(buffer,orbitron_14,220,250,makecol(255,250,250),-1,"Distance Flown: %i ft",robotDistance/25);
+        textprintf_ex(buffer,orbitron_14,220,280,makecol(255,250,250),-1,"Energy Collected: %i",energyCollected);
+        textprintf_ex(buffer,orbitron_14,220,310,makecol(255,250,250),-1,"Powerups Received: %i",powerupsCollected);
+        textprintf_ex(buffer,orbitron_14,220,340,makecol(255,250,250),-1,"Debris Collided: %i",debrisCollided);
 
         draw_sprite( buffer, gearIcon, 220, 435);
         draw_sprite( buffer, resumeButton, 450, 445);
@@ -1270,18 +1271,18 @@ void draw( bool toScreen){
       if( loseCount > 20){
 
         draw_sprite( buffer, lose, 170, 170);
-        textprintf_ex( buffer, finalFont, 375, 375, makecol(255,255,97), -1, "%i", score);
-        textprintf_ex( buffer, finalFont, 455, 405, makecol(255,255,97), -1, "%i", robotDistance/10);
+        textprintf_ex( buffer, orbitron, 375, 375, makecol(255,255,97), -1, "%i", score);
+        textprintf_ex( buffer, orbitron, 455, 405, makecol(255,255,97), -1, "%i", robotDistance/10);
       }
       // Input rectangle
-      rectfill(buffer, 300, 508, 500, 552, makecol(0,0,0));
-      rectfill(buffer, 302, 510, 498, 550, makecol(255,255,255));
+      rectfill(buffer, 100, 508, text_length(orbitron, edittext.c_str())+112, 552, makecol(0,0,0));
+      rectfill(buffer, 102, 510, text_length(orbitron, edittext.c_str())+110, 550, makecol(255,255,255));
 
       // output the string to the screen
-      textout_ex(buffer, arial_black, edittext.c_str(), 306, 510, makecol(0,0,0), -1);
+      textout_ex(buffer, orbitron, edittext.c_str(), 106, 510, makecol(0,0,0), -1);
 
       // draw the caret
-      vline(buffer, text_length(arial_black, edittext.c_str()) + 306, 512, 548, makecol(0,0,0));
+      vline(buffer, text_length(orbitron, edittext.c_str()) + 106, 512, 548, makecol(0,0,0));
     }
 
     // Death image
@@ -1657,28 +1658,13 @@ void setup(bool first){
 
 
     // Loads fonts
-    // Final Font
-    f1 = load_font("fonts/finalFont.pcx", NULL, NULL);
+    // Orbitron size 14
+    f1 = load_font("fonts/orbitron_14.pcx", NULL, NULL);
     f2 = extract_font_range(f1, ' ', 'A'-1);
     f3 = extract_font_range(f1, 'A', 'Z');
     f4 = extract_font_range(f1, 'Z'+1, 'z');
-    finalFont = merge_fonts(f4, f5 = merge_fonts(f2, f3));
+    orbitron_14 = merge_fonts(f4, f5 = merge_fonts(f2, f3));
 
-    // Arial
-    f1 = load_font("fonts/arial.pcx", NULL, NULL);
-    f2 = extract_font_range(f1, ' ', 'A'-1);
-    f3 = extract_font_range(f1, 'A', 'Z');
-    f4 = extract_font_range(f1, 'Z'+1, 'z');
-    arial = merge_fonts(f4, f5 = merge_fonts(f2, f3));
-
-    // Arial Black
-    f1 = load_font("fonts/arial_black.pcx", NULL, NULL);
-    f2 = extract_font_range(f1, ' ', 'A'-1);
-    f3 = extract_font_range(f1, 'A', 'Z');
-    f4 = extract_font_range(f1, 'Z'+1, 'z');
-    arial_black = merge_fonts(f4, f5 = merge_fonts(f2, f3));
-
-    // Orbitron font
     f1 = load_font("fonts/orbitron.pcx", NULL, NULL);
     f2 = extract_font_range(f1, ' ', 'A'-1);
     f3 = extract_font_range(f1, 'A', 'Z');
