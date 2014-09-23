@@ -1,7 +1,7 @@
 #ifndef ENERGY_H
 #define ENERGY_H
 
-#define MAX_PARTICLES 20
+//#define MAX_PARTICLES 20
 
 #include "globals.h"
 #include "particle.h"
@@ -14,16 +14,16 @@ class energy{
     bool dead();
     void draw(BITMAP* tempBitmap);
     bool offScreen();
-    
+
   private:
     BITMAP* image[2];
     SAMPLE* soundEffect;
-    
+
     int x;
     int y;
     int height;
     int width;
-    
+
     bool isDead;
     vector<particle> debris;
 };

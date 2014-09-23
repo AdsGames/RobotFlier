@@ -546,61 +546,64 @@ void game(){
         loseCount++;
         stop_all_samples();
         //Name input
-        if(keypressed()){
-          int  newkey   = readkey();
-          char ASCII    = newkey & 0xff;
-          char scancode = newkey >> 8;
 
-          // a character key was pressed; add it to the string
-          if(ASCII >= 32 && ASCII <= 126 && edittext.length() < 14 && scancode != KEY_SPACE){
-            // add the new char
-            iter = edittext.insert(iter, ASCII);
-            // increment both the caret and the iterator
-            iter++;
-          }
-          // some other, "special" key was pressed; handle it here
-          else{
-            if(scancode == KEY_DEL){
-              if(iter != edittext.end()){
-                iter = edittext.erase(iter);
-              }
+        if(score > atoi(scores[10][1].c_str()) && loseCount>20){
+            if(keypressed()){
+                int  newkey   = readkey();
+                char ASCII    = newkey & 0xff;
+                char scancode = newkey >> 8;
+
+                // a character key was pressed; add it to the string
+                if(ASCII >= 32 && ASCII <= 126 && edittext.length() < 14 && scancode != KEY_SPACE){
+                    // add the new char
+                    iter = edittext.insert(iter, ASCII);
+                    // increment both the caret and the iterator
+                    iter++;
+                }
+                // some other, "special" key was pressed; handle it here
+                else{
+                    if(scancode == KEY_DEL){
+                        if(iter != edittext.end()){
+                        iter = edittext.erase(iter);
+                    }
+                }
+                if(scancode == KEY_BACKSPACE){
+                    if(iter != edittext.begin()){
+                        iter--;
+                        iter = edittext.erase(iter);
+                    }
+                }
+                if(scancode == KEY_RIGHT){
+                    if(iter != edittext.end()){
+                        iter++;
+                    }
+                }
+                if(scancode == KEY_LEFT){
+                    if(iter != edittext.begin()){
+                        iter--;
+                    }
+                }
+                if(scancode == KEY_ENTER || joy[0].button[1].b){
+                    addScore(edittext);
+                    setup(false);
+                    paused = false;
+                    optionMenu = false;
+                    fade_out(8);
+                    FSOUND_Stream_Stop(music_death);
+                    smokePart.clear();
+                    rocketPart.clear();
+                    magnetic = false;
+                    magneticTimer = 0;
+                    if(musicToggle)
+                        FSOUND_Stream_Play(0,music_mainmenu);
+                    gameScreen = MENU;
+                    fade_in(menu,8);
+                    ticks = 0;
+                }
             }
-            if(scancode == KEY_BACKSPACE){
-              if(iter != edittext.begin()){
-                 iter--;
-                 iter = edittext.erase(iter);
-              }
-            }
-            if(scancode == KEY_RIGHT){
-              if(iter != edittext.end()){
-                iter++;
-              }
-            }
-            if(scancode == KEY_LEFT){
-              if(iter != edittext.begin()){
-                iter--;
-              }
-            }
-            if(scancode == KEY_ENTER || joy[0].button[1].b){
-              addScore(edittext);
-              setup(false);
-              paused = false;
-              optionMenu = false;
-              fade_out(8);
-              FSOUND_Stream_Stop(music_death);
-              smokePart.clear();
-              rocketPart.clear();
-              magnetic = false;
-              magneticTimer = 0;
-              if(musicToggle)
-                FSOUND_Stream_Play(0,music_mainmenu);
-              gameScreen = MENU;
-              fade_in(menu,8);
-              ticks = 0;
-            }
-          }
         }
       }
+    }
       if( !alive && !deadSoundSwitch){
         deadSoundSwitch = true;
         FSOUND_Stream_Stop( music_ingame);
@@ -1268,6 +1271,7 @@ void draw( bool toScreen){
 
     // Lose scripts
     if( onGround){
+
       if( loseCount > 20){
 
         draw_sprite( buffer, ui_game_end, 0, 0);
@@ -1277,17 +1281,18 @@ void draw( bool toScreen){
         textprintf_ex( buffer, orbitron, 130, 245, makecol(0,0,0), -1, "Powerups Received: %i", powerupsCollected);
         textprintf_ex( buffer, orbitron, 130, 285, makecol(0,0,0), -1, "Debris Collided: %i", debrisCollided);
       }
-      // Input rectangle
-      rectfill(buffer, 120, 408, text_length(orbitron, edittext.c_str())+132, 452, makecol(0,0,0));
-      rectfill(buffer, 122, 410, text_length(orbitron, edittext.c_str())+130, 450, makecol(255,255,255));
+      if(score > atoi(scores[10][1].c_str()) && loseCount>20){
+        // Input rectangle
+        rectfill(buffer, 120, 408, text_length(orbitron, edittext.c_str())+132, 452, makecol(0,0,0));
+        rectfill(buffer, 122, 410, text_length(orbitron, edittext.c_str())+130, 450, makecol(255,255,255));
 
-      // output the string to the screen
-      textout_ex(buffer, orbitron, edittext.c_str(), 126, 410, makecol(0,0,0), -1);
+        // output the string to the screen
+        textout_ex(buffer, orbitron, edittext.c_str(), 126, 410, makecol(0,0,0), -1);
 
-      // draw the caret
-      vline(buffer, text_length(orbitron, edittext.c_str()) + 126, 412, 448, makecol(0,0,0));
+        // draw the caret
+        vline(buffer, text_length(orbitron, edittext.c_str()) + 126, 412, 448, makecol(0,0,0));
+      }
     }
-
     // Death image
     if(!alive){
       draw_sprite(buffer,robotDie,robot_x,robot_y);
