@@ -468,7 +468,7 @@ void game(){
       if( !onGround && motion != 0){
         groundScroll -= motion;
       }
-      if( groundScroll < -799)
+      if( groundScroll < -SCREEN_W)
         groundScroll = 0;
 
       // Scrolls background
@@ -480,10 +480,10 @@ void game(){
         scroll1--;
         scroll2--;
       }
-      if( scroll1 <-799){
+      if( scroll1 <-SCREEN_W){
         scroll1 = scroll2 + 800;
       }
-      if( scroll2 <-799){
+      if( scroll2 <-SCREEN_W){
         scroll2 = scroll1 + 800;
       }
 
@@ -715,7 +715,7 @@ void game(){
       }
       // Energy ball spawning
       if( random(0,50) == 0){
-        energy newEnergyBall( energyImage, energyImage, sound_orb, 800, random(30,550));
+        energy newEnergyBall( energyImage, energyImage, sound_orb, SCREEN_W, random(30,550));
         energys.push_back( newEnergyBall);
       }
 
@@ -731,7 +731,7 @@ void game(){
       // Asteroids spawning
       if( score>100){
         if( random(0,50) == 0){
-          asteroid newAsteroid( asteroidImage, asteroidImage, sound_asteroid, 800, random(30,550), random(4,20));
+          asteroid newAsteroid( asteroidImage, asteroidImage, sound_asteroid, SCREEN_W, random(30,550), random(4,20));
           asteroids.push_back( newAsteroid);
         }
       }
@@ -748,7 +748,7 @@ void game(){
       // Bomb spawning
       if(score > 200){
         if(random(0,80) == 0){
-          bomb newBomb( bombImage, bombImage, sound_bomb, 800, random(30,550));
+          bomb newBomb( bombImage, bombImage, sound_bomb, SCREEN_W, random(30,550));
           bombs.push_back( newBomb);
         }
       }
@@ -765,7 +765,7 @@ void game(){
       // Comets spawning
       if(score > 300){
         if(random(0,200) == 0){
-          comet newComet( cometImage, cometImage, sound_asteroid, 800, random(30,550));
+          comet newComet( cometImage, cometImage, sound_asteroid, SCREEN_W, random(30,550));
           comets.push_back( newComet);
         }
       }
@@ -782,23 +782,23 @@ void game(){
       // Powerup spawning
       if(score > 0){
         if(random(0,3000) == 0 && score > 100){
-          powerup newPowerup( powerStar, powerStar, sound_star, 800, random(30,600), 500, 1, 0);
+          powerup newPowerup( powerStar, powerStar, sound_star, SCREEN_W, random(30,600), 500, 1, 0);
           powerups.push_back( newPowerup);
         }
         if(random(0,750) == 0 && score > 100){
-          powerup newPowerup( powerMagnet, powerMagnet, magnetSound, 800, random(30,600), 500, 10, 3);
+          powerup newPowerup( powerMagnet, powerMagnet, magnetSound, SCREEN_W, random(30,600), 500, 10, 3);
           powerups.push_back( newPowerup);
         }
         if(random(0,1000) == 0 && score > 200){
-          powerup newPowerup( powerMagnetTwo, powerMagnetTwo, magnetSound, 800, random(30,600), 500, 11, 4);
+          powerup newPowerup( powerMagnetTwo, powerMagnetTwo, magnetSound, SCREEN_W, random(30,600), 500, 11, 4);
           powerups.push_back( newPowerup);
         }
         if(random(0,2000) == 0 && score > 300){
-          powerup newPowerup( powerMagnetThree, powerMagnetThree, magnetSound, 800, random(30,600), 500, 12, 5);
+          powerup newPowerup( powerMagnetThree, powerMagnetThree, magnetSound, SCREEN_W, random(30,600), 500, 12, 5);
           powerups.push_back( newPowerup);
         }
         if(random(0,3000) == 0 && score > 500){
-          powerup newPowerup( powerMagnetFour, powerMagnetFour, magnetSound, 800, random(30,600), 500, 13, 6);
+          powerup newPowerup( powerMagnetFour, powerMagnetFour, magnetSound, SCREEN_W, random(30,600), 500, 13, 6);
           powerups.push_back( newPowerup);
         }
       }
@@ -1111,7 +1111,7 @@ void draw( bool toScreen){
   // Menu drawing
   if(gameScreen == MENU){
     //Draw back drop
-    rectfill( buffer, 0, 0, 800, 600, makecol( 0, 0, 0));
+    rectfill( buffer, 0, 0, SCREEN_W, 600, makecol( 0, 0, 0));
     draw_sprite(buffer,menu,0,0);
     draw_sprite(buffer,start,x_start_button,400);
     if(joystick_enabled || control_mode==3)draw_sprite(buffer,xbox_start,x_start_button+225,430);
@@ -1152,16 +1152,23 @@ void draw( bool toScreen){
     // Draw backgrounds and Ground Overlay
     draw_sprite( buffer, space, scroll1, 0);
     draw_sprite( buffer, space, scroll2, 0);
+    draw_sprite( buffer, space, scroll2 + 800, 0);
+    draw_sprite( buffer, space, scroll2 + 1600, 0);
 
     // Mountain Paralax
     draw_sprite( buffer, space2, scroll1 * 2, 0);
     draw_sprite( buffer, space2, scroll1 * 2 + 800, 0);
     draw_sprite( buffer, space2, scroll2 * 2, 0);
     draw_sprite( buffer, space2, scroll2 * 2 + 800, 0);
+    draw_sprite( buffer, space2, scroll1 * 2 + 1600, 0);
+    draw_sprite( buffer, space2, scroll1 * 2 + 2400, 0);
+
 
     // Ground
     draw_sprite( buffer, groundOverlay, groundScroll, 580);
     draw_sprite( buffer, groundOverlay, groundScroll + 800, 580);
+    draw_sprite( buffer, groundOverlay, groundScroll + 1600, 580);
+    draw_sprite( buffer, groundOverlay, groundScroll + 2400, 580);
 
     // Draw info
     if( alive){
@@ -1250,6 +1257,7 @@ void draw( bool toScreen){
     // Draw the scrolling ground
     for(int i=0;i<13;i++){
       draw_sprite(buffer,groundPieces[i].groundImage,groundPieces[i].x,groundPieces[i].y);
+      //draw_sprite(buffer,groundPieces[i].groundImage,groundPieces[i].x+870,groundPieces[i].y);
     }
 
     // Pause Menu Scripts
@@ -1373,9 +1381,9 @@ void draw( bool toScreen){
       textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%i",motion);
       textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i",invincible);
       textprintf_ex(buffer,font,225,15,makecol(255,250,250),-1,"OptionClicked:%i",optionMenu);
-      textprintf_ex(buffer,font,225,25,makecol(255,250,250),-1,"smokeParticles:%i",smokePart.size());
+      textprintf_ex(buffer,font,225,25,makecol(255,250,250),-1,"SCREEN_H:%i",SCREEN_H);
     }
-  if(screenshot_notification_time>0)draw_sprite(buffer,ui_screenshot_notification,590,0);
+  if(screenshot_notification_time>0)draw_sprite(buffer,ui_screenshot_notification,SCREEN_W-210,0);
   // Draw background and buffer
   if( toScreen == true){
 	  draw_sprite(screen,buffer,0,0);
@@ -1688,7 +1696,7 @@ void setup(bool first){
 
 
     // Create buffer
-    buffer = create_bitmap( 800, 600);
+    buffer = create_bitmap( SCREEN_W, SCREEN_H);
 
 
   }
