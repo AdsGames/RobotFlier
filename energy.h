@@ -1,8 +1,6 @@
 #ifndef ENERGY_H
 #define ENERGY_H
 
-//#define MAX_PARTICLES 20
-
 #include "globals.h"
 #include "particle.h"
 

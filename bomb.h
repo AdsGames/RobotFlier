@@ -1,8 +1,6 @@
 #ifndef BOMB_H
 #define BOMB_H
 
-//#define MAX_PARTICLES 50
-
 #include "globals.h"
 #include "particle.h"
 

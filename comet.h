@@ -1,8 +1,6 @@
 #ifndef COMET_H
 #define COMET_H
 
-//#define MAX_PARTICLES 50
-
 #include "globals.h"
 #include "particle.h"
 
