@@ -43,7 +43,7 @@ void energy::logic(int newMotion){
 
   if(isDead){
     //Update particles
-    /*if( particlesOn){
+    /*if( particles_on){
 	    for( int i = 0; i < debris.size(); i++){
 	    	debris.at(i).logic();
 	      if(robot_y + robotHeight/2 + 2 > debris.at(i).y)
@@ -66,7 +66,7 @@ void energy::logic(int newMotion){
 bool energy::dead(){
   if(collision(x, x + width , robot_x, robot_x + robotWidth, y, y + height, robot_y, robot_y + robotHeight)){
     isDead = true;
-    /*if( particlesOn){
+    /*if( particles_on){
 	    int iteratorX = 0;
 	    int iteratorY = 0;
 	    for(int i = 0; i < width * height; i++){
@@ -99,7 +99,7 @@ void energy::draw( BITMAP* tempBitmap){
     }
   }
   else{
-  	if( particlesOn){
+  	if( particles_on){
 	    for( int i = 0; i < debris.size(); i++){
 	      debris.at(i).draw( tempBitmap);
 	    }

@@ -29,7 +29,7 @@ extern int magneticTimer;
 extern int invincibleTimer;
 extern bool invincible;
 
-extern int robotDistance;
+extern int robot_distance;
 extern int energyCollected;
 extern int powerupsCollected;
 extern int debrisCollided;
@@ -40,7 +40,7 @@ extern int particle_type;
 extern bool sound;
 extern bool magnetic;
 extern bool debugMode;
-extern bool particlesOn;
+extern bool particles_on;
 
 float Get2dDistance(float x1, float y1, float x2, float y2);
 

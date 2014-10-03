@@ -16,7 +16,7 @@ int magneticTimer;
 bool invincible;
 
 // For stats
-int robotDistance;
+int robot_distance;
 int energyCollected;
 int powerupsCollected;
 int debrisCollided;
@@ -27,7 +27,7 @@ int particle_type = 1;
 bool sound;
 bool magnetic;
 bool debugMode;
-bool particlesOn;
+bool particles_on;
 
 //Get distance between 2 points
 float Get2dDistance(float x1, float y1, float x2, float y2)

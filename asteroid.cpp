@@ -30,7 +30,7 @@ void asteroid::logic(int newMotion){
   }
 
   if(isDead){
-  	if( particlesOn){
+  	if( particles_on){
 	    //Update particles
 	    for( int i = 0; i < debris.size(); i++){
 	      debris.at(i).logic();
@@ -51,7 +51,7 @@ bool asteroid::dead(){
   		isDead = true;
   		debrisCollided +=1;
 		}
-    if( particlesOn){
+    if( particles_on){
 	    int iteratorX = 0;
 	    int iteratorY = 0;
 	    for(int i = 0; i < width * height; i++){
@@ -84,7 +84,7 @@ void asteroid::draw( BITMAP* tempBitmap){
     }
   }
   else{
-  	if( particlesOn){
+  	if( particles_on){
 	    for( int i = 0; i < debris.size(); i++){
 	      debris.at(i).draw( tempBitmap);
 	    }

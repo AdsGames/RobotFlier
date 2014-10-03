@@ -55,7 +55,7 @@ BITMAP* title;
 BITMAP* screenshot;
 
 // Game images
-BITMAP* forceField;
+BITMAP* force_field;
 BITMAP* space;
 BITMAP* space2;
 BITMAP* groundOverlay;
@@ -148,7 +148,7 @@ FONT* orbitron;
 int running;
 int x_start_button;
 int y_title;
-int optionX;
+int option_x;
 int creditsY;
 int mouseMove;
 int loseCount;
@@ -157,7 +157,7 @@ int step;
 int scroll1, scroll2;
 int groundScroll;
 int gameScreen;
-int forceFieldAppear = 10;
+int force_fieldAppear = 10;
 int control_mode;
 int key_bindings[10];
 int screenshot_notification_time;
@@ -368,11 +368,11 @@ void game(){
     if(creditsY<790 && startClicked)
       creditsY=creditsY+5;
 
-    if(optionX>710 && !startClicked)
-      optionX=optionX-5;
+    if(option_x>710 && !startClicked)
+      option_x=option_x-5;
 
-    if(optionX<790 && startClicked)
-      optionX=optionX+5;
+    if(option_x<790 && startClicked)
+      option_x=option_x+5;
 
 
     // Start the game
@@ -462,7 +462,7 @@ void game(){
 
       // Add to distance travelled
       if( alive)
-        robotDistance += motion;
+        robot_distance += motion;
 
       // Scroll ground
       if( !onGround && motion != 0){
@@ -673,9 +673,9 @@ void game(){
       // Touching top or bottom
       if( robot_y < 1 && alive){
         speed = -10;
-        forceFieldAppear=0;
+        force_fieldAppear=0;
       }
-      forceFieldAppear++;
+      force_fieldAppear++;
       if( onGround && !alive && motion>0){
         motion = 0;
       }
@@ -811,10 +811,10 @@ void game(){
         }
       }
       //Death smoke
-      if( !particlesOn){
+      if( !particles_on){
         smokePart.clear();
       }
-      if( particlesOn && gameScreen==GAME && !alive){
+      if( particles_on && gameScreen==GAME && !alive){
         for( int i = 0; i < smokeParticles; i++){
           if( random(0,10) == 0){
             int randnum=random(0,255);
@@ -831,10 +831,10 @@ void game(){
       }
 
       // Rocket particles
-      if( !particlesOn){
+      if( !particles_on){
         rocketPart.clear();
       }
-      if( particlesOn){
+      if( particles_on){
         if( !rocket){
           for( int i = 0; i < rocketParticles; i++){
             if( random(0,10) == 0){
@@ -864,7 +864,7 @@ void game(){
     if(key[KEY_U])score=score+50;
     if(key[KEY_Q])health=health-1;
     if(key[KEY_E])health=0;
-    if(key[KEY_Y])robotDistance=robotDistance+500;
+    if(key[KEY_Y])robot_distance=robot_distance+500;
     if(key[KEY_T])score=score-2;
     if(key[KEY_R] || joy[0].button[2].b)health=100;
 
@@ -1001,11 +1001,11 @@ void game(){
       if(mouse_b & 1 && collision(280,360,mouse_x,mouse_x,400,480,mouse_y,mouse_y)){
         if(particle_type==3){
             particle_type=0;
-            particlesOn=true;
+            particles_on=true;
             step=0;
         }
         if(particle_type==2 && step>9){
-            particlesOn = false;
+            particles_on = false;
             rocketPart.clear();
             mousePart.clear();
             smokePart.clear();
@@ -1039,10 +1039,10 @@ void game(){
   // Mouse drawing routines
   if(gameScreen != GAME || optionMenu || paused){
     // Draw mouse particles
-    if( !particlesOn){
+    if( !particles_on){
       mousePart.clear();
     }
-    if( particlesOn){
+    if( particles_on){
       if( mouse_rocketocket){
         for( int i = 0; i < mouseParticles; i++){
           if( random(0,10) == 0){
@@ -1193,12 +1193,12 @@ void draw( bool toScreen){
     }
 
     // Draw rocket particles
-    if( !particlesOn){
+    if( !particles_on){
       if( !rocket){
         draw_sprite( buffer, robotfire, robot_x, robot_y);
       }
     }
-    if( particlesOn){
+    if( particles_on){
       for( int i = 0; i < rocketPart.size(); i++){
         rocketPart.at(i).draw( buffer);
       }
@@ -1209,11 +1209,11 @@ void draw( bool toScreen){
       }
 
     // Robot Invincible
-    if( !rocket && alive && invincible && particlesOn)
+    if( !rocket && alive && invincible && particles_on)
       draw_sprite(buffer,robotInvincible,robot_x,robot_y);
     if( rocket && alive && invincible)
       draw_sprite(buffer,robotInvincible,robot_x,robot_y);
-    if( !rocket && alive && invincible && !particlesOn)
+    if( !rocket && alive && invincible && !particles_on)
       draw_sprite(buffer,robotInvincibleFire,robot_x,robot_y);
 
     // Energy
@@ -1247,11 +1247,11 @@ void draw( bool toScreen){
     }
 
     // Draw robot sprite
-    if( !rocket && alive && !invincible && particlesOn)
+    if( !rocket && alive && !invincible && particles_on)
       draw_sprite(buffer,robot,robot_x,robot_y);
     if( rocket && alive && !invincible)
       draw_sprite(buffer,robot,robot_x,robot_y);
-    if( !rocket && alive && !invincible && !particlesOn)
+    if( !rocket && alive && !invincible && !particles_on)
       draw_sprite(buffer,robotfire,robot_x,robot_y);
 
     // Draw the scrolling ground
@@ -1264,7 +1264,7 @@ void draw( bool toScreen){
     if(paused){
       if(!optionMenu && alive){
         draw_sprite(buffer,pauseMenu,130,140);
-        textprintf_ex(buffer,orbitron_14,220,250,makecol(255,250,250),-1,"Distance Flown: %i ft",robotDistance/25);
+        textprintf_ex(buffer,orbitron_14,220,250,makecol(255,250,250),-1,"Distance Flown: %i ft",robot_distance/25);
         textprintf_ex(buffer,orbitron_14,220,280,makecol(255,250,250),-1,"Energy Collected: %i",energyCollected);
         textprintf_ex(buffer,orbitron_14,220,310,makecol(255,250,250),-1,"Powerups Received: %i",powerupsCollected);
         textprintf_ex(buffer,orbitron_14,220,340,makecol(255,250,250),-1,"Debris Collided: %i",debrisCollided);
@@ -1284,7 +1284,7 @@ void draw( bool toScreen){
 
         draw_sprite( buffer, ui_game_end, 0, 0);
         textprintf_ex( buffer, orbitron, 130, 125, makecol(0,0,0), -1, "Final Score: %i", score);
-        textprintf_ex( buffer, orbitron, 130, 165, makecol(0,0,0), -1, "Distance Travelled: %i", robotDistance/10);
+        textprintf_ex( buffer, orbitron, 130, 165, makecol(0,0,0), -1, "Distance Travelled: %i", robot_distance/10);
         textprintf_ex( buffer, orbitron, 130, 205, makecol(0,0,0), -1, "Energy Collected: %i", energyCollected);
         textprintf_ex( buffer, orbitron, 130, 245, makecol(0,0,0), -1, "Powerups Received: %i", powerupsCollected);
         textprintf_ex( buffer, orbitron, 130, 285, makecol(0,0,0), -1, "Debris Collided: %i", debrisCollided);
@@ -1307,8 +1307,8 @@ void draw( bool toScreen){
     }
 
     // Show force field
-    if(forceFieldAppear<8)
-      draw_sprite(buffer,forceField,0,0);
+    if(force_fieldAppear<8)
+      draw_sprite(buffer,force_field,0,0);
 
     // See through invincibility
     if(alive && invincible)
@@ -1351,12 +1351,12 @@ void draw( bool toScreen){
   // Mouse drawing routines
   if(optionMenu || paused || gameScreen != GAME){
     // Draw mouse particles
-    if( !particlesOn){
+    if( !particles_on){
       if( mouse_rocketocket){
         draw_sprite(buffer,mouse_rocket,mouse_x,mouse_y);
       }
     }
-    if( particlesOn){
+    if( particles_on){
       if(gameScreen == GAME && !paused){
         for( int i = 0; i < mousePart.size(); i++){
           mousePart.at(i).draw( buffer);
@@ -1475,13 +1475,13 @@ void setup(bool first){
   running = 0;
   x_start_button = -400;
   y_title = -100;
-  optionX = 800;
+  option_x = 800;
   creditsY = 600;
   mouseMove = 0;
   motion = 5;
   health = 100;
   loseCount = 0;
-  robotDistance = 0;
+  robot_distance = 0;
   robot_x = 80;
   robot_y = 400;
   score = 0;
@@ -1526,7 +1526,7 @@ void setup(bool first){
     sound = true;
     musicToggle = true;
     fullScreen = false;
-    particlesOn = true;
+    particles_on = true;
     control_mode=1;
 
      // Setup for FPS system
@@ -1644,8 +1644,8 @@ void setup(bool first){
       abort_on_error("Cannot find image powerMagnetFour.png\nPlease check your files and try again");
     if (!(intro = load_bitmap("images/backgrounds/intro.png", NULL)))
       abort_on_error("Cannot find image backgrounds/intro.png\nPlease check your files and try again");
-    if (!(forceField = load_bitmap("images/forceField.png", NULL)))
-      abort_on_error("Cannot find image images/forceField.png\nPlease check your files and try again");
+    if (!(force_field = load_bitmap("images/force_field.png", NULL)))
+      abort_on_error("Cannot find image images/force_field.png\nPlease check your files and try again");
     if (!(highscores_table = load_bitmap("images/gui/highscores_table.png", NULL)))
       abort_on_error("Cannot find image gui/highscores_table.png\nPlease check your files and try again");
     if (!(ui_help = load_bitmap("images/gui/ui_help.png", NULL)))
@@ -1711,7 +1711,7 @@ int main(){
   install_joystick(JOY_TYPE_AUTODETECT);
   install_mouse();
   set_color_depth(32);
-  set_gfx_mode(GFX_AUTODETECT_WINDOWED, 1280, 600, 0, 0);
+  set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
   install_sound(DIGI_AUTODETECT,MIDI_AUTODETECT,".");
 
 
