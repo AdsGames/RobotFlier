@@ -146,7 +146,7 @@ int running;
 int x_start_button;
 int y_title;
 int option_x;
-int creditsY;
+int credits_y;
 int mouseMove;
 int loseCount;
 int gravity, motion, speed;
@@ -359,17 +359,17 @@ void game(){
     if(y_title>-119 && startClicked)
       y_title=y_title-10;
 
-    if(creditsY>530 && !startClicked)
-      creditsY=creditsY-5;
+    if(credits_y>548 && !startClicked)
+      credits_y=credits_y-4;
 
-    if(creditsY<790 && startClicked)
-      creditsY=creditsY+5;
+    if(credits_y<600 && startClicked)
+      credits_y=credits_y+4;
 
-    if(option_x>710 && !startClicked)
-      option_x=option_x-5;
+    if(option_x>748 && !startClicked)
+      option_x=option_x-4;
 
-    if(option_x<790 && startClicked)
-      option_x=option_x+5;
+    if(option_x<800 && startClicked)
+      option_x=option_x+4;
 
 
     // Start the game
@@ -1109,9 +1109,9 @@ void draw( bool toScreen){
     draw_sprite(buffer,start,x_start_button,400);
     if(joystick_enabled || control_mode==3)draw_sprite(buffer,xbox_start,x_start_button+225,430);
     draw_sprite(buffer,title,20,y_title);
-    draw_sprite(buffer,ui_credits,593,548);
-    draw_sprite(buffer,ui_help,697,548);
-    draw_sprite(buffer,ui_options,748,548);
+    draw_sprite(buffer,ui_credits,593,credits_y);
+    draw_sprite(buffer,ui_help,697,credits_y);
+    draw_sprite(buffer,ui_options,option_x,548);
 
 
 
@@ -1124,7 +1124,7 @@ void draw( bool toScreen){
       textout_centre_ex(buffer, orbitron, "Highscores", 400, 75, makecol(0,0,0), -1);
       for(int i = 0; i < 10; i++){
         string name = scores[i][0];
-        textout_ex(buffer, orbitron, name.c_str(), 225, (i * 40) + 120, makecol(0,0,0), -1);
+        textout_ex(buffer, orbitron_14, name.c_str(), 225, (i * 40) + 120, makecol(0,0,0), -1);
         name = scores[i][1];
         textout_right_ex(buffer, orbitron, name.c_str(), 575, (i * 40) + 120, makecol(0,0,0), -1);
       }
@@ -1411,6 +1411,8 @@ void changeTheme( int themeNumber){
 	if (!(groundOverlay = load_bitmap((string("images/ground/groundOverlay_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     abort_on_error((string("Cannot find image ground/groundOverlay_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
+    //Iterators.. not even once
+
   if (!(ground[0] = load_bitmap((string("images/ground/ground1_") + themeName.c_str() + string(".png")).c_str(), NULL))){
     abort_on_error((string("Cannot find image ground/ground1_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
@@ -1477,7 +1479,7 @@ void setup(bool first){
   x_start_button = -400;
   y_title = -100;
   option_x = 800;
-  creditsY = 600;
+  credits_y = 600;
   mouseMove = 0;
   motion = 5;
   health = 100;
