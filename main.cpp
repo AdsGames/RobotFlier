@@ -1126,7 +1126,7 @@ void draw( bool toScreen){
         string name = scores[i][0];
         textout_ex(buffer, orbitron_14, name.c_str(), 225, (i * 40) + 120, makecol(0,0,0), -1);
         name = scores[i][1];
-        textout_right_ex(buffer, orbitron, name.c_str(), 575, (i * 40) + 120, makecol(0,0,0), -1);
+        textout_right_ex(buffer, orbitron_14, name.c_str(), 575, (i * 40) + 120, makecol(0,0,0), -1);
       }
     }
   }
