@@ -74,11 +74,10 @@ BITMAP* pauseMenu;
 BITMAP* ui_options;
 BITMAP* ui_window_fullscreen;
 BITMAP* ui_window_windowed;
-BITMAP* gearIcon;
+BITMAP* ui_options_small;
 BITMAP* ui_back;
 BITMAP* credits;
 BITMAP* ui_credits;
-BITMAP* resumeButton;
 BITMAP* ui_particle_circle;
 BITMAP* ui_particle_off;
 BITMAP* ui_particle_pixel;
@@ -141,8 +140,6 @@ FONT* orbitron;
 
 // Define constistants
 // You know ^^^^^^^^^^ Code::Blocks has a spell check right?
-
-//I removed the constant, but I'm leaving this here in memory of Allan's horrible spelling.
 
 // Declare integers
 int running;
@@ -889,7 +886,7 @@ void game(){
 
     // Pause Menu Scripts
     if(paused){
-      if(mouse_b & 1 && collision( 220, 240, mouse_x, mouse_x, 435, 475, mouse_y, mouse_y) && !optionMenu){
+      if(mouse_b & 1 && collision( 210, 270, mouse_x, mouse_x, 435, 470, mouse_y, mouse_y) && !optionMenu){
         optionMenu = true;
         step = 0;
       }
@@ -1103,10 +1100,6 @@ void game(){
 //
 
 void draw( bool toScreen){
-  // Splash screen
-  if(gameScreen == SPLASH){
-
-  }
 
   // Menu drawing
   if(gameScreen == MENU){
@@ -1149,6 +1142,13 @@ void draw( bool toScreen){
 
   // Game screen
   if(gameScreen == GAME){
+    //Just in case!
+    draw_sprite( buffer, space, 0, 0);
+    draw_sprite( buffer, space, 800, 0);
+    draw_sprite( buffer, space, 1600, 0);
+    draw_sprite( buffer, space, 2400, 0);
+    draw_sprite( buffer, space, 3200, 0);
+
     // Draw backgrounds and Ground Overlay
     draw_sprite( buffer, space, scroll1, 0);
     draw_sprite( buffer, space, scroll2, 0);
@@ -1269,8 +1269,9 @@ void draw( bool toScreen){
         textprintf_ex(buffer,orbitron_14,220,310,makecol(255,250,250),-1,"Powerups Received: %i",powerupsCollected);
         textprintf_ex(buffer,orbitron_14,220,340,makecol(255,250,250),-1,"Debris Collided: %i",debrisCollided);
 
-        draw_sprite( buffer, gearIcon, 220, 435);
-        draw_sprite( buffer, resumeButton, 450, 445);
+        draw_sprite( buffer, ui_options_small, 224, 435);
+
+        textprintf_ex(buffer,orbitron_14,450,445,makecol(0,0,0),-1,"Resume");
       }
     }
 
@@ -1408,49 +1409,49 @@ void changeTheme( int themeNumber){
 	}
 
 	if (!(groundOverlay = load_bitmap((string("images/ground/groundOverlay_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/groundOverlay_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/groundOverlay_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(ground[0] = load_bitmap((string("images/ground/ground1_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/ground1_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground1_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(ground[1] = load_bitmap((string("images/ground/ground2_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/ground2_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground2_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(ground[2] = load_bitmap((string("images/ground/ground3_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/ground3_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground3_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(ground[3] = load_bitmap((string("images/ground/ground4_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/ground4_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground4_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(ground[4] = load_bitmap((string("images/ground/ground5_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/ground5_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground5_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(ground[5] = load_bitmap((string("images/ground/ground6_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/ground6_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground6_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(ground[6] = load_bitmap((string("images/ground/ground7_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/ground7_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground7_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(ground[7] = load_bitmap((string("images/ground/ground8_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/ground8_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground8_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(ground[8] = load_bitmap((string("images/ground/ground9_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/ground9_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground9_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(ground[9] = load_bitmap((string("images/ground/ground10_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/ground10_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground10_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(ground[10] = load_bitmap((string("images/ground/ground11_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/ground11_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground11_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(ground[11] = load_bitmap((string("images/ground/ground12_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/ground12_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground12_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(space2 = load_bitmap((string("images/ground/paralax_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/paralax_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/paralax_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
   if (!(asteroidImage = load_bitmap((string("images/asteroid_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    allegro_message((string("Cannot find image ground/asteroid_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/asteroid_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
 }
 
 
@@ -1614,8 +1615,8 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/ui_window_fullscreen.windowed.png\nPlease check your files and try again");
     if (!(ui_window_fullscreen = load_bitmap("images/gui/ui_window_fullscreen.png", NULL)))
       abort_on_error("Cannot find image gui/ui_window_fullscreen.png\nPlease check your files and try again");
-    if (!(gearIcon = load_bitmap("images/gui/gearIcon.png", NULL)))
-      abort_on_error("Cannot find image gui/gearIcon.png\nPlease check your files and try again");
+    if (!(ui_options_small = load_bitmap("images/gui/ui_options_small.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_options_small.png\nPlease check your files and try again");
     if (!(ui_back = load_bitmap("images/gui/ui_back.png", NULL)))
       abort_on_error("Cannot find image gui/ui_back.png\nPlease check your files and try again");
     if (!(powerStar = load_bitmap("images/powerStar.png", NULL)))
@@ -1624,8 +1625,6 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/credits.png\nPlease check your files and try again");
     if (!(ui_credits = load_bitmap("images/gui/ui_credits.png", NULL)))
       abort_on_error("Cannot find image gui/ui_credits.png\nPlease check your files and try again");
-    if (!(resumeButton = load_bitmap("images/gui/resumeButton.png", NULL)))
-      abort_on_error("Cannot find image gui/resumeButton.png\nPlease check your files and try again");
     if (!(ui_particle_circle = load_bitmap("images/gui/ui_particle_circle.png", NULL)))
       abort_on_error("Cannot find image gui/ui_particle_circle.png\nPlease check your files and try again");
     if (!(ui_particle_off = load_bitmap("images/gui/ui_particle_off.png", NULL)))
