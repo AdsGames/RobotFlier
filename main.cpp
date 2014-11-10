@@ -1186,10 +1186,10 @@ void draw( bool toScreen){
         textprintf_centre_ex( buffer, orbitron, 45, 90, makecol(255,0,0), -1, "%i", invincibleTimer/5);
       }
       if( magneticTimer > 0){
-        circlefill( buffer, 165, 105, 20, makecol(255,255,255));
-        draw_sprite( buffer, powerMagnet, 140, 80);
-        textprintf_centre_ex( buffer, orbitron, 164, 88, makecol(255,255,255), -1, "%i", magneticTimer/5);
-        textprintf_centre_ex( buffer, orbitron, 165, 90, makecol(255,0,0), -1, "%i", magneticTimer/5);
+        circlefill( buffer, 175, 105, 20, makecol(255,255,255));
+        draw_sprite( buffer, powerMagnet, 150, 80);
+        textprintf_centre_ex( buffer, orbitron, 174, 88, makecol(255,255,255), -1, "%i", magneticTimer/5);
+        textprintf_centre_ex( buffer, orbitron, 175, 90, makecol(255,0,0), -1, "%i", magneticTimer/5);
       }
     }
 
