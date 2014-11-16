@@ -158,6 +158,7 @@ int force_fieldAppear = 10;
 int control_mode;
 int key_bindings[10];
 int screenshot_notification_time;
+int handling_speed=10;
 
 // Declare booleans
 bool mouse_rocketocket;
@@ -500,7 +501,7 @@ void game(){
                     if(sound)
                         play_sample( sound_flame, 20, 155, 1000, 0);
                 }
-                if( speed < 14){
+                if( speed < handling_speed){
                     rocket = false;
                     speed += 1;
                 }
@@ -513,7 +514,7 @@ void game(){
                     if(sound)
                         play_sample( sound_flame, 20, 155, 1000, 0);
                 }
-                if( speed < 14){
+                if( speed < handling_speed){
                     rocket = false;
                     speed += 1;
                 }
@@ -525,7 +526,7 @@ void game(){
           if( !key[KEY_W] && !key[KEY_UP] && ! mouse_b & 1 && control_mode==2 || !key[KEY_W] && !key[KEY_UP] && !mouse_b & 1 && control_mode==1 && !joy[0].button[0].b || control_mode==3 && !joy[0].button[0].b){
 
                 rocket = true;
-                if( speed > -14){
+                if( speed > -handling_speed){
                     speed -= 1;
                 }
 
