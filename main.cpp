@@ -669,7 +669,7 @@ void game(){
 
       // Touching top or bottom
       if( robot_y < 1 && alive){
-        speed = -10;
+        speed = -5;
         force_fieldAppear=0;
       }
       force_fieldAppear++;
@@ -1116,8 +1116,7 @@ void draw( bool toScreen){
 
 
 
-    //Draw scores if neccisary
-    //Seriously Allan?^^^^^^^^That's a new all-time low, dude, read a dictionary or something
+    //Draw scores
     if(viewScores){
       //rectfill( buffer, 200, 50, 600, 550, makecol( 255, 255, 255));
       draw_sprite( buffer, highscores_table, 200, 50);
@@ -1276,9 +1275,6 @@ void draw( bool toScreen){
       }
     }
 
-    // Debug console
-
-
     // Lose scripts
     if( onGround){
 
@@ -1369,7 +1365,7 @@ void draw( bool toScreen){
     draw_sprite( buffer, mouse, mouse_x, mouse_y);
   }
 
-    // Draw the debug window
+   // Draw the debug window
    if(debugMode){
       draw_sprite(buffer,debug,0,0);
       textprintf_ex(buffer,font,225,5,makecol(255,250,250),-1,"Gravity:%i",gravity);
@@ -1384,6 +1380,7 @@ void draw( bool toScreen){
       textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i",invincible);
       textprintf_ex(buffer,font,225,15,makecol(255,250,250),-1,"OptionClicked:%i",optionMenu);
       textprintf_ex(buffer,font,225,25,makecol(255,250,250),-1,"SCREEN_H:%i",SCREEN_H);
+      textprintf_ex(buffer,font,225,35,makecol(255,250,250),-1,"Particles On%i",particles_on);
     }
   if(screenshot_notification_time>0)draw_sprite(buffer,ui_screenshot_notification,SCREEN_W-210,0);
   // Draw background and buffer
