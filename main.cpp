@@ -293,7 +293,7 @@ void write_settings(){
     settings[2]=sound;
     settings[3]=musicToggle;
     settings[4]=fullScreen;
-    settings[5]=control_mode;
+    settings[5]=control_mode+1;
 
     ofstream settings_file;
     settings_file.open("data/settings.dat");
@@ -316,7 +316,7 @@ void read_settings(){
     sound=settings[2];
     musicToggle=settings[3];
     fullScreen=settings[4];
-    control_mode=settings[5];
+    control_mode=settings[5]+1;
     if(particle_type==3)particles_on=false;
     else particles_on=true;
 }
