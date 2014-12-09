@@ -304,6 +304,7 @@ void write_settings(){
     settings_file.close();
 
 }
+//Reads the data from file
 void read_settings(){
     ifstream read("data/settings.dat");
     for (int i = 0; i < 5; i++){
@@ -316,6 +317,8 @@ void read_settings(){
     musicToggle=settings[3];
     fullScreen=settings[4];
     control_mode=settings[5];
+    if(particle_type==3)particles_on=false;
+    else particles_on=true;
 }
 
 //Iterates through the number of buttons in a joystick and returns true if any keys are pressed
