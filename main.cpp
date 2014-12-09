@@ -1070,9 +1070,7 @@ void game(){
   // Mouse drawing routines
   if(gameScreen != GAME || optionMenu || paused){
     // Draw mouse particles
-    if( !particles_on){
-      mousePart.clear();
-    }
+
     if( particles_on){
       if( mouse_rocketocket){
         for( int i = 0; i < mouseParticles; i++){
@@ -1331,7 +1329,10 @@ void draw( bool toScreen){
 
         // draw the caret
         vline(buffer, text_length(orbitron, edittext.c_str()) + 126, 412, 448, makecol(0,0,0));
-      }else{
+        //Draw the congrats message
+        textprintf_ex( buffer, orbitron, 150, 350, makecol(0,255,0), -1, "New highscore!");
+
+      }else if(loseCount>20){
         textprintf_ex( buffer, orbitron, 150, 400, makecol(0,0,0), -1, "Press Enter/A to continue");
       }
     }
@@ -1399,6 +1400,9 @@ void draw( bool toScreen){
      }
     // Draw mouse
     draw_sprite( buffer, mouse, mouse_x, mouse_y);
+    for( int i = 0; i < mousePart.size(); i++){
+          mousePart.at(i).draw( buffer);
+        }
   }
 
    // Draw the debug window
