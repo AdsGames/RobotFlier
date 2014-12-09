@@ -1117,7 +1117,7 @@ void game(){
 	  write << screenshotNumber + 1;
 	  write.close();
 
-    save_bitmap((string("screenshots/screenshot_") + convertInt(screenshotNumber).c_str() + string(".png")).c_str(), buffer, NULL);
+    save_png((string("screenshots/screenshot_") + convertInt(screenshotNumber).c_str() + string(".png")).c_str(), buffer, NULL);
   }
   poll_joystick();
   step++;
