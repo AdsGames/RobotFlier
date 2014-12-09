@@ -159,6 +159,7 @@ int control_mode;
 int key_bindings[10];
 int screenshot_notification_time;
 int handling_speed=10;
+int settings[5];
 
 // Declare booleans
 bool mouse_rocketocket;
@@ -286,6 +287,37 @@ bool joy_buttonpressed(){
         if(joy[0].button[i].b)buttonpressed=true;
     return buttonpressed;
 }
+//Writes the settings to file
+void write_settings(){
+    settings[1]=particle_type;
+    settings[2]=sound;
+    settings[3]=musicToggle;
+    settings[4]=fullScreen;
+    settings[5]=control_mode;
+
+    ofstream settings_file;
+    settings_file.open("data/settings.dat");
+
+    for (int i = 0; i < 5; i++){
+        settings_file<<settings[i]<<" ";
+    }
+    settings_file.close();
+
+}
+void read_settings(){
+    ifstream read("data/settings.dat");
+    for (int i = 0; i < 5; i++){
+        read>>settings[i];
+    }
+    read.close();
+
+    particle_type=settings[5];
+    sound=settings[5];
+    musicToggle=settings[5];
+    fullScreen=settings[5];
+    control_mode=settings[5];
+}
+
 //Iterates through the number of buttons in a joystick and returns true if any keys are pressed
 bool keyboard_keypressed(){
     bool keypressed=false;
@@ -1758,7 +1790,7 @@ int main(){
   // Run setup function
   set_window_title("Robot Flier");
   setup(true);
-
+  read_settings();
 
   while( !close_button_pressed && gameScreen!=EXIT){
     while(ticks == 0){
