@@ -311,10 +311,10 @@ void read_settings(){
     }
     read.close();
 
-    particle_type=settings[5];
-    sound=settings[5];
-    musicToggle=settings[5];
-    fullScreen=settings[5];
+    particle_type=settings[1];
+    sound=settings[2];
+    musicToggle=settings[3];
+    fullScreen=settings[4];
     control_mode=settings[5];
 }
 
@@ -1008,13 +1008,12 @@ void game(){
       if(mouse_b & 1 && collision(580,630,mouse_x,mouse_x,450,500,mouse_y,mouse_y) && gameScreen == GAME)
         optionMenu = false;
 
-
-
     if(step > 10){
       // Sound button toggle
       if(mouse_b & 1 && collision(120,200,mouse_x,mouse_x,180,260,mouse_y,mouse_y)){
         sound = !sound;
         step = 0;
+        write_settings();
       }
 
       // Music button toggle
@@ -1037,13 +1036,14 @@ void game(){
           FSOUND_Stream_Stop(music_mainmenu);
         }
         step = 0;
+        write_settings();
       }
 
       // Control Toggle
       if(mouse_b & 1 && collision(120,200,mouse_x,mouse_x,290,370,mouse_y,mouse_y)){
-        if(control_mode==1 && step>10){control_mode = 2; step = 0;}
-        if(control_mode==2 && step>10){control_mode = 3; step = 0;}
-        if(control_mode==3 && step>10){control_mode = 1; step = 0;}
+        if(control_mode==1 && step>10){control_mode = 2; step = 0; write_settings();}
+        if(control_mode==2 && step>10){control_mode = 3; step = 0; write_settings();}
+        if(control_mode==3 && step>10){control_mode = 1; step = 0; write_settings();}
 
 
       }
@@ -1052,6 +1052,7 @@ void game(){
       if(mouse_b & 1 && collision(120,200,mouse_x,mouse_x,400,480,mouse_y,mouse_y)){
         fullScreen = !fullScreen;
         step = 0;
+        write_settings();
         if(fullScreen){
           set_gfx_mode( GFX_AUTODETECT_FULLSCREEN, 800, 600, 0, 0);
         }
@@ -1066,6 +1067,7 @@ void game(){
             particle_type=0;
             particles_on=true;
             step=0;
+            write_settings();
         }
         if(particle_type==2 && step>9){
             particles_on = false;
@@ -1074,14 +1076,17 @@ void game(){
             smokePart.clear();
             step = 0;
             particle_type=3;
+            write_settings();
         }
         if(particle_type==1 && step>9){
             particle_type=2;
             step=0;
+            write_settings();
         }
         if(particle_type==0 && step>9){
             particle_type=1;
             step=0;
+            write_settings();
         }
       }
       // Power off
@@ -1596,13 +1601,6 @@ void setup(bool first){
     //Sets the level to 1
     changeTheme( 0);
 
-    //Sets the default menu values
-    sound = true;
-    musicToggle = true;
-    fullScreen = false;
-    particles_on = true;
-    control_mode=1;
-
      // Setup for FPS system
     LOCK_VARIABLE(ticks);
     LOCK_FUNCTION(ticker);
@@ -1783,14 +1781,15 @@ int main(){
   install_joystick(JOY_TYPE_AUTODETECT);
   install_mouse();
   set_color_depth(32);
-  set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
+  read_settings();
+  if(!fullScreen)set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
+  else set_gfx_mode(GFX_AUTODETECT, 800, 600, 0, 0);
   install_sound(DIGI_AUTODETECT,MIDI_AUTODETECT,".");
 
 
   // Run setup function
   set_window_title("Robot Flier");
   setup(true);
-  read_settings();
 
   while( !close_button_pressed && gameScreen!=EXIT){
     while(ticks == 0){
