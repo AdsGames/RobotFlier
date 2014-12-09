@@ -177,6 +177,7 @@ bool mouse_down;
 bool viewScores;
 bool joystick_enabled;
 bool key_binding_screen;
+bool is_high_score;
 
 string scores[10][2];
 
@@ -251,6 +252,13 @@ string convertInt(int number){
    return ss.str();
 }
 
+//Convert string to int
+int convertStringToInt(string newString){
+  int result;
+  stringstream(newString) >> result;
+  return result;
+}
+
 //Read High Scores
 void updateScores(){
   ifstream read("data/scores.dat");
@@ -286,8 +294,14 @@ bool keyboard_keypressed(){
     return keypressed;
 
 }
-
-
+void check_highscore(){
+    for (int i = 0; i < 10; i++){
+        if(score > atoi(scores[i][1].c_str())){
+            is_high_score=true;
+            break;
+        }else is_high_score=false;
+    }
+}
 //Add score
 void addScore(string name){
   //Update table
@@ -371,7 +385,6 @@ void game(){
 
     if(option_x<800 && startClicked)
       option_x=option_x+4;
-
 
     // Start the game
     if(x_start_button<-399){
@@ -540,12 +553,12 @@ void game(){
       }
 
       // Lose scripts
-      if( onGround){
+      if(onGround){
         loseCount++;
         stop_all_samples();
         //Name input
-
-        if(score > atoi(scores[10][1].c_str()) && loseCount>20){
+        check_highscore();
+        if(is_high_score && loseCount>20){
             if(keypressed()){
                 int  newkey   = readkey();
                 char ASCII    = newkey & 0xff;
@@ -600,6 +613,26 @@ void game(){
                 }
             }
         }
+      }else{
+          if(key[KEY_ENTER] ||  joy[0].button[1].b){
+                    addScore(edittext);
+                    setup(false);
+                    paused = false;
+                    optionMenu = false;
+                    fade_out(8);
+                    FSOUND_Stream_Stop(music_death);
+                    smokePart.clear();
+                    rocketPart.clear();
+                    magnetic = false;
+                    magneticTimer = 0;
+                    if(musicToggle)
+                        FSOUND_Stream_Play(0,music_mainmenu);
+                    gameScreen = MENU;
+                    fade_in(menu,8);
+                    ticks = 0;
+          }
+
+
       }
     }
       if( !alive && !deadSoundSwitch){
@@ -1288,7 +1321,7 @@ void draw( bool toScreen){
         textprintf_ex( buffer, orbitron, 130, 245, makecol(0,0,0), -1, "Powerups Received: %i", powerupsCollected);
         textprintf_ex( buffer, orbitron, 130, 285, makecol(0,0,0), -1, "Debris Collided: %i", debrisCollided);
       }
-      if(score > atoi(scores[10][1].c_str()) && loseCount>20){
+      if(is_high_score && loseCount>20){
         // Input rectangle
         rectfill(buffer, 120, 408, text_length(orbitron, edittext.c_str())+132, 452, makecol(0,0,0));
         rectfill(buffer, 122, 410, text_length(orbitron, edittext.c_str())+130, 450, makecol(255,255,255));
@@ -1298,6 +1331,8 @@ void draw( bool toScreen){
 
         // draw the caret
         vline(buffer, text_length(orbitron, edittext.c_str()) + 126, 412, 448, makecol(0,0,0));
+      }else{
+        textprintf_ex( buffer, orbitron, 150, 400, makecol(0,0,0), -1, "Press Enter/A to continue");
       }
     }
     // Death image
@@ -1381,7 +1416,8 @@ void draw( bool toScreen){
       textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i",invincible);
       textprintf_ex(buffer,font,225,15,makecol(255,250,250),-1,"OptionClicked:%i",optionMenu);
       textprintf_ex(buffer,font,225,25,makecol(255,250,250),-1,"SCREEN_H:%i",SCREEN_H);
-      textprintf_ex(buffer,font,225,35,makecol(255,250,250),-1,"Particles On%i",particles_on);
+      textprintf_ex(buffer,font,225,35,makecol(255,250,250),-1,"Particles On:%i",particles_on);
+      textprintf_ex(buffer,font,225,45,makecol(255,250,250),-1,"Lowest score:%i%i",atoi(scores[10][0].c_str()));
     }
   if(screenshot_notification_time>0)draw_sprite(buffer,ui_screenshot_notification,SCREEN_W-210,0);
   // Draw background and buffer
