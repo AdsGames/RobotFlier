@@ -294,7 +294,6 @@ void write_settings(){
     settings[2]=sound;
     settings[3]=musicToggle;
     settings[4]=fullScreen;
-    settings[5]=control_mode+1;
 
     ofstream settings_file;
     settings_file.open("data/settings.dat");
