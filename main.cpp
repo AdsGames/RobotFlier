@@ -93,6 +93,8 @@ BITMAP* ui_control_auto;
 BITMAP* ui_screenshot_notification;
 BITMAP* ui_game_end;
 BITMAP* ui_a;
+BITMAP* ui_b;
+
 
 //Robot images
 BITMAP* robot;
@@ -629,7 +631,9 @@ void game(){
                         iter--;
                     }
                 }
-                if(scancode == KEY_ENTER || joy[0].button[1].b){
+            }
+        }
+                if(key[KEY_ENTER] || joy[0].button[1].b && control_mode!=2){
                     addScore(edittext);
                     setup(false);
                     paused = false;
@@ -645,11 +649,11 @@ void game(){
                     gameScreen = MENU;
                     fade_in(menu,8);
                     ticks = 0;
-                }
-            }
+
+
         }
       }else{
-          if(key[KEY_ENTER] ||  joy[0].button[1].b){
+          if(key[KEY_ENTER] ||  joy[0].button[1].b && control_mode!=2){
                     addScore(edittext);
                     setup(false);
                     paused = false;
@@ -1361,20 +1365,22 @@ void draw( bool toScreen){
       }
       if(is_high_score && loseCount>20){
         // Input rectangle
-        rectfill(buffer, 120, 408, text_length(orbitron, edittext.c_str())+132, 452, makecol(0,0,0));
-        rectfill(buffer, 122, 410, text_length(orbitron, edittext.c_str())+130, 450, makecol(255,255,255));
+        rectfill(buffer, 120, 388, text_length(orbitron, edittext.c_str())+132, 432, makecol(0,0,0));
+        rectfill(buffer, 122, 390, text_length(orbitron, edittext.c_str())+130, 430, makecol(255,255,255));
 
         // output the string to the screen
-        textout_ex(buffer, orbitron, edittext.c_str(), 126, 410, makecol(0,0,0), -1);
+        textout_ex(buffer, orbitron, edittext.c_str(), 126, 390, makecol(0,0,0), -1);
 
         // draw the caret
-        vline(buffer, text_length(orbitron, edittext.c_str()) + 126, 412, 448, makecol(0,0,0));
+        vline(buffer, text_length(orbitron, edittext.c_str()) + 126, 392, 428, makecol(0,0,0));
         //Draw the congrats message
-        textprintf_ex( buffer, orbitron, 150, 350, makecol(0,255,0), -1, "New highscore!");
+        textprintf_ex( buffer, orbitron, 150, 330, makecol(0,255,0), -1, "New highscore!");
+        textprintf_ex( buffer, orbitron, 150, 450, makecol(0,0,0), -1, "Press Enter/   to continue");
+        draw_sprite( buffer, ui_b, 370, 450);
 
       }else if(loseCount>20){
-        textprintf_ex( buffer, orbitron, 150, 400, makecol(0,0,0), -1, "Press Enter/   to continue");
-        draw_sprite( buffer, ui_a, 370, 400);
+        textprintf_ex( buffer, orbitron, 150, 395, makecol(0,0,0), -1, "Press Enter/   to continue");
+        draw_sprite( buffer, ui_b, 370, 395);
       }
     }
     // Death image
@@ -1489,51 +1495,51 @@ void changeTheme( int themeNumber){
 	}
 
 	if (!(groundOverlay = load_bitmap((string("images/ground/groundOverlay_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/groundOverlay_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/groundOverlay_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
     //Iterators.. not even once
 
   if (!(ground[0] = load_bitmap((string("images/ground/ground1_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/ground1_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground1_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(ground[1] = load_bitmap((string("images/ground/ground2_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/ground2_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground2_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(ground[2] = load_bitmap((string("images/ground/ground3_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/ground3_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground3_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(ground[3] = load_bitmap((string("images/ground/ground4_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/ground4_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground4_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(ground[4] = load_bitmap((string("images/ground/ground5_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/ground5_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground5_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(ground[5] = load_bitmap((string("images/ground/ground6_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/ground6_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground6_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(ground[6] = load_bitmap((string("images/ground/ground7_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/ground7_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground7_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(ground[7] = load_bitmap((string("images/ground/ground8_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/ground8_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground8_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(ground[8] = load_bitmap((string("images/ground/ground9_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/ground9_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground9_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(ground[9] = load_bitmap((string("images/ground/ground10_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/ground10_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground10_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(ground[10] = load_bitmap((string("images/ground/ground11_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/ground11_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground11_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(ground[11] = load_bitmap((string("images/ground/ground12_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/ground12_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/ground12_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(space2 = load_bitmap((string("images/ground/paralax_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/paralax_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/paralax_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
   if (!(asteroidImage = load_bitmap((string("images/asteroid_") + themeName.c_str() + string(".png")).c_str(), NULL))){
-    abort_on_error((string("Cannot find image ground/asteroid_") + themeName.c_str() + string(".png\nPlease check your files and try again")).c_str());
+    abort_on_error((string("Cannot find image ground/asteroid_") + themeName.c_str() + string(".png\nTry reinstalling from adsgames.net/download/robotflier")).c_str());
 }
 
 
@@ -1746,6 +1752,8 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/ui_screenshot_notification.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_a = load_bitmap("images/gui/ui_a.png", NULL)))
       abort_on_error("Cannot find image gui/ui_a.png\nTry reinstalling from adsgames.net/download/robotflier");
+    if (!(ui_b = load_bitmap("images/gui/ui_b.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_b.png\nTry reinstalling from adsgames.net/download/robotflier");
 
 
 
