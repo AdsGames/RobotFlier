@@ -1373,7 +1373,8 @@ void draw( bool toScreen){
         textprintf_ex( buffer, orbitron, 150, 350, makecol(0,255,0), -1, "New highscore!");
 
       }else if(loseCount>20){
-        textprintf_ex( buffer, orbitron, 150, 400, makecol(0,0,0), -1, "Press Enter/A to continue");
+        textprintf_ex( buffer, orbitron, 150, 400, makecol(0,0,0), -1, "Press Enter/   to continue");
+        draw_sprite( buffer, ui_a, 370, 400);
       }
     }
     // Death image
