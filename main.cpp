@@ -92,6 +92,7 @@ BITMAP* ui_control_keyboard;
 BITMAP* ui_control_auto;
 BITMAP* ui_screenshot_notification;
 BITMAP* ui_game_end;
+BITMAP* ui_a;
 
 //Robot images
 BITMAP* robot;
@@ -1619,130 +1620,133 @@ void setup(bool first){
 
     // Load sounds from file
     if (!(sound_bomb = load_sample( "audio/sound_bomb.wav")))
-      abort_on_error("Cannot find sound sound_bomb.wav\nPlease check your files and try again");
+      abort_on_error("Cannot find sound sound_bomb.wav\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(sound_orb = load_sample("audio/sound_orb.wav")))
-      abort_on_error("Cannot find sound sound_orb.wav\nPlease check your files and try again");
+      abort_on_error("Cannot find sound sound_orb.wav\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(sound_asteroid = load_sample( "audio/sound_asteroid.wav")))
-      abort_on_error("Cannot find sound sound_asteroid.wav\nPlease check your files and try again");
+      abort_on_error("Cannot find sound sound_asteroid.wav\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(music_ingame = FSOUND_Stream_Open( "audio/music_ingame.mp3",2,0,0)))
-      abort_on_error("Cannot find soundtrack music_ingame.mp3\nPlease check your files and try again");
+      abort_on_error("Cannot find soundtrack music_ingame.mp3\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(music_mainmenu = FSOUND_Stream_Open( "audio/music_mainmenu.mp3",2,0,0)))
-      abort_on_error("Cannot find soundtrack music_mainmenu.mp3\nPlease check your files and try again");
+      abort_on_error("Cannot find soundtrack music_mainmenu.mp3\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(music_death = FSOUND_Stream_Open( "audio/music_death.mp3",2,0,0)))
-      abort_on_error("Cannot find soundtrack music_death.mp3\nPlease check your files and try again");
+      abort_on_error("Cannot find soundtrack music_death.mp3\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(magnetSound = load_sample( "audio/magnetSound.wav")))
-      abort_on_error("Cannot find sound magnetSound.wav\nPlease check your files and try again");
+      abort_on_error("Cannot find sound magnetSound.wav\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(sound_star = load_sample( "audio/sound_star.wav")))
-      abort_on_error("Cannot find sound sound_star.wav\nPlease check your files and try again");
+      abort_on_error("Cannot find sound sound_star.wav\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(sound_flame = load_sample( "audio/sound_flame.wav")))
-      abort_on_error("Cannot find sound sound_flame.wav\nPlease check your files and try again");
+      abort_on_error("Cannot find sound sound_flame.wav\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(sound_hitground = load_sample( "audio/sound_hitground.wav")))
-      abort_on_error("Cannot find sound sound_hitground.wav\nPlease check your files and try again");
+      abort_on_error("Cannot find sound sound_hitground.wav\nTry reinstalling from adsgames.net/download/robotflier");
 
 
     // Load bitmaps from file
     if (!(robot = load_bitmap("images/robot/robot.png", NULL)))
-      abort_on_error("Cannot find image robot/robot.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image robot/robot.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(robotfire = load_bitmap("images/robot/robotfire.png", NULL)))
-      abort_on_error("Cannot find image robot/robotfire.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image robot/robotfire.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(robotInvincible = load_bitmap("images/robot/robotInvincible.png", NULL)))
-      abort_on_error("Cannot find image robot/robotInvincible.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image robot/robotInvincible.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(robotInvincibleFire = load_bitmap("images/robot/robotInvincibleFire.png", NULL)))
-      abort_on_error("Cannot find image robot/robotInvincibleFire.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image robot/robotInvincibleFire.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(robotDie = load_bitmap("images/robot/robotDie.png", NULL)))
-      abort_on_error("Cannot find image robot/robotDie.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image robot/robotDie.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(robotInvincibleTop = load_bitmap("images/robot/robotInvincibleTop.png", NULL)))
-      abort_on_error("Cannot find image robotInvincibleTop.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image robotInvincibleTop.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(menu = load_bitmap("images/backgrounds/menu.png", NULL)))
-      abort_on_error("Cannot find image backgrounds/menu.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image backgrounds/menu.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(space = load_bitmap("images/backgrounds/space.png", NULL)))
-      abort_on_error("Cannot find image backgrounds/space.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image backgrounds/space.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(start = load_bitmap("images/gui/start.png", NULL)))
-      abort_on_error("Cannot find image gui/start.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/start.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(mouse = load_bitmap("images/gui/mouse.png", NULL)))
-      abort_on_error("Cannot find image gui/mouse.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/mouse.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(mouse_rocket = load_bitmap("images/gui/mouse_rocket.png", NULL)))
-      abort_on_error("Cannot find image gui/mouse_rocket.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/mouse_rocket.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(title = load_bitmap("images/gui/title.png", NULL)))
-      abort_on_error("Cannot find image gui/title.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/title.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(debug = load_bitmap("images/gui/debug.png", NULL)))
-      abort_on_error("Cannot find image gui/debug.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/debug.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(options_page = load_bitmap("images/gui/options_page.png", NULL)))
-      abort_on_error("Cannot find image gui/options_page.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/options_page.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(options = load_bitmap("images/gui/options.png", NULL)))
-      abort_on_error("Cannot find image gui/options.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/options.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_sound_on = load_bitmap("images/gui/ui_sound_on.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_sound_on.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_sound_on.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_sound_off = load_bitmap("images/gui/ui_sound_off.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_sound_off.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_sound_off.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_music_on = load_bitmap("images/gui/ui_music_on.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_music_on.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_music_on.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_music_off = load_bitmap("images/gui/ui_music_off.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_music_off.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_music_off.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(pauseMenu = load_bitmap("images/gui/pauseMenu.png", NULL)))
-      abort_on_error("Cannot find image gui/pauseMenu.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/pauseMenu.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_game_end = load_bitmap("images/gui/ui_game_end.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_game_end.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_game_end.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_options = load_bitmap("images/gui/ui_options.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_options.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_options.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_window_windowed = load_bitmap("images/gui/ui_window_windowed.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_window_fullscreen.windowed.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_window_fullscreen.windowed.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_window_fullscreen = load_bitmap("images/gui/ui_window_fullscreen.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_window_fullscreen.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_window_fullscreen.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_options_small = load_bitmap("images/gui/ui_options_small.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_options_small.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_options_small.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_back = load_bitmap("images/gui/ui_back.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_back.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_back.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(powerStar = load_bitmap("images/powerStar.png", NULL)))
-      abort_on_error("Cannot find image images/powerStar.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image images/powerStar.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(credits = load_bitmap("images/gui/credits.png", NULL)))
-      abort_on_error("Cannot find image gui/credits.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/credits.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_credits = load_bitmap("images/gui/ui_credits.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_credits.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_credits.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_particle_circle = load_bitmap("images/gui/ui_particle_circle.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_particle_circle.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_particle_circle.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_particle_off = load_bitmap("images/gui/ui_particle_off.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_particle_off.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_particle_off.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_particle_pixel = load_bitmap("images/gui/ui_particle_pixel.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_particle_pixel.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_particle_pixel.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_particle_square = load_bitmap("images/gui/ui_particle_square.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_particle_square.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_particle_square.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(powerMagnet = load_bitmap("images/powerMagnet.png", NULL)))
-      abort_on_error("Cannot find image powerMagnet.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image powerMagnet.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(powerMagnetTwo = load_bitmap("images/powerMagnetTwo.png", NULL)))
-      abort_on_error("Cannot find image powerMagnetTwo.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image powerMagnetTwo.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(powerMagnetThree = load_bitmap("images/powerMagnetThree.png", NULL)))
-      abort_on_error("Cannot find image powerMagnetThree.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image powerMagnetThree.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(powerMagnetFour = load_bitmap("images/powerMagnetFour.png", NULL)))
-      abort_on_error("Cannot find image powerMagnetFour.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image powerMagnetFour.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(intro = load_bitmap("images/backgrounds/intro.png", NULL)))
-      abort_on_error("Cannot find image backgrounds/intro.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image backgrounds/intro.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(force_field = load_bitmap("images/force_field.png", NULL)))
-      abort_on_error("Cannot find image images/force_field.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image images/force_field.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(highscores_table = load_bitmap("images/gui/highscores_table.png", NULL)))
-      abort_on_error("Cannot find image gui/highscores_table.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/highscores_table.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_help = load_bitmap("images/gui/ui_help.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_help.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_help.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(helpScreen = load_bitmap("images/gui/helpScreen.png", NULL)))
-      abort_on_error("Cannot find image gui/helpScreen.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/helpScreen.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_exit = load_bitmap("images/gui/ui_exit.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_exit.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_exit.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(xbox_start = load_bitmap("images/gui/xbox_start.png", NULL)))
-      abort_on_error("Cannot find image gui/xbox_start.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/xbox_start.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_control_xbox = load_bitmap("images/gui/ui_control_xbox.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_control_xbox.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_control_xbox.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_control_keyboard = load_bitmap("images/gui/ui_control_keyboard.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_control_keyboard.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_control_keyboard.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_control_auto = load_bitmap("images/gui/ui_control_auto.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_control_auto.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_control_auto.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(energyImage = load_bitmap("images/energy.png", NULL)))
-      abort_on_error("Cannot find image energy.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image energy.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(bombImage = load_bitmap("images/bomb.png", NULL)))
-      abort_on_error("Cannot find image bomb.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image bomb.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(cometImage = load_bitmap("images/comet.png", NULL)))
-      abort_on_error("Cannot find image comet.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image comet.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_screenshot_notification = load_bitmap("images/gui/ui_screenshot_notification.png", NULL)))
-      abort_on_error("Cannot find image gui/ui_screenshot_notification.png\nPlease check your files and try again");
+      abort_on_error("Cannot find image gui/ui_screenshot_notification.png\nTry reinstalling from adsgames.net/download/robotflier");
+    if (!(ui_a = load_bitmap("images/gui/ui_a.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_a.png\nTry reinstalling from adsgames.net/download/robotflier");
+
 
 
 
