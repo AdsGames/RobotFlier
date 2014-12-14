@@ -46,6 +46,7 @@ const int smokeParticles = 800;
 // Close button
 volatile int close_button_pressed = FALSE;
 
+const bool developer_build=true;
 // Declare bitmaps
 BITMAP* buffer;
 BITMAP* intro;
@@ -193,6 +194,8 @@ string::iterator iter = edittext.end();
 void game();
 void setup(bool first);
 void changeTheme( int themeNumber);
+
+
 void draw(bool toScreen);
 
 // Structure of ground
@@ -584,7 +587,7 @@ void game(){
         }
 
 
-      //Die
+      //Sets the bool alive for the rest of the program
       if( health < 1){
         alive = false;
       }
@@ -929,18 +932,20 @@ void game(){
       }
     }
 
-    if(key[KEY_O])gameScreen = GAME;
-    if(key[KEY_I])score=score+500;
-    if(key[KEY_U])score=score+50;
-    if(key[KEY_Q])health=health-1;
-    if(key[KEY_E])health=0;
-    if(key[KEY_Y])robot_distance=robot_distance+500;
-    if(key[KEY_T])score=score-2;
-    if(key[KEY_R] || joy[0].button[2].b)health=100;
+    if(developer_build){
+        if(key[KEY_O])gameScreen = GAME;
+        if(key[KEY_I])score=score+500;
+        if(key[KEY_U])score=score+50;
+        if(key[KEY_Q])health=health-1;
+        if(key[KEY_E])health=0;
+        if(key[KEY_Y])robot_distance=robot_distance+500;
+        if(key[KEY_T])score=score-2;
+        if(key[KEY_R] || joy[0].button[2].b)health=100;
+    }
 
     // Pause loop code
     if(step > 10){
-      if(key[KEY_P] || mouse_b & 2 || key[KEY_SPACE] || key[KEY_ENTER]){
+      if(key[KEY_P] || mouse_b & 2 || key[KEY_SPACE] || key[KEY_ENTER] || ((joy[0].button[6].b || joy[0].button[7].b) && control_mode!=2)){
         if(paused){
           optionMenu=false;
           paused=false;
