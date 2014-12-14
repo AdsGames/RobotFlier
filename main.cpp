@@ -686,7 +686,7 @@ void game(){
       }
 
       //Change theme
-	    if( score >= 200 &&  themeNumber==0){
+	    if( score > 195 &&  themeNumber==0){
 				BITMAP* white_fade = create_bitmap( 800, 600);
 				rectfill( white_fade, 0, 0, 800, 600, makecol(255,255,255));
 				fade_in( white_fade, 64);
@@ -696,12 +696,11 @@ void game(){
 				comets.clear();
 				powerups.clear();
 				changeTheme(1);
-                score += 10;
 				draw( false);
 				fade_in( buffer, 64);
 				game_time = old_time;
 	    }
-	    else if( score > 400 && score < 600 && themeNumber==1){
+	    else if( score > 395 && score < 600 && themeNumber==1){
 				BITMAP* white_fade = create_bitmap( 800, 600);
 				rectfill( white_fade, 0, 0, 800, 600, makecol(255,255,255));
 				fade_in( white_fade, 64);
@@ -711,7 +710,6 @@ void game(){
 				comets.clear();
 				powerups.clear();
 				changeTheme(2);
-				score += 10;
 				draw( false);
 				fade_in( buffer, 64);
 				game_time = old_time;
@@ -726,7 +724,6 @@ void game(){
 				comets.clear();
 				powerups.clear();
 				changeTheme(3);
-				score += 10;
 				draw( false);
 				fade_in( buffer, 64);
 				game_time = old_time;
@@ -1459,7 +1456,7 @@ void draw( bool toScreen){
   }
 
    // Draw the debug window
-   if(debugMode){
+   if(debugMode && developer_build){
       draw_sprite(buffer,debug,0,0);
       textprintf_ex(buffer,font,225,5,makecol(255,250,250),-1,"Gravity:%i",gravity);
       textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%i",speed);
@@ -1475,6 +1472,8 @@ void draw( bool toScreen){
       textprintf_ex(buffer,font,225,25,makecol(255,250,250),-1,"SCREEN_H:%i",SCREEN_H);
       textprintf_ex(buffer,font,225,35,makecol(255,250,250),-1,"Particles On:%i",particles_on);
       textprintf_ex(buffer,font,225,45,makecol(255,250,250),-1,"Lowest score:%i%i",atoi(scores[10][0].c_str()));
+      textprintf_ex(buffer,font,225,55,makecol(255,250,250),-1,"Theme:%i",themeNumber);
+
     }
   if(screenshot_notification_time>0)draw_sprite(buffer,ui_screenshot_notification,SCREEN_W-210,0);
   // Draw background and buffer
@@ -1493,15 +1492,15 @@ void changeTheme( int NewThemeNumber){
 	}
 	else if(NewThemeNumber == 1){
 		themeName = "mars";
-		themeNumber=2;
+		themeNumber=1;
 	}
 	else if(NewThemeNumber == 2){
 		themeName = "sun";
-		themeNumber=3;
+		themeNumber=2;
 	}
 	else if(NewThemeNumber == 3){
 		themeName = "dark";
-		themeNumber=4;
+		themeNumber=3;
 	}
 
 	if (!(groundOverlay = load_bitmap((string("images/ground/groundOverlay_") + themeName.c_str() + string(".png")).c_str(), NULL))){
