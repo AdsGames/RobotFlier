@@ -164,6 +164,7 @@ int key_bindings[10];
 int screenshot_notification_time;
 int handling_speed=10;
 int settings[5];
+int themeNumber=0;
 
 // Declare booleans
 bool mouse_rocketocket;
@@ -193,7 +194,7 @@ string::iterator iter = edittext.end();
 // Declares that the void functions are there
 void game();
 void setup(bool first);
-void changeTheme( int themeNumber);
+void changeTheme( int NewThemeNumber);
 
 
 void draw(bool toScreen);
@@ -685,25 +686,25 @@ void game(){
       }
 
       //Change theme
-	    if( score == 200){
+	    if( score >= 200 &&  themeNumber==0){
 				BITMAP* white_fade = create_bitmap( 800, 600);
 				rectfill( white_fade, 0, 0, 800, 600, makecol(255,255,255));
-				fade_in( white_fade, 32);
+				fade_in( white_fade, 64);
 				energys.clear();
 				asteroids.clear();
 				bombs.clear();
 				comets.clear();
 				powerups.clear();
 				changeTheme(1);
-  			score += 10;
+                score += 10;
 				draw( false);
-				fade_in( buffer, 32);
+				fade_in( buffer, 64);
 				game_time = old_time;
 	    }
-	    else if( score == 400){
+	    else if( score > 400 && score < 600 && themeNumber==1){
 				BITMAP* white_fade = create_bitmap( 800, 600);
 				rectfill( white_fade, 0, 0, 800, 600, makecol(255,255,255));
-				fade_in( white_fade, 32);
+				fade_in( white_fade, 64);
 				energys.clear();
 				asteroids.clear();
 				bombs.clear();
@@ -712,13 +713,13 @@ void game(){
 				changeTheme(2);
 				score += 10;
 				draw( false);
-				fade_in( buffer, 32);
+				fade_in( buffer, 64);
 				game_time = old_time;
 	    }
-	    else if( score == 600){
+	    else if(score > 600 && themeNumber==2){
 				BITMAP* white_fade = create_bitmap( 800, 600);
 				rectfill( white_fade, 0, 0, 800, 600, makecol(255,255,255));
-				fade_in( white_fade, 32);
+				fade_in( white_fade, 64);
 				energys.clear();
 				asteroids.clear();
 				bombs.clear();
@@ -727,7 +728,7 @@ void game(){
 				changeTheme(3);
 				score += 10;
 				draw( false);
-				fade_in( buffer, 32);
+				fade_in( buffer, 64);
 				game_time = old_time;
 	    }
 
@@ -1482,21 +1483,25 @@ void draw( bool toScreen){
 	}
 }
 
-void changeTheme( int themeNumber){
+void changeTheme( int NewThemeNumber){
 	string themeName;
 	srand(time(NULL));
 
-	if(themeNumber == 0){
+	if(NewThemeNumber == 0){
 		themeName = "moon";
+		themeNumber=0;
 	}
-	else if(themeNumber == 1){
+	else if(NewThemeNumber == 1){
 		themeName = "mars";
+		themeNumber=2;
 	}
-	else if(themeNumber == 2){
+	else if(NewThemeNumber == 2){
 		themeName = "sun";
+		themeNumber=3;
 	}
-	else if(themeNumber == 3){
+	else if(NewThemeNumber == 3){
 		themeName = "dark";
+		themeNumber=4;
 	}
 
 	if (!(groundOverlay = load_bitmap((string("images/ground/groundOverlay_") + themeName.c_str() + string(".png")).c_str(), NULL))){
@@ -1614,7 +1619,7 @@ void setup(bool first){
   if(first){
     // Ints that only need to be changed the first time
     //Sets the level to 1
-    changeTheme( 0);
+    changeTheme( 1);
 
      // Setup for FPS system
     LOCK_VARIABLE(ticks);
