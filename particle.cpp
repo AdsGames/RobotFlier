@@ -31,8 +31,8 @@ void particle::logic(){
   if(x < 0){
     x = 0;
   }
-  if(x > 1600){
-    x = 1600;
+  if(x > 800){
+    x = 800;
   }
   if(y < 0){
     y = 0;
