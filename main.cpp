@@ -277,6 +277,23 @@ void updateScores(){
   }
   read.close();
 }
+void load_main_menu(){
+    setup(false);
+    paused = false;
+    optionMenu = false;
+    fade_out(8);
+    FSOUND_Stream_Stop(music_death);
+    smokePart.clear();
+    rocketPart.clear();
+    magnetic = false;
+    magneticTimer = 0;
+    if(musicToggle)
+        FSOUND_Stream_Play(0,music_mainmenu);
+    gameScreen = MENU;
+    fade_in(menu,8);
+    ticks = 0;
+}
+
 //Stops all the game sounds
 void stop_all_samples(){
     stop_sample(sound_orb);
@@ -591,6 +608,7 @@ void game(){
       //Sets the bool alive for the rest of the program
       if( health < 1){
         alive = false;
+        health=0;
       }
 
       // Lose scripts
@@ -639,40 +657,15 @@ void game(){
         }
                 if(key[KEY_ENTER] || joy[0].button[1].b && control_mode!=2){
                     addScore(edittext);
-                    setup(false);
-                    paused = false;
-                    optionMenu = false;
-                    fade_out(8);
-                    FSOUND_Stream_Stop(music_death);
-                    smokePart.clear();
-                    rocketPart.clear();
-                    magnetic = false;
-                    magneticTimer = 0;
-                    if(musicToggle)
-                        FSOUND_Stream_Play(0,music_mainmenu);
-                    gameScreen = MENU;
-                    fade_in(menu,8);
-                    ticks = 0;
+                    load_main_menu();
+
 
 
         }
       }else{
           if(key[KEY_ENTER] ||  joy[0].button[1].b && control_mode!=2){
                     addScore(edittext);
-                    setup(false);
-                    paused = false;
-                    optionMenu = false;
-                    fade_out(8);
-                    FSOUND_Stream_Stop(music_death);
-                    smokePart.clear();
-                    rocketPart.clear();
-                    magnetic = false;
-                    magneticTimer = 0;
-                    if(musicToggle)
-                        FSOUND_Stream_Play(0,music_mainmenu);
-                    gameScreen = MENU;
-                    fade_in(menu,8);
-                    ticks = 0;
+                    load_main_menu();
           }
 
 
@@ -968,6 +961,10 @@ void game(){
       }
       if(mouse_b & 1 && collision( 450, 540, mouse_x, mouse_x, 435, 460, mouse_y, mouse_y) && !optionMenu){
         paused = false;
+        step = 0;
+      }
+      if(mouse_b & 1 && collision( 300, 450, mouse_x, mouse_x, 435, 460, mouse_y, mouse_y) && !optionMenu){
+        load_main_menu();
         step = 0;
       }
     }
