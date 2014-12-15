@@ -1349,10 +1349,13 @@ void draw( bool toScreen){
         textprintf_ex(buffer,orbitron_14,220,310,makecol(255,250,250),-1,"Powerups Received: %i",powerupsCollected);
         textprintf_ex(buffer,orbitron_14,220,340,makecol(255,250,250),-1,"Debris Collided: %i",debrisCollided);
 
-        draw_sprite( buffer, ui_options_small, 224, 435);
+        //draw_sprite( buffer, ui_options_small, 224, 435);
 
-        textprintf_ex(buffer,orbitron_14,450,445,makecol(0,0,0),-1,"Resume");
-        textprintf_ex(buffer,orbitron_14,300,445,makecol(0,0,0),-1,"Main Menu");
+        // TODO (Danward#1#): Merge these when done
+        textprintf_ex(buffer,orbitron_14,470,445,makecol(0,0,0),-1,"Resume");
+        textprintf_ex(buffer,orbitron_14,320,445,makecol(0,0,0),-1,"Main Menu");
+        textprintf_ex(buffer,orbitron_14,220,445,makecol(0,0,0),-1,"Settings");
+
       }
     }
 
