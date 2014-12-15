@@ -1064,10 +1064,10 @@ void game(){
         step = 0;
         write_settings();
         if(fullScreen){
-          set_gfx_mode( GFX_AUTODETECT_FULLSCREEN, 800, 600, 0, 0);
+          set_gfx_mode( GFX_AUTODETECT_FULLSCREEN, 1600, 600, 0, 0);
         }
         else{
-          set_gfx_mode( GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
+          set_gfx_mode( GFX_AUTODETECT_WINDOWED, 1600, 600, 0, 0);
         }
       }
 
@@ -1137,6 +1137,8 @@ void game(){
 
     // Draw mouse
     draw_sprite( buffer, mouse, mouse_x, mouse_y);
+    draw_sprite( buffer, mouse, mouse_x+800, mouse_y);
+
     if( mouse_y < mouseMove){
       mouse_rocketocket = true;
     }
@@ -1185,12 +1187,23 @@ void draw( bool toScreen){
     //Draw back drop
     rectfill( buffer, 0, 0, SCREEN_W, 600, makecol( 0, 0, 0));
     draw_sprite(buffer,menu,0,0);
+    draw_sprite(buffer,menu,800,0);
     draw_sprite(buffer,start,x_start_button,400);
-    if(joystick_enabled || control_mode==3)draw_sprite(buffer,xbox_start,x_start_button+225,430);
+    draw_sprite(buffer,start,x_start_button+800,400);
+    if(joystick_enabled || control_mode==3){
+            draw_sprite(buffer,xbox_start,x_start_button+225,430);
+            draw_sprite(buffer,xbox_start,x_start_button+225+800,430);
+    }
     draw_sprite(buffer,title,20,y_title);
+    draw_sprite(buffer,title,820,y_title);
     draw_sprite(buffer,ui_credits,593,credits_y);
+    draw_sprite(buffer,ui_credits,593+800,credits_y);
+
     draw_sprite(buffer,ui_help,697,credits_y);
+    draw_sprite(buffer,ui_help,697+800,credits_y);
+
     draw_sprite(buffer,ui_options,option_x,548);
+    draw_sprite(buffer,ui_options,option_x+800,548);
 
 
 
@@ -1351,7 +1364,7 @@ void draw( bool toScreen){
         draw_sprite( buffer, ui_options_small, 224, 435);
 
         textprintf_ex(buffer,orbitron_14,450,445,makecol(0,0,0),-1,"Resume");
-        textprintf_ex(buffer,orbitron_14,250,445,makecol(0,0,0),-1,"Main Menu");
+        textprintf_ex(buffer,orbitron_14,300,445,makecol(0,0,0),-1,"Main Menu");
       }
     }
 
@@ -1451,6 +1464,8 @@ void draw( bool toScreen){
      }
     // Draw mouse
     draw_sprite( buffer, mouse, mouse_x, mouse_y);
+    draw_sprite( buffer, mouse, mouse_x+800, mouse_y);
+
     for( int i = 0; i < mousePart.size(); i++){
           mousePart.at(i).draw( buffer);
         }
@@ -1791,7 +1806,7 @@ void setup(bool first){
 
 
     // Create buffer
-    buffer = create_bitmap( SCREEN_W, SCREEN_H);
+    buffer = create_bitmap( 1600, 600);
 
 
   }
@@ -1807,8 +1822,8 @@ int main(){
   install_mouse();
   set_color_depth(32);
   read_settings();
-  if(!fullScreen)set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
-  else set_gfx_mode(GFX_AUTODETECT, 800, 600, 0, 0);
+  if(!fullScreen)set_gfx_mode(GFX_AUTODETECT_WINDOWED, 1600, 600, 0, 0);
+  else set_gfx_mode(GFX_AUTODETECT, 1600, 600, 0, 0);
   install_sound(DIGI_AUTODETECT,MIDI_AUTODETECT,".");
 
 
