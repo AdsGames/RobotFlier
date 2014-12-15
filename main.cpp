@@ -523,6 +523,12 @@ void game(){
   // Game screen
   if(gameScreen == GAME){
     if(!paused){
+
+      //Reset game
+      if((key[KEY_R] && control_mode!=3)||(joy[0].button[4].b && control_mode!=2)){
+        setup(false);
+        changeTheme(0);
+      }
       // Update robots y position
       robot_y += gravity - speed;
 
@@ -578,7 +584,7 @@ void game(){
                 }
              }
           }
-          if(joy[0].button[0].b){
+          if(joy[0].button[0].b || joy[0].button[5].b){
             if(!has_mr_robot_moved_yet && control_mode!=2){
                 has_mr_robot_moved_yet=true;
                 if( game_time %2 == 0){
@@ -594,7 +600,7 @@ void game(){
           }
           //If no keys pressed
 
-          if( !key[KEY_W] && !key[KEY_UP] && ! mouse_b & 1 && control_mode==2 || !key[KEY_W] && !key[KEY_UP] && !mouse_b & 1 && control_mode==1 && !joy[0].button[0].b || control_mode==3 && !joy[0].button[0].b){
+          if( !key[KEY_W] && !key[KEY_UP] && ! mouse_b & 1 && control_mode==2 || !key[KEY_W] && !key[KEY_UP] && !mouse_b & 1 && control_mode==1 && (!joy[0].button[0].b && !joy[0].button[5].b ) || control_mode==3 && (!joy[0].button[0].b && !joy[0].button[5].b) ){
 
                 rocket = true;
                 if( speed > -handling_speed){
@@ -1353,7 +1359,7 @@ void draw( bool toScreen){
 
         // TODO (Danward#1#): Merge these when done
         textprintf_ex(buffer,orbitron_14,470,445,makecol(0,0,0),-1,"Resume");
-        textprintf_ex(buffer,orbitron_14,320,445,makecol(0,0,0),-1,"Main Menu");
+        textprintf_ex(buffer,orbitron_14,330,445,makecol(0,0,0),-1,"Main Menu");
         textprintf_ex(buffer,orbitron_14,220,445,makecol(0,0,0),-1,"Settings");
 
       }
