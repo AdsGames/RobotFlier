@@ -686,10 +686,10 @@ void game(){
       }
 
       //Change theme
-	    if( score > 195 &&  themeNumber==0){
+	    if( score > 199 &&  themeNumber==0){
 				BITMAP* white_fade = create_bitmap( 800, 600);
 				rectfill( white_fade, 0, 0, 800, 600, makecol(255,255,255));
-				fade_in( white_fade, 64);
+				fade_in( white_fade,128);
 				energys.clear();
 				asteroids.clear();
 				bombs.clear();
@@ -697,10 +697,10 @@ void game(){
 				powerups.clear();
 				changeTheme(1);
 				draw( false);
-				fade_in( buffer, 64);
+				fade_in( buffer, 128);
 				game_time = old_time;
 	    }
-	    else if( score > 395 && score < 600 && themeNumber==1){
+	    else if( score > 399 && score < 600 && themeNumber==1){
 				BITMAP* white_fade = create_bitmap( 800, 600);
 				rectfill( white_fade, 0, 0, 800, 600, makecol(255,255,255));
 				fade_in( white_fade, 64);
@@ -1351,6 +1351,7 @@ void draw( bool toScreen){
         draw_sprite( buffer, ui_options_small, 224, 435);
 
         textprintf_ex(buffer,orbitron_14,450,445,makecol(0,0,0),-1,"Resume");
+        textprintf_ex(buffer,orbitron_14,250,445,makecol(0,0,0),-1,"Main Menu");
       }
     }
 
@@ -1568,7 +1569,7 @@ void setup(bool first){
 
   // Declare integers
   gravity = 2;
-  speed = 30;
+  speed = 15;
   score = 0;
   running = 0;
   x_start_button = -400;
@@ -1581,7 +1582,7 @@ void setup(bool first){
   loseCount = 0;
   robot_distance = 0;
   robot_x = 80;
-  robot_y = 400;
+  robot_y = 300;
   score = 0;
 
   magneticStrength = 0;
