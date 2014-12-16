@@ -528,7 +528,11 @@ void game(){
       if((key[KEY_R] && control_mode!=3)||(joy[0].button[4].b && control_mode!=2)){
         setup(false);
         changeTheme(0);
+        //This stops the robot from hitting the ground after holding down reset
+        speed=15;
+        gravity=0;
       }
+
       // Update robots y position
       robot_y += gravity - speed;
 
@@ -784,7 +788,7 @@ void game(){
         }
       }
       // Energy ball spawning
-      if( random(0,50) == 0){
+      if( random(0,50) == 0 && alive){
         energy newEnergyBall( energyImage, energyImage, sound_orb, SCREEN_W, random(30,550));
         energys.push_back( newEnergyBall);
       }
@@ -972,6 +976,16 @@ void game(){
       if(mouse_b & 1 && collision( 300, 450, mouse_x, mouse_x, 435, 460, mouse_y, mouse_y) && !optionMenu){
         load_main_menu();
         step = 0;
+      }
+     if((key[KEY_R] && control_mode!=3)||(joy[0].button[4].b && control_mode!=2)){
+        paused = false;
+        optionMenu = false;
+
+        setup(false);
+        changeTheme(0);
+        //This stops the robot from hitting the ground after holding down reset
+        speed=15;
+        gravity=0;
       }
     }
 
