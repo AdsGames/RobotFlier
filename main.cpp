@@ -46,7 +46,7 @@ const int smokeParticles = 800;
 // Close button
 volatile int close_button_pressed = FALSE;
 
-const bool developer_build=true;
+const bool developer_build = true;
 // Declare bitmaps
 BITMAP* buffer;
 BITMAP* intro;
@@ -965,7 +965,7 @@ void game(){
 
     // Pause Menu Scripts
     if(paused){
-      if(mouse_b & 1 && collision( 210, 270, mouse_x, mouse_x, 435, 470, mouse_y, mouse_y) && !optionMenu){
+      if(mouse_b & 1 && collision( 200, 300, mouse_x, mouse_x, 435, 470, mouse_y, mouse_y) && !optionMenu){
         optionMenu = true;
         step = 0;
       }
