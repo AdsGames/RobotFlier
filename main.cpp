@@ -14,6 +14,7 @@
 //"I do not accept responsibility for any effects, adverse or otherwise, that this code may have on you,
 // your computer, your sanity, your dog, and anything else that you can think of. Use it at your own risk."
 
+
 #include "energy.h"
 #include "asteroid.h"
 #include "bomb.h"
@@ -395,6 +396,7 @@ void addScore(string name){
   }
   saveFile.close();
 }
+int poop;
 
 //   _____          __  __ ______   _      ____   ____  _____
 //  / ____|   /\   |  \/  |  ____| | |    / __ \ / __ \|  __ \
