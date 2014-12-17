@@ -146,6 +146,7 @@ FONT* orbitron;
 // You know ^^^^^^^^^^ Code::Blocks has a spell check right?
 
 // Declare integers
+float deltatime;
 int running;
 int x_start_button;
 int y_title;
@@ -221,7 +222,7 @@ vector<particle> smokePart;
 
 // FPS System
 volatile int ticks = 0;
-const int updates_per_second = 50;
+const int updates_per_second = 60;
 volatile int game_time = 0;
 
 int fps;
@@ -530,14 +531,14 @@ void game(){
         changeTheme(0);
         //This stops the robot from hitting the ground after holding down reset
         speed=15;
-        gravity=0;
+        gravity=1.6;
       }
 
       // Update robots y position
       robot_y += gravity - speed;
 
       // Changes speed
-      motion = (score/30) + 4;
+      motion = (score/36) + 3;
 
       // Add to distance travelled
       if( alive)
@@ -584,7 +585,7 @@ void game(){
                 }
                 if( speed < handling_speed){
                     rocket = false;
-                    speed += 1;
+                    speed += 0.6;
                 }
              }
           }
@@ -597,7 +598,7 @@ void game(){
                 }
                 if( speed < handling_speed){
                     rocket = false;
-                    speed += 1;
+                    speed += 0.6;
                 }
              }
 
@@ -608,7 +609,7 @@ void game(){
 
                 rocket = true;
                 if( speed > -handling_speed){
-                    speed -= 1;
+                    speed -= 0.6;
                 }
 
             }
@@ -985,7 +986,7 @@ void game(){
         changeTheme(0);
         //This stops the robot from hitting the ground after holding down reset
         speed=15;
-        gravity=0;
+        gravity=1.6;
       }
     }
 
@@ -1499,6 +1500,7 @@ void draw( bool toScreen){
       textprintf_ex(buffer,font,225,35,makecol(255,250,250),-1,"Particles On:%i",particles_on);
       textprintf_ex(buffer,font,225,45,makecol(255,250,250),-1,"Lowest score:%i%i",atoi(scores[10][0].c_str()));
       textprintf_ex(buffer,font,225,55,makecol(255,250,250),-1,"Theme:%i",themeNumber);
+      textprintf_ex(buffer,font,225,65,makecol(255,250,250),-1,"Motion:%4.2f",motion);
 
     }
   if(screenshot_notification_time>0)draw_sprite(buffer,ui_screenshot_notification,SCREEN_W-210,0);
@@ -1593,7 +1595,7 @@ void setup(bool first){
   srand(time(NULL));
 
   // Declare integers
-  gravity = 2;
+  gravity = 1.6;
   speed = 15;
   score = 0;
   running = 0;
