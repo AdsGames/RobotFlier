@@ -15,7 +15,8 @@ $RECYCLE.BIN/
 *.msp
 
 # Codeblocks files
-* .layout
+*.layout
+*.depend
 
 # =========================
 # Operating System Files
