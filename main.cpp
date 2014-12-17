@@ -153,7 +153,7 @@ int option_x;
 int credits_y;
 int mouseMove;
 int loseCount;
-int gravity, motion, speed;
+float gravity, motion, speed;
 int step;
 int scroll1, scroll2;
 int groundScroll;
