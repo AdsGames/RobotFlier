@@ -17,7 +17,7 @@ bomb::~bomb(){
 }
 
 void bomb::logic(int newMotion){
-  x -= newMotion * 1.3;
+  x -= newMotion * 2;
 
   if(collision(x, x + width , robot_x, robot_x + robotWidth, y, y + height, robot_y, robot_y + robotHeight) && !isDead){
 		if(!invincible){

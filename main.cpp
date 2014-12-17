@@ -164,7 +164,7 @@ int force_fieldAppear = 10;
 int control_mode;
 int key_bindings[10];
 int screenshot_notification_time;
-int handling_speed=10;
+int handling_speed=8;
 int settings[5];
 int themeNumber=0;
 
@@ -532,7 +532,7 @@ void game(){
         setup(false);
         changeTheme(0);
         //This stops the robot from hitting the ground after holding down reset
-        speed=15;
+        speed=12;
         gravity=1.6;
       }
 
