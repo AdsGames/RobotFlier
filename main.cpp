@@ -147,7 +147,8 @@ FONT* orbitron;
 // You know ^^^^^^^^^^ Code::Blocks has a spell check right?
 
 // Declare integers
-float deltatime;
+float deltatime=0.25;
+
 int running;
 int x_start_button;
 int y_title;
@@ -223,7 +224,7 @@ vector<particle> smokePart;
 
 // FPS System
 volatile int ticks = 0;
-const int updates_per_second = 60;
+const int updates_per_second = 120;
 volatile int game_time = 0;
 
 int fps;
@@ -532,7 +533,7 @@ void game(){
         setup(false);
         changeTheme(0);
         //This stops the robot from hitting the ground after holding down reset
-        speed=12;
+        speed=12*deltatime;
         gravity=1.6;
       }
 
@@ -540,7 +541,7 @@ void game(){
       robot_y += gravity - speed;
 
       // Changes speed
-      motion = (score/36) + 3;
+      motion = ((score/36) + 3)*deltatime;
 
       // Add to distance travelled
       if( alive)
@@ -587,7 +588,7 @@ void game(){
                 }
                 if( speed < handling_speed){
                     rocket = false;
-                    speed += 0.6;
+                    speed += 0.6*deltatime;
                 }
              }
           }
@@ -600,7 +601,7 @@ void game(){
                 }
                 if( speed < handling_speed){
                     rocket = false;
-                    speed += 0.6;
+                    speed += 0.6*deltatime;
                 }
              }
 
@@ -611,7 +612,7 @@ void game(){
 
                 rocket = true;
                 if( speed > -handling_speed){
-                    speed -= 0.6;
+                    speed -= 0.6*deltatime;
                 }
 
             }
@@ -1598,7 +1599,7 @@ void setup(bool first){
 
   // Declare integers
   gravity = 1.6;
-  speed = 15;
+  speed = 15*deltatime;
   score = 0;
   running = 0;
   x_start_button = -400;
