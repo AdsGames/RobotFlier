@@ -147,7 +147,7 @@ FONT* orbitron;
 // You know ^^^^^^^^^^ Code::Blocks has a spell check right?
 
 // Declare integers
-float deltatime=0.25;
+float deltatime=1;
 
 int running;
 int x_start_button;
@@ -224,7 +224,7 @@ vector<particle> smokePart;
 
 // FPS System
 volatile int ticks = 0;
-const int updates_per_second = 120;
+const int updates_per_second = 60;
 volatile int game_time = 0;
 
 int fps;
