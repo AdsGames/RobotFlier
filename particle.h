@@ -12,8 +12,8 @@ class particle{
   public:
     BITMAP* image[2];
 
-    int x;
-    int y;
+    float x;
+    float y;
 
     int particleColor;
     int particleRed;

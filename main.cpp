@@ -14,6 +14,7 @@
 //"I do not accept responsibility for any effects, adverse or otherwise, that this code may have on you,
 // your computer, your sanity, your dog, and anything else that you can think of. Use it at your own risk."
 
+
 #include "energy.h"
 #include "asteroid.h"
 #include "bomb.h"
@@ -146,6 +147,8 @@ FONT* orbitron;
 // You know ^^^^^^^^^^ Code::Blocks has a spell check right?
 
 // Declare integers
+float deltatime=1;
+
 int running;
 int x_start_button;
 int y_title;
@@ -153,7 +156,7 @@ int option_x;
 int credits_y;
 int mouseMove;
 int loseCount;
-int gravity, motion, speed;
+float gravity, motion, speed;
 int step;
 int scroll1, scroll2;
 int groundScroll;
@@ -162,7 +165,7 @@ int force_fieldAppear = 10;
 int control_mode;
 int key_bindings[10];
 int screenshot_notification_time;
-int handling_speed=10;
+int handling_speed=8;
 int settings[5];
 int themeNumber=0;
 
@@ -221,7 +224,7 @@ vector<particle> smokePart;
 
 // FPS System
 volatile int ticks = 0;
-const int updates_per_second = 50;
+const int updates_per_second = 60;
 volatile int game_time = 0;
 
 int fps;
@@ -394,6 +397,7 @@ void addScore(string name){
   }
   saveFile.close();
 }
+int poop;
 
 //   _____          __  __ ______   _      ____   ____  _____
 //  / ____|   /\   |  \/  |  ____| | |    / __ \ / __ \|  __ \
@@ -529,15 +533,15 @@ void game(){
         setup(false);
         changeTheme(0);
         //This stops the robot from hitting the ground after holding down reset
-        speed=15;
-        gravity=0;
+        speed=12*deltatime;
+        gravity=1.6;
       }
 
       // Update robots y position
       robot_y += gravity - speed;
 
       // Changes speed
-      motion = (score/30) + 4;
+      motion = ((score/36) + 3)*deltatime;
 
       // Add to distance travelled
       if( alive)
@@ -584,7 +588,7 @@ void game(){
                 }
                 if( speed < handling_speed){
                     rocket = false;
-                    speed += 1;
+                    speed += 0.6*deltatime;
                 }
              }
           }
@@ -597,7 +601,7 @@ void game(){
                 }
                 if( speed < handling_speed){
                     rocket = false;
-                    speed += 1;
+                    speed += 0.6*deltatime;
                 }
              }
 
@@ -608,7 +612,7 @@ void game(){
 
                 rocket = true;
                 if( speed > -handling_speed){
-                    speed -= 1;
+                    speed -= 0.6*deltatime;
                 }
 
             }
@@ -985,7 +989,7 @@ void game(){
         changeTheme(0);
         //This stops the robot from hitting the ground after holding down reset
         speed=15;
-        gravity=0;
+        gravity=1.6;
       }
     }
 
@@ -1484,14 +1488,14 @@ void draw( bool toScreen){
    // Draw the debug window
    if(debugMode && developer_build){
       draw_sprite(buffer,debug,0,0);
-      textprintf_ex(buffer,font,225,5,makecol(255,250,250),-1,"Gravity:%i",gravity);
-      textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%i",speed);
+      textprintf_ex(buffer,font,225,5,makecol(255,250,250),-1,"Gravity:%4.2f",gravity);
+      textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%4.2f",speed);
       textprintf_ex(buffer,font,105,25,makecol(255,250,250),-1,"Score:%i",score);
       textprintf_ex(buffer,font,105,35,makecol(255,250,250),-1,"Running:%i",running);
       textprintf_ex(buffer,font,105,45,makecol(255,250,250),-1,"Mouse X:%i",mouse_x);
       textprintf_ex(buffer,font,105,55,makecol(255,250,250),-1,"Mouse Y:%i",mouse_y);
       textprintf_ex(buffer,font,5,35,makecol(255,250,250),-1,"Robot X:20");
-      textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%i",robot_y);
+      textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%4.2f",robot_y);
       textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%i",motion);
       textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i",invincible);
       textprintf_ex(buffer,font,225,15,makecol(255,250,250),-1,"OptionClicked:%i",optionMenu);
@@ -1499,7 +1503,11 @@ void draw( bool toScreen){
       textprintf_ex(buffer,font,225,35,makecol(255,250,250),-1,"Particles On:%i",particles_on);
       textprintf_ex(buffer,font,225,45,makecol(255,250,250),-1,"Lowest score:%i%i",atoi(scores[10][0].c_str()));
       textprintf_ex(buffer,font,225,55,makecol(255,250,250),-1,"Theme:%i",themeNumber);
+<<<<<<< HEAD
       textprintf_ex(buffer,font,225,65,makecol(255,250,250),-1,"Motion:%i",motion);
+=======
+      textprintf_ex(buffer,font,225,65,makecol(255,250,250),-1,"Motion:%4.2f",motion);
+>>>>>>> origin/Variable-Frame-Rate
 
     }
   if(screenshot_notification_time>0)draw_sprite(buffer,ui_screenshot_notification,SCREEN_W-210,0);
@@ -1594,8 +1602,8 @@ void setup(bool first){
   srand(time(NULL));
 
   // Declare integers
-  gravity = 2;
-  speed = 15;
+  gravity = 1.6;
+  speed = 15*deltatime;
   score = 0;
   running = 0;
   x_start_button = -400;

@@ -18,8 +18,8 @@ using namespace std;
 extern const int robotWidth;
 extern const int robotHeight;
 
-extern int robot_x;
-extern int robot_y;
+extern float robot_x;
+extern float robot_y;
 
 extern int health;
 extern unsigned int score;
