@@ -1503,11 +1503,7 @@ void draw( bool toScreen){
       textprintf_ex(buffer,font,225,35,makecol(255,250,250),-1,"Particles On:%i",particles_on);
       textprintf_ex(buffer,font,225,45,makecol(255,250,250),-1,"Lowest score:%i%i",atoi(scores[10][0].c_str()));
       textprintf_ex(buffer,font,225,55,makecol(255,250,250),-1,"Theme:%i",themeNumber);
-<<<<<<< HEAD
-      textprintf_ex(buffer,font,225,65,makecol(255,250,250),-1,"Motion:%i",motion);
-=======
       textprintf_ex(buffer,font,225,65,makecol(255,250,250),-1,"Motion:%4.2f",motion);
->>>>>>> origin/Variable-Frame-Rate
 
     }
   if(screenshot_notification_time>0)draw_sprite(buffer,ui_screenshot_notification,SCREEN_W-210,0);
