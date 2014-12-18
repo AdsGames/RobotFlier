@@ -1487,14 +1487,14 @@ void draw( bool toScreen){
    // Draw the debug window
    if(debugMode && developer_build){
       draw_sprite(buffer,debug,0,0);
-      textprintf_ex(buffer,font,225,5,makecol(255,250,250),-1,"Gravity:%i",gravity);
-      textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%i",speed);
+      textprintf_ex(buffer,font,225,5,makecol(255,250,250),-1,"Gravity:%4.2f",gravity);
+      textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%4.2f",speed);
       textprintf_ex(buffer,font,105,25,makecol(255,250,250),-1,"Score:%i",score);
       textprintf_ex(buffer,font,105,35,makecol(255,250,250),-1,"Running:%i",running);
       textprintf_ex(buffer,font,105,45,makecol(255,250,250),-1,"Mouse X:%i",mouse_x);
       textprintf_ex(buffer,font,105,55,makecol(255,250,250),-1,"Mouse Y:%i",mouse_y);
       textprintf_ex(buffer,font,5,35,makecol(255,250,250),-1,"Robot X:20");
-      textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%i",robot_y);
+      textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%4.2f",robot_y);
       textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%i",motion);
       textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i",invincible);
       textprintf_ex(buffer,font,225,15,makecol(255,250,250),-1,"OptionClicked:%i",optionMenu);
