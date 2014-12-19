@@ -1598,7 +1598,7 @@ void setup(bool first){
   if(num_joysticks>0 && control_mode!=2)joystick_enabled=true;
   if(num_joysticks==0 || control_mode==2)joystick_enabled=false;
 
-  //Set the scores to the scores[i][j] array
+  //Set the scores to the scores[i][j] array so the endgame screen can check the array if its the high score or not
   updateScores();
 
   // Declare integers
