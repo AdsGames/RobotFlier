@@ -998,11 +998,6 @@ void game(){
 
   // THIS CODE WILL RUN NO MATTER THE gameScreen TOGGLE!
 
-
-    //Joystick detector
-    if(num_joysticks>0 && control_mode!=2)joystick_enabled=true;
-    if(num_joysticks==0 || control_mode==2)joystick_enabled=false;
-
     // Debug console toggle
     if(key[KEY_F12] && debugMode && step > 10){
       debugMode = false;
@@ -1433,6 +1428,7 @@ void draw( bool toScreen){
     if(gameScreen == OPTIONS || optionMenu){
         if(gameScreen==OPTIONS)draw_sprite(buffer,options_page,0,0);
         else draw_sprite(buffer,options,0,0);
+
         // Audio
         textprintf_ex(buffer,orbitron,110,146,makecol(255,250,250),-1,"Sounds   Music           Exit");
         if(sound)draw_sprite(buffer,ui_sound_on,120,180);
@@ -1504,6 +1500,7 @@ void draw( bool toScreen){
       textprintf_ex(buffer,font,225,45,makecol(255,250,250),-1,"Lowest score:%i%i",atoi(scores[10][0].c_str()));
       textprintf_ex(buffer,font,225,55,makecol(255,250,250),-1,"Theme:%i",themeNumber);
       textprintf_ex(buffer,font,225,65,makecol(255,250,250),-1,"Motion:%4.2f",motion);
+      textprintf_ex(buffer,font,225,75,makecol(255,250,250),-1,"Score%i",atoi(scores[1][1].c_str()));
 
     }
   if(screenshot_notification_time>0)draw_sprite(buffer,ui_screenshot_notification,SCREEN_W-210,0);
@@ -1596,6 +1593,13 @@ void setup(bool first){
 
   //Seed the random number generator with the time
   srand(time(NULL));
+
+  //Joystick detector
+  if(num_joysticks>0 && control_mode!=2)joystick_enabled=true;
+  if(num_joysticks==0 || control_mode==2)joystick_enabled=false;
+
+  //Set the scores to the scores[i][j] array
+  updateScores();
 
   // Declare integers
   gravity = 1.6;
