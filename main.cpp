@@ -49,7 +49,10 @@ const int smokeParticles = 800;
 volatile int close_button_pressed = FALSE;
 
 const bool developer_build = true;
-const bool ultra_mode = true;
+//WARNING
+//DO NOT USE WITH SCREEN SHAKE!
+const bool ultra_mode = false;
+
 // Declare bitmaps
 BITMAP* buffer;
 BITMAP* intro;
@@ -173,6 +176,7 @@ int settings[5];
 int themeNumber=0;
 int screenshake_x;
 int screenshake_y;
+float screenshake_intensity=0.5;
 
 // Declare booleans
 bool mouse_rocketocket;
@@ -1200,8 +1204,8 @@ void game(){
   if(screenshake>0)screenshake--;
 
   if(screenshake>0){
-    screenshake_x=random(-(screenshake/2),screenshake/2);
-    screenshake_y=random(-(screenshake/2),screenshake/2);
+    screenshake_x=random(-(screenshake/screenshake_intensity),screenshake/screenshake_intensity);
+    screenshake_y=random(-(screenshake/screenshake_intensity),screenshake/screenshake_intensity);
   }else{
     screenshake_x=0;
     screenshake_y=0;
