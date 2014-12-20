@@ -49,6 +49,7 @@ const int smokeParticles = 800;
 volatile int close_button_pressed = FALSE;
 
 const bool developer_build = true;
+const bool ultra_mode = true;
 // Declare bitmaps
 BITMAP* buffer;
 BITMAP* intro;
@@ -807,6 +808,28 @@ void game(){
         energy newEnergyBall( energyImage, energyImage, sound_orb, SCREEN_W, random(30,550));
         energys.push_back( newEnergyBall);
       }
+
+      //Ultra mode!
+      if(ultra_mode){
+        if( random(0,20) == 0 && alive){
+            energy newEnergyBall( energyImage, energyImage, sound_orb, SCREEN_W, random(30,550));
+            energys.push_back( newEnergyBall);
+        }
+        if( random(0,20) == 0 && alive){
+            asteroid newAsteroid( asteroidImage, asteroidImage, sound_asteroid, SCREEN_W, random(30,550), random(4,20));
+            asteroids.push_back( newAsteroid);
+        }
+        if( random(0,20) == 0 && alive){
+            bomb newBomb( bombImage, bombImage, sound_bomb, SCREEN_W, random(30,550));
+            bombs.push_back( newBomb);
+        }
+        if( random(0,20) == 0 && alive){
+            comet newComet( cometImage, cometImage, sound_asteroid, SCREEN_W, random(30,550));
+            comets.push_back( newComet);
+        }
+      }
+
+
 
       // Asteroids
       // Counts up for every asteroid and runs script with ball number as i
