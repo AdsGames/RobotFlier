@@ -31,6 +31,7 @@
 #define OPTIONS 4
 #define GAME 5
 #define EXIT 6
+#define CONTROLS 7
 
 // Constants
 // Maximum number of objects allowed onscreen at once
@@ -96,7 +97,8 @@ BITMAP* ui_screenshot_notification;
 BITMAP* ui_game_end;
 BITMAP* ui_a;
 BITMAP* ui_b;
-
+BITMAP* ui_controls;
+BITMAP* controls;
 
 //Robot images
 BITMAP* robot;
@@ -483,7 +485,7 @@ void game(){
       }
     }
     // Credits menu
-    if(mouse_b & 1 && !viewScores && collision(mouse_x, mouse_x,594 ,698, mouse_y,mouse_y, 548,600)){
+    if(mouse_b & 1 && !viewScores && collision(mouse_x, mouse_x,542 ,594, mouse_y,mouse_y, 548,600)){
         fade_out(8);
         gameScreen = CREDITS;
         fade_in(credits,8);
@@ -501,10 +503,16 @@ void game(){
         fade_in(options_page, 8);
 
     }
+     // Controls menu
+    if(mouse_b & 1 && !viewScores && collision(mouse_x, mouse_x,645 ,697, mouse_y,mouse_y, 548 ,600)){
+        fade_out(8);
+        gameScreen = CONTROLS;
+        fade_in(controls,8);
+    }
   }
 
   // Tutorial and credits screen
-  if(gameScreen == TUTORIAL || gameScreen == CREDITS){
+  if(gameScreen == TUTORIAL || gameScreen == CREDITS || gameScreen == CONTROLS){
     if(keyboard_keypressed() && control_mode!=3  || mouse_b & 1 && control_mode!=3 || joy_buttonpressed() && control_mode!=2){
         fade_out(8);
 			gameScreen = MENU;
@@ -1165,7 +1173,7 @@ void game(){
 
   // EVERYBODY!!
   if(screenshot_notification_time>0)screenshot_notification_time--;
-  if((key[KEY_F11] || (joy[0].button[3].b)) && step>9){
+  if((key[KEY_F11] || (joy[0].button[3].b && control_mode!=2)) && step>9){
   	step=0;
 
   	int screenshotNumber;
@@ -1207,7 +1215,8 @@ void draw( bool toScreen){
             draw_sprite(buffer,xbox_start,x_start_button+225,430);
     }
     draw_sprite(buffer,title,20,y_title);
-    draw_sprite(buffer,ui_credits,593,credits_y);
+    draw_sprite(buffer,ui_credits,541,credits_y);
+    draw_sprite(buffer,ui_controls,645,credits_y);
     draw_sprite(buffer,ui_help,697,credits_y);
     draw_sprite(buffer,ui_options,option_x,548);
 
@@ -1237,6 +1246,10 @@ void draw( bool toScreen){
   // Credits screen
   if(gameScreen == CREDITS){
   	draw_sprite( buffer, credits, 0, 0);
+  }
+  // Credits screen
+  if(gameScreen == CONTROLS){
+  	draw_sprite( buffer, controls, 0, 0);
   }
 
   // Game screen
@@ -1798,6 +1811,11 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/ui_a.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_b = load_bitmap("images/gui/ui_b.png", NULL)))
       abort_on_error("Cannot find image gui/ui_b.png\nTry reinstalling from adsgames.net/download/robotflier");
+    if (!(ui_controls = load_bitmap("images/gui/ui_controls.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_controls.png\nTry reinstalling from adsgames.net/download/robotflier");
+    if (!(controls = load_bitmap("images/gui/controls.png", NULL)))
+      abort_on_error("Cannot find image gui/controls.png\nTry reinstalling from adsgames.net/download/robotflier");
+
 
 
 
