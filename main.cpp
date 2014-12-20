@@ -1174,14 +1174,11 @@ void game(){
     mouseMove = mouse_y;
   }
   //Screen shake
-  screenshake--;
+  if(screenshake>0)screenshake--;
 
-  if(screenshake>5){
-    screenshake_x=random(-5,5);
-    screenshake_y=random(-5,5);
-  }else if(screenshake>0 && screenshake<6){
-    screenshake_x=random(-2,2);
-    screenshake_y=random(-2,2);
+  if(screenshake>0){
+    screenshake_x=random(-(screenshake/2),screenshake/2);
+    screenshake_y=random(-(screenshake/2),screenshake/2);
   }else{
     screenshake_x=0;
     screenshake_y=0;
