@@ -177,11 +177,11 @@ int control_mode;
 int key_bindings[10];
 int screenshot_notification_time;
 int handling_speed=8;
-int settings[5];
+int settings[6];
 int themeNumber=0;
 int screenshake_x;
 int screenshake_y;
-float screenshake_intensity=0.5;
+float screenshake_intensity;
 int screenshake_mode;
 
 // Declare booleans
@@ -335,11 +335,12 @@ void write_settings(){
     settings[2]=sound;
     settings[3]=musicToggle;
     settings[4]=fullScreen;
+    settings[5]=screenshake_mode;
 
     ofstream settings_file;
     settings_file.open("data/settings.dat");
 
-    for (int i = 0; i < 5; i++){
+    for (int i = 0; i < 6; i++){
         settings_file<<settings[i]<<" ";
     }
     settings_file.close();
@@ -348,7 +349,7 @@ void write_settings(){
 //Reads the data from file
 void read_settings(){
     ifstream read("data/settings.dat");
-    for (int i = 0; i < 5; i++){
+    for (int i = 0; i < 6; i++){
         read>>settings[i];
     }
     read.close();
@@ -357,9 +358,13 @@ void read_settings(){
     sound=settings[2];
     musicToggle=settings[3];
     fullScreen=settings[4];
-    control_mode=settings[5]+1;
+    screenshake_mode=settings[5];
+    control_mode=settings[6]+1;
     if(particle_type==3)particles_on=false;
     else particles_on=true;
+    if(screenshake_mode==1)screenshake_intensity=4;
+    if(screenshake_mode==2)screenshake_intensity=2;
+    if(screenshake_mode==3)screenshake_intensity=0.5;
 }
 
 //Iterates through the number of buttons in a joystick and returns true if any keys are pressed
@@ -1165,25 +1170,25 @@ void game(){
             screenshake_mode=1;
             screenshake_intensity=4;
             step=0;
-            //write_settings();
+            write_settings();
         }
        if(screenshake_mode==1 && step>9){
             screenshake_mode=2;
             step=0;
             screenshake_intensity=2;
-            //write_settings();
+            write_settings();
         }
          if(screenshake_mode==2 && step>9){
             screenshake_mode=3;
             step=0;
             screenshake_intensity=0.5;
-            //write_settings();
+            write_settings();
         }
          if(screenshake_mode==3 && step>9){
             screenshake_mode=0;
             step=0;
             screenshake_intensity=1;
-            //write_settings();
+            write_settings();
         }
       }
       // Power off
