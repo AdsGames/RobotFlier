@@ -1176,8 +1176,8 @@ void game(){
   screenshake--;
 
   if(screenshake>0){
-    screenshake_x=random(-3,3);
-    screenshake_y=random(-3,3);
+    screenshake_x=random(-5,5);
+    screenshake_y=random(-5,5);
   }else{
     screenshake_x=0;
     screenshake_y=0;
