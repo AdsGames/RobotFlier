@@ -103,6 +103,11 @@ BITMAP* ui_a;
 BITMAP* ui_b;
 BITMAP* ui_controls;
 BITMAP* controls;
+BITMAP* ui_screenshake_none;
+BITMAP* ui_screenshake_low;
+BITMAP* ui_screenshake_medium;
+BITMAP* ui_screenshake_high;
+
 
 //Robot images
 BITMAP* robot;
@@ -177,6 +182,7 @@ int themeNumber=0;
 int screenshake_x;
 int screenshake_y;
 float screenshake_intensity=0.5;
+int screenshake_mode;
 
 // Declare booleans
 bool mouse_rocketocket;
@@ -1127,7 +1133,7 @@ void game(){
 
       // Particles toggle
       if(mouse_b & 1 && collision(280,360,mouse_x,mouse_x,400,480,mouse_y,mouse_y)){
-        if(particle_type==3){
+        if(particle_type==3 && step>9){
             particle_type=0;
             particles_on=true;
             step=0;
@@ -1151,6 +1157,33 @@ void game(){
             particle_type=1;
             step=0;
             write_settings();
+        }
+      }
+      //Screen shake
+      if(mouse_b & 1 && collision(280,360,mouse_x,mouse_x,290,370,mouse_y,mouse_y)){
+         if(screenshake_mode==0 && step>9){
+            screenshake_mode=1;
+            screenshake_intensity=4;
+            step=0;
+            //write_settings();
+        }
+       if(screenshake_mode==1 && step>9){
+            screenshake_mode=2;
+            step=0;
+            screenshake_intensity=2;
+            //write_settings();
+        }
+         if(screenshake_mode==2 && step>9){
+            screenshake_mode=3;
+            step=0;
+            screenshake_intensity=0.5;
+            //write_settings();
+        }
+         if(screenshake_mode==3 && step>9){
+            screenshake_mode=0;
+            step=0;
+            screenshake_intensity=1;
+            //write_settings();
         }
       }
       // Power off
@@ -1203,7 +1236,7 @@ void game(){
   //Screen shake
   if(screenshake>0)screenshake--;
 
-  if(screenshake>0){
+  if(screenshake>0 && screenshake_mode!=0){
     screenshake_x=random(-(screenshake/screenshake_intensity),screenshake/screenshake_intensity);
     screenshake_y=random(-(screenshake/screenshake_intensity),screenshake/screenshake_intensity);
   }else{
@@ -1488,11 +1521,16 @@ void draw( bool toScreen){
         if(!musicToggle)draw_sprite(buffer,ui_music_off,280,180);
         if(musicToggle)draw_sprite(buffer,ui_music_on,280,180);
 
-        // Input
-        textprintf_ex(buffer,orbitron,120,260,makecol(255,250,250),-1,"Input");
+        // Input/screen shake
+        textprintf_ex(buffer,orbitron,120,260,makecol(255,250,250),-1,"Input  Screen shake");
         if(control_mode==1)draw_sprite(buffer,ui_control_auto,120,295);
         if(control_mode==2)draw_sprite(buffer,ui_control_keyboard,120,295);
         if(control_mode==3)draw_sprite(buffer,ui_control_xbox,120,295);
+
+        if(screenshake_mode==0)draw_sprite(buffer,ui_screenshake_none,280,295);
+        if(screenshake_mode==1)draw_sprite(buffer,ui_screenshake_low,280,295);
+        if(screenshake_mode==2)draw_sprite(buffer,ui_screenshake_medium,280,295);
+        if(screenshake_mode==3)draw_sprite(buffer,ui_screenshake_high,280,295);
 
 
         // Video
@@ -1855,6 +1893,14 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/ui_controls.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(controls = load_bitmap("images/gui/controls.png", NULL)))
       abort_on_error("Cannot find image gui/controls.png\nTry reinstalling from adsgames.net/download/robotflier");
+    if (!(ui_screenshake_none = load_bitmap("images/gui/ui_screenshake_none.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_screenshake_none.png\nTry reinstalling from adsgames.net/download/robotflier");
+    if (!(ui_screenshake_low = load_bitmap("images/gui/ui_screenshake_low.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_screenshake_low.png\nTry reinstalling from adsgames.net/download/robotflier");
+    if (!(ui_screenshake_medium = load_bitmap("images/gui/ui_screenshake_medium.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_screenshake_medium.png\nTry reinstalling from adsgames.net/download/robotflier");
+    if (!(ui_screenshake_high = load_bitmap("images/gui/ui_screenshake_high.png", NULL)))
+      abort_on_error("Cannot find image gui/ui_screenshake_high.png\nTry reinstalling from adsgames.net/download/robotflier");
 
 
 
