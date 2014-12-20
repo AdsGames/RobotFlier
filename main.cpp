@@ -761,7 +761,7 @@ void game(){
         speed = 14;
         if( !invincible){
             health -= 5;
-            play_sample( sound_hitground, 255, 125, 1000, 0);
+            if(sound)play_sample( sound_hitground, 255, 125, 1000, 0);
          }
       }
 
@@ -1165,7 +1165,7 @@ void game(){
 
   // EVERYBODY!!
   if(screenshot_notification_time>0)screenshot_notification_time--;
-  if(key[KEY_F11] && step>9){
+  if((key[KEY_F11] || (joy[0].button[3].b)) && step>9){
   	step=0;
 
   	int screenshotNumber;
