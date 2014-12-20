@@ -170,6 +170,8 @@ int screenshot_notification_time;
 int handling_speed=8;
 int settings[5];
 int themeNumber=0;
+int screenshake_x;
+int screenshake_y;
 
 // Declare booleans
 bool mouse_rocketocket;
@@ -485,7 +487,7 @@ void game(){
       }
     }
     // Credits menu
-    if(mouse_b & 1 && !viewScores && collision(mouse_x, mouse_x,542 ,594, mouse_y,mouse_y, 548,600)){
+    if(mouse_b & 1 && !viewScores && collision(mouse_x, mouse_x,542 ,644, mouse_y,mouse_y, 548,600)){
         fade_out(8);
         gameScreen = CREDITS;
         fade_in(credits,8);
@@ -1170,7 +1172,16 @@ void game(){
     }
     mouseMove = mouse_y;
   }
+  //Screen shake
+  screenshake--;
 
+  if(screenshake>0){
+    screenshake_x=random(-3,3);
+    screenshake_y=random(-3,3);
+  }else{
+    screenshake_x=0;
+    screenshake_y=0;
+  }
   // EVERYBODY!!
   if(screenshot_notification_time>0)screenshot_notification_time--;
   if((key[KEY_F11] || (joy[0].button[3].b && control_mode!=2)) && step>9){
@@ -1517,9 +1528,10 @@ void draw( bool toScreen){
 
     }
   if(screenshot_notification_time>0)draw_sprite(buffer,ui_screenshot_notification,SCREEN_W-210,0);
+
   // Draw background and buffer
   if( toScreen == true){
-	  draw_sprite(screen,buffer,0,0);
+	  draw_sprite(screen,buffer,screenshake_x,screenshake_y);
 	}
 }
 

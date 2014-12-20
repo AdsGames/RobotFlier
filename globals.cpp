@@ -7,6 +7,8 @@ const int robotHeight = 70;
 float robot_x;
 float robot_y;
 
+int screenshake;
+
 int health;
 unsigned int score;
 

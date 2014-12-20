@@ -21,6 +21,8 @@ extern const int robotHeight;
 extern float robot_x;
 extern float robot_y;
 
+extern int screenshake;
+
 extern int health;
 extern unsigned int score;
 

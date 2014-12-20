@@ -20,8 +20,9 @@ void comet::logic(int newMotion){
   x -= newMotion * 2;
 
   if(collision(x, x + width , robot_x, robot_x + robotWidth, y, y + height, robot_y, robot_y + robotHeight) && !isDead){
-		if(!invincible){
+    if(!invincible){
       health -= 3;
+      screenshake=20;
     }
     if(sound && !invincible){
       play_sample(soundEffect,255,125,1000,0);

@@ -23,6 +23,7 @@ void asteroid::logic(int newMotion){
   if(collision(x, x + width , robot_x + collisionBuffer, robot_x + robotWidth - collisionBuffer, y, y + height, robot_y + collisionBuffer, robot_y + robotHeight - collisionBuffer) && !isDead){
     if(!invincible){
       health -= 5;
+      screenshake=20;
     }
     if(sound && !invincible){
       play_sample(soundEffect,255,125,1000,0);
