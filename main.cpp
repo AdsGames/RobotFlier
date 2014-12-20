@@ -772,6 +772,7 @@ void game(){
         if( !invincible){
             health -= 5;
             if(sound)play_sample( sound_hitground, 255, 125, 1000, 0);
+            screenshake=30;
          }
       }
 
@@ -1175,9 +1176,12 @@ void game(){
   //Screen shake
   screenshake--;
 
-  if(screenshake>0){
+  if(screenshake>5){
     screenshake_x=random(-5,5);
     screenshake_y=random(-5,5);
+  }else if(screenshake>0 && screenshake<6){
+    screenshake_x=random(-2,2);
+    screenshake_y=random(-2,2);
   }else{
     screenshake_x=0;
     screenshake_y=0;
