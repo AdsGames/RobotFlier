@@ -110,7 +110,7 @@ BITMAP* ui_screenshake_high;
 BITMAP* asteroid_christmas;
 BITMAP* bomb_christmas;
 BITMAP* energy_christmas;
-
+BITMAP* christmas_hat;
 
 //Robot images
 BITMAP* robot;
@@ -1567,6 +1567,9 @@ void draw( bool toScreen){
     // See through invincibility
     if(alive && invincible)
       draw_sprite(buffer,robotInvincibleTop,robot_x,robot_y);
+    if(christmas_mode)
+        draw_sprite(buffer,christmas_hat,robot_x+20,robot_y-12);
+
   }
 
   // Option Menu drawing(page and ingame)
@@ -1967,6 +1970,9 @@ void setup(bool first){
       abort_on_error("Cannot find image bomb_christmas.png\nTry reinstalling from adsgames.net/download/robotflier");
      if (!(energy_christmas = load_bitmap("images/energy_christmas.png", NULL)))
       abort_on_error("Cannot find image energy_christmas.png\nTry reinstalling from adsgames.net/download/robotflier");
+    if (!(christmas_hat = load_bitmap("images/christmas_hat.png", NULL)))
+      abort_on_error("Cannot find image christmas_hat.png\nTry reinstalling from adsgames.net/download/robotflier");
+
 
 
 
