@@ -109,6 +109,7 @@ BITMAP* ui_screenshake_medium;
 BITMAP* ui_screenshake_high;
 BITMAP* asteroid_christmas;
 BITMAP* bomb_christmas;
+BITMAP* energy_christmas;
 
 
 //Robot images
@@ -822,8 +823,13 @@ void game(){
       }
       // Energy ball spawning
       if( random(0,50) == 0 && alive){
-        energy newEnergyBall( energyImage, energyImage, sound_orb, SCREEN_W, random(30,550));
-        energys.push_back( newEnergyBall);
+        if(!christmas_mode){
+            energy newEnergyBall( energyImage, energyImage, sound_orb, SCREEN_W, random(30,550));
+            energys.push_back( newEnergyBall);
+        }else{
+            energy newEnergyBall( energy_christmas, energy_christmas, sound_orb, SCREEN_W, random(30,550));
+            energys.push_back( newEnergyBall);
+        }
       }
 
       //Ultra mode!
@@ -1959,6 +1965,8 @@ void setup(bool first){
       abort_on_error("Cannot find image asteroid_christmas.png\nTry reinstalling from adsgames.net/download/robotflier");
      if (!(bomb_christmas = load_bitmap("images/bomb_christmas.png", NULL)))
       abort_on_error("Cannot find image bomb_christmas.png\nTry reinstalling from adsgames.net/download/robotflier");
+     if (!(energy_christmas = load_bitmap("images/energy_christmas.png", NULL)))
+      abort_on_error("Cannot find image energy_christmas.png\nTry reinstalling from adsgames.net/download/robotflier");
 
 
 
