@@ -107,6 +107,7 @@ BITMAP* ui_screenshake_none;
 BITMAP* ui_screenshake_low;
 BITMAP* ui_screenshake_medium;
 BITMAP* ui_screenshake_high;
+BITMAP* asteroid_christmas;
 
 
 //Robot images
@@ -831,8 +832,13 @@ void game(){
             energys.push_back( newEnergyBall);
         }
         if( random(0,20) == 0 && alive){
-            asteroid newAsteroid( asteroidImage, asteroidImage, sound_asteroid, SCREEN_W, random(30,550), random(4,20));
-            asteroids.push_back( newAsteroid);
+            if(!christmas_mode){
+                asteroid newAsteroid( asteroidImage, asteroidImage, sound_asteroid, SCREEN_W, random(30,550), random(4,20));
+                asteroids.push_back( newAsteroid);
+            }else{
+                asteroid newAsteroid( asteroid_christmas, asteroid_christmas, sound_asteroid, SCREEN_W, random(30,550), random(4,20));
+                asteroids.push_back( newAsteroid);
+            }
         }
         if( random(0,20) == 0 && alive){
             bomb newBomb( bombImage, bombImage, sound_bomb, SCREEN_W, random(30,550));
@@ -858,8 +864,13 @@ void game(){
       // Asteroids spawning
       if( score>100){
         if( random(0,50) == 0){
-          asteroid newAsteroid( asteroidImage, asteroidImage, sound_asteroid, SCREEN_W, random(30,550), random(4,20));
-          asteroids.push_back( newAsteroid);
+          if(!christmas_mode){
+                asteroid newAsteroid( asteroidImage, asteroidImage, sound_asteroid, SCREEN_W, random(30,550), random(4,20));
+                asteroids.push_back( newAsteroid);
+            }else{
+                asteroid newAsteroid( asteroid_christmas, asteroid_christmas, sound_asteroid, SCREEN_W, random(30,550), random(4,20));
+                asteroids.push_back( newAsteroid);
+            }
         }
       }
 
@@ -965,10 +976,28 @@ void game(){
         if( !rocket){
           for( int i = 0; i < rocketParticles; i++){
             if( random(0,10) == 0){
-              particle newParticle1( robot_x + 21, robot_y + 55, makecol( 255, random(0,255), 0), -3, 3, 0, 4, 1);
-              particle newParticle2( robot_x + 52, robot_y + 55, makecol( 255, random(0,255), 0), -3, 3, 0, 4, 1);
-              rocketPart.push_back( newParticle1);
-              rocketPart.push_back( newParticle2);
+              if(!christmas_mode){
+                    particle newParticle1( robot_x + 21, robot_y + 55, makecol( 255, random(0,255), 0), -3, 3, 0, 4, 1);
+                    particle newParticle2( robot_x + 52, robot_y + 55, makecol( 255, random(0,255), 0), -3, 3, 0, 4, 1);
+                    rocketPart.push_back( newParticle1);
+                    rocketPart.push_back( newParticle2);
+              }
+              if(christmas_mode){
+                    if(random(0,1)==0){
+                            particle newParticle1( robot_x + 21, robot_y + 55, makecol( 255, 0, 0), -3, 3, 0, 4, 1);
+                            rocketPart.push_back( newParticle1);
+                    }else{
+                            particle newParticle1( robot_x + 21, robot_y + 55, makecol( 0, 255, 0), -3, 3, 0, 4, 1);
+                            rocketPart.push_back( newParticle1);
+                    }if(random(0,1)==0){
+                            particle newParticle2( robot_x + 52, robot_y + 55, makecol( 255, 0, 0), -3, 3, 0, 4, 1);
+                            rocketPart.push_back( newParticle2);
+                    }else{
+                            particle newParticle2( robot_x + 52, robot_y + 55, makecol( 0, 255, 0), -3, 3, 0, 4, 1);
+                            rocketPart.push_back( newParticle2);
+                    }
+
+              }
             }
           }
         }
@@ -1906,6 +1935,8 @@ void setup(bool first){
       abort_on_error("Cannot find image gui/ui_screenshake_medium.png\nTry reinstalling from adsgames.net/download/robotflier");
     if (!(ui_screenshake_high = load_bitmap("images/gui/ui_screenshake_high.png", NULL)))
       abort_on_error("Cannot find image gui/ui_screenshake_high.png\nTry reinstalling from adsgames.net/download/robotflier");
+     if (!(asteroid_christmas = load_bitmap("images/asteroid_christmas.png", NULL)))
+      abort_on_error("Cannot find image asteroid_christmas.png\nTry reinstalling from adsgames.net/download/robotflier");
 
 
 

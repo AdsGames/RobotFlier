@@ -21,6 +21,8 @@ extern const int robotHeight;
 extern float robot_x;
 extern float robot_y;
 
+extern bool christmas_mode;
+
 extern int screenshake;
 
 extern int health;
