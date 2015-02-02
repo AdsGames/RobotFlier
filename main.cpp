@@ -48,9 +48,9 @@ const int smokeParticles = 800;
 // Close button
 volatile int close_button_pressed = FALSE;
 
-bool developer_build = true;
+bool developer_build = false;
 //WARNING
-//DO NOT USE WITH SCREEN SHAKE!
+//DO NOT USE WITH SUPERSHAKE!!!!
 bool ultra_mode = false;
 
 // Declare bitmaps
@@ -2053,11 +2053,10 @@ int main( int argc, char* argv[] ){
       }
       if(command_line[i]=="merrychristmas"){
           christmas_mode=true;
-
       }
-
-
-
+       if(command_line[i]=="debug"){
+          developer_build=true;
+      }
     }
   }
 
