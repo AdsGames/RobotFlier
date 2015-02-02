@@ -563,7 +563,7 @@ void game(){
     if(!paused){
 
       //Reset game
-      if((key[KEY_R] && control_mode!=3)||(joy[0].button[4].b && control_mode!=2)){
+      if(((key[KEY_R] && control_mode!=3)||(joy[0].button[4].b && control_mode!=2))&& alive){
         setup(false);
         changeTheme(0);
         //This stops the robot from hitting the ground after holding down reset
