@@ -2051,6 +2051,10 @@ int main( int argc, char* argv[] ){
           supershake_argument=true;
 
       }
+      if(command_line[i]=="merrychristmas"){
+          christmas_mode=true;
+
+      }
 
 
 
