@@ -48,10 +48,10 @@ const int smokeParticles = 800;
 // Close button
 volatile int close_button_pressed = FALSE;
 
-const bool developer_build = true;
+bool developer_build = true;
 //WARNING
 //DO NOT USE WITH SCREEN SHAKE!
-const bool ultra_mode = false;
+bool ultra_mode = false;
 
 // Declare bitmaps
 BITMAP* buffer;
@@ -205,8 +205,11 @@ bool viewScores;
 bool joystick_enabled;
 bool key_binding_screen;
 bool is_high_score;
+bool supershake_argument=false;
 
 string scores[10][2];
+
+std::string command_line[10];
 
 //Text input
 string  edittext = "Player";
@@ -365,9 +368,11 @@ void read_settings(){
     control_mode=settings[6]+1;
     if(particle_type==3)particles_on=false;
     else particles_on=true;
+
     if(screenshake_mode==1)screenshake_intensity=4;
     if(screenshake_mode==2)screenshake_intensity=2;
     if(screenshake_mode==3)screenshake_intensity=0.5;
+
 }
 
 //Iterates through the number of buttons in a joystick and returns true if any keys are pressed
@@ -1297,8 +1302,13 @@ void game(){
   if(screenshake>0)screenshake--;
 
   if(screenshake>0 && screenshake_mode!=0){
-    screenshake_x=random(-(screenshake/screenshake_intensity),screenshake/screenshake_intensity);
-    screenshake_y=random(-(screenshake/screenshake_intensity),screenshake/screenshake_intensity);
+    if(!supershake_argument){
+      screenshake_x=random(-(screenshake/screenshake_intensity),screenshake/screenshake_intensity);
+      screenshake_y=random(-(screenshake/screenshake_intensity),screenshake/screenshake_intensity);
+    }else{
+      screenshake_x=random(-10*screenshake,10*screenshake);
+      screenshake_y=random(-10*screenshake,10*screenshake);
+    }
   }else{
     screenshake_x=0;
     screenshake_y=0;
@@ -2008,7 +2018,7 @@ void setup(bool first){
 }
 
 //Main function
-int main(){
+int main( int argc, char* argv[] ){
   FSOUND_Init (44100, 32, 0);
   allegro_init();
   alpng_init();
@@ -2025,6 +2035,28 @@ int main(){
   // Run setup function
   set_window_title("Robot Flier");
   setup(true);
+
+  if( argc != 0){
+    for (int i = 0; i < argc; i++){
+      command_line[i]=argv[i];
+    }
+    for (int i = 0; i < argc; i++){
+      if(command_line[i]=="mega"){
+        ultra_mode=true;
+      }
+      if(command_line[i]=="windowed"){
+          set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
+      }
+      if(command_line[i]=="supershake"){
+          supershake_argument=true;
+
+      }
+
+
+
+    }
+  }
+
 
   while( !close_button_pressed && gameScreen!=EXIT){
     while(ticks == 0){

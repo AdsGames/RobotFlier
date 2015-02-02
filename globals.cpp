@@ -9,7 +9,7 @@ float robot_y;
 
 int screenshake;
 
-bool christmas_mode=true;
+bool christmas_mode=false;
 
 int health;
 unsigned int score;
