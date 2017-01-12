@@ -24,7 +24,7 @@ int debrisCollided;
 
 bool joystick_enabled = false;
 
-string scores[10][2];
+std::string scores[10][2];
 int settings[11];
 
 // Fonts
@@ -41,43 +41,43 @@ bool joy_buttonpressed(){
 
 //Writes the settings to file
 void write_settings(){
-  ofstream settings_file("data/settings.dat");
-  cout << "Writing settings:\n";
+  std::ofstream settings_file("data/settings.dat");
+  std::cout << "Writing settings:\n";
   for (int i = 0; i < 7; i++){
     settings_file << settings[i] << " ";
-    cout << settings[i] << "\n";
+    std::cout << settings[i] << "\n";
   }
   settings_file.close();
 }
 
 //Reads the data from file
 void read_settings(){
-  ifstream read("data/settings.dat");
-  cout << "Reading settings:\n";
+  std::ifstream read("data/settings.dat");
+  std::cout << "Reading settings:\n";
   for (int i = 0; i < 7; i++){
     read >> settings[i];
-    cout << settings[i] << "\n";
+    std::cout << settings[i] << "\n";
   }
   read.close();
 }
 
 //Convert int to string
-string convertInt(int number){
-  stringstream ss;
+std::string convertInt( int number){
+  std::stringstream ss;
   ss << number;
   return ss.str();
 }
 
 //Convert string to int
-int convertStringToInt(string newString){
+int convertStringToInt( std::string newString){
   int result;
-  stringstream(newString) >> result;
+  std::stringstream(newString) >> result;
   return result;
 }
 
 //Read High Scores
 void updateScores(){
-  ifstream read("data/scores.dat");
+  std::ifstream read( "data/scores.dat");
   for (int i = 0; i < 10; i++){
     for( int t = 0; t < 2; t++){
       read>>scores[i][t];
@@ -107,7 +107,7 @@ void check_highscore(){
 }
 
 //Add score
-void addScore(string name){
+void addScore( std::string name){
   //Update table
   updateScores();
 
@@ -130,7 +130,7 @@ void addScore(string name){
   }
 
   //Save Scores
-  ofstream saveFile;
+  std::ofstream saveFile;
   saveFile.open("data/scores.dat");
 
   for (int i = 0; i < 10; i++){

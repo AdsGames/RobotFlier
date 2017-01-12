@@ -38,7 +38,7 @@ class game_object{
     SAMPLE* soundEffect;
 
     // Position
-    int x, y;
+    float x, y;
 
     // Size
     int height, width;
@@ -47,7 +47,7 @@ class game_object{
     bool isDead;
 
     // Particles for explosion
-    vector<particle> debris;
+    std::vector<particle> debris;
 
     // Damage
     int damage;

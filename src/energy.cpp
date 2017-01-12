@@ -23,12 +23,6 @@ void energy::logic(int newMotion){
 
 // Move towards robot
 void energy::move_towards( int mov_x, int mov_y, int speed){
-  if( mov_y + 2 > y)
-    y += speed + Get2dDistance( mov_x, x, mov_y, y)/400;
-  if( mov_y - 2 < y)
-    y -= speed + Get2dDistance( mov_x, x, mov_y, y)/400;
-  if( mov_x + 2 > x)
-    x += speed + Get2dDistance( mov_x, x, mov_y, y)/400;
-  if( mov_x - 2 < x)
-    x -= speed + Get2dDistance( mov_x, x, mov_y, y)/400;
+  y += speed * ( mov_y - y)/100;
+  x += speed * ( mov_x - x)/100;
 }

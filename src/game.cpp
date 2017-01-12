@@ -299,7 +299,7 @@ void game::update(){
       energys.at(i).logic(motion);
       // Magnet
       if( magnetic){
-        energys.at(i).move_towards( robot_x, robot_y, magneticStrength);
+        energys.at(i).move_towards( robot_x + robotWidth/2, robot_y + robotHeight/2, magneticStrength);
       }
       if( energys.at(i).offScreen()){
         energys.erase(energys.begin() + i);
@@ -366,26 +366,25 @@ void game::update(){
         comet newComet( cometImage, sound_asteroid, SCREEN_W, random(30,550));
         comets.push_back( newComet);
       }
-
       // Powerup spawning
       if( score > 100 && random(0,3000) == 0){
         powerup newPowerup( powerStar, sound_star, SCREEN_W, random(30,600), 500, 1, 0);
         powerups.push_back( newPowerup);
       }
-      if( score > 100 && random(0,750) == 0){
-        powerup newPowerup( powerMagnet[0], magnetSound, SCREEN_W, random(30,600), 500, 10, 3);
+      if( score > 100 && random(0,500) == 0){
+        powerup newPowerup( powerMagnet[0], magnetSound, SCREEN_W, random(30,600), 500, 10, 1);
         powerups.push_back( newPowerup);
       }
       if( score > 200 && random(0,1000) == 0){
-        powerup newPowerup( powerMagnet[1], magnetSound, SCREEN_W, random(30,600), 500, 11, 4);
+        powerup newPowerup( powerMagnet[1], magnetSound, SCREEN_W, random(30,600), 500, 11, 2);
         powerups.push_back( newPowerup);
       }
       if( score > 300 && random(0,2000) == 0){
-        powerup newPowerup( powerMagnet[2], magnetSound, SCREEN_W, random(30,600), 500, 12, 5);
+        powerup newPowerup( powerMagnet[2], magnetSound, SCREEN_W, random(30,600), 500, 12, 3);
         powerups.push_back( newPowerup);
       }
       if( score > 500 && random(0,3000) == 0){
-        powerup newPowerup( powerMagnet[3], magnetSound, SCREEN_W, random(30,600), 500, 13, 6);
+        powerup newPowerup( powerMagnet[3], magnetSound, SCREEN_W, random(30,600), 500, 13, 4);
         powerups.push_back( newPowerup);
       }
     }
@@ -587,16 +586,16 @@ void game::draw(){
     textprintf_ex( buffer, orbitron, 130, 245, makecol(0,0,0), -1, "Powerups Received: %i", powerupsCollected);
     textprintf_ex( buffer, orbitron, 130, 285, makecol(0,0,0), -1, "Debris Collided: %i", debrisCollided);
 
-    if(is_high_score){
+    if( is_high_score){
       // Input rectangle
-      rectfill(buffer, 120, 388, text_length(orbitron, edittext.c_str())+132, 432, makecol(0,0,0));
-      rectfill(buffer, 122, 390, text_length(orbitron, edittext.c_str())+130, 430, makecol(255,255,255));
+      rectfill( buffer, 120, 388, text_length(orbitron, edittext.c_str()) + 132, 432, makecol(0,0,0));
+      rectfill( buffer, 122, 390, text_length(orbitron, edittext.c_str()) + 130, 430, makecol(255,255,255));
 
       // Output the string to the screen
-      textout_ex(buffer, orbitron, edittext.c_str(), 126, 390, makecol(0,0,0), -1);
+      textout_ex( buffer, orbitron, edittext.c_str(), 126, 390, makecol(0,0,0), -1);
 
       // Draw the caret
-      vline(buffer, text_length(orbitron, edittext.c_str()) + 126, 392, 428, makecol(0,0,0));
+      vline( buffer, text_length(orbitron, edittext.c_str()) + 126, 392, 428, makecol(0,0,0));
 
       // Draw the congrats message
       textprintf_ex( buffer, orbitron, 150, 330, makecol(0,255,0), -1, "New highscore!");

@@ -1,7 +1,6 @@
 #include "button.h"
 
-using namespace std;
-
+// Constructor
 Button::Button(){
   button_height = 10;
   button_width = 10;
@@ -12,12 +11,14 @@ Button::Button(){
   enabled = false;
 }
 
+// Destructor
 Button::~Button(){
   // Destroy bitmaps
   destroy_bitmap( images[0]);
   destroy_bitmap( images[1]);
 }
 
+// Set images
 void Button::set_images( std::string image1, std::string image2){
   images[0] = load_bitmap( image1.c_str(), NULL);
   images[1] = load_bitmap( image2.c_str(), NULL);
@@ -29,25 +30,30 @@ void Button::set_images( std::string image1, std::string image2){
   }
 }
 
+// Check hover state
 bool Button::get_hover(){
   if( mouse_x > x && mouse_x < x + button_width && mouse_y > y && mouse_y < y + button_height)
     return true;
   return false;
 }
 
+// Reposition button
 void Button::set_position( int newX, int newY){
   x = newX;
   y = newY;
 }
 
+// Get x
 int Button::get_x(){
   return x;
 }
 
+// Get y
 int Button::get_y(){
   return y;
 }
 
+// Draw to tempBitmap
 void Button::draw( BITMAP* tempBitmap){
   // Check hover state
   if(get_hover()){

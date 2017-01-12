@@ -29,8 +29,6 @@
 #define SETTING_SUPERSHAKE 8
 #define SETTING_CHRISTMAS 9
 
-using namespace std;
-
 //Variables
 extern int settings[11];
 extern std::string scores[10][2];

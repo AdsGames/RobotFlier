@@ -120,22 +120,22 @@ class game : public state{
     bool magnetic;
 
     //Text input
-    string edittext;
-    string::iterator iter;
+    std::string edittext;
+    std::string::iterator iter;
 
     // Declares that the void functions are there
     void changeTheme( int NewThemeNumber);
 
     // Containers of objects
-    vector<energy> energys;
-    vector<asteroid> asteroids;
-    vector<bomb> bombs;
-    vector<comet> comets;
-    vector<powerup> powerups;
+    std::vector<energy> energys;
+    std::vector<asteroid> asteroids;
+    std::vector<bomb> bombs;
+    std::vector<comet> comets;
+    std::vector<powerup> powerups;
 
     // Particles
-    vector<particle> rocketPart;
-    vector<particle> smokePart;
+    std::vector<particle> rocketPart;
+    std::vector<particle> smokePart;
 
 };
 

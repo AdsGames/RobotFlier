@@ -45,8 +45,8 @@ class menu : public state{
     bool rocket;
 
     // Particles
-    vector <particle> mousePart;
-    vector <particle> menuPart;
+    std::vector <particle> mousePart;
+    std::vector <particle> menuPart;
 
     // Images
     BITMAP *buffer;
