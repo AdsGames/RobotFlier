@@ -9,34 +9,27 @@
 #define CIRCLE 0
 #define SQUARE 1
 #define PIXEL 2
-#define RANDOM 3
 
-#include "globals.h"
+#include <allegro.h>
 
 class particle{
   public:
-    BITMAP* image[2];
-
     float x;
     float y;
 
-    int particleColor;
-    int particleRed;
-    int particleGreen;
-    int particleBlue;
+    int color;
 
     int size;
+    int type;
 
-    int xMax;
-    int xMin;
-    int yMin;
-    int yMax;
+    int velocity_x;
+    int velocity_y;
 
-    particle(int newX, int newY, int newColor, int newXMin, int newXMax, int newYMin, int newYMax, int newSize);
+    particle(int newX, int newY, int newColor, int newXVel, int newYVel, int newSize, int newType);
     ~particle();
 
     void logic();
-    void draw(BITMAP* tempBitmap);
+    void draw( BITMAP* tempBitmap);
 
   private:
 };

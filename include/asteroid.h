@@ -11,7 +11,7 @@
 class asteroid : public game_object{
   public:
     // Constructor
-    asteroid( BITMAP* newImage1, BITMAP* newImage2, SAMPLE* newSoundEffect, int newX, int newY, int newSize);
+    asteroid( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newSize);
 
     // Logic override
     void logic( int newMotion);

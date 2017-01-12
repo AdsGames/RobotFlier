@@ -11,7 +11,7 @@
 class powerup : public game_object{
   public:
     // Constructor
-    powerup(BITMAP* newImage1, BITMAP* newImage2, SAMPLE* newSoundEffect, int newX, int newY, int newTimerLength, int newType, int newStrength);
+    powerup(BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newTimerLength, int newType, int newStrength);
 
     // Logic override
     void logic(int newMotion);

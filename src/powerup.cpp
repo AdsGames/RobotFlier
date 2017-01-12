@@ -1,7 +1,7 @@
 #include "powerup.h"
 
 // Constructor
-powerup::powerup(BITMAP* newImage1, BITMAP* newImage2, SAMPLE* newSoundEffect, int newX, int newY, int newTimerLength, int newType, int newStrength) : game_object( newImage1, newImage2, newSoundEffect, newX, newY, 0){
+powerup::powerup(BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newTimerLength, int newType, int newStrength) : game_object( newImage, newSoundEffect, newX, newY, 0){
   timerLength = newTimerLength;
   type = newType;
   strength = newStrength;
@@ -20,7 +20,7 @@ void powerup::logic(int newMotion){
       magneticTimer = timerLength;
       magneticStrength = strength;
     }
-    if(sound)
+    if( settings[SETTING_SOUND])
       play_sample(soundEffect,255,125,1000,0);
   }
 }

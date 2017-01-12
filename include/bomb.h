@@ -11,7 +11,7 @@
 class bomb : public game_object{
   public:
     // Constructor
-    bomb( BITMAP* newImage1, BITMAP* newImage2, SAMPLE* newSoundEffect, int newX, int newY);
+    bomb( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY);
 
     // Logic
     void logic( int newMotion);

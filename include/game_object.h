@@ -14,7 +14,7 @@
 class game_object{
   public:
     // Constructor
-    game_object(BITMAP* newImage1, BITMAP* newImage2, SAMPLE* newSoundEffect, int newX, int newY, int newSize);
+    game_object(BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newSize);
 
     // Destructor
     ~game_object();
@@ -32,7 +32,7 @@ class game_object{
     void draw(BITMAP* tempBitmap);
   protected:
     // Images
-    BITMAP* image[2];
+    BITMAP* image;
 
     // Sounds
     SAMPLE* soundEffect;
