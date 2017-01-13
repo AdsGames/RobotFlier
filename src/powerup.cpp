@@ -11,7 +11,7 @@ powerup::powerup( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, 
 void powerup::logic(int newMotion, robot *ourRobot){
   x -= newMotion;
 
-  if( collision( x, x + width , ourRobot -> getX(), ourRobot -> getX() + ourRobot -> getWidth(), y, y + height, ourRobot -> getY(), ourRobot -> getY() + ourRobot -> getHeight())){
+  if( !isDead && collision( x, x + width , ourRobot -> getX(), ourRobot -> getX() + ourRobot -> getWidth(), y, y + height, ourRobot -> getY(), ourRobot -> getY() + ourRobot -> getHeight())){
     stats[STAT_POWERUPS] += 1;
     if( type == 1){
       invincibleTimer = timerLength;
@@ -22,5 +22,6 @@ void powerup::logic(int newMotion, robot *ourRobot){
     }
     if( settings[SETTING_SOUND])
       play_sample( soundEffect, 255, 125, 1000, 0);
+    isDead = true;
   }
 }

@@ -8,7 +8,7 @@ energy::energy( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY) : 
 void energy::logic(int newMotion, robot *ourRobot){
   x -= newMotion;
 
-  if( collision(x, x + width , ourRobot ->getX(), ourRobot -> getX() + ourRobot ->getWidth(), y, y + height, ourRobot ->getY(), ourRobot ->getY() + ourRobot ->getHeight()) && !isDead){
+  if( !isDead && collision(x, x + width , ourRobot ->getX(), ourRobot -> getX() + ourRobot ->getWidth(), y, y + height, ourRobot ->getY(), ourRobot ->getY() + ourRobot ->getHeight())){
     score += 5;
     stats[STAT_ENERGY] += 1;
 		if( ourRobot -> getHealth() < 100){

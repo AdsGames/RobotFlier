@@ -22,7 +22,7 @@ class game_object{
     ~game_object();
 
     // Updates asteroid logic
-    void logic( int newMotion, robot *ourRobot);
+    void logic( int newMotion);
 
     // Has it been hit?
     bool dead();
@@ -30,7 +30,7 @@ class game_object{
     // Has it passed the screen bounds?
     bool offScreen();
 
-    // Draws the asteroid to screen
+    // Draws the object to screen
     void draw( BITMAP* tempBitmap);
   protected:
     // Images
@@ -48,8 +48,8 @@ class game_object{
     // Dead or naw
     bool isDead;
 
-    // Particles for explosion
-    std::vector<particle> debris;
+    // Particles
+    std::vector<particle> parts;
 
     // Damage
     int damage;
