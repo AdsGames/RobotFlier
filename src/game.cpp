@@ -124,15 +124,17 @@ void game::update(){
     stats[STAT_DISTANCE] += motion;
 
     // Changes speed
-    motion = ((score/36) + 6);
+    if( hectar.isAlive())
+      motion = ((score/36) + 6);
+    else
+      motion *= 0.95;
 
     // No negative scores
     if( score < 0)
       score = 0;
 
     // Scrolls background
-    if( hectar.isAlive() || hectar.isOnGround())
-      scroll -= motion;
+    scroll -= motion;
     if( scroll/6 + SCREEN_W <= 0)
       scroll = 0;
 
@@ -297,11 +299,19 @@ void game::update(){
 	  write.close();
 
 	  // Save to file
-    save_png((std::string("screenshots/screenshot_") + convertInt(screenshotNumber).c_str() + std::string(".png")).c_str(), buffer, NULL);
+    save_png((std::string("screenshots/screenshot_") + convertIntToString(screenshotNumber).c_str() + std::string(".png")).c_str(), buffer, NULL);
 
     // Snap sound
     play_sample( sound_snap, 255, 128, 1000, 0);
   }
+
+  //Screen shake
+  if( screenshake > 0 && settings[SETTING_SCREENSHAKE] != 0){
+    screenshake_x = screenshake_y = random( -(screenshake * settings[SETTING_SCREENSHAKE] + 100 * settings[SETTING_SUPERSHAKE]), screenshake * settings[SETTING_SCREENSHAKE] + 100 * settings[SETTING_SUPERSHAKE]);
+    screenshake--;
+  }
+  if( screenshake <= 0 || !hectar.isAlive())
+    screenshake_x = screenshake_y = 0;
 
   // Random test stuff for devs
   if( settings[SETTING_DEBUG]){
@@ -468,5 +478,5 @@ void game::draw(){
   }
 
   // Draw buffer
-  draw_sprite( screen, buffer, 0, 0);
+  draw_sprite( screen, buffer, screenshake_x, screenshake_y);
 }

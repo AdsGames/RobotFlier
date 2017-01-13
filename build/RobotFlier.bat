@@ -1,1 +1,1 @@
-"RobotFlier.exe" mega supershake
+"RobotFlier.exe" mega

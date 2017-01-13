@@ -9,7 +9,7 @@ bool joy_buttonpressed(){
 }
 
 //Convert int to string
-std::string convertInt( int number){
+std::string convertIntToString( int number){
   std::stringstream ss;
   ss << number;
   return ss.str();
@@ -70,7 +70,7 @@ void addScore( std::string scoreCopy[][2], int newScore, std::string name){
         scoreCopy[t][1] = scoreCopy[t - 1][1];
         scoreCopy[t][0] = scoreCopy[t - 1][0];
       }
-      scoreCopy[i][1] = convertInt(newScore);
+      scoreCopy[i][1] = convertIntToString(newScore);
       scoreCopy[i][0] = name;
       break;
     }
