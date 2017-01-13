@@ -16,10 +16,10 @@ void debrie::logic( int newMotion, robot *ourRobot){
   x -= newMotion * motion_multiplier;
 
   // Allow for some padding (since we use bounding box)
-  int collisionBuffer = height/3;
+  int collisionBuffer = height / 3;
 
   // Collide with robot
-  if( !isDead && collision(x, x + width , ourRobot -> getX() + collisionBuffer, ourRobot -> getX() + ourRobot -> getWidth() - collisionBuffer, y, y + height, ourRobot -> getY() + collisionBuffer, ourRobot -> getY() + ourRobot -> getHeight() - collisionBuffer) && !isDead){
+  if( !isDead && collision( x, x + width , ourRobot -> getX() + collisionBuffer, ourRobot -> getX() + ourRobot -> getWidth() - collisionBuffer, y, y + height, ourRobot -> getY() + collisionBuffer, ourRobot -> getY() + ourRobot -> getHeight() - collisionBuffer) && !isDead){
     // Hurt robot
     ourRobot -> addHealth( -damage);
 
@@ -27,7 +27,7 @@ void debrie::logic( int newMotion, robot *ourRobot){
     screenshake += damage * 4;
 
     // Play sound
-    if( settings[SETTING_SOUND] && !(invincibleTimer > 0))
+    if( settings[SETTING_SOUND])
       play_sample(soundEffect,255,125,1000,0);
 
     // Get hit
@@ -36,19 +36,13 @@ void debrie::logic( int newMotion, robot *ourRobot){
 
 		// Make particles
     if( settings[SETTING_PARTICLE_TYPE] != 3){
-	    int iteratorX = 0;
-	    int iteratorY = 0;
-	    for(int i = 0; i < width * height; i++){
-	      if(iteratorX < width - 1){
-	        iteratorX ++;
-	      }
-	      else{
-	        iteratorX = 0;
-	        iteratorY ++;
-	      }
-	      particle newParticle( iteratorX + x, iteratorY + y, getpixel(image, iteratorX, iteratorY), random( -8, 8), random( -8, 8), 0, settings[SETTING_PARTICLE_TYPE]);
-	    	parts.push_back( newParticle);
-	    }
+      int sampling_size = 5;
+      for( int i = 0; i < (image -> w - sampling_size); i += sampling_size){
+        for( int t = 0; t < (image -> h - sampling_size); t += sampling_size){
+          particle newParticle( i + x, t + y, getpixel(image, i, t), random( -8, 8), random( -8, 8), 0, settings[SETTING_PARTICLE_TYPE]);
+          parts.push_back( newParticle);
+        }
+      }
 	  }
   }
 
