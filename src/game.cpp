@@ -141,17 +141,17 @@ void game::update(){
     robot_y += gravity - speed;
 
     // Changes speed
-    motion = ((score/36) + 3);
+    motion = ((score/36) + 6);
 
     // Check if you are dead!
     if( health < 1){
       alive = false;
       health = 0;
     }
-
     // No negative scores
-    if( score < 0)
+    if( score < 0){
       score = 0;
+    }
 
     // Scroll ground
     if( !onGround && motion != 0){
@@ -168,75 +168,25 @@ void game::update(){
 
     // Moving controls
     if( alive){
-      // Add to distance travelled
-      robot_distance += motion;
-
       //Controls movement up and down
       if( ((key[KEY_W] || key[KEY_UP] || mouse_b & 1) && settings[SETTING_CONTROLMODE] != 3) || ((joy[0].button[0].b || joy[0].button[5].b) && settings[SETTING_CONTROLMODE] != 2)){
         if( settings[SETTING_SOUND] && random( 0, 3) == 1)
           play_sample( sound_flame, 10, 155, 1000, 0);
         if( speed < 8){
-          rocket = false;
+          rocket = true;
           speed += 0.6;
         }
       }
       //If no keys pressed
       else{
-        rocket = true;
+        rocket = false;
         if( speed > -8){
           speed -= 0.6;
         }
       }
-    }
 
-    // Lose scripts
-    if( onGround){
-      //Name input
-      check_highscore();
-      if( is_high_score){
-        if(keypressed()){
-          int  newkey   = readkey();
-          char ASCII    = newkey & 0xff;
-          char scancode = newkey >> 8;
-
-          // A character key was pressed; add it to the string
-          if( ASCII >= 32 && ASCII <= 126 && edittext.length() < 14 && scancode != KEY_SPACE){
-            iter = edittext.insert(iter, ASCII);
-            iter++;
-          }
-          // Some other, "special" key was pressed; handle it here
-          else{
-            if(scancode == KEY_DEL){
-              if(iter != edittext.end()){
-                iter = edittext.erase(iter);
-              }
-            }
-            if(scancode == KEY_BACKSPACE){
-              if(iter != edittext.begin()){
-                iter--;
-                iter = edittext.erase(iter);
-              }
-            }
-            if(scancode == KEY_RIGHT){
-              if(iter != edittext.end()){
-                iter++;
-              }
-            }
-            if(scancode == KEY_LEFT){
-              if(iter != edittext.begin()){
-                iter--;
-              }
-            }
-          }
-        }
-        if(key[KEY_ENTER] || (joy[0].button[1].b && settings[SETTING_CONTROLMODE] != 2)){
-          addScore(edittext);
-        }
-      }
-      else if( key[KEY_ENTER] || (joy[0].button[1].b && settings[SETTING_CONTROLMODE]!=2)){
-        addScore(edittext);
-        set_next_state( STATE_MENU);
-      }
+      // Add to distance travelled
+      robot_distance += motion;
     }
 
     // Change theme
@@ -406,7 +356,7 @@ void game::update(){
     }
 
     // Rocket particles
-    if( settings[SETTING_PARTICLE_TYPE] != 3 && !rocket){
+    if( settings[SETTING_PARTICLE_TYPE] != 3 && rocket){
       for( int i = 0; i < 800; i++){
         if( random( 0, 10) == 0){
           int part_color = makecol( 255, random(0,255), 0);
@@ -425,6 +375,56 @@ void game::update(){
       rocketPart.at(i).logic();
       if( random( 0, 2) == 0){
         rocketPart.erase( rocketPart.begin() + i);
+      }
+    }
+
+    // Lose scripts
+    if( onGround){
+      //Name input
+      check_highscore();
+      if( is_high_score){
+        if(keypressed()){
+          int  newkey   = readkey();
+          char ASCII    = newkey & 0xff;
+          char scancode = newkey >> 8;
+
+          // A character key was pressed; add it to the string
+          if( ASCII >= 32 && ASCII <= 126 && edittext.length() < 14 && scancode != KEY_SPACE){
+            iter = edittext.insert(iter, ASCII);
+            iter++;
+          }
+          // Some other, "special" key was pressed; handle it here
+          else{
+            if(scancode == KEY_DEL){
+              if(iter != edittext.end()){
+                iter = edittext.erase(iter);
+              }
+            }
+            if(scancode == KEY_BACKSPACE){
+              if(iter != edittext.begin()){
+                iter--;
+                iter = edittext.erase(iter);
+              }
+            }
+            if(scancode == KEY_RIGHT){
+              if(iter != edittext.end()){
+                iter++;
+              }
+            }
+            if(scancode == KEY_LEFT){
+              if(iter != edittext.begin()){
+                iter--;
+              }
+            }
+          }
+        }
+        if(key[KEY_ENTER] || (joy[0].button[1].b && settings[SETTING_CONTROLMODE] != 2)){
+          addScore(edittext);
+        }
+      }
+      else if( key[KEY_ENTER] || (joy[0].button[1].b && settings[SETTING_CONTROLMODE]!=2)){
+        addScore(edittext);
+        set_next_state( STATE_MENU);
       }
     }
   }
@@ -542,17 +542,17 @@ void game::draw(){
   if( alive){
     // Invincible
     if( invincible){
-      if( rocket || (!rocket && settings[SETTING_PARTICLE_TYPE] != 3))
+      if( !rocket || (rocket && settings[SETTING_PARTICLE_TYPE] != 3))
         draw_sprite( buffer, robotInvincible, robot_x, robot_y);
-      else if( !rocket && settings[SETTING_PARTICLE_TYPE] == 3)
+      else if( rocket && settings[SETTING_PARTICLE_TYPE] == 3)
         draw_sprite( buffer, robotInvincibleFire, robot_x, robot_y);
       draw_sprite( buffer, robotInvincibleTop, robot_x, robot_y);
     }
     // Standard
     else{
-      if( rocket || (!rocket && settings[SETTING_PARTICLE_TYPE] != 3))
+      if( !rocket || (rocket && settings[SETTING_PARTICLE_TYPE] != 3))
         draw_sprite( buffer, robot, robot_x, robot_y);
-      else if( !rocket && settings[SETTING_PARTICLE_TYPE] == 3)
+      else if( rocket && settings[SETTING_PARTICLE_TYPE] == 3)
         draw_sprite( buffer, robotFire, robot_x, robot_y);
     }
     // Xmas mode!

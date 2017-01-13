@@ -42,7 +42,6 @@ class menu : public state{
     bool startMove;
     bool startClicked;
     bool mouse_rocket_up;
-    bool rocket;
 
     // Particles
     std::vector <particle> mousePart;

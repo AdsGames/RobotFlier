@@ -6,7 +6,6 @@ menu::menu(){
   startMove = false;
   startClicked = false;
   mouse_rocket_up = false;
-  rocket = false;
 
   // Screen on
   mini_screen = MINISTATE_MENU;
