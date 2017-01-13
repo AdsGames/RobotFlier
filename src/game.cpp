@@ -6,29 +6,18 @@ game::game(){
   updateScores();
 
   // Init vars
-
-  gravity = 1.6;
-  motion = 5;
-  speed = 15;
   scroll = 0;
   themeNumber = 0;
   screenshake_x = 0;
   screenshake_y = 0;
   screenshake = 0;
-  robot_x = 0;
-  robot_y = 0;
 
   // Decare booleans
-  rocket = false;
   paused = false;
-  alive = true;
-  onGround = false;
 
   edittext = "Player";
   iter = edittext.end();
 
-  magnetic = false;
-  invincible = false;
   score = 0;
   health = 100;
   robot_distance = 0;
@@ -37,9 +26,9 @@ game::game(){
   magneticStrength = 0;
   invincibleTimer = 0;
   magneticTimer = 0;
-
-  // Sets the level to 1
-  changeTheme( 1);
+  invincible = false;
+  magnetic = false;
+  motion = 5;
 
   // Create buffer
   buffer = create_bitmap( SCREEN_W, SCREEN_H);
@@ -50,45 +39,47 @@ game::game(){
   sound_asteroid = load_sample_ex( "audio/sound_asteroid.wav");
   sound_magnet = load_sample_ex( "audio/sound_magnet.wav");
   sound_star = load_sample_ex( "audio/sound_star.wav");
-  sound_flame = load_sample_ex( "audio/sound_flame.wav");
-  sound_hitground = load_sample_ex( "audio/sound_hitground.wav");
   sound_snap = load_sample_ex( "audio/sound_snap.wav");
 
   // Images
-  robot = load_bitmap_ex("images/robot/robot.png");
-  robotFire = load_bitmap_ex("images/robot/robotfire.png");
-  robotInvincible = load_bitmap_ex("images/robot/robotInvincible.png");
-  robotInvincibleFire = load_bitmap_ex("images/robot/robotInvincibleFire.png");
-  robotInvincibleTop = load_bitmap_ex("images/robot/robotInvincibleTop.png");
-  robotDie = load_bitmap_ex("images/robot/robotDie.png");
-  powerStar = load_bitmap_ex("images/powerStar.png");
-  powerMagnet[0] = load_bitmap_ex("images/powerMagnet.png");
-  powerMagnet[1] = load_bitmap_ex("images/powerMagnetTwo.png");
-  powerMagnet[2] = load_bitmap_ex("images/powerMagnetThree.png");
-  powerMagnet[3] = load_bitmap_ex("images/powerMagnetFour.png");
+  // Gui
   pauseMenu = load_bitmap_ex( "images/gui/pauseMenu.png");
-  cometImage = load_bitmap_ex("images/comet.png");
   ui_game_end = load_bitmap_ex( "images/gui/ui_game_end.png");
   ui_a = load_bitmap_ex("images/gui/ui_a.png");
   ui_b = load_bitmap_ex("images/gui/ui_b.png");
-  space = load_bitmap_ex( "images/backgrounds/space.png");
   debug = load_bitmap_ex( "images/gui/debug.png");
 
+  // Background/paralax
+  space = load_bitmap_ex( "images/backgrounds/space.png");
+  groundOverlay = NULL;
+  groundUnderlay = NULL;
+
+  // Objects
+  cometImage = load_bitmap_ex("images/objects/comet.png");
+  powerStar = load_bitmap_ex("images/objects/powerStar.png");
+  powerMagnet[0] = load_bitmap_ex("images/objects/powerMagnet.png");
+  powerMagnet[1] = load_bitmap_ex("images/objects/powerMagnetTwo.png");
+  powerMagnet[2] = load_bitmap_ex("images/objects/powerMagnetThree.png");
+  powerMagnet[3] = load_bitmap_ex("images/objects/powerMagnetFour.png");
   if( settings[SETTING_CHRISTMAS]){
-    energyImage = load_bitmap_ex("images/energy_christmas.png");
-    bombImage = load_bitmap_ex("images/bomb_christmas.png");
+    energyImage = load_bitmap_ex("images/objects/energy_christmas.png");
+    bombImage = load_bitmap_ex("images/objects/bomb_christmas.png");
   }
   else{
-    energyImage = load_bitmap_ex("images/energy.png");
-    bombImage = load_bitmap_ex("images/bomb.png");
+    energyImage = load_bitmap_ex("images/objects/energy.png");
+    bombImage = load_bitmap_ex("images/objects/bomb.png");
   }
 
-  christmas_hat = load_bitmap_ex("images/christmas_hat.png");
+  // Sets the level to 1
+  changeTheme( 1);
 
   // Mouse
   enable_hardware_cursor();
   select_mouse_cursor( MOUSE_CURSOR_ARROW);
   show_mouse( NULL);
+
+  // Init hectar
+  hectar = robot( 20, 20);
 }
 
 // Destructor
@@ -117,114 +108,9 @@ void game::changeTheme( int NewThemeNumber){
   space2 = load_bitmap_ex( "images/ground/paralax_" + themeName + ".png");
 
   if( settings[SETTING_CHRISTMAS])
-    asteroidImage = load_bitmap_ex("images/asteroid_christmas.png");
+    asteroidImage = load_bitmap_ex("images/objects/asteroid_christmas.png");
   else
-    asteroidImage = load_bitmap_ex( "images/asteroid_" + themeName + ".png");
-}
-
-// Robot stuff
-void game::robot_update(){
-  // Check if you are dead!
-  if( health < 1){
-    alive = false;
-    health = 0;
-  }
-
-  // Update robots y position
-  robot_y += gravity - speed;
-
-  // Death smoke
-  if( settings[SETTING_PARTICLE_TYPE] != 3 && !alive){
-    for( int i = 0; i < 800; i++){
-      if( random(0,10) == 0){
-        int randnum = random(0,255);
-        particle newParticle( robot_x + 20, robot_y + 20, makecol( randnum, randnum, randnum), random( -4, -1), random( -5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
-        smokePart.push_back( newParticle);
-      }
-    }
-  }
-  for( unsigned int i = 0; i < smokePart.size(); i++){
-    smokePart.at(i).logic();
-    if( random(0,10) == 0){
-      smokePart.erase( smokePart.begin() + i);
-    }
-  }
-
-  // Rocket particles
-  if( settings[SETTING_PARTICLE_TYPE] != 3 && rocket){
-    for( int i = 0; i < 800; i++){
-      if( random( 0, 10) == 0){
-        int part_color = makecol( 255, random(0,255), 0);
-        if( settings[SETTING_CHRISTMAS]){
-          int red_or_green = random( 0, 1);
-          part_color = makecol( 255 * red_or_green, 255 - red_or_green * 255, 0);
-        }
-        particle newParticle1( robot_x + 21, robot_y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
-        particle newParticle2( robot_x + 52, robot_y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
-        rocketPart.push_back( newParticle1);
-        rocketPart.push_back( newParticle2);
-      }
-    }
-  }
-  for( unsigned int i = 0; i < rocketPart.size(); i++){
-    rocketPart.at(i).logic();
-    if( random( 0, 2) == 0){
-      rocketPart.erase( rocketPart.begin() + i);
-    }
-  }
-
-  // Moving controls
-  if( alive){
-    //Controls movement up and down
-    if( ((key[KEY_W] || key[KEY_UP] || mouse_b & 1) && settings[SETTING_CONTROLMODE] != 3) || ((joy[0].button[0].b || joy[0].button[5].b) && settings[SETTING_CONTROLMODE] != 2)){
-      if( settings[SETTING_SOUND] && random( 0, 3) == 1)
-        play_sample( sound_flame, 10, 155, 1000, 0);
-      if( speed < 8){
-        rocket = true;
-        speed += 0.6;
-      }
-    }
-    //If no keys pressed
-    else{
-      rocket = false;
-      if( speed > -8){
-        speed -= 0.6;
-      }
-    }
-
-    // Add to distance travelled
-    robot_distance += motion;
-  }
-
-  // Dying animation
-  if( !alive){
-    if( robot_y < 550 && !onGround){
-      robot_y += 10;
-      speed = 0;
-      clear_keybuf();
-    }
-    else if( robot_y >= 550){
-      robot_y = 550;
-      motion = 0;
-      onGround = true;
-      clear_keybuf();
-    }
-  }
-
-  // Touching top or bottom
-  if( robot_y < 0){
-    robot_y = 0;
-    speed = 0;
-  }
-  if( robot_y > 550 && alive){
-    speed = 14;
-    if( !invincible){
-      health -= 5;
-      if(settings[SETTING_SOUND])
-        play_sample( sound_hitground, 255, 125, 1000, 0);
-      screenshake = 30;
-    }
-  }
+    asteroidImage = load_bitmap_ex( "images/objects/asteroid_" + themeName + ".png");
 }
 
 // Update logic of game
@@ -232,7 +118,10 @@ void game::update(){
   // Actual game stuff
   if( !paused){
     // Update robot
-    robot_update();
+    hectar.logic();
+
+    // Add to distance travelled
+    robot_distance += motion;
 
     // Changes speed
     motion = ((score/36) + 6);
@@ -242,7 +131,7 @@ void game::update(){
       score = 0;
 
     // Scrolls background
-    if( alive || onGround)
+    if( hectar.alive || hectar.onGround)
       scroll -= motion;
     if( scroll/6 + SCREEN_W <= 0)
       scroll = 0;
@@ -298,7 +187,7 @@ void game::update(){
 
 
     // Spawning
-    if( alive){
+    if( hectar.alive){
       // Energy ball spawning
       if( random(0,50) == 0 || (settings[SETTING_MEGA] && random(0, 20))){
         energy newEnergyBall( energyImage, sound_orb, SCREEN_W, random(30,550));
@@ -343,7 +232,7 @@ void game::update(){
     }
 
     // Lose scripts
-    if( onGround){
+    if( hectar.onGround){
       //Name input
       check_highscore();
       if( is_high_score){
@@ -433,7 +322,7 @@ void game::update(){
       paused = false;
       show_mouse( NULL);
     }
-    else if( alive){
+    else if( hectar.alive){
       paused = true;
       show_mouse( screen);
     }
@@ -452,34 +341,6 @@ void game::update(){
     // Resume
     if( mouseListener::buttonPressed[1] && collision( 470, 540, mouse_x, mouse_x, 435, 460, mouse_y, mouse_y))
       paused = false;
-  }
-}
-
-// Robot stuff
-void game::robot_draw(){
-  // Draw robot sprite
-  if( alive){
-    // Invincible
-    if( invincible){
-      if( !rocket || (rocket && settings[SETTING_PARTICLE_TYPE] != 3))
-        draw_sprite( buffer, robotInvincible, robot_x, robot_y);
-      else if( rocket && settings[SETTING_PARTICLE_TYPE] == 3)
-        draw_sprite( buffer, robotInvincibleFire, robot_x, robot_y);
-    }
-    // Standard
-    else{
-      if( !rocket || (rocket && settings[SETTING_PARTICLE_TYPE] != 3))
-        draw_sprite( buffer, robot, robot_x, robot_y);
-      else if( rocket && settings[SETTING_PARTICLE_TYPE] == 3)
-        draw_sprite( buffer, robotFire, robot_x, robot_y);
-    }
-    // Xmas mode!
-    if( settings[SETTING_CHRISTMAS])
-      draw_sprite( buffer, christmas_hat, robot_x + 20, robot_y - 12);
-  }
-  // Death image
-  else{
-    draw_sprite( buffer,robotDie,robot_x,robot_y);
   }
 }
 
@@ -515,18 +376,17 @@ void game::draw(){
   // Draw the debug window
   if( settings[SETTING_DEBUG]){
     draw_sprite(buffer,debug,0,0);
-    textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%4.2f",speed);
+    textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%4.2f",hectar.speed);
     textprintf_ex(buffer,font,5,35,makecol(255,250,250),-1,"Robot X:20");
     textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%4.2f",robot_y);
     textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%4.2f",motion);
     textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i",invincible);
 
     textprintf_ex(buffer,font,120,25,makecol(255,250,250),-1,"Score:%i",score);
-    textprintf_ex(buffer,font,120,35,makecol(255,250,250),-1,"Gravity:%4.2f",gravity);
+    textprintf_ex(buffer,font,120,35,makecol(255,250,250),-1,"Gravity:%4.2f",hectar.gravity);
     textprintf_ex(buffer,font,120,45,makecol(255,250,250),-1,"Mouse X:%i",mouse_x);
     textprintf_ex(buffer,font,120,55,makecol(255,250,250),-1,"Mouse Y:%i",mouse_y);
     textprintf_ex(buffer,font,120,65,makecol(255,250,250),-1,"Particles On:%i",settings[SETTING_PARTICLE_TYPE]);
-
 
     textprintf_ex(buffer,font,245,25,makecol(255,250,250),-1,"Lowest score:%i",atoi(scores[10][0].c_str()));
     textprintf_ex(buffer,font,245,35,makecol(255,250,250),-1,"Theme:%i",themeNumber);
@@ -540,12 +400,6 @@ void game::draw(){
   draw_sprite( buffer, groundOverlay, scroll % SCREEN_W, SCREEN_H - 20);
   draw_sprite( buffer, groundOverlay, scroll % SCREEN_W + SCREEN_W, SCREEN_H - 20);
 
-  // Draw particles
-  for( unsigned int i = 0; i < rocketPart.size(); i++)
-    rocketPart.at(i).draw( buffer);
-  for( unsigned int i = 0; i < smokePart.size(); i++)
-    smokePart.at(i).draw( buffer);
-
   // Energy
   for( unsigned int i = 0; i < energys.size(); i++)
     energys.at(i).draw(buffer);
@@ -555,7 +409,7 @@ void game::draw(){
     powerups.at(i).draw(buffer);
 
   // Draw robot
-  robot_draw();
+  hectar.draw( buffer);
 
   // Asteroids
   for( unsigned int i = 0; i < debries.size(); i++)
@@ -566,11 +420,10 @@ void game::draw(){
   draw_sprite( buffer, groundUnderlay, scroll % SCREEN_W + SCREEN_W, SCREEN_H - 40);
 
   // Robot above asteroids
-  if( alive && invincible)
-    draw_sprite( buffer, robotInvincibleTop, robot_x, robot_y);
+  hectar.draw_overlay( buffer);
 
   // Lose scripts
-  if( onGround){
+  if( hectar.onGround){
     draw_sprite( buffer, ui_game_end, 0, 0);
     textprintf_ex( buffer, orbitron, 130, 125, makecol(0,0,0), -1, "Final Score: %i", score);
     textprintf_ex( buffer, orbitron, 130, 165, makecol(0,0,0), -1, "Distance Travelled: %i", robot_distance/10);

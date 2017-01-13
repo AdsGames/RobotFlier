@@ -15,7 +15,6 @@ class debrie : public game_object{
 
     // Logic override
     void logic( int newMotion);
-
   private:
     // Motion multiplier
     float motion_multiplier;

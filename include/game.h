@@ -17,6 +17,7 @@
 #include "globals.h"
 #include "mouseListener.h"
 #include "keyListener.h"
+#include "robot.h"
 
 // Game class
 class game : public state{
@@ -32,9 +33,11 @@ class game : public state{
   protected:
 
   private:
-    // Robot stuff
-    void robot_update();
-    void robot_draw();
+    // Change theme
+    void changeTheme( int NewThemeNumber);
+
+    // Our robot
+    robot hectar;
 
     // Declare bitmaps
     BITMAP* buffer;
@@ -49,15 +52,6 @@ class game : public state{
     // GUI Images
     BITMAP* debug;
     BITMAP* pauseMenu;
-    BITMAP* christmas_hat;
-
-    //Robot images
-    BITMAP* robot;
-    BITMAP* robotFire;
-    BITMAP* robotInvincible;
-    BITMAP* robotInvincibleFire;
-    BITMAP* robotInvincibleTop;
-    BITMAP* robotDie;
 
     // Danger images
     BITMAP* energyImage;
@@ -79,8 +73,6 @@ class game : public state{
     SAMPLE* sound_asteroid;
     SAMPLE* sound_magnet;
     SAMPLE* sound_star;
-    SAMPLE* sound_flame;
-    SAMPLE* sound_hitground;
     SAMPLE* sound_snap;
 
     // Music
@@ -93,33 +85,20 @@ class game : public state{
     int themeNumber;
     int screenshake_x;
     int screenshake_y;
+    float motion;
+    bool magnetic;
 
     // Declare booleans
     bool paused;
-
-    // Robot specific
-    float gravity, motion, speed;
-    bool alive;
-    bool rocket;
-    bool magnetic;
-    bool onGround;
 
     //Text input
     std::string edittext;
     std::string::iterator iter;
 
-    // Declares that the void functions are there
-    void changeTheme( int NewThemeNumber);
-
     // Containers of objects
     std::vector<energy> energys;
     std::vector<debrie> debries;
     std::vector<powerup> powerups;
-
-    // Particles
-    std::vector<particle> rocketPart;
-    std::vector<particle> smokePart;
-
 };
 
 #endif // GAME_H
