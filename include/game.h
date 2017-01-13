@@ -9,6 +9,7 @@
 
 #include "state.h"
 #include "globals.h"
+#include "tools.h"
 
 #include "energy.h"
 #include "debrie.h"
@@ -35,9 +36,6 @@ class game : public state{
   private:
     // Change theme
     void changeTheme( int NewThemeNumber);
-
-    // Our robot
-    robot hectar;
 
     // Declare bitmaps
     BITMAP* buffer;
@@ -76,9 +74,12 @@ class game : public state{
     SAMPLE* sound_snap;
 
     // Music
-    FSOUND_STREAM* music_ingame;
-    FSOUND_STREAM* music_mainmenu;
-    FSOUND_STREAM* music_death;
+    SAMPLE* music_ingame;
+    SAMPLE* music_mainmenu;
+    SAMPLE* music_death;
+
+    // Our robot
+    robot hectar;
 
     // Declare integers
     int scroll;

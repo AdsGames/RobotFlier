@@ -10,17 +10,19 @@
 
 #include "globals.h"
 #include "particle.h"
+#include "tools.h"
+#include "robot.h"
 
 class game_object{
   public:
     // Constructor
-    game_object(BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newSize);
+    game_object( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newSize);
 
     // Destructor
     ~game_object();
 
     // Updates asteroid logic
-    void logic(int newMotion);
+    void logic( int newMotion, robot *ourRobot);
 
     // Has it been hit?
     bool dead();
@@ -29,7 +31,7 @@ class game_object{
     bool offScreen();
 
     // Draws the asteroid to screen
-    void draw(BITMAP* tempBitmap);
+    void draw( BITMAP* tempBitmap);
   protected:
     // Images
     BITMAP* image;

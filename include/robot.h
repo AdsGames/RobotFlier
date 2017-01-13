@@ -10,6 +10,7 @@
 #include <allegro.h>
 #include <vector>
 #include "particle.h"
+#include "tools.h"
 #include "globals.h"
 
 class robot{
@@ -22,15 +23,30 @@ class robot{
     void draw( BITMAP *tempImage);
     void draw_overlay( BITMAP *tempImage);
 
+    // Getters
+    int getHealth(){ return health;}
+    void addHealth( int amount){ health += amount; }
+
+    float getX(){ return x; }
+    float getY(){ return y; }
+
+    float getWidth(){ return width; }
+    float getHeight(){ return height; }
+
+    bool isOnGround(){ return onGround; }
+    bool isAlive(){ return alive;}
+  protected:
+
+  private:
     // Robot specific
     float gravity, speed;
     bool alive;
     bool rocket;
     bool onGround;
     float x, y;
-  protected:
+    int health;
+    int width, height;
 
-  private:
     // Images
     BITMAP *main_robot;
     BITMAP *robotFire;

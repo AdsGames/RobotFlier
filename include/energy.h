@@ -14,7 +14,7 @@ class energy : public game_object{
     energy(BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY);
 
     // Logic override
-    void logic(int newMotion);
+    void logic(int newMotion, robot *ourRobot);
 
     // Move towards robot
     void move_towards( int mov_x, int mov_y, int speed);

@@ -2,9 +2,6 @@
 
 // Constructor
 game::game(){
-  //Set the scores to the scores[i][j] array so the endgame screen can check the array if its the high score or not
-  updateScores();
-
   // Init vars
   scroll = 0;
   themeNumber = 0;
@@ -19,10 +16,11 @@ game::game(){
   iter = edittext.end();
 
   score = 0;
-  health = 100;
-  robot_distance = 0;
-  robot_x = 80;
-  robot_y = 300;
+
+  // Reset stats
+  for( int i = 0; i < 4; i++)
+    stats[i] = 0;
+
   magneticStrength = 0;
   invincibleTimer = 0;
   magneticTimer = 0;
@@ -79,7 +77,10 @@ game::game(){
   show_mouse( NULL);
 
   // Init hectar
-  hectar = robot( 20, 20);
+  hectar = robot( 80, 300);
+
+  // Srand to the time
+  srand(time(NULL));
 }
 
 // Destructor
@@ -90,7 +91,6 @@ game::~game(){
 // Themes
 void game::changeTheme( int NewThemeNumber){
 	std::string themeName;
-	srand(time(NULL));
 
 	if(NewThemeNumber == 0)
 		themeName = "moon";
@@ -121,7 +121,7 @@ void game::update(){
     hectar.logic();
 
     // Add to distance travelled
-    robot_distance += motion;
+    stats[STAT_DISTANCE] += motion;
 
     // Changes speed
     motion = ((score/36) + 6);
@@ -131,7 +131,7 @@ void game::update(){
       score = 0;
 
     // Scrolls background
-    if( hectar.alive || hectar.onGround)
+    if( hectar.isAlive() || hectar.isOnGround())
       scroll -= motion;
     if( scroll/6 + SCREEN_W <= 0)
       scroll = 0;
@@ -155,10 +155,10 @@ void game::update(){
 
     // Energy
     for( unsigned int i = 0; i < energys.size(); i++){
-      energys.at(i).logic(motion);
+      energys.at(i).logic( motion, &hectar);
       // Magnet
       if( magnetic){
-        energys.at(i).move_towards( robot_x + robotWidth/2, robot_y + robotHeight/2, magneticStrength);
+        energys.at(i).move_towards( hectar.getX() + hectar.getWidth()/2, hectar.getY() + hectar.getHeight()/2, magneticStrength);
       }
       if( energys.at(i).offScreen()){
         energys.erase(energys.begin() + i);
@@ -168,7 +168,7 @@ void game::update(){
 
     // Debries
     for( unsigned int i = 0; i < debries.size(); i++){
-      debries.at(i).logic(motion);
+      debries.at(i).logic( motion, &hectar);
       if( debries.at(i).offScreen()){
         debries.erase(debries.begin() + i);
         i--;
@@ -177,7 +177,7 @@ void game::update(){
 
     // Powerups
     for( unsigned int i = 0; i < powerups.size(); i++){
-      powerups.at(i).logic(motion);
+      powerups.at(i).logic( motion, &hectar);
       if(powerups.at(i).dead()){
         powerups.erase(powerups.begin() + i);
         i--;
@@ -187,7 +187,7 @@ void game::update(){
 
 
     // Spawning
-    if( hectar.alive){
+    if( hectar.isAlive()){
       // Energy ball spawning
       if( random(0,50) == 0 || (settings[SETTING_MEGA] && random(0, 20))){
         energy newEnergyBall( energyImage, sound_orb, SCREEN_W, random(30,550));
@@ -232,10 +232,9 @@ void game::update(){
     }
 
     // Lose scripts
-    if( hectar.onGround){
+    if( hectar.isOnGround()){
       //Name input
-      check_highscore();
-      if( is_high_score){
+      if( check_highscore( scores, score)){
         if(keypressed()){
           int  newkey   = readkey();
           char ASCII    = newkey & 0xff;
@@ -272,11 +271,11 @@ void game::update(){
           }
         }
         if(key[KEY_ENTER] || (joy[0].button[1].b && settings[SETTING_CONTROLMODE] != 2)){
-          addScore(edittext);
+          addScore( scores, score, edittext);
         }
       }
       else if( key[KEY_ENTER] || (joy[0].button[1].b && settings[SETTING_CONTROLMODE]!=2)){
-        addScore(edittext);
+        addScore( scores, score, edittext);
         set_next_state( STATE_MENU);
       }
     }
@@ -308,11 +307,9 @@ void game::update(){
   if( settings[SETTING_DEBUG]){
     if(key[KEY_I])score = score + 500;
     if(key[KEY_U])score = score + 50;
-    if(key[KEY_Q])health = health - 1;
-    if(key[KEY_E])health = 0;
-    if(key[KEY_Y])robot_distance = robot_distance + 500;
-    if(key[KEY_T])score = score - 2;
-    if(key[KEY_R] || joy[0].button[2].b)health = 100;
+    if(key[KEY_Q] || joy[0].button[2].b)hectar.addHealth(-1);
+    if(key[KEY_E])hectar.addHealth(-100);
+    if(key[KEY_T])score -= 2;
   }
 
   // Pause loop code
@@ -322,7 +319,7 @@ void game::update(){
       paused = false;
       show_mouse( NULL);
     }
-    else if( hectar.alive){
+    else if( hectar.isAlive()){
       paused = true;
       show_mouse( screen);
     }
@@ -356,8 +353,8 @@ void game::draw(){
   // Draw HUD
   // Info
   textprintf_ex( buffer, orbitron, 10, 2, makecol(255,255,255), -1, "Score:%i", score);
-  rectfill( buffer, 10, 65, 10 + (health * 1.7), 75, makecol( 255 - health * 2.5, 0 + health * 2.5, 0));
-  textprintf_ex( buffer, orbitron, 10, 27, makecol(255,255,255), -1, "Health:%i", health);
+  rectfill( buffer, 10, 65, 10 + (hectar.getHealth() * 1.7), 75, makecol( 255 - hectar.getHealth() * 2.5, 0 + hectar.getHealth() * 2.5, 0));
+  textprintf_ex( buffer, orbitron, 10, 27, makecol(255,255,255), -1, "Health:%i", hectar.getHealth());
 
   // Power up timers
   if( invincibleTimer > 0){
@@ -376,20 +373,20 @@ void game::draw(){
   // Draw the debug window
   if( settings[SETTING_DEBUG]){
     draw_sprite(buffer,debug,0,0);
-    textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%4.2f",hectar.speed);
-    textprintf_ex(buffer,font,5,35,makecol(255,250,250),-1,"Robot X:20");
-    textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%4.2f",robot_y);
-    textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%4.2f",motion);
-    textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i",invincible);
+    //textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%4.2f",hectar.speed);
+    textprintf_ex(buffer,font,5,35,makecol(255,250,250),-1,"Robot X:%4.2f", hectar.getX());
+    textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%4.2f", hectar.getY());
+    textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%4.2f", motion);
+    textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i", invincible);
 
-    textprintf_ex(buffer,font,120,25,makecol(255,250,250),-1,"Score:%i",score);
-    textprintf_ex(buffer,font,120,35,makecol(255,250,250),-1,"Gravity:%4.2f",hectar.gravity);
-    textprintf_ex(buffer,font,120,45,makecol(255,250,250),-1,"Mouse X:%i",mouse_x);
-    textprintf_ex(buffer,font,120,55,makecol(255,250,250),-1,"Mouse Y:%i",mouse_y);
-    textprintf_ex(buffer,font,120,65,makecol(255,250,250),-1,"Particles On:%i",settings[SETTING_PARTICLE_TYPE]);
+    textprintf_ex(buffer,font,120,25,makecol(255,250,250),-1,"Score:%i", score);
+    //textprintf_ex(buffer,font,120,35,makecol(255,250,250),-1,"Gravity:%4.2f",hectar.gravity);
+    textprintf_ex(buffer,font,120,45,makecol(255,250,250),-1,"Mouse X:%i", mouse_x);
+    textprintf_ex(buffer,font,120,55,makecol(255,250,250),-1,"Mouse Y:%i", mouse_y);
+    textprintf_ex(buffer,font,120,65,makecol(255,250,250),-1,"Particles On:%i", settings[SETTING_PARTICLE_TYPE]);
 
-    textprintf_ex(buffer,font,245,25,makecol(255,250,250),-1,"Lowest score:%i",atoi(scores[10][0].c_str()));
-    textprintf_ex(buffer,font,245,35,makecol(255,250,250),-1,"Theme:%i",themeNumber);
+    textprintf_ex(buffer,font,245,25,makecol(255,250,250),-1,"Lowest score:%i", atoi(scores[10][0].c_str()));
+    textprintf_ex(buffer,font,245,35,makecol(255,250,250),-1,"Theme:%i", themeNumber);
   }
 
   // Mountain Paralax
@@ -423,15 +420,15 @@ void game::draw(){
   hectar.draw_overlay( buffer);
 
   // Lose scripts
-  if( hectar.onGround){
+  if( hectar.isOnGround()){
     draw_sprite( buffer, ui_game_end, 0, 0);
     textprintf_ex( buffer, orbitron, 130, 125, makecol(0,0,0), -1, "Final Score: %i", score);
-    textprintf_ex( buffer, orbitron, 130, 165, makecol(0,0,0), -1, "Distance Travelled: %i", robot_distance/10);
-    textprintf_ex( buffer, orbitron, 130, 205, makecol(0,0,0), -1, "Energy Collected: %i", energyCollected);
-    textprintf_ex( buffer, orbitron, 130, 245, makecol(0,0,0), -1, "Powerups Received: %i", powerupsCollected);
-    textprintf_ex( buffer, orbitron, 130, 285, makecol(0,0,0), -1, "Debris Collided: %i", debrisCollided);
+    textprintf_ex( buffer, orbitron, 130, 165, makecol(0,0,0), -1, "Distance Flown: %i ft", stats[STAT_DISTANCE] / 10);
+    textprintf_ex( buffer, orbitron, 130, 205, makecol(0,0,0), -1, "Energy Collected: %i", stats[STAT_ENERGY]);
+    textprintf_ex( buffer, orbitron, 130, 245, makecol(0,0,0), -1, "Powerups Received: %i", stats[STAT_POWERUPS]);
+    textprintf_ex( buffer, orbitron, 130, 285, makecol(0,0,0), -1, "Debris Collided: %i", stats[STAT_DEBRIS]);
 
-    if( is_high_score){
+    if( check_highscore( scores, score)){
       // Input rectangle
       rectfill( buffer, 120, 388, text_length(orbitron, edittext.c_str()) + 132, 432, makecol(0,0,0));
       rectfill( buffer, 122, 390, text_length(orbitron, edittext.c_str()) + 130, 430, makecol(255,255,255));
@@ -459,10 +456,10 @@ void game::draw(){
     draw_sprite( buffer, pauseMenu, 130, 140);
 
     // Stats
-    textprintf_ex( buffer, orbitron_14, 220, 250, makecol(255,250,250), -1, "Distance Flown: %i ft", robot_distance / 25);
-    textprintf_ex( buffer, orbitron_14, 220, 280, makecol(255,250,250), -1, "Energy Collected: %i", energyCollected);
-    textprintf_ex( buffer, orbitron_14, 220, 310, makecol(255,250,250), -1, "Powerups Received: %i", powerupsCollected);
-    textprintf_ex( buffer, orbitron_14, 220, 340, makecol(255,250,250), -1, "Debris Collided: %i", debrisCollided);
+    textprintf_ex( buffer, orbitron_14, 220, 250, makecol(255,250,250), -1, "Distance Flown: %i ft", stats[STAT_DISTANCE] / 10);
+    textprintf_ex( buffer, orbitron_14, 220, 280, makecol(255,250,250), -1, "Energy Collected: %i", stats[STAT_ENERGY]);
+    textprintf_ex( buffer, orbitron_14, 220, 310, makecol(255,250,250), -1, "Powerups Received: %i", stats[STAT_POWERUPS]);
+    textprintf_ex( buffer, orbitron_14, 220, 340, makecol(255,250,250), -1, "Debris Collided: %i", stats[STAT_DEBRIS]);
 
     // Buttons
     textprintf_ex( buffer, orbitron_14, 220, 445, makecol(0,0,0), -1, "Quit");

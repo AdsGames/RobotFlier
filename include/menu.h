@@ -16,6 +16,7 @@
 
 #include "state.h"
 #include "globals.h"
+#include "tools.h"
 #include "particle.h"
 #include "mouseListener.h"
 
@@ -32,6 +33,10 @@ class menu : public state{
   protected:
 
   private:
+    // Settings
+    void read_settings();
+    void write_settings();
+
     // Vars
     int animation_start_x;
     int animation_title_y;

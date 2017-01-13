@@ -8,11 +8,11 @@ powerup::powerup( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, 
 }
 
 // Logic loop!
-void powerup::logic(int newMotion){
+void powerup::logic(int newMotion, robot *ourRobot){
   x -= newMotion;
 
-  if( collision( x, x + width , robot_x, robot_x + robotWidth, y, y + height, robot_y, robot_y + robotHeight)){
-    powerupsCollected += 1;
+  if( collision( x, x + width , ourRobot -> getX(), ourRobot -> getX() + ourRobot -> getWidth(), y, y + height, ourRobot -> getY(), ourRobot -> getY() + ourRobot -> getHeight())){
+    stats[STAT_POWERUPS] += 1;
     if( type == 1){
       invincibleTimer = timerLength;
     }

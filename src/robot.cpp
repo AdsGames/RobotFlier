@@ -23,8 +23,12 @@ robot::robot( float newX, float newY){
   gravity = 1.6;
 
   speed = 15;
-  robot_x = newX;
-  robot_y = newY;
+  x = newX;
+  y = newY;
+  width = 70;
+  height = 70;
+
+  health = 100;
 
   rocket = false;
   onGround = false;
@@ -45,14 +49,14 @@ void robot::logic(){
   }
 
   // Update robots y position
-  robot_y += gravity - speed;
+  y += gravity - speed;
 
   // Death smoke
   if( settings[SETTING_PARTICLE_TYPE] != 3 && !alive){
     for( int i = 0; i < 800; i++){
       if( random(0,10) == 0){
         int randnum = random(0,255);
-        particle newParticle( robot_x + 20, robot_y + 20, makecol( randnum, randnum, randnum), random( -4, -1), random( -5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
+        particle newParticle( x + 20, y + 20, makecol( randnum, randnum, randnum), random( -4, -1), random( -5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
         smokePart.push_back( newParticle);
       }
     }
@@ -73,8 +77,8 @@ void robot::logic(){
           int red_or_green = random( 0, 1);
           part_color = makecol( 255 * red_or_green, 255 - red_or_green * 255, 0);
         }
-        particle newParticle1( robot_x + 21, robot_y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
-        particle newParticle2( robot_x + 52, robot_y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
+        particle newParticle1( x + 21, y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
+        particle newParticle2( x + 52, y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
         rocketPart.push_back( newParticle1);
         rocketPart.push_back( newParticle2);
       }
@@ -109,24 +113,24 @@ void robot::logic(){
 
   // Dying animation
   if( !alive){
-    if( robot_y < 550 && !onGround){
-      robot_y += 10;
+    if( y < 550 && !onGround){
+      y += 10;
       speed = 0;
       clear_keybuf();
     }
-    else if( robot_y >= 550){
-      robot_y = 550;
+    else if( y >= 550){
+      y = 550;
       onGround = true;
       clear_keybuf();
     }
   }
 
   // Touching top or bottom
-  if( robot_y < 0){
-    robot_y = 0;
+  if( y < 0){
+    y = 0;
     speed = 0;
   }
-  if( robot_y > 550 && alive){
+  if( y > 550 && alive){
     speed = 14;
     if( !invincible){
       health -= 5;
@@ -144,24 +148,24 @@ void robot::draw( BITMAP *tempBitmap){
     // Invincible
     if( invincible){
       if( !rocket || (rocket && settings[SETTING_PARTICLE_TYPE] != 3))
-        draw_sprite( tempBitmap, robotInvincible, robot_x, robot_y);
+        draw_sprite( tempBitmap, robotInvincible, x, y);
       else if( rocket && settings[SETTING_PARTICLE_TYPE] == 3)
-        draw_sprite( tempBitmap, robotInvincibleFire, robot_x, robot_y);
+        draw_sprite( tempBitmap, robotInvincibleFire, x, y);
     }
     // Standard
     else{
       if( !rocket || (rocket && settings[SETTING_PARTICLE_TYPE] != 3))
-        draw_sprite( tempBitmap, main_robot, robot_x, robot_y);
+        draw_sprite( tempBitmap, main_robot, x, y);
       else if( rocket && settings[SETTING_PARTICLE_TYPE] == 3)
-        draw_sprite( tempBitmap, robotFire, robot_x, robot_y);
+        draw_sprite( tempBitmap, robotFire, x, y);
     }
     // Xmas mode!
     if( settings[SETTING_CHRISTMAS])
-      draw_sprite( tempBitmap, christmas_hat, robot_x + 20, robot_y - 12);
+      draw_sprite( tempBitmap, christmas_hat, x + 20, y - 12);
   }
   // Death image
   else{
-    draw_sprite( tempBitmap,robotDie,robot_x,robot_y);
+    draw_sprite( tempBitmap,robotDie,x,y);
   }
 
   // Draw particles
@@ -174,5 +178,5 @@ void robot::draw( BITMAP *tempBitmap){
 // Draw overlay
 void robot::draw_overlay( BITMAP *tempBitmap){
   if( alive && invincible)
-    draw_sprite( tempBitmap, robotInvincibleTop, robot_x, robot_y);
+    draw_sprite( tempBitmap, robotInvincibleTop, x, y);
 }

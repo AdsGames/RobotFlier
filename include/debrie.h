@@ -14,7 +14,7 @@ class debrie : public game_object{
     debrie( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newDamage, float newMotionMultiplier = 1.0f, int newSize = -1);
 
     // Logic override
-    void logic( int newMotion);
+    void logic( int newMotion, robot *ourRobot);
   private:
     // Motion multiplier
     float motion_multiplier;

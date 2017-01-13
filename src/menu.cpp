@@ -68,11 +68,32 @@ menu::menu(){
 
   // Hide mouse
   show_mouse( NULL);
+
+  // Load scores
+  updateScores( scores);
 }
 
 // Destructor
 menu::~menu(){
 
+}
+
+//Writes the settings to file
+void menu::write_settings(){
+  std::ofstream settings_file("data/settings.dat");
+  for (int i = 0; i < 7; i++){
+    settings_file << settings[i] << " ";
+  }
+  settings_file.close();
+}
+
+//Reads the data from file
+void menu::read_settings(){
+  std::ifstream read("data/settings.dat");
+  for (int i = 0; i < 7; i++){
+    read >> settings[i];
+  }
+  read.close();
 }
 
 // Update loop
@@ -98,7 +119,7 @@ void menu::update(){
     }
     // Scores
     else if( mouse_x > 600 && mouse_x < 760 && mouse_y > 20 && mouse_y < 120){
-      updateScores();
+      updateScores( scores);
       mini_screen = MINISTATE_SCORES;
     }
     // Credits menu

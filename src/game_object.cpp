@@ -18,14 +18,14 @@ game_object::~game_object(){
 }
 
 // Updates object logic
-void game_object::logic(int newMotion){
+void game_object::logic( int newMotion, robot *ourRobot){
   // Allow for some padding (since we use bounding box)
   int collisionBuffer = height/3;
 
   // Collide with robot
-  if( collision(x, x + width , robot_x + collisionBuffer, robot_x + robotWidth - collisionBuffer, y, y + height, robot_y + collisionBuffer, robot_y + robotHeight - collisionBuffer) && !isDead){
+  if( collision(x, x + width , ourRobot -> getX() + collisionBuffer, ourRobot -> getX() + ourRobot -> getWidth() - collisionBuffer, y, y + height, ourRobot -> getY() + collisionBuffer, ourRobot -> getY() + ourRobot -> getHeight() - collisionBuffer) && !isDead){
     if( !invincible){
-      health -= damage;
+      ourRobot -> addHealth( -damage);
       screenshake += damage * 4;
     }
     if( settings[SETTING_SOUND] && !invincible){
@@ -47,16 +47,12 @@ void game_object::logic(int newMotion){
   else{
     dead();
   }
-}
 
-// Has it been hit?
-bool game_object::dead(){
-  int collisionBuffer = height/3;
-  if( collision( x, x + width , robot_x + collisionBuffer, robot_x + robotWidth - collisionBuffer, y, y + height, robot_y + collisionBuffer, robot_y + robotHeight - collisionBuffer)){
+  if( collision( x, x + width , ourRobot -> getX() + collisionBuffer, ourRobot -> getX() + ourRobot -> getWidth() - collisionBuffer, y, y + height, ourRobot -> getY() + collisionBuffer, ourRobot -> getY() + ourRobot -> getHeight() - collisionBuffer)){
     // When the robot is invincible it goes through
     if( !invincible){
   		isDead = true;
-  		debrisCollided +=1;
+  		stats[STAT_DEBRIS] += 1;
 		}
 		// Make particles
     if( settings[SETTING_PARTICLE_TYPE] != 3){
@@ -75,6 +71,10 @@ bool game_object::dead(){
 	    }
 	  }
   }
+}
+
+// Has it been hit?
+bool game_object::dead(){
   return isDead;
 }
 

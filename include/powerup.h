@@ -14,7 +14,7 @@ class powerup : public game_object{
     powerup( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newTimerLength, int newType, int newStrength);
 
     // Logic override
-    void logic( int newMotion);
+    void logic( int newMotion, robot *ourRobot);
 
     // Vars
     int timerLength;

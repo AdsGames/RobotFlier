@@ -11,10 +11,10 @@ debrie::debrie(BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int
 }
 
 // Logic
-void debrie::logic( int newMotion){
+void debrie::logic( int newMotion, robot *ourRobot){
   // Move across screen
   x -= newMotion * motion_multiplier;
 
   // Parent logic
-  game_object::logic( newMotion * motion_multiplier);
+  game_object::logic( newMotion * motion_multiplier, ourRobot);
 }

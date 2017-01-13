@@ -11,6 +11,7 @@
 
 #include "state.h"
 #include "globals.h"
+#include "tools.h"
 
 class intro : public state{
   public:
