@@ -6,14 +6,12 @@ game::game(){
   updateScores();
 
   // Init vars
-  deltatime = 1;
-  running = 0;
+
   gravity = 1.6;
   motion = 5;
-  speed = 15 * deltatime;
+  speed = 15;
   scroll = 0;
   groundScroll = 0;
-  handling_speed = 8;
   themeNumber = 0;
   screenshake_x = 0;
   screenshake_y = 0;
@@ -26,7 +24,6 @@ game::game(){
   paused = false;
   alive = true;
   onGround = false;
-  deadSoundSwitch = false;
 
   edittext = "Player";
   iter = edittext.end();
@@ -144,7 +141,7 @@ void game::update(){
     robot_y += gravity - speed;
 
     // Changes speed
-    motion = ((score/36) + 3) * deltatime;
+    motion = ((score/36) + 3);
 
     // Check if you are dead!
     if( health < 1){
@@ -176,20 +173,18 @@ void game::update(){
 
       //Controls movement up and down
       if( ((key[KEY_W] || key[KEY_UP] || mouse_b & 1) && settings[SETTING_CONTROLMODE] != 3) || ((joy[0].button[0].b || joy[0].button[5].b) && settings[SETTING_CONTROLMODE] != 2)){
-        /*if( game_time %2 == 0){
-          if(sound)
-            play_sample( sound_flame, 20, 155, 1000, 0);
-        }*/
-        if( speed < handling_speed){
+        if( settings[SETTING_SOUND] && random( 0, 3) == 1)
+          play_sample( sound_flame, 10, 155, 1000, 0);
+        if( speed < 8){
           rocket = false;
-          speed += 0.6*deltatime;
+          speed += 0.6;
         }
       }
       //If no keys pressed
       else{
         rocket = true;
-        if( speed > -handling_speed){
-          speed -= 0.6 * deltatime;
+        if( speed > -8){
+          speed -= 0.6;
         }
       }
     }
@@ -242,9 +237,6 @@ void game::update(){
         addScore(edittext);
         set_next_state( STATE_MENU);
       }
-    }
-    if( !alive && !deadSoundSwitch){
-      deadSoundSwitch = true;
     }
 
     // Change theme
@@ -343,7 +335,6 @@ void game::update(){
       }
     }
 
-
     // Spawning
     if( alive){
       // Energy ball spawning
@@ -402,7 +393,7 @@ void game::update(){
       for( int i = 0; i < 800; i++){
         if( random(0,10) == 0){
           int randnum = random(0,255);
-          particle newParticle( robot_x + 20, robot_y + 20, makecol( randnum, randnum, randnum), random( -2, 0), random( -8, 0), 1, settings[SETTING_PARTICLE_TYPE]);
+          particle newParticle( robot_x + 20, robot_y + 20, makecol( randnum, randnum, randnum), random( -4, -1), random( -5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
           smokePart.push_back( newParticle);
         }
       }

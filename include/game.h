@@ -98,26 +98,21 @@ class game : public state{
     FSOUND_STREAM* music_death;
 
     // Declare integers
-    float deltatime;
-    int running;
-    float gravity, motion, speed;
     int scroll;
     int groundScroll;
-    int gameScreen;
-    int handling_speed;
     int themeNumber;
     int screenshake_x;
     int screenshake_y;
 
     // Declare booleans
-    bool rocket;
     bool paused;
+
+    // Robot specific
+    float gravity, motion, speed;
     bool alive;
-    bool onGround;
-    bool deadSoundSwitch;
-    bool joystick_enabled;
-    bool key_binding_screen;
+    bool rocket;
     bool magnetic;
+    bool onGround;
 
     //Text input
     std::string edittext;
