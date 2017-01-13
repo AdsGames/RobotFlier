@@ -11,7 +11,6 @@ game::game(){
   motion = 5;
   speed = 15;
   scroll = 0;
-  groundScroll = 0;
   themeNumber = 0;
   screenshake_x = 0;
   screenshake_y = 0;
@@ -49,10 +48,11 @@ game::game(){
   sound_bomb = load_sample_ex( "audio/sound_bomb.wav");
   sound_orb = load_sample_ex("audio/sound_orb.wav");
   sound_asteroid = load_sample_ex( "audio/sound_asteroid.wav");
-  magnetSound = load_sample_ex( "audio/magnetSound.wav");
+  sound_magnet = load_sample_ex( "audio/sound_magnet.wav");
   sound_star = load_sample_ex( "audio/sound_star.wav");
   sound_flame = load_sample_ex( "audio/sound_flame.wav");
   sound_hitground = load_sample_ex( "audio/sound_hitground.wav");
+  sound_snap = load_sample_ex( "audio/sound_snap.wav");
 
   // Images
   robot = load_bitmap_ex("images/robot/robot.png");
@@ -111,25 +111,119 @@ void game::changeTheme( int NewThemeNumber){
 		themeName = "dark";
 	themeNumber = NewThemeNumber;
 
-  // Load all ground images
-  for( int i = 0; i < 12; i++){
-    ground[i] = load_bitmap_ex( "images/ground/ground" + convertInt(i + 1) + "_" + themeName + ".png");
-  }
-
   // Other theme images
   groundOverlay = load_bitmap_ex( "images/ground/groundOverlay_" + themeName + ".png");
+  groundUnderlay = load_bitmap_ex( "images/ground/groundUnderlay_" + themeName + ".png");
   space2 = load_bitmap_ex( "images/ground/paralax_" + themeName + ".png");
 
   if( settings[SETTING_CHRISTMAS])
     asteroidImage = load_bitmap_ex("images/asteroid_christmas.png");
   else
     asteroidImage = load_bitmap_ex( "images/asteroid_" + themeName + ".png");
+}
 
-  // Setup ground pieces
-  for(int i = 0; i < 13; i++){
-    groundPieces[i].x = i * 70;
-    groundPieces[i].y = 530;
-    groundPieces[i].groundImage = ground[random(0,11)];
+// Robot stuff
+void game::robot_update(){
+  // Check if you are dead!
+  if( health < 1){
+    alive = false;
+    health = 0;
+  }
+
+  // Update robots y position
+  robot_y += gravity - speed;
+
+  // Death smoke
+  if( settings[SETTING_PARTICLE_TYPE] != 3 && !alive){
+    for( int i = 0; i < 800; i++){
+      if( random(0,10) == 0){
+        int randnum = random(0,255);
+        particle newParticle( robot_x + 20, robot_y + 20, makecol( randnum, randnum, randnum), random( -4, -1), random( -5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
+        smokePart.push_back( newParticle);
+      }
+    }
+  }
+  for( unsigned int i = 0; i < smokePart.size(); i++){
+    smokePart.at(i).logic();
+    if( random(0,10) == 0){
+      smokePart.erase( smokePart.begin() + i);
+    }
+  }
+
+  // Rocket particles
+  if( settings[SETTING_PARTICLE_TYPE] != 3 && rocket){
+    for( int i = 0; i < 800; i++){
+      if( random( 0, 10) == 0){
+        int part_color = makecol( 255, random(0,255), 0);
+        if( settings[SETTING_CHRISTMAS]){
+          int red_or_green = random( 0, 1);
+          part_color = makecol( 255 * red_or_green, 255 - red_or_green * 255, 0);
+        }
+        particle newParticle1( robot_x + 21, robot_y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
+        particle newParticle2( robot_x + 52, robot_y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
+        rocketPart.push_back( newParticle1);
+        rocketPart.push_back( newParticle2);
+      }
+    }
+  }
+  for( unsigned int i = 0; i < rocketPart.size(); i++){
+    rocketPart.at(i).logic();
+    if( random( 0, 2) == 0){
+      rocketPart.erase( rocketPart.begin() + i);
+    }
+  }
+
+  // Moving controls
+  if( alive){
+    //Controls movement up and down
+    if( ((key[KEY_W] || key[KEY_UP] || mouse_b & 1) && settings[SETTING_CONTROLMODE] != 3) || ((joy[0].button[0].b || joy[0].button[5].b) && settings[SETTING_CONTROLMODE] != 2)){
+      if( settings[SETTING_SOUND] && random( 0, 3) == 1)
+        play_sample( sound_flame, 10, 155, 1000, 0);
+      if( speed < 8){
+        rocket = true;
+        speed += 0.6;
+      }
+    }
+    //If no keys pressed
+    else{
+      rocket = false;
+      if( speed > -8){
+        speed -= 0.6;
+      }
+    }
+
+    // Add to distance travelled
+    robot_distance += motion;
+  }
+
+  // Dying animation
+  if( !alive){
+    if( robot_y < 550 && !onGround){
+      robot_y += 10;
+      speed = 0;
+      clear_keybuf();
+    }
+    else if( robot_y >= 550){
+      robot_y = 550;
+      motion = 0;
+      onGround = true;
+      clear_keybuf();
+    }
+  }
+
+  // Touching top or bottom
+  if( robot_y < 0){
+    robot_y = 0;
+    speed = 0;
+  }
+  if( robot_y > 550 && alive){
+    speed = 14;
+    if( !invincible){
+      health -= 5;
+      if(settings[SETTING_SOUND])
+        play_sample( sound_hitground, 255, 125, 1000, 0);
+      screenshake = 30;
+    }
   }
 }
 
@@ -137,57 +231,21 @@ void game::changeTheme( int NewThemeNumber){
 void game::update(){
   // Actual game stuff
   if( !paused){
-    // Update robots y position
-    robot_y += gravity - speed;
+    // Update robot
+    robot_update();
 
     // Changes speed
     motion = ((score/36) + 6);
 
-    // Check if you are dead!
-    if( health < 1){
-      alive = false;
-      health = 0;
-    }
     // No negative scores
-    if( score < 0){
+    if( score < 0)
       score = 0;
-    }
-
-    // Scroll ground
-    if( !onGround && motion != 0){
-      groundScroll -= motion;
-    }
-    if( groundScroll < -SCREEN_W)
-      groundScroll = 0;
 
     // Scrolls background
-    if( (alive && motion != 0) || (!alive && !onGround))
-      scroll--;
-    if( scroll + SCREEN_W <= 0)
-     scroll = 0;
-
-    // Moving controls
-    if( alive){
-      //Controls movement up and down
-      if( ((key[KEY_W] || key[KEY_UP] || mouse_b & 1) && settings[SETTING_CONTROLMODE] != 3) || ((joy[0].button[0].b || joy[0].button[5].b) && settings[SETTING_CONTROLMODE] != 2)){
-        if( settings[SETTING_SOUND] && random( 0, 3) == 1)
-          play_sample( sound_flame, 10, 155, 1000, 0);
-        if( speed < 8){
-          rocket = true;
-          speed += 0.6;
-        }
-      }
-      //If no keys pressed
-      else{
-        rocket = false;
-        if( speed > -8){
-          speed -= 0.6;
-        }
-      }
-
-      // Add to distance travelled
-      robot_distance += motion;
-    }
+    if( alive || onGround)
+      scroll -= motion;
+    if( scroll/6 + SCREEN_W <= 0)
+      scroll = 0;
 
     // Change theme
     if( score > 199 && themeNumber == 0)
@@ -196,36 +254,6 @@ void game::update(){
       changeTheme(2);
     else if( score > 600 && themeNumber == 2)
       changeTheme(3);
-
-    // Dying animation
-    if( !alive){
-      if( robot_y < 550 && !onGround){
-        robot_y += 10;
-        speed = 0;
-        clear_keybuf();
-      }
-      else if( robot_y >= 550){
-        robot_y = 550;
-        motion = 0;
-        onGround = true;
-        clear_keybuf();
-      }
-    }
-
-    // Touching top or bottom
-    if( robot_y < 0){
-      robot_y = 0;
-      speed = 0;
-    }
-    if( robot_y > 550 && alive){
-      speed = 14;
-      if( !invincible){
-        health -= 5;
-        if(settings[SETTING_SOUND])
-          play_sample( sound_hitground, 255, 125, 1000, 0);
-        screenshake = 30;
-      }
-    }
 
     // Power up timers
     if( invincibleTimer > 0)
@@ -249,29 +277,11 @@ void game::update(){
       }
     }
 
-    // Asteroids
-    for( unsigned int i = 0; i < asteroids.size(); i++){
-      asteroids.at(i).logic(motion);
-      if( asteroids.at(i).offScreen()){
-        asteroids.erase(asteroids.begin() + i);
-        i--;
-      }
-    }
-
-    // Bombs
-    for( unsigned int i = 0; i < bombs.size(); i++){
-      bombs.at(i).logic(motion);
-      if(bombs.at(i).offScreen()){
-        bombs.erase(bombs.begin() + i);
-        i--;
-      }
-    }
-
-    // Comets
-    for( unsigned int i = 0; i < comets.size(); i++){
-      comets.at(i).logic(motion);
-      if(comets.at(i).offScreen()){
-        comets.erase(comets.begin() + i);
+    // Debries
+    for( unsigned int i = 0; i < debries.size(); i++){
+      debries.at(i).logic(motion);
+      if( debries.at(i).offScreen()){
+        debries.erase(debries.begin() + i);
         i--;
       }
     }
@@ -285,6 +295,8 @@ void game::update(){
       }
     }
 
+
+
     // Spawning
     if( alive){
       // Energy ball spawning
@@ -294,18 +306,18 @@ void game::update(){
       }
       // Asteroids spawning
       if( (score > 100 && random(0,50) == 0) || (settings[SETTING_MEGA] && random(0, 20))){
-        asteroid newAsteroid( asteroidImage, sound_asteroid, SCREEN_W, random(30,550), random(4,20));
-        asteroids.push_back( newAsteroid);
+        debrie newAsteroid( asteroidImage, sound_asteroid, SCREEN_W, random(30,550), 5, 1, random(4,20));
+        debries.push_back( newAsteroid);
       }
       // Bomb spawning
       if( (score > 200 && random(0,80) == 0) || (settings[SETTING_MEGA] && random(0, 20))){
-        bomb newBomb( bombImage, sound_bomb, SCREEN_W, random(30,550));
-        bombs.push_back( newBomb);
+        debrie newBomb( bombImage, sound_bomb, SCREEN_W, random(30,550), 10, 1.6f);
+        debries.push_back( newBomb);
       }
       // Comets spawning
       if( (score > 300 && random(0,200) == 0) || (settings[SETTING_MEGA] && random(0, 20))){
-        comet newComet( cometImage, sound_asteroid, SCREEN_W, random(30,550));
-        comets.push_back( newComet);
+        debrie newComet( cometImage, sound_asteroid, SCREEN_W, random(30,550), 5, 2.0f);
+        debries.push_back( newComet);
       }
       // Powerup spawning
       if( score > 100 && random(0,3000) == 0){
@@ -313,68 +325,20 @@ void game::update(){
         powerups.push_back( newPowerup);
       }
       if( score > 100 && random(0,500) == 0){
-        powerup newPowerup( powerMagnet[0], magnetSound, SCREEN_W, random(30,600), 500, 10, 1);
+        powerup newPowerup( powerMagnet[0], sound_magnet, SCREEN_W, random(30,600), 500, 10, 1);
         powerups.push_back( newPowerup);
       }
       if( score > 200 && random(0,1000) == 0){
-        powerup newPowerup( powerMagnet[1], magnetSound, SCREEN_W, random(30,600), 500, 11, 2);
+        powerup newPowerup( powerMagnet[1], sound_magnet, SCREEN_W, random(30,600), 500, 11, 2);
         powerups.push_back( newPowerup);
       }
       if( score > 300 && random(0,2000) == 0){
-        powerup newPowerup( powerMagnet[2], magnetSound, SCREEN_W, random(30,600), 500, 12, 3);
+        powerup newPowerup( powerMagnet[2], sound_magnet, SCREEN_W, random(30,600), 500, 12, 3);
         powerups.push_back( newPowerup);
       }
       if( score > 500 && random(0,3000) == 0){
-        powerup newPowerup( powerMagnet[3], magnetSound, SCREEN_W, random(30,600), 500, 13, 4);
+        powerup newPowerup( powerMagnet[3], sound_magnet, SCREEN_W, random(30,600), 500, 13, 4);
         powerups.push_back( newPowerup);
-      }
-    }
-
-    // Move the ground
-    for( int i = 0; i < 13; i++){
-      groundPieces[i].x -= motion;
-      if(groundPieces[i].x <= -70){
-        groundPieces[i].x = 840 + (groundPieces[i].x + 70);
-      }
-    }
-
-    // Death smoke
-    if( settings[SETTING_PARTICLE_TYPE] != 3 && !alive){
-      for( int i = 0; i < 800; i++){
-        if( random(0,10) == 0){
-          int randnum = random(0,255);
-          particle newParticle( robot_x + 20, robot_y + 20, makecol( randnum, randnum, randnum), random( -4, -1), random( -5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
-          smokePart.push_back( newParticle);
-        }
-      }
-    }
-    for( unsigned int i = 0; i < smokePart.size(); i++){
-      smokePart.at(i).logic();
-      if( random(0,10) == 0){
-        smokePart.erase( smokePart.begin() + i);
-      }
-    }
-
-    // Rocket particles
-    if( settings[SETTING_PARTICLE_TYPE] != 3 && rocket){
-      for( int i = 0; i < 800; i++){
-        if( random( 0, 10) == 0){
-          int part_color = makecol( 255, random(0,255), 0);
-          if( settings[SETTING_CHRISTMAS]){
-            int red_or_green = random( 0, 1);
-            part_color = makecol( 255 * red_or_green, 255 - red_or_green * 255, 0);
-          }
-          particle newParticle1( robot_x + 21, robot_y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
-          particle newParticle2( robot_x + 52, robot_y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
-          rocketPart.push_back( newParticle1);
-          rocketPart.push_back( newParticle2);
-        }
-      }
-    }
-    for( unsigned int i = 0; i < rocketPart.size(); i++){
-      rocketPart.at(i).logic();
-      if( random( 0, 2) == 0){
-        rocketPart.erase( rocketPart.begin() + i);
       }
     }
 
@@ -429,6 +393,28 @@ void game::update(){
     }
   }
 
+  // Screenshot
+  if( keyListener::keyPressed[KEY_F11] || (joy[0].button[3].b && settings[SETTING_CONTROLMODE] != 2)){
+    // Count screenshots
+  	int screenshotNumber;
+
+  	// Get current number
+  	std::ifstream read("screenshots/screenshot.dat");
+	  read >> screenshotNumber;
+  	read.close();
+
+  	// State new number
+  	std::ofstream write("screenshots/screenshot.dat");
+	  write << screenshotNumber + 1;
+	  write.close();
+
+	  // Save to file
+    save_png((std::string("screenshots/screenshot_") + convertInt(screenshotNumber).c_str() + std::string(".png")).c_str(), buffer, NULL);
+
+    // Snap sound
+    play_sample( sound_snap, 255, 128, 1000, 0);
+  }
+
   // Random test stuff for devs
   if( settings[SETTING_DEBUG]){
     if(key[KEY_I])score = score + 500;
@@ -469,75 +455,8 @@ void game::update(){
   }
 }
 
-// Draw to screen
-void game::draw(){
-  // Clear buffer
-  clear_to_color( buffer, 0x000000);
-
-  // Draw backgrounds and Ground Overlay
-  draw_sprite( buffer, space, scroll, 0);
-  draw_sprite( buffer, space, scroll + SCREEN_W, 0);
-
-  // Mountain Paralax
-  draw_sprite( buffer, space2, (scroll * 2) % SCREEN_W, 0);
-  draw_sprite( buffer, space2, (scroll * 2) % SCREEN_W + SCREEN_W, 0);
-
-  // Ground
-  for( int i = 0; i < 2400; i += 800)
-    draw_sprite( buffer, groundOverlay, groundScroll + i, 580);
-
-  // Draw HUD
-  if( alive){
-    // Info
-    textprintf_ex( buffer, orbitron, 10, 2, makecol(255,255,255), -1, "Score:%i", score);
-    rectfill( buffer, 10, 65, 10 + (health * 1.7), 75, makecol( 255 - health * 2.5, 0 + health * 2.5, 0));
-    textprintf_ex( buffer, orbitron, 10, 27, makecol(255,255,255), -1, "Health:%i", health);
-
-    // Power up timers
-    if( invincibleTimer > 0){
-      circlefill( buffer, 45, 105, 20, makecol(255,255,255));
-      draw_sprite( buffer, powerStar, 20, 80);
-      textprintf_centre_ex( buffer, orbitron, 44, 88, makecol(255,255,255), -1, "%i", invincibleTimer/5);
-      textprintf_centre_ex( buffer, orbitron, 45, 90, makecol(255,0,0), -1, "%i", invincibleTimer/5);
-    }
-    if( magneticTimer > 0){
-      circlefill( buffer, 175, 105, 20, makecol(255,255,255));
-      draw_sprite( buffer, powerMagnet[0], 150, 80);
-      textprintf_centre_ex( buffer, orbitron, 174, 88, makecol(255,255,255), -1, "%i", magneticTimer/5);
-      textprintf_centre_ex( buffer, orbitron, 175, 90, makecol(255,0,0), -1, "%i", magneticTimer/5);
-    }
-  }
-
-  // Draw particles
-  if( settings[SETTING_PARTICLE_TYPE] != 3){
-    for( unsigned int i = 0; i < rocketPart.size(); i++){
-      rocketPart.at(i).draw( buffer);
-    }
-    for( unsigned int i = 0; i < smokePart.size(); i++){
-      smokePart.at(i).draw( buffer);
-    }
-  }
-
-  // Energy
-  for( unsigned int i = 0; i < energys.size(); i++)
-    energys.at(i).draw(buffer);
-
-  // Asteroids
-  for( unsigned int i = 0; i < asteroids.size(); i++)
-    asteroids.at(i).draw(buffer);
-
-  // Bombs
-  for( unsigned int i = 0; i < bombs.size(); i++)
-    bombs.at(i).draw(buffer);
-
-  // Comets
-  for( unsigned int i = 0; i < comets.size(); i++)
-    comets.at(i).draw(buffer);
-
-  // Powerups
-  for( unsigned int i = 0; i < powerups.size(); i++)
-    powerups.at(i).draw(buffer);
-
+// Robot stuff
+void game::robot_draw(){
   // Draw robot sprite
   if( alive){
     // Invincible
@@ -546,7 +465,6 @@ void game::draw(){
         draw_sprite( buffer, robotInvincible, robot_x, robot_y);
       else if( rocket && settings[SETTING_PARTICLE_TYPE] == 3)
         draw_sprite( buffer, robotInvincibleFire, robot_x, robot_y);
-      draw_sprite( buffer, robotInvincibleTop, robot_x, robot_y);
     }
     // Standard
     else{
@@ -563,10 +481,93 @@ void game::draw(){
   else{
     draw_sprite( buffer,robotDie,robot_x,robot_y);
   }
+}
 
-  // Draw the scrolling ground
-  for( int i = 0; i < 13; i++)
-    draw_sprite( buffer, groundPieces[i].groundImage, groundPieces[i].x, groundPieces[i].y);
+// Draw to screen
+void game::draw(){
+  // Clear buffer
+  clear_to_color( buffer, 0x000000);
+
+  // Draw backgrounds and Ground Overlay
+  draw_sprite( buffer, space, scroll/6, 0);
+  draw_sprite( buffer, space, scroll/6 + SCREEN_W, 0);
+
+  // Draw HUD
+  // Info
+  textprintf_ex( buffer, orbitron, 10, 2, makecol(255,255,255), -1, "Score:%i", score);
+  rectfill( buffer, 10, 65, 10 + (health * 1.7), 75, makecol( 255 - health * 2.5, 0 + health * 2.5, 0));
+  textprintf_ex( buffer, orbitron, 10, 27, makecol(255,255,255), -1, "Health:%i", health);
+
+  // Power up timers
+  if( invincibleTimer > 0){
+    circlefill( buffer, 45, 105, 20, makecol(255,255,255));
+    draw_sprite( buffer, powerStar, 20, 80);
+    textprintf_centre_ex( buffer, orbitron, 44, 88, makecol(255,255,255), -1, "%i", invincibleTimer/5);
+    textprintf_centre_ex( buffer, orbitron, 45, 90, makecol(255,0,0), -1, "%i", invincibleTimer/5);
+  }
+  if( magneticTimer > 0){
+    circlefill( buffer, 175, 105, 20, makecol(255,255,255));
+    draw_sprite( buffer, powerMagnet[0], 150, 80);
+    textprintf_centre_ex( buffer, orbitron, 174, 88, makecol(255,255,255), -1, "%i", magneticTimer/5);
+    textprintf_centre_ex( buffer, orbitron, 175, 90, makecol(255,0,0), -1, "%i", magneticTimer/5);
+  }
+
+  // Draw the debug window
+  if( settings[SETTING_DEBUG]){
+    draw_sprite(buffer,debug,0,0);
+    textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%4.2f",speed);
+    textprintf_ex(buffer,font,5,35,makecol(255,250,250),-1,"Robot X:20");
+    textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%4.2f",robot_y);
+    textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%4.2f",motion);
+    textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i",invincible);
+
+    textprintf_ex(buffer,font,120,25,makecol(255,250,250),-1,"Score:%i",score);
+    textprintf_ex(buffer,font,120,35,makecol(255,250,250),-1,"Gravity:%4.2f",gravity);
+    textprintf_ex(buffer,font,120,45,makecol(255,250,250),-1,"Mouse X:%i",mouse_x);
+    textprintf_ex(buffer,font,120,55,makecol(255,250,250),-1,"Mouse Y:%i",mouse_y);
+    textprintf_ex(buffer,font,120,65,makecol(255,250,250),-1,"Particles On:%i",settings[SETTING_PARTICLE_TYPE]);
+
+
+    textprintf_ex(buffer,font,245,25,makecol(255,250,250),-1,"Lowest score:%i",atoi(scores[10][0].c_str()));
+    textprintf_ex(buffer,font,245,35,makecol(255,250,250),-1,"Theme:%i",themeNumber);
+  }
+
+  // Mountain Paralax
+  draw_sprite( buffer, space2, (scroll/3) % SCREEN_W, 0);
+  draw_sprite( buffer, space2, (scroll/3) % SCREEN_W + SCREEN_W, 0);
+
+  // Ground
+  draw_sprite( buffer, groundOverlay, scroll % SCREEN_W, SCREEN_H - 20);
+  draw_sprite( buffer, groundOverlay, scroll % SCREEN_W + SCREEN_W, SCREEN_H - 20);
+
+  // Draw particles
+  for( unsigned int i = 0; i < rocketPart.size(); i++)
+    rocketPart.at(i).draw( buffer);
+  for( unsigned int i = 0; i < smokePart.size(); i++)
+    smokePart.at(i).draw( buffer);
+
+  // Energy
+  for( unsigned int i = 0; i < energys.size(); i++)
+    energys.at(i).draw(buffer);
+
+  // Powerups
+  for( unsigned int i = 0; i < powerups.size(); i++)
+    powerups.at(i).draw(buffer);
+
+  // Draw robot
+  robot_draw();
+
+  // Asteroids
+  for( unsigned int i = 0; i < debries.size(); i++)
+    debries.at(i).draw(buffer);
+
+  // Ground underlay
+  draw_sprite( buffer, groundUnderlay, scroll % SCREEN_W, SCREEN_H - 40);
+  draw_sprite( buffer, groundUnderlay, scroll % SCREEN_W + SCREEN_W, SCREEN_H - 40);
+
+  // Robot above asteroids
+  if( alive && invincible)
+    draw_sprite( buffer, robotInvincibleTop, robot_x, robot_y);
 
   // Lose scripts
   if( onGround){

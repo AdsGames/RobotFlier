@@ -139,10 +139,8 @@ void update(){
   k_listener.update();
 
   // Debug console toggle
-  if( keyListener::keyPressed[KEY_F12] && settings[SETTING_DEBUG])
-    settings[SETTING_DEBUG] = 0;
-  if( keyListener::keyPressed[KEY_F12] && !settings[SETTING_DEBUG])
-    settings[SETTING_DEBUG] = 1;
+  if( keyListener::keyPressed[KEY_F12])
+    settings[SETTING_DEBUG] = (settings[SETTING_DEBUG] + 1) % 2;
 }
 
 // main function of program

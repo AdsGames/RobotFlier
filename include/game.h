@@ -11,21 +11,12 @@
 #include "globals.h"
 
 #include "energy.h"
-#include "asteroid.h"
-#include "bomb.h"
-#include "comet.h"
+#include "debrie.h"
 #include "powerup.h"
 #include "particle.h"
 #include "globals.h"
 #include "mouseListener.h"
 #include "keyListener.h"
-
-// Structure of ground
-struct ground_tiles{
-  BITMAP* groundImage;
-  int x;
-  int y;
-};
 
 // Game class
 class game : public state{
@@ -41,8 +32,9 @@ class game : public state{
   protected:
 
   private:
-    // Pieces of ground
-    ground_tiles groundPieces[14];
+    // Robot stuff
+    void robot_update();
+    void robot_draw();
 
     // Declare bitmaps
     BITMAP* buffer;
@@ -52,6 +44,7 @@ class game : public state{
     BITMAP* space;
     BITMAP* space2;
     BITMAP* groundOverlay;
+    BITMAP* groundUnderlay;
 
     // GUI Images
     BITMAP* debug;
@@ -80,17 +73,15 @@ class game : public state{
     BITMAP *ui_a;
     BITMAP *ui_b;
 
-    // Declare ground bitmaps
-    BITMAP* ground[13];
-
     // Declare sounds
     SAMPLE* sound_orb;
     SAMPLE* sound_bomb;
     SAMPLE* sound_asteroid;
-    SAMPLE* magnetSound;
+    SAMPLE* sound_magnet;
     SAMPLE* sound_star;
     SAMPLE* sound_flame;
     SAMPLE* sound_hitground;
+    SAMPLE* sound_snap;
 
     // Music
     FSOUND_STREAM* music_ingame;
@@ -99,7 +90,6 @@ class game : public state{
 
     // Declare integers
     int scroll;
-    int groundScroll;
     int themeNumber;
     int screenshake_x;
     int screenshake_y;
@@ -123,9 +113,7 @@ class game : public state{
 
     // Containers of objects
     std::vector<energy> energys;
-    std::vector<asteroid> asteroids;
-    std::vector<bomb> bombs;
-    std::vector<comet> comets;
+    std::vector<debrie> debries;
     std::vector<powerup> powerups;
 
     // Particles

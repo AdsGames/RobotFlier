@@ -17,7 +17,7 @@ game_object::~game_object(){
 
 }
 
-// Updates asteroid logic
+// Updates object logic
 void game_object::logic(int newMotion){
   // Allow for some padding (since we use bounding box)
   int collisionBuffer = height/3;
