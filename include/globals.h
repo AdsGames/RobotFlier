@@ -26,23 +26,24 @@
 #define STAT_POWERUPS 2
 #define STAT_DEBRIS 3
 
-//Variables
-extern int settings[11];
-extern std::string scores[10][2];
-
-extern int health;
+//Global variables
 extern unsigned int score;
-extern bool invincible;
 extern int screenshake;
+
+// Robot stuff
 extern int magneticStrength;
 extern int invincibleTimer;
 extern int magneticTimer;
-extern bool is_high_score;
 
-// For stats
+// Data
 extern int stats[4];
+extern std::string scores[10][2];
+extern int settings[11];
+
+// Is the joystick enabled?
 extern bool joystick_enabled;
 
+// Fonts
 extern FONT* orbitron_14;
 extern FONT* orbitron;
 

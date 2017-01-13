@@ -2,31 +2,28 @@
 
 // Constructor
 game::game(){
-  // Init vars
+  // From globals
+  score = 0;
+  screenshake = 0;
+  magneticStrength = 0;
+  invincibleTimer = 0;
+  magneticTimer = 0;
+
+  // Game related
   scroll = 0;
+  motion = 5;
   themeNumber = 0;
   screenshake_x = 0;
   screenshake_y = 0;
-  screenshake = 0;
-
-  // Decare booleans
   paused = false;
 
+  // End game menu
   edittext = "Player";
   iter = edittext.end();
-
-  score = 0;
 
   // Reset stats
   for( int i = 0; i < 4; i++)
     stats[i] = 0;
-
-  magneticStrength = 0;
-  invincibleTimer = 0;
-  magneticTimer = 0;
-  invincible = false;
-  magnetic = false;
-  motion = 5;
 
   // Create buffer
   buffer = create_bitmap( SCREEN_W, SCREEN_H);
@@ -149,17 +146,14 @@ void game::update(){
     // Power up timers
     if( invincibleTimer > 0)
       invincibleTimer--;
-    invincible = invincibleTimer > 0;
-
     if( magneticTimer > 0)
       magneticTimer--;
-    magnetic = magneticTimer > 0;
 
     // Energy
     for( unsigned int i = 0; i < energys.size(); i++){
       energys.at(i).logic( motion, &hectar);
       // Magnet
-      if( magnetic){
+      if( magneticTimer > 0){
         energys.at(i).move_towards( hectar.getX() + hectar.getWidth()/2, hectar.getY() + hectar.getHeight()/2, magneticStrength);
       }
       if( energys.at(i).offScreen()){
@@ -170,7 +164,8 @@ void game::update(){
 
     // Debries
     for( unsigned int i = 0; i < debries.size(); i++){
-      debries.at(i).logic( motion, &hectar);
+      if( !(invincibleTimer > 0))
+        debries.at(i).logic( motion, &hectar);
       if( debries.at(i).offScreen()){
         debries.erase(debries.begin() + i);
         i--;
@@ -383,14 +378,14 @@ void game::draw(){
   // Draw the debug window
   if( settings[SETTING_DEBUG]){
     draw_sprite(buffer,debug,0,0);
-    //textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Speed:%4.2f",hectar.speed);
+    textprintf_ex(buffer,font,5,25,makecol(255,250,250),-1,"Motion:%4.2f", motion);
     textprintf_ex(buffer,font,5,35,makecol(255,250,250),-1,"Robot X:%4.2f", hectar.getX());
     textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%4.2f", hectar.getY());
     textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%4.2f", motion);
-    textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i", invincible);
+    textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i", invincibleTimer);
 
     textprintf_ex(buffer,font,120,25,makecol(255,250,250),-1,"Score:%i", score);
-    //textprintf_ex(buffer,font,120,35,makecol(255,250,250),-1,"Gravity:%4.2f",hectar.gravity);
+    textprintf_ex(buffer,font,120,35,makecol(255,250,250),-1,"Magnetic:%i", magneticTimer);
     textprintf_ex(buffer,font,120,45,makecol(255,250,250),-1,"Mouse X:%i", mouse_x);
     textprintf_ex(buffer,font,120,55,makecol(255,250,250),-1,"Mouse Y:%i", mouse_y);
     textprintf_ex(buffer,font,120,65,makecol(255,250,250),-1,"Particles On:%i", settings[SETTING_PARTICLE_TYPE]);

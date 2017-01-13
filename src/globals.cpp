@@ -2,19 +2,20 @@
 
 //Global variables
 unsigned int score;
-bool invincible;
 int screenshake;
+
+// Robot stuff
 int magneticStrength;
 int invincibleTimer;
 int magneticTimer;
 
-// For stats
+// Data
 int stats[4];
-
-bool joystick_enabled = false;
-
 std::string scores[10][2];
 int settings[11];
+
+// Is the joystick enabled?
+bool joystick_enabled = false;
 
 // Fonts
 FONT* orbitron_14;

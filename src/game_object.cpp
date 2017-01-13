@@ -23,37 +23,21 @@ void game_object::logic( int newMotion, robot *ourRobot){
   int collisionBuffer = height/3;
 
   // Collide with robot
-  if( collision(x, x + width , ourRobot -> getX() + collisionBuffer, ourRobot -> getX() + ourRobot -> getWidth() - collisionBuffer, y, y + height, ourRobot -> getY() + collisionBuffer, ourRobot -> getY() + ourRobot -> getHeight() - collisionBuffer) && !isDead){
-    if( !invincible){
-      ourRobot -> addHealth( -damage);
-      screenshake += damage * 4;
-    }
-    if( settings[SETTING_SOUND] && !invincible){
+  if( !isDead && collision(x, x + width , ourRobot -> getX() + collisionBuffer, ourRobot -> getX() + ourRobot -> getWidth() - collisionBuffer, y, y + height, ourRobot -> getY() + collisionBuffer, ourRobot -> getY() + ourRobot -> getHeight() - collisionBuffer) && !isDead){
+    // Hurt robot
+    ourRobot -> addHealth( -damage);
+
+    // Shake it up
+    screenshake += damage * 4;
+
+    // Play sound
+    if( settings[SETTING_SOUND] && !(invincibleTimer > 0))
       play_sample(soundEffect,255,125,1000,0);
-    }
-  }
 
-  // Destroy
-  if( isDead){
-    //Update particles
-  	if( settings[SETTING_PARTICLE_TYPE] != 3){
-	    for( unsigned int i = 0; i < debris.size(); i++){
-	      debris.at(i).logic();
-	      debris.at(i).x -= newMotion;
-	    }
-	  }
-  }
-  //Check for death
-  else{
-    dead();
-  }
+    // Get hit
+    isDead = true;
+    stats[STAT_DEBRIS] += 1;
 
-  if( collision( x, x + width , ourRobot -> getX() + collisionBuffer, ourRobot -> getX() + ourRobot -> getWidth() - collisionBuffer, y, y + height, ourRobot -> getY() + collisionBuffer, ourRobot -> getY() + ourRobot -> getHeight() - collisionBuffer)){
-    // When the robot is invincible it goes through
-    if( !invincible){
-  		isDead = true;
-  		stats[STAT_DEBRIS] += 1;
-		}
 		// Make particles
     if( settings[SETTING_PARTICLE_TYPE] != 3){
 	    int iteratorX = 0;
@@ -70,6 +54,14 @@ void game_object::logic( int newMotion, robot *ourRobot){
 	    	debris.push_back( newParticle);
 	    }
 	  }
+  }
+
+  //Update particles
+  if( settings[SETTING_PARTICLE_TYPE] != 3){
+    for( unsigned int i = 0; i < debris.size(); i++){
+      debris.at(i).logic();
+      debris.at(i).x -= newMotion;
+    }
   }
 }
 

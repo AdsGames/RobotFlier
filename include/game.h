@@ -50,6 +50,9 @@ class game : public state{
     // GUI Images
     BITMAP* debug;
     BITMAP* pauseMenu;
+    BITMAP *ui_game_end;
+    BITMAP *ui_a;
+    BITMAP *ui_b;
 
     // Danger images
     BITMAP* energyImage;
@@ -60,10 +63,6 @@ class game : public state{
     // Powerup Images
     BITMAP* powerStar;
     BITMAP* powerMagnet[4];
-
-    BITMAP *ui_game_end;
-    BITMAP *ui_a;
-    BITMAP *ui_b;
 
     // Declare sounds
     SAMPLE* sound_orb;
@@ -87,12 +86,11 @@ class game : public state{
     int screenshake_x;
     int screenshake_y;
     float motion;
-    bool magnetic;
 
     // Declare booleans
     bool paused;
 
-    //Text input
+    // Text input
     std::string edittext;
     std::string::iterator iter;
 

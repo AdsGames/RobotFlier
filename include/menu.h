@@ -14,6 +14,8 @@
 #define MINISTATE_CONTROLS 4
 #define MINISTATE_SCORES 5
 
+#include <vector>
+
 #include "state.h"
 #include "globals.h"
 #include "tools.h"

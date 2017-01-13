@@ -1,21 +1,14 @@
 #include "tools.h"
 
-//Iterates through the number of buttons in a joystick and returns true if any buttons are pressed
-bool joy_buttonpressed(){
-  bool buttonpressed=false;
-  for(int i=0; i<joy[0].num_buttons; i++)
-    if(joy[0].button[i].b)buttonpressed=true;
-  return buttonpressed;
-}
-
-//Convert int to string
+// Conversions
+// Convert int to string
 std::string convertIntToString( int number){
   std::stringstream ss;
   ss << number;
   return ss.str();
 }
 
-//Convert string to int
+// Convert string to int
 int convertStringToInt( std::string newString){
   int result;
   std::stringstream(newString) >> result;
@@ -23,14 +16,7 @@ int convertStringToInt( std::string newString){
 }
 
 
-// Iterates through the number of buttons in a joystick and returns true if any keys are pressed
-bool keyboard_keypressed(){
-  for(int i = 0; i < 125; i++)
-    if(key[i])
-      return true;
-  return false;
-}
-
+// Scores
 // Check highscores
 bool check_highscore( std::string scoreCopy[][2], int newScore){
   for ( int i = 0; i < 10; i++){
@@ -88,16 +74,25 @@ void addScore( std::string scoreCopy[][2], int newScore, std::string name){
   saveFile.close();
 }
 
-// A function to streamline error reporting in file loading
-void abort_on_error( std::string message){
-	 set_window_title("Error!");
-	 if (screen != NULL){
-	    set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
-	 }
-	 allegro_message("%s.\n %s\n", message.c_str(), allegro_error);
-	 exit(-1);
+
+// Iterates through the number of buttons in a joystick and returns true if any buttons are pressed
+bool joy_buttonpressed(){
+  bool buttonpressed=false;
+  for(int i=0; i<joy[0].num_buttons; i++)
+    if(joy[0].button[i].b)buttonpressed=true;
+  return buttonpressed;
 }
 
+// Iterates through the number of buttons in a joystick and returns true if any keys are pressed
+bool keyboard_keypressed(){
+  for(int i = 0; i < 125; i++)
+    if(key[i])
+      return true;
+  return false;
+}
+
+
+// Error handling loading functions
 // Checks if file exists
 BITMAP *load_bitmap_ex( std::string file){
   BITMAP *temp_image = NULL;
@@ -112,6 +107,16 @@ SAMPLE *load_sample_ex( std::string file){
   if ( !(temp_sample = load_sample( file.c_str())))
     abort_on_error( std::string("Cannot find sample " + file + "\nTry reinstalling from adsgames.net/download/robotflier"));
   return temp_sample;
+}
+
+// A function to streamline error reporting in file loading
+void abort_on_error( std::string message){
+	 set_window_title("Error!");
+	 if (screen != NULL){
+	    set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+	 }
+	 allegro_message("%s.\n %s\n", message.c_str(), allegro_error);
+	 exit(-1);
 }
 
 // Checks if file exists
@@ -135,10 +140,7 @@ FONT *load_font_ex( std::string file){
   return temp_font;
 }
 
-// Get distance between 2 points
-float Get2dDistance(float x1, float y1, float x2, float y2){
-	return sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2)));
-}
+
 
 // Random number generator. Use int random(highest,lowest);
 int random(int newLowest, int newHighest){
@@ -146,6 +148,13 @@ int random(int newLowest, int newHighest){
   int range = (highest - lowest) + 1;
   int randomNumber = lowest+int(range*rand()/(RAND_MAX + 1.0));
   return randomNumber;
+}
+
+
+// Math related functions
+// Get distance between 2 points
+float Get2dDistance(float x1, float y1, float x2, float y2){
+	return sqrt(((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2)));
 }
 
 // Function to check for collision
@@ -156,6 +165,8 @@ bool collision(float xMin1, float xMax1, float xMin2, float xMax2, float yMin1, 
   return false;
 }
 
+
+// Fades
 // Fade in
 void fade_in(BITMAP* bmp_orig, int speed){
   BITMAP* bmp_buff;

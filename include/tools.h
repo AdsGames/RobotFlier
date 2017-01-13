@@ -1,10 +1,15 @@
+/*
+ * Tools Class
+ * Allan Legemaate
+ * 13/01/2017
+ * Functions that may be needed by multiple files
+ */
 #ifndef TOOLS_H
 #define TOOLS_H
 
 #include <allegro.h>
 #include <alpng.h>
 #include <time.h>
-#include <vector>
 #include <math.h>
 #include <fstream>
 #include <sstream>
@@ -18,6 +23,7 @@ extern void updateScores( std::string scoreCopy[][2]);
 extern bool check_highscore( std::string scoreCopy[][2], int score);
 extern void addScore( std::string scoreCopy[][2], int newScore, std::string name);
 
+// Keys
 extern bool joy_buttonpressed();
 extern bool keyboard_keypressed();
 
@@ -34,6 +40,7 @@ extern int random(int newLowest, int newHighest);
 extern float Get2dDistance(float x1, float y1, float x2, float y2);
 extern bool collision(float xMin1, float xMax1, float xMin2, float xMax2, float yMin1, float yMax1, float yMin2, float yMax2);
 
+// Fades
 extern void fade_in(BITMAP* bmp_orig, int speed);
 extern void fade_out(int speed);
 

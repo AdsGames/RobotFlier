@@ -132,7 +132,7 @@ void robot::logic(){
   }
   if( y > 550 && alive){
     speed = 14;
-    if( !invincible){
+    if( !(invincibleTimer > 0)){
       health -= 5;
       if(settings[SETTING_SOUND])
         play_sample( sound_hitground, 255, 125, 1000, 0);
@@ -146,7 +146,7 @@ void robot::draw( BITMAP *tempBitmap){
   // Draw robot sprite
   if( alive){
     // Invincible
-    if( invincible){
+    if( invincibleTimer > 0){
       if( !rocket || (rocket && settings[SETTING_PARTICLE_TYPE] != 3))
         draw_sprite( tempBitmap, robotInvincible, x, y);
       else if( rocket && settings[SETTING_PARTICLE_TYPE] == 3)
@@ -177,6 +177,6 @@ void robot::draw( BITMAP *tempBitmap){
 
 // Draw overlay
 void robot::draw_overlay( BITMAP *tempBitmap){
-  if( alive && invincible)
+  if( alive && invincibleTimer > 0)
     draw_sprite( tempBitmap, robotInvincibleTop, x, y);
 }
