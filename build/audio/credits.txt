@@ -1,6 +1,6 @@
 Audio Attribution Credits
 -------------------------
-music_death.mp3, music_ingame.mp3, music_mainmenu.mp3, sound_flame.wav
+music_death.ogg, music_ingame.ogg, music_mainmenu.ogg, sound_flame.wav
 	Author: Allan Legemaate
 	Website: https://soundcloud.com/allan-legemaate
 sound_asteroid.wav, sound_hitground.wav

@@ -74,7 +74,6 @@ class game : public state{
 
     // Music
     SAMPLE* music_ingame;
-    SAMPLE* music_mainmenu;
     SAMPLE* music_death;
 
     // Our robot

@@ -109,6 +109,14 @@ SAMPLE *load_sample_ex( std::string file){
   return temp_sample;
 }
 
+// Checks if file exists
+SAMPLE *logg_load_ex( std::string file){
+  SAMPLE *temp_sample = NULL;
+  if ( !(temp_sample = logg_load( file.c_str())))
+    abort_on_error( std::string("Cannot find sample " + file + "\nTry reinstalling from adsgames.net/download/robotflier"));
+  return temp_sample;
+}
+
 // A function to streamline error reporting in file loading
 void abort_on_error( std::string message){
 	 set_window_title("Error!");

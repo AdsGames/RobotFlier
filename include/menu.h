@@ -92,6 +92,9 @@ class menu : public state{
     BITMAP *ui_help;
     BITMAP *ui_screenshot_notification;
     BITMAP *ui_controls;
+
+    // Music
+    SAMPLE* music_mainmenu;
 };
 
 #endif // MENU_H

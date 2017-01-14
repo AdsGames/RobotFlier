@@ -36,6 +36,10 @@ game::game(){
   sound_star = load_sample_ex( "audio/sound_star.wav");
   sound_snap = load_sample_ex( "audio/sound_snap.wav");
 
+  // Music
+  music_death = logg_load_ex( "audio/music_death.ogg");
+  music_ingame = logg_load_ex( "audio/music_ingame.ogg");
+
   // Images
   // Gui
   pauseMenu = load_bitmap_ex( "images/gui/pauseMenu.png");
@@ -78,6 +82,9 @@ game::game(){
 
   // Srand to the time
   srand(time(NULL));
+
+  // Play music
+  play_sample( music_ingame, 255, 128, 1000, 1);
 }
 
 // Destructor
@@ -89,13 +96,13 @@ game::~game(){
 void game::changeTheme( int NewThemeNumber){
 	std::string themeName;
 
-	if(NewThemeNumber == 0)
+	if( NewThemeNumber == 0)
 		themeName = "moon";
-	else if(NewThemeNumber == 1)
+	else if( NewThemeNumber == 1)
 		themeName = "mars";
-	else if(NewThemeNumber == 2)
+	else if( NewThemeNumber == 2)
 		themeName = "sun";
-	else if(NewThemeNumber == 3)
+	else if( NewThemeNumber == 3)
 		themeName = "dark";
 	themeNumber = NewThemeNumber;
 

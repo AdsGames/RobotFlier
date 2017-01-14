@@ -13,6 +13,7 @@
 #include <math.h>
 #include <fstream>
 #include <sstream>
+#include <logg.h>
 
 // Conversions
 extern std::string convertIntToString( int number);
@@ -30,6 +31,8 @@ extern bool keyboard_keypressed();
 // Error handling loading functions
 extern BITMAP *load_bitmap_ex( std::string file);
 extern SAMPLE *load_sample_ex( std::string file);
+extern SAMPLE *logg_load_ex( std::string file);
+
 extern FONT *load_font_ex( std::string file);
 extern void abort_on_error( std::string message);
 

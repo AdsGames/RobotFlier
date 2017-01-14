@@ -6,6 +6,7 @@
  */
 #include <allegro.h>
 #include <alpng.h>
+#include <logg.h>
 #include <string>
 #include <time.h>
 

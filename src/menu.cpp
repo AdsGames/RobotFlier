@@ -58,6 +58,9 @@ menu::menu(){
   ui_controls = load_bitmap_ex("images/gui/ui_controls.png");
   controls = load_bitmap_ex("images/gui/controls.png");
 
+  // Load that menu music
+  music_mainmenu = logg_load_ex("audio/music_mainmenu.ogg");
+
   // Read settings from file
   read_settings();
 
@@ -71,6 +74,9 @@ menu::menu(){
 
   // Load scores
   updateScores( scores);
+
+  // Play music
+  play_sample( music_mainmenu, 255, 128, 1000, 1);
 }
 
 // Destructor
