@@ -89,7 +89,9 @@ game::game(){
 
 // Destructor
 game::~game(){
-
+  // Stop musics
+  stop_sample( music_death);
+  stop_sample( music_ingame);
 }
 
 // Themes
@@ -121,8 +123,17 @@ void game::changeTheme( int NewThemeNumber){
 void game::update(){
   // Actual game stuff
   if( !paused){
+    // Check if hectar has died between logic();
+    bool hectarHasDied = hectar.isAlive();
+
     // Update robot
     hectar.logic();
+
+    // If its different he died play music
+    if( hectarHasDied != hectar.isAlive()){
+      stop_sample( music_ingame);
+      play_sample( music_death, 255, 128, 1000, 1);
+    }
 
     // Add to distance travelled
     stats[STAT_DISTANCE] += motion;
@@ -187,8 +198,6 @@ void game::update(){
         i--;
       }
     }
-
-
 
     // Spawning
     if( hectar.isAlive()){

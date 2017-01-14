@@ -81,7 +81,8 @@ menu::menu(){
 
 // Destructor
 menu::~menu(){
-
+  // Stops music
+  stop_sample( music_mainmenu);
 }
 
 //Writes the settings to file
