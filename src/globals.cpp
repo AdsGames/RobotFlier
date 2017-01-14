@@ -4,11 +4,6 @@
 unsigned int score;
 int screenshake;
 
-// Robot stuff
-int magneticStrength;
-int invincibleTimer;
-int magneticTimer;
-
 // Data
 int stats[4];
 std::string scores[10][2];

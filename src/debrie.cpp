@@ -19,7 +19,7 @@ void debrie::logic( int newMotion, robot *ourRobot){
   int collisionBuffer = height / 3;
 
   // Collide with robot
-  if( !isDead && collision( x, x + width , ourRobot -> getX() + collisionBuffer, ourRobot -> getX() + ourRobot -> getWidth() - collisionBuffer, y, y + height, ourRobot -> getY() + collisionBuffer, ourRobot -> getY() + ourRobot -> getHeight() - collisionBuffer) && !isDead){
+  if( !isDead && !ourRobot -> isInvincible() && collision( x, x + width , ourRobot -> getX() + collisionBuffer, ourRobot -> getX() + ourRobot -> getWidth() - collisionBuffer, y, y + height, ourRobot -> getY() + collisionBuffer, ourRobot -> getY() + ourRobot -> getHeight() - collisionBuffer) && !isDead){
     // Hurt robot
     ourRobot -> addHealth( -damage);
 
@@ -39,7 +39,7 @@ void debrie::logic( int newMotion, robot *ourRobot){
       int sampling_size = 5;
       for( int i = 0; i < (image -> w - sampling_size); i += sampling_size){
         for( int t = 0; t < (image -> h - sampling_size); t += sampling_size){
-          particle newParticle( i + x, t + y, getpixel(image, i, t), random( -8, 8), random( -8, 8), 0, settings[SETTING_PARTICLE_TYPE]);
+          particle newParticle( i + x, t + y, getpixel(image, i, t), random( -8, 8), random( -8, 8), 1, settings[SETTING_PARTICLE_TYPE]);
           parts.push_back( newParticle);
         }
       }

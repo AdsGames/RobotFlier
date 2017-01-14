@@ -35,12 +35,23 @@ class robot{
 
     bool isOnGround(){ return onGround; }
     bool isAlive(){ return alive;}
+
+    // Invincibility
+    bool isInvincible(){ return invincibleTimer > 0;}
+    int getInvincibleTimer(){ return invincibleTimer; }
+    void setInvincibleTimer( int newTimer){ invincibleTimer += newTimer; }
+
+    // Magnetic
+    bool isMagnetic(){ return magneticTimer > 0;}
+    int getMagneticTimer(){ return magneticTimer; }
+    void setMagneticTimer( int newTimer){ magneticTimer += newTimer; }
   protected:
 
   private:
     // Robot specific
     float gravity, speed;
     bool alive;
+    int invincibleTimer, magneticTimer;
     bool rocket;
     bool onGround;
     float x, y;

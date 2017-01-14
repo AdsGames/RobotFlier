@@ -30,11 +30,6 @@
 extern unsigned int score;
 extern int screenshake;
 
-// Robot stuff
-extern int magneticStrength;
-extern int invincibleTimer;
-extern int magneticTimer;
-
 // Data
 extern int stats[4];
 extern std::string scores[10][2];

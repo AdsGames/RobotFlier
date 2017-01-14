@@ -11,7 +11,7 @@
 class powerup : public game_object{
   public:
     // Constructor
-    powerup( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newTimerLength, int newType, int newStrength);
+    powerup( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newTimerLength, int newType);
 
     // Logic override
     void logic( int newMotion, robot *ourRobot);
@@ -19,7 +19,6 @@ class powerup : public game_object{
     // Vars
     int timerLength;
     int type;
-    int strength;
 };
 
 #endif

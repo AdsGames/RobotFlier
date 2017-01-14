@@ -27,7 +27,7 @@ init::init(){
   orbitron_14 = load_font_ex("fonts/orbitron_14.pcx");
 
   // Go to menu
-  set_next_state( STATE_MENU);
+  set_next_state( STATE_INTRO);
 }
 
 // Destruct state

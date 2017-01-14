@@ -27,6 +27,8 @@ robot::robot( float newX, float newY){
   y = newY;
   width = 70;
   height = 70;
+  invincibleTimer = 0;
+  magneticTimer = 0;
 
   health = 100;
 
@@ -47,6 +49,12 @@ void robot::logic(){
     alive = false;
     health = 0;
   }
+
+  // Power up timers
+  if( invincibleTimer > 0)
+    invincibleTimer--;
+  if( magneticTimer > 0)
+    magneticTimer--;
 
   // Update robots y position
   y += gravity - speed;

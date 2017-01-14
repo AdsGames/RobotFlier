@@ -20,7 +20,7 @@ class intro : public state{
     ~intro();
 
     // Override parent
-    void update() {};
+    void update();
     void draw() {};
   private:
     // Splash image

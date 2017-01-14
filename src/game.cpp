@@ -5,9 +5,6 @@ game::game(){
   // From globals
   score = 0;
   screenshake = 0;
-  magneticStrength = 0;
-  invincibleTimer = 0;
-  magneticTimer = 0;
 
   // Game related
   scroll = 0;
@@ -70,7 +67,7 @@ game::game(){
   }
 
   // Sets the level to 1
-  changeTheme( 1);
+  changeTheme( 0);
 
   // Mouse
   enable_hardware_cursor();
@@ -84,7 +81,8 @@ game::game(){
   srand(time(NULL));
 
   // Play music
-  play_sample( music_ingame, 255, 128, 1000, 1);
+  if( settings[SETTING_MUSIC] == 1)
+    play_sample( music_ingame, 255, 128, 1000, 1);
 }
 
 // Destructor
@@ -132,7 +130,8 @@ void game::update(){
     // If its different he died play music
     if( hectarHasDied != hectar.isAlive()){
       stop_sample( music_ingame);
-      play_sample( music_death, 255, 128, 1000, 1);
+      if( settings[SETTING_MUSIC] == 1)
+        play_sample( music_death, 255, 128, 1000, 1);
     }
 
     // Add to distance travelled
@@ -156,25 +155,18 @@ void game::update(){
     // Change theme
     if( score > 199 && themeNumber == 0)
       changeTheme(1);
-    else if( score > 399 && score < 600 && themeNumber == 1)
+    else if( score > 399 && themeNumber == 1)
       changeTheme(2);
     else if( score > 600 && themeNumber == 2)
       changeTheme(3);
-
-    // Power up timers
-    if( invincibleTimer > 0)
-      invincibleTimer--;
-    if( magneticTimer > 0)
-      magneticTimer--;
 
     // Energy
     for( unsigned int i = 0; i < energys.size(); i++){
       energys.at(i).logic( motion, &hectar);
       // Magnet
-      if( magneticTimer > 0){
-        energys.at(i).move_towards( hectar.getX() + hectar.getWidth()/2, hectar.getY() + hectar.getHeight()/2, magneticStrength);
-      }
-      if( energys.at(i).offScreen()){
+      if( hectar.isMagnetic())
+        energys.at(i).move_towards( hectar.getX() + hectar.getWidth()/2, hectar.getY() + hectar.getHeight()/2, (float)hectar.getMagneticTimer());
+      if( energys.at(i).offScreen() || energys.at(i).dead()){
         energys.erase(energys.begin() + i);
         i--;
       }
@@ -182,8 +174,7 @@ void game::update(){
 
     // Debries
     for( unsigned int i = 0; i < debries.size(); i++){
-      if( !(invincibleTimer > 0))
-        debries.at(i).logic( motion, &hectar);
+      debries.at(i).logic( motion, &hectar);
       if( debries.at(i).offScreen()){
         debries.erase(debries.begin() + i);
         i--;
@@ -193,7 +184,7 @@ void game::update(){
     // Powerups
     for( unsigned int i = 0; i < powerups.size(); i++){
       powerups.at(i).logic( motion, &hectar);
-      if(powerups.at(i).dead()){
+      if( powerups.at(i).offScreen() || powerups.at(i).dead()){
         powerups.erase(powerups.begin() + i);
         i--;
       }
@@ -207,39 +198,40 @@ void game::update(){
         energys.push_back( newEnergyBall);
       }
       // Asteroids spawning
-      if( (score > 100 && random(0,50) == 0) || (settings[SETTING_MEGA] && random(0, 20))){
+      if( (score >= 100 && random(0,50) == 0) || (settings[SETTING_MEGA] && random(0, 20))){
         debrie newAsteroid( asteroidImage, sound_asteroid, SCREEN_W, random(30,550), 5, 1, random(4,20));
         debries.push_back( newAsteroid);
       }
       // Bomb spawning
-      if( (score > 200 && random(0,80) == 0) || (settings[SETTING_MEGA] && random(0, 20))){
+      if( (score >= 200 && random(0,80) == 0) || (settings[SETTING_MEGA] && random(0, 20))){
         debrie newBomb( bombImage, sound_bomb, SCREEN_W, random(30,550), 10, 1.6f);
         debries.push_back( newBomb);
       }
       // Comets spawning
-      if( (score > 300 && random(0,200) == 0) || (settings[SETTING_MEGA] && random(0, 20))){
+      if( (score >= 300 && random(0,200) == 0) || (settings[SETTING_MEGA] && random(0, 20))){
         debrie newComet( cometImage, sound_asteroid, SCREEN_W, random(30,550), 5, 2.0f);
         debries.push_back( newComet);
       }
+
       // Powerup spawning
-      if( score > 100 && random(0,3000) == 0){
-        powerup newPowerup( powerStar, sound_star, SCREEN_W, random(30,600), 500, 1, 0);
+      if( score >= 100 && random(0,3000) == 0){
+        powerup newPowerup( powerStar, sound_star, SCREEN_W, random(30,600), 500, 1);
         powerups.push_back( newPowerup);
       }
-      if( score > 100 && random(0,500) == 0){
-        powerup newPowerup( powerMagnet[0], sound_magnet, SCREEN_W, random(30,600), 500, 10, 1);
+      if( score >= 0 && random(0,200) == 0){
+        powerup newPowerup( powerMagnet[0], sound_magnet, SCREEN_W, random(30,600), 500, 10);
         powerups.push_back( newPowerup);
       }
-      if( score > 200 && random(0,1000) == 0){
-        powerup newPowerup( powerMagnet[1], sound_magnet, SCREEN_W, random(30,600), 500, 11, 2);
+      if( score >= 200 && random(0,1000) == 0){
+        powerup newPowerup( powerMagnet[1], sound_magnet, SCREEN_W, random(30,600), 750, 11);
         powerups.push_back( newPowerup);
       }
-      if( score > 300 && random(0,2000) == 0){
-        powerup newPowerup( powerMagnet[2], sound_magnet, SCREEN_W, random(30,600), 500, 12, 3);
+      if( score >= 300 && random(0,2000) == 0){
+        powerup newPowerup( powerMagnet[2], sound_magnet, SCREEN_W, random(30,600), 1000, 12);
         powerups.push_back( newPowerup);
       }
-      if( score > 500 && random(0,3000) == 0){
-        powerup newPowerup( powerMagnet[3], sound_magnet, SCREEN_W, random(30,600), 500, 13, 4);
+      if( score >= 500 && random(0,3000) == 0){
+        powerup newPowerup( powerMagnet[3], sound_magnet, SCREEN_W, random(30,600), 1500, 13);
         powerups.push_back( newPowerup);
       }
     }
@@ -247,47 +239,42 @@ void game::update(){
     // Lose scripts
     if( hectar.isOnGround()){
       //Name input
-      if( check_highscore( scores, score)){
-        if(keypressed()){
-          int  newkey   = readkey();
-          char ASCII    = newkey & 0xff;
-          char scancode = newkey >> 8;
+      if( check_highscore( scores, score) && keyboard_keypressed()){
+        int  newkey   = readkey();
+        char ASCII    = newkey & 0xff;
+        char scancode = newkey >> 8;
 
-          // A character key was pressed; add it to the string
-          if( ASCII >= 32 && ASCII <= 126 && edittext.length() < 14 && scancode != KEY_SPACE){
-            iter = edittext.insert(iter, ASCII);
-            iter++;
-          }
-          // Some other, "special" key was pressed; handle it here
-          else{
-            if(scancode == KEY_DEL){
-              if(iter != edittext.end()){
-                iter = edittext.erase(iter);
-              }
-            }
-            if(scancode == KEY_BACKSPACE){
-              if(iter != edittext.begin()){
-                iter--;
-                iter = edittext.erase(iter);
-              }
-            }
-            if(scancode == KEY_RIGHT){
-              if(iter != edittext.end()){
-                iter++;
-              }
-            }
-            if(scancode == KEY_LEFT){
-              if(iter != edittext.begin()){
-                iter--;
-              }
-            }
-          }
+        // A character key was pressed; add it to the string
+        if( ASCII >= 32 && ASCII <= 126 && edittext.length() < 14 && scancode != KEY_SPACE){
+          iter = edittext.insert(iter, ASCII);
+          iter++;
         }
-        if(key[KEY_ENTER] || (joy[0].button[1].b && settings[SETTING_CONTROLMODE] != 2)){
-          addScore( scores, score, edittext);
+        // Some other, "special" key was pressed; handle it here
+        else{
+          if(scancode == KEY_DEL){
+            if(iter != edittext.end()){
+              iter = edittext.erase(iter);
+            }
+          }
+          if(scancode == KEY_BACKSPACE){
+            if(iter != edittext.begin()){
+              iter--;
+              iter = edittext.erase(iter);
+            }
+          }
+          if(scancode == KEY_RIGHT){
+            if(iter != edittext.end()){
+              iter++;
+            }
+          }
+          if(scancode == KEY_LEFT){
+            if(iter != edittext.begin()){
+              iter--;
+            }
+          }
         }
       }
-      else if( key[KEY_ENTER] || (joy[0].button[1].b && settings[SETTING_CONTROLMODE]!=2)){
+      if( key[KEY_ENTER] || (joy[0].button[1].b && settings[SETTING_CONTROLMODE]!=2)){
         addScore( scores, score, edittext);
         set_next_state( STATE_MENU);
       }
@@ -326,11 +313,9 @@ void game::update(){
 
   // Random test stuff for devs
   if( settings[SETTING_DEBUG]){
-    if(key[KEY_I])score = score + 500;
-    if(key[KEY_U])score = score + 50;
-    if(key[KEY_Q] || joy[0].button[2].b)hectar.addHealth(-1);
-    if(key[KEY_E])hectar.addHealth(-100);
-    if(key[KEY_T])score -= 2;
+    if(key[KEY_R])score += 10;
+    if(key[KEY_E] || joy[0].button[2].b)hectar.addHealth(1);
+    if(key[KEY_T])hectar.addHealth(-100);
   }
 
   // Pause loop code
@@ -378,17 +363,17 @@ void game::draw(){
   textprintf_ex( buffer, orbitron, 10, 27, makecol(255,255,255), -1, "Health:%i", hectar.getHealth());
 
   // Power up timers
-  if( invincibleTimer > 0){
+  if( hectar.isInvincible()){
     circlefill( buffer, 45, 105, 20, makecol(255,255,255));
     draw_sprite( buffer, powerStar, 20, 80);
-    textprintf_centre_ex( buffer, orbitron, 44, 88, makecol(255,255,255), -1, "%i", invincibleTimer/5);
-    textprintf_centre_ex( buffer, orbitron, 45, 90, makecol(255,0,0), -1, "%i", invincibleTimer/5);
+    textprintf_centre_ex( buffer, orbitron, 44, 88, makecol(255,255,255), -1, "%i", hectar.getInvincibleTimer()/5);
+    textprintf_centre_ex( buffer, orbitron, 45, 90, makecol(255,0,0), -1, "%i", hectar.getInvincibleTimer()/5);
   }
-  if( magneticTimer > 0){
+  if( hectar.isMagnetic()){
     circlefill( buffer, 175, 105, 20, makecol(255,255,255));
     draw_sprite( buffer, powerMagnet[0], 150, 80);
-    textprintf_centre_ex( buffer, orbitron, 174, 88, makecol(255,255,255), -1, "%i", magneticTimer/5);
-    textprintf_centre_ex( buffer, orbitron, 175, 90, makecol(255,0,0), -1, "%i", magneticTimer/5);
+    textprintf_centre_ex( buffer, orbitron, 174, 88, makecol(255,255,255), -1, "%i", hectar.getMagneticTimer()/5);
+    textprintf_centre_ex( buffer, orbitron, 175, 90, makecol(255,0,0), -1, "%i", hectar.getMagneticTimer()/5);
   }
 
   // Draw the debug window
@@ -398,16 +383,19 @@ void game::draw(){
     textprintf_ex(buffer,font,5,35,makecol(255,250,250),-1,"Robot X:%4.2f", hectar.getX());
     textprintf_ex(buffer,font,5,45,makecol(255,250,250),-1,"Robot Y:%4.2f", hectar.getY());
     textprintf_ex(buffer,font,5,55,makecol(255,250,250),-1,"Motion:%4.2f", motion);
-    textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i", invincibleTimer);
+    textprintf_ex(buffer,font,5,65,makecol(255,250,250),-1,"Invincible:%i", hectar.getInvincibleTimer());
 
     textprintf_ex(buffer,font,120,25,makecol(255,250,250),-1,"Score:%i", score);
-    textprintf_ex(buffer,font,120,35,makecol(255,250,250),-1,"Magnetic:%i", magneticTimer);
+    textprintf_ex(buffer,font,120,35,makecol(255,250,250),-1,"Magnetic:%i", hectar.getMagneticTimer());
     textprintf_ex(buffer,font,120,45,makecol(255,250,250),-1,"Mouse X:%i", mouse_x);
     textprintf_ex(buffer,font,120,55,makecol(255,250,250),-1,"Mouse Y:%i", mouse_y);
     textprintf_ex(buffer,font,120,65,makecol(255,250,250),-1,"Particles On:%i", settings[SETTING_PARTICLE_TYPE]);
 
     textprintf_ex(buffer,font,245,25,makecol(255,250,250),-1,"Lowest score:%i", atoi(scores[10][0].c_str()));
     textprintf_ex(buffer,font,245,35,makecol(255,250,250),-1,"Theme:%i", themeNumber);
+    textprintf_ex(buffer,font,245,45,makecol(255,250,250),-1,"Energys:%i", energys.size());
+    textprintf_ex(buffer,font,245,55,makecol(255,250,250),-1,"Debris:%i", debries.size());
+    textprintf_ex(buffer,font,245,65,makecol(255,250,250),-1,"Powerups:%i", powerups.size());
   }
 
   // Mountain Paralax

@@ -76,7 +76,8 @@ menu::menu(){
   updateScores( scores);
 
   // Play music
-  play_sample( music_mainmenu, 255, 128, 1000, 1);
+  if( settings[SETTING_MUSIC] == 1)
+    play_sample( music_mainmenu, 255, 128, 1000, 1);
 }
 
 // Destructor
@@ -166,6 +167,10 @@ void menu::update(){
     // Music button toggle
     else if( collision( 280, 360, mouse_x, mouse_x, 180, 260, mouse_y, mouse_y)){
       settings[SETTING_MUSIC] = (settings[SETTING_MUSIC] + 1) % 2;
+      if( settings[SETTING_MUSIC] == 0)
+        stop_sample( music_mainmenu);
+      else
+        play_sample( music_mainmenu, 255, 128, 1000, 1);
     }
     // Fullscreen toggle
     else if( collision( 120, 200, mouse_x, mouse_x, 400, 480, mouse_y, mouse_y)){
