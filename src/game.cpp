@@ -239,42 +239,36 @@ void game::update(){
     // Lose scripts
     if( hectar.isOnGround()){
       //Name input
-      if( check_highscore( scores, score) && keyboard_keypressed()){
-        int  newkey   = readkey();
-        char ASCII    = newkey & 0xff;
-        char scancode = newkey >> 8;
+      if( check_highscore( scores, score) && keyListener::lastKeyPressed != -1){
+        // Last key pressed
+        int newkey = keyListener::lastKeyPressed;
 
-        // A character key was pressed; add it to the string
-        if( ASCII >= 32 && ASCII <= 126 && edittext.length() < 14 && scancode != KEY_SPACE){
-          iter = edittext.insert(iter, ASCII);
+        // Letters
+        if( newkey >= KEY_A && newkey <= KEY_Z && edittext.length() < 14){
+          iter = edittext.insert(iter, newkey + 96 - ((bool)key[KEY_LSHIFT] * 32));
           iter++;
         }
-        // Some other, "special" key was pressed; handle it here
-        else{
-          if(scancode == KEY_DEL){
-            if(iter != edittext.end()){
-              iter = edittext.erase(iter);
-            }
-          }
-          if(scancode == KEY_BACKSPACE){
-            if(iter != edittext.begin()){
-              iter--;
-              iter = edittext.erase(iter);
-            }
-          }
-          if(scancode == KEY_RIGHT){
-            if(iter != edittext.end()){
-              iter++;
-            }
-          }
-          if(scancode == KEY_LEFT){
-            if(iter != edittext.begin()){
-              iter--;
-            }
-          }
+        // Numbers
+        else if( newkey >= KEY_0 && newkey <= KEY_9 && edittext.length() < 14){
+          iter = edittext.insert(iter, newkey + 21);
+          iter++;
+        }
+        // Some other, "special" key was pressed, handle it here
+        else if( newkey == KEY_DEL && iter != edittext.end()){
+          iter = edittext.erase(iter);
+        }
+        else if( newkey == KEY_BACKSPACE && iter != edittext.begin()){
+          iter--;
+          iter = edittext.erase(iter);
+        }
+        else if( newkey == KEY_RIGHT && iter != edittext.end()){
+          iter++;
+        }
+        else if( newkey == KEY_LEFT && iter != edittext.begin()){
+          iter--;
         }
       }
-      if( key[KEY_ENTER] || (joy[0].button[1].b && settings[SETTING_CONTROLMODE]!=2)){
+      if( key[KEY_ENTER] || (joy[0].button[1].b && settings[SETTING_CONTROLMODE] != 2)){
         addScore( scores, score, edittext);
         set_next_state( STATE_MENU);
       }
@@ -330,6 +324,7 @@ void game::update(){
       show_mouse( screen);
     }
   }
+
 
   // Pause Menu Scripts
   if( paused){
@@ -391,11 +386,14 @@ void game::draw(){
     textprintf_ex(buffer,font,120,55,makecol(255,250,250),-1,"Mouse Y:%i", mouse_y);
     textprintf_ex(buffer,font,120,65,makecol(255,250,250),-1,"Particles On:%i", settings[SETTING_PARTICLE_TYPE]);
 
-    textprintf_ex(buffer,font,245,25,makecol(255,250,250),-1,"Lowest score:%i", atoi(scores[10][0].c_str()));
+    textprintf_ex(buffer,font,245,25,makecol(255,250,250),-1,"Lowest score:%i", atoi(scores[9][1].c_str()));
     textprintf_ex(buffer,font,245,35,makecol(255,250,250),-1,"Theme:%i", themeNumber);
     textprintf_ex(buffer,font,245,45,makecol(255,250,250),-1,"Energys:%i", energys.size());
     textprintf_ex(buffer,font,245,55,makecol(255,250,250),-1,"Debris:%i", debries.size());
     textprintf_ex(buffer,font,245,65,makecol(255,250,250),-1,"Powerups:%i", powerups.size());
+
+    textprintf_ex(buffer,font,360,25,makecol(255,250,250),-1,"Last key:%i", keyListener::lastKeyPressed);
+    textprintf_ex(buffer,font,360,35,makecol(255,250,250),-1,"Has highscore:%i", check_highscore( scores, score));
   }
 
   // Mountain Paralax
@@ -439,14 +437,14 @@ void game::draw(){
 
     if( check_highscore( scores, score)){
       // Input rectangle
-      rectfill( buffer, 120, 388, text_length(orbitron, edittext.c_str()) + 132, 432, makecol(0,0,0));
-      rectfill( buffer, 122, 390, text_length(orbitron, edittext.c_str()) + 130, 430, makecol(255,255,255));
+      rectfill( buffer, 120, 388, text_length(orbitron, edittext.c_str()) + 132, 432, makecol( 0, 0, 0));
+      rectfill( buffer, 122, 390, text_length(orbitron, edittext.c_str()) + 130, 430, makecol( 255, 255, 255));
 
       // Output the string to the screen
       textout_ex( buffer, orbitron, edittext.c_str(), 126, 390, makecol(0,0,0), -1);
 
       // Draw the caret
-      vline( buffer, text_length(orbitron, edittext.c_str()) + 126, 392, 428, makecol(0,0,0));
+      vline( buffer, text_length(orbitron, edittext.substr(0, std::distance( edittext.begin(), iter)).c_str()) + 126, 392, 428, makecol(0,0,0));
 
       // Draw the congrats message
       textprintf_ex( buffer, orbitron, 150, 330, makecol(0,255,0), -1, "New highscore!");

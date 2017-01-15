@@ -19,12 +19,8 @@ int convertStringToInt( std::string newString){
 // Scores
 // Check highscores
 bool check_highscore( std::string scoreCopy[][2], int newScore){
-  for ( int i = 0; i < 10; i++){
-    if( newScore > (atoi(scoreCopy[i][1].c_str()))){
-      return true;
-      break;
-    }
-  }
+  if( newScore > atoi(scoreCopy[9][1].c_str()))
+    return true;
   return false;
 }
 
@@ -45,14 +41,13 @@ void addScore( std::string scoreCopy[][2], int newScore, std::string name){
   updateScores( scoreCopy);
 
   //Prevent crashing
-  if(name == ""){
+  if( name == "")
     name = "player";
-  }
 
   //Update List
-  for (int i = 0; i < 10; i++){
+  for( int i = 0; i < 10; i++){
     if( newScore > (atoi(scoreCopy[i][1].c_str()))){
-      for (int t = 9; t > i; t--){
+      for( int t = 9; t > i; t--){
         scoreCopy[t][1] = scoreCopy[t - 1][1];
         scoreCopy[t][0] = scoreCopy[t - 1][0];
       }
@@ -66,11 +61,10 @@ void addScore( std::string scoreCopy[][2], int newScore, std::string name){
   std::ofstream saveFile;
   saveFile.open("data/scores.dat");
 
-  for (int i = 0; i < 10; i++){
-    for( int t = 0; t < 2; t++){
-      saveFile << scoreCopy[i][t]<<" ";
-    }
-  }
+  for (int i = 0; i < 10; i++)
+    for( int t = 0; t < 2; t++)
+      saveFile << scoreCopy[i][t] << " ";
+
   saveFile.close();
 }
 

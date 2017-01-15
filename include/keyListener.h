@@ -22,10 +22,12 @@ class keyListener
 
     static bool keyPressed[KEY_MAX];
     static bool keyReleased[KEY_MAX];
-    static bool lastTicksKey[KEY_MAX];
 
+    static int lastKeyPressed;
+    static int lastKeyReleased;
   protected:
   private:
+    static bool lastTicksKey[KEY_MAX];
 };
 
 #endif // KEYLISTENER_H
