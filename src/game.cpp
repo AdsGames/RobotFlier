@@ -218,7 +218,7 @@ void game::update(){
         powerup newPowerup( powerStar, sound_star, SCREEN_W, random(30,600), 500, 1);
         powerups.push_back( newPowerup);
       }
-      if( score >= 0 && random(0,200) == 0){
+      if( score >= 100 && random(0,500) == 0){
         powerup newPowerup( powerMagnet[0], sound_magnet, SCREEN_W, random(30,600), 500, 10);
         powerups.push_back( newPowerup);
       }
