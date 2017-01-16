@@ -249,7 +249,7 @@ void menu::update(){
           int red_or_green = random( 0, 1) * 255;
           part_color = makecol( red_or_green, 255 - red_or_green, 0);
         }
-        particle newParticle( mouse_x + 10, mouse_y + 16, part_color, random( -2, 2), random( 4, 8), 1, settings[SETTING_PARTICLE_TYPE]);
+        particle newParticle( mouse_x, mouse_y + 16, part_color, random( -2, 2), random( 4, 8), 1, settings[SETTING_PARTICLE_TYPE]);
         mousePart.push_back( newParticle);
       }
     }
@@ -362,7 +362,7 @@ void menu::draw(){
   // Draw mouse particles
   if( settings[SETTING_PARTICLE_TYPE] == 3){
     if( mouse_rocket_up){
-      draw_sprite( buffer, mouse_rocket, mouse_x, mouse_y);
+      draw_sprite( buffer, mouse_rocket, mouse_x - 10, mouse_y);
     }
   }
   else{
@@ -370,7 +370,7 @@ void menu::draw(){
       mousePart.at(i).draw( buffer);
     }
   }
-  draw_sprite( buffer, mouse, mouse_x, mouse_y);
+  draw_sprite( buffer, mouse, mouse_x - 10, mouse_y);
 
   // Buffer to screen
   draw_sprite( screen, buffer, 0, 0);
