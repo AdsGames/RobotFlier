@@ -142,6 +142,9 @@ void update(){
   // Debug console toggle
   if( keyListener::keyPressed[KEY_F12])
     settings[SETTING_DEBUG] = (settings[SETTING_DEBUG] + 1) % 2;
+
+  // Check joystick
+  poll_joystick();
 }
 
 // main function of program

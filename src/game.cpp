@@ -268,7 +268,7 @@ void game::update(){
           iter--;
         }
       }
-      if( key[KEY_ENTER] || (joy[0].button[1].b && settings[SETTING_CONTROLMODE] != 2)){
+      if( key[KEY_ENTER] || (joystick_enabled && joy[0].button[1].b && settings[SETTING_CONTROLMODE] != 1)){
         addScore( scores, score, edittext);
         set_next_state( STATE_MENU);
       }
@@ -276,7 +276,7 @@ void game::update(){
   }
 
   // Screenshot
-  if( keyListener::keyPressed[KEY_F11] || (joy[0].button[3].b && settings[SETTING_CONTROLMODE] != 2)){
+  if( keyListener::keyPressed[KEY_F11] || (joystick_enabled && joy[0].button[3].b && settings[SETTING_CONTROLMODE] != 1)){
     // Count screenshots
   	int screenshotNumber;
 
@@ -313,8 +313,7 @@ void game::update(){
   }
 
   // Pause loop code
-  if( keyListener::keyPressed[KEY_ESC] || keyListener::keyPressed[KEY_P] || mouseListener::buttonPressed[2] & 2 || keyListener::keyPressed[KEY_SPACE] || keyListener::keyPressed[KEY_ENTER] ||
-     ((joy[0].button[6].b || joy[0].button[7].b) && settings[SETTING_CONTROLMODE] != 2)){
+  if( keyListener::keyPressed[KEY_ESC] || mouseListener::buttonPressed[2] || keyListener::keyPressed[KEY_SPACE] || ((joy[0].button[6].b || joy[0].button[7].b) && joystick_enabled && settings[SETTING_CONTROLMODE] != 1)){
     if( paused){
       paused = false;
       show_mouse( NULL);

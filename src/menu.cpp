@@ -108,13 +108,12 @@ void menu::read_settings(){
 void menu::update(){
   // Start the game
   if( startClicked && animation_start_x < -399){
-    // Go to game
     set_next_state( STATE_GAME);
   }
 
   // Start game with controller
-  if( settings[SETTING_CONTROLMODE] == 3 || joystick_enabled){
-    if( joy[0].button[7].b){
+  if( settings[SETTING_CONTROLMODE] != 1 && joystick_enabled){
+    if( mini_screen == MINISTATE_MENU && joy[0].button[7].b){
       startClicked = true;
     }
   }
@@ -256,7 +255,7 @@ void menu::draw(){
   draw_sprite( buffer, start, animation_start_x, 400);
 
   // Joystick Mode
-  if( joystick_enabled){
+  if( settings[SETTING_CONTROLMODE] != 1 && joystick_enabled){
     draw_sprite( buffer, xbox_start, animation_start_x + 225, 430);
   }
 
@@ -316,6 +315,13 @@ void menu::draw(){
     // Exit and back
     draw_sprite( buffer, ui_exit, 540, 180);
     draw_sprite( buffer, ui_back, 540, 407);
+  }
+
+  // Joystick testing
+  if( settings[SETTING_DEBUG] && joystick_enabled){
+    for( int i = 0; i < 8; i++){
+      textprintf_ex( buffer, font, 20, 10 * i + 20, 0xFFFFFF, 0x000000, ("Joystick B" + convertIntToString(i) + ":%i").c_str(), joy[0].button[i].b);
+    }
   }
 
   // Draw mouse particles
