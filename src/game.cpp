@@ -77,9 +77,6 @@ game::game(){
   // Init hectar
   hectar = robot( 80, 300);
 
-  // Srand to the time
-  srand(time(NULL));
-
   // Play music
   if( settings[SETTING_MUSIC] == 1)
     play_sample( music_ingame, 255, 128, 1000, 1);

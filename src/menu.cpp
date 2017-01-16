@@ -14,7 +14,8 @@ menu::menu(){
   buffer = create_bitmap( SCREEN_W, SCREEN_H);
 
   // Load intro image
-  img_menu = load_bitmap_ex( "images/backgrounds/menu.png");
+  // Random menu
+  img_menu = load_bitmap_ex( "images/backgrounds/background_" + convertIntToString(random( 0, 4)) + ".png");
   start = load_bitmap_ex( "images/gui/start.png");
   mouse = load_bitmap_ex( "images/gui/mouse.png");
   mouse_rocket = load_bitmap_ex( "images/gui/mouse_rocket.png");

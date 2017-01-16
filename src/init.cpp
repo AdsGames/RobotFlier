@@ -15,6 +15,7 @@ init::init(){
 
   //Seed the random number generator with the time
   srand(time(NULL));
+  random( 0, 100);
 
   //Joystick detector
   joystick_enabled = false;

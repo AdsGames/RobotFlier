@@ -15,6 +15,7 @@
 #define MINISTATE_SCORES 5
 
 #include <vector>
+#include <time.h>
 
 #include "state.h"
 #include "globals.h"
