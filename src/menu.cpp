@@ -15,8 +15,9 @@ menu::menu(){
 
   // Load intro image
   // Random menu
-  img_menu = load_bitmap_ex( "images/backgrounds/background_" + convertIntToString(random( 0, 4)) + ".png");
+  img_menu = load_bitmap_ex( "images/backgrounds/background_" + convertIntToString(random( 0, 3)) + ".png");
   start = load_bitmap_ex( "images/gui/start.png");
+  highscores_button = load_bitmap_ex( "images/gui/highscores.png");
   mouse = load_bitmap_ex( "images/gui/mouse.png");
   mouse_rocket = load_bitmap_ex( "images/gui/mouse_rocket.png");
   title = load_bitmap_ex( "images/gui/title.png");
@@ -66,9 +67,7 @@ menu::menu(){
   read_settings();
 
   // Init animation vars
-  animation_start_x = -400;
-  animation_title_y = -100;
-  animation_credits_y = 600;
+  animation_pos = 0;
 
   // Hide mouse
   show_mouse( NULL);
@@ -90,27 +89,24 @@ menu::~menu(){
 //Writes the settings to file
 void menu::write_settings(){
   std::ofstream settings_file("data/settings.dat");
-  for (int i = 0; i < 7; i++){
+  for (int i = 0; i < 7; i++)
     settings_file << settings[i] << " ";
-  }
   settings_file.close();
 }
 
 //Reads the data from file
 void menu::read_settings(){
   std::ifstream read("data/settings.dat");
-  for (int i = 0; i < 7; i++){
+  for (int i = 0; i < 7; i++)
     read >> settings[i];
-  }
   read.close();
 }
 
 // Update loop
 void menu::update(){
   // Start the game
-  if( startClicked && animation_start_x < -399){
+  if( startClicked && animation_pos <= 0)
     set_next_state( STATE_GAME);
-  }
 
   // Start game with controller
   if( settings[SETTING_CONTROLMODE] != 1 && joystick_enabled){
@@ -122,29 +118,29 @@ void menu::update(){
   // Open submenu or start game
   if( mini_screen == MINISTATE_MENU && mouseListener::buttonPressed[1]){
     // Start game
-    if( ( mouse_x > 40 && mouse_x < 260 && mouse_y > 410 && mouse_y < 510) || joy[0].button[1].b){
+    if( collision( mouse_x, mouse_x, 40, 40 + start -> w, mouse_y, mouse_y, 410, 410 + start -> h) || joy[0].button[1].b){
       startClicked = true;
     }
     // Scores
-    else if( mouse_x > 600 && mouse_x < 760 && mouse_y > 20 && mouse_y < 120){
+    else if( collision( mouse_x, mouse_x, 660, 660 + highscores_button -> w, mouse_y, mouse_y, 30, 30 + highscores_button -> h)){
       updateScores( scores);
       mini_screen = MINISTATE_SCORES;
     }
     // Credits menu
-    else if( collision( mouse_x, mouse_x,542 ,644, mouse_y,mouse_y, 548,600)){
+    else if( collision( mouse_x, mouse_x, 542, 644, mouse_y, mouse_y, 548, 600)){
       mini_screen = MINISTATE_CREDITS;
     }
+    // Controls menu
+    else if( collision( mouse_x, mouse_x, 644, 696, mouse_y, mouse_y, 548 ,600)){
+      mini_screen = MINISTATE_CONTROLS;
+    }
     // Help screen
-    else if( collision( mouse_x, mouse_x, 698,748, mouse_y,mouse_y, 548,600)){
+    else if( collision( mouse_x, mouse_x, 696, 749, mouse_y, mouse_y, 548, 600)){
       mini_screen = MINISTATE_TUTORIAL;
     }
     // Options menu
-    else if( collision( mouse_x,mouse_x, 748, 800, mouse_y, mouse_y, 548, 600)){
+    else if( collision( mouse_x, mouse_x, 749, 800, mouse_y, mouse_y, 548, 600)){
       mini_screen = MINISTATE_OPTIONS;
-    }
-    // Controls menu
-    else if( collision( mouse_x, mouse_x,645 ,697, mouse_y,mouse_y, 548 ,600)){
-      mini_screen = MINISTATE_CONTROLS;
     }
   }
   // Exit menus
@@ -233,18 +229,10 @@ void menu::update(){
 // Draw to screen
 void menu::draw(){
   //Menu animations
-  if( animation_start_x < 1 && !startClicked)
-    animation_start_x += 20;
-  if( animation_start_x > -399 && startClicked)
-    animation_start_x -= 20;
-  if( animation_title_y < 20 && !startClicked)
-    animation_title_y += 10;
-  if( animation_title_y > -119 && startClicked)
-    animation_title_y -= 10;
-  if( animation_credits_y > 548 && !startClicked)
-    animation_credits_y -= 4;
-  if( animation_credits_y < 600 && startClicked)
-    animation_credits_y += 4;
+  if( animation_pos < 100 && !startClicked)
+    animation_pos += 4;
+  if( animation_pos > 0 && startClicked)
+    animation_pos -= 4;
 
   //Draw backdrop
   clear_to_color( buffer, 0xFFFFFF);
@@ -253,21 +241,24 @@ void menu::draw(){
   draw_sprite( buffer, img_menu, 0, 0);
 
   // Start button
-  draw_sprite( buffer, start, animation_start_x, 400);
+  draw_sprite( buffer, start, (animation_pos * 3.2) - start -> w, 400);
+
+  // Highscores button
+  draw_sprite( buffer, highscores_button, SCREEN_W - (animation_pos * 1.4), 30);
 
   // Joystick Mode
   if( settings[SETTING_CONTROLMODE] != 1 && joystick_enabled){
-    draw_sprite( buffer, xbox_start, animation_start_x + 225, 430);
+    draw_sprite( buffer, xbox_start, (animation_pos * 3.2) - start -> w + 220, 430);
   }
 
   // Nice title image
-  draw_sprite( buffer, title, 20, animation_title_y);
+  draw_sprite( buffer, title, 20, (animation_pos * 1.2) - title -> h);
 
   // Bottom Right Buttons
-  draw_sprite( buffer, ui_credits, 541, animation_credits_y);
-  draw_sprite( buffer, ui_controls, 645, animation_credits_y);
-  draw_sprite( buffer, ui_help, 697, animation_credits_y);
-  draw_sprite( buffer, ui_options, 749, animation_credits_y);
+  draw_sprite( buffer, ui_credits,  541, SCREEN_H - (animation_pos * ui_credits  -> h)/100);
+  draw_sprite( buffer, ui_controls, 645, SCREEN_H - (animation_pos * ui_controls -> h)/100);
+  draw_sprite( buffer, ui_help,     697, SCREEN_H - (animation_pos * ui_help     -> h)/100);
+  draw_sprite( buffer, ui_options,  749, SCREEN_H - (animation_pos * ui_options  -> h)/100);
 
   //Draw scores
   if( mini_screen == MINISTATE_SCORES){

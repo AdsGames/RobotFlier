@@ -41,9 +41,7 @@ class menu : public state{
     void write_settings();
 
     // Vars
-    int animation_start_x;
-    int animation_title_y;
-    int animation_credits_y;
+    int animation_pos;
 
     int mouseMove;
     int mini_screen;
@@ -69,6 +67,7 @@ class menu : public state{
     // Buttons
     BITMAP *start;
     BITMAP *title;
+    BITMAP *highscores_button;
 
     // Mouse
     BITMAP *mouse;
