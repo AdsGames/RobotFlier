@@ -84,6 +84,49 @@ menu::menu(){
 menu::~menu(){
   // Stops music
   stop_sample( music_mainmenu);
+
+  // Destroy samples
+  destroy_sample( music_mainmenu);
+
+  // Destroy images
+  destroy_bitmap( buffer);
+  destroy_bitmap( img_menu);
+  destroy_bitmap( options);
+  destroy_bitmap( helpScreen);
+  destroy_bitmap( controls);
+  destroy_bitmap( credits);
+  destroy_bitmap( highscores_table);
+  destroy_bitmap( start);
+  destroy_bitmap( title);
+  destroy_bitmap( highscores_button);
+  destroy_bitmap( mouse);
+  destroy_bitmap( mouse_rocket);
+  destroy_bitmap( xbox_start);
+  destroy_bitmap( ui_sound[0]);
+  destroy_bitmap( ui_sound[1]);
+  destroy_bitmap( ui_music[0]);
+  destroy_bitmap( ui_music[1]);
+  destroy_bitmap( ui_screenshake[0]);
+  destroy_bitmap( ui_screenshake[1]);
+  destroy_bitmap( ui_screenshake[2]);
+  destroy_bitmap( ui_screenshake[3]);
+  destroy_bitmap( ui_window[0]);
+  destroy_bitmap( ui_window[1]);
+  destroy_bitmap( ui_particle[0]);
+  destroy_bitmap( ui_particle[1]);
+  destroy_bitmap( ui_particle[2]);
+  destroy_bitmap( ui_particle[3]);
+  destroy_bitmap( ui_control[0]);
+  destroy_bitmap( ui_control[1]);
+  destroy_bitmap( ui_control[2]);
+  destroy_bitmap( ui_options);
+  destroy_bitmap( ui_options_small);
+  destroy_bitmap( ui_back);
+  destroy_bitmap( ui_credits);
+  destroy_bitmap( ui_exit);
+  destroy_bitmap( ui_help);
+  destroy_bitmap( ui_screenshot_notification);
+  destroy_bitmap( ui_controls);
 }
 
 //Writes the settings to file

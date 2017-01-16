@@ -9,6 +9,7 @@
 
 #include <allegro.h>
 #include <vector>
+#include <iostream>
 #include "particle.h"
 #include "tools.h"
 #include "globals.h"
@@ -17,8 +18,9 @@ class robot{
   public:
     robot();
     robot( float newX, float newY);
-    virtual ~robot();
+    ~robot();
 
+    void load_resources();
     void logic();
     void draw( BITMAP *tempImage);
     void draw_overlay( BITMAP *tempImage);

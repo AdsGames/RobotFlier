@@ -43,7 +43,7 @@ class game : public state{
 
     // Game images
     BITMAP* space;
-    BITMAP* space2;
+    BITMAP* parallaxBack;
     BITMAP* groundOverlay;
     BITMAP* groundUnderlay;
 

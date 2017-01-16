@@ -2,22 +2,30 @@
 
 // Constructor
 robot::robot(){
-
+  // NULLIFY
+  main_robot = NULL;
+  robotFire = NULL;
+  robotInvincible = NULL;
+  robotInvincibleFire = NULL;
+  robotInvincibleTop = NULL;
+  robotDie = NULL;
+  christmas_hat = NULL;
+  sound_flame = NULL;
+  sound_hitground = NULL;
 }
 
+// Constructor
 robot::robot( float newX, float newY){
-  // Robot
-  main_robot = load_bitmap_ex("images/robot/robot.png");
-  robotFire = load_bitmap_ex("images/robot/robotfire.png");
-  robotInvincible = load_bitmap_ex("images/robot/robotInvincible.png");
-  robotInvincibleFire = load_bitmap_ex("images/robot/robotInvincibleFire.png");
-  robotInvincibleTop = load_bitmap_ex("images/robot/robotInvincibleTop.png");
-  robotDie = load_bitmap_ex("images/robot/robotDie.png");
-  christmas_hat = load_bitmap_ex("images/robot/christmas_hat.png");
-
-  // Sounds
-  sound_flame = load_sample_ex( "audio/sound_flame.wav");
-  sound_hitground = load_sample_ex( "audio/sound_hitground.wav");
+  // NULLIFY
+  main_robot = NULL;
+  robotFire = NULL;
+  robotInvincible = NULL;
+  robotInvincibleFire = NULL;
+  robotInvincibleTop = NULL;
+  robotDie = NULL;
+  christmas_hat = NULL;
+  sound_flame = NULL;
+  sound_hitground = NULL;
 
   // Init vars
   gravity = 1.6;
@@ -39,7 +47,38 @@ robot::robot( float newX, float newY){
 
 // Destructor
 robot::~robot(){
+  // Clear particles
+  rocketPart.clear();
+  smokePart.clear();
 
+  // Destroy samples
+  destroy_sample( sound_flame);
+  destroy_sample( sound_hitground);
+
+  // Destroy images
+  destroy_bitmap( main_robot);
+  destroy_bitmap( robotFire);
+  destroy_bitmap( robotInvincible);
+  destroy_bitmap( robotInvincibleFire);
+  destroy_bitmap( robotInvincibleTop);
+  destroy_bitmap( robotDie);
+  destroy_bitmap( christmas_hat);
+}
+
+// Load images
+void robot::load_resources(){
+  // Images
+  main_robot = load_bitmap_ex("images/robot/robot.png");
+  robotFire = load_bitmap_ex("images/robot/robotfire.png");
+  robotInvincible = load_bitmap_ex("images/robot/robotInvincible.png");
+  robotInvincibleFire = load_bitmap_ex("images/robot/robotInvincibleFire.png");
+  robotInvincibleTop = load_bitmap_ex("images/robot/robotInvincibleTop.png");
+  robotDie = load_bitmap_ex("images/robot/robotDie.png");
+  christmas_hat = load_bitmap_ex("images/robot/christmas_hat.png");
+
+  // Sounds
+  sound_flame = load_sample_ex( "audio/sound_flame.wav");
+  sound_hitground = load_sample_ex( "audio/sound_hitground.wav");
 }
 
 // Update

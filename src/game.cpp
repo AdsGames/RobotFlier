@@ -45,10 +45,16 @@ game::game(){
   ui_b = load_bitmap_ex("images/gui/ui_b.png");
   debug = load_bitmap_ex( "images/gui/debug.png");
 
-  // Background/paralax
+  // Background
   space = load_bitmap_ex( "images/backgrounds/space.png");
+
+  // Nullfiy bitmaps not loaded yet
+  screenshot = NULL;
+  asteroidImage = NULL;
+  parallaxBack = NULL;
   groundOverlay = NULL;
   groundUnderlay = NULL;
+
 
   // Objects
   cometImage = load_bitmap_ex("images/objects/comet.png");
@@ -76,6 +82,7 @@ game::game(){
 
   // Init hectar
   hectar = robot( 80, 300);
+  hectar.load_resources();
 
   // Play music
   if( settings[SETTING_MUSIC] == 1)
@@ -84,9 +91,48 @@ game::game(){
 
 // Destructor
 game::~game(){
+  // Clear objects
+  energys.clear();
+  debries.clear();
+  powerups.clear();
+
+  // Destroy samples
+  destroy_sample( sound_orb);
+  destroy_sample( sound_bomb);
+  destroy_sample( sound_asteroid);
+  destroy_sample( sound_magnet);
+  destroy_sample( sound_star);
+  destroy_sample( sound_snap);
+
+  // Destroy bitmaps
+  destroy_bitmap( buffer);
+  destroy_bitmap( screenshot);
+  destroy_bitmap( space);
+  destroy_bitmap( parallaxBack);
+  destroy_bitmap( groundOverlay);
+  destroy_bitmap( groundUnderlay);
+  destroy_bitmap( debug);
+  destroy_bitmap( pauseMenu);
+  destroy_bitmap( ui_game_end);
+  destroy_bitmap( ui_a);
+  destroy_bitmap( ui_b);
+  destroy_bitmap( energyImage);
+  destroy_bitmap( asteroidImage);
+  destroy_bitmap( bombImage);
+  destroy_bitmap( cometImage);
+  destroy_bitmap( powerStar);
+  destroy_bitmap( powerMagnet[0]);
+  destroy_bitmap( powerMagnet[1]);
+  destroy_bitmap( powerMagnet[2]);
+  destroy_bitmap( powerMagnet[3]);
+
   // Stop musics
   stop_sample( music_death);
   stop_sample( music_ingame);
+
+  // Destroy music
+  destroy_sample( music_ingame);
+  destroy_sample( music_death);
 }
 
 // Themes
@@ -106,7 +152,7 @@ void game::changeTheme( int NewThemeNumber){
   // Other theme images
   groundOverlay = load_bitmap_ex( "images/ground/groundOverlay_" + themeName + ".png");
   groundUnderlay = load_bitmap_ex( "images/ground/groundUnderlay_" + themeName + ".png");
-  space2 = load_bitmap_ex( "images/ground/paralax_" + themeName + ".png");
+  parallaxBack = load_bitmap_ex( "images/ground/paralax_" + themeName + ".png");
 
   if( settings[SETTING_CHRISTMAS])
     asteroidImage = load_bitmap_ex("images/objects/asteroid_christmas.png");
@@ -393,12 +439,12 @@ void game::draw(){
   }
 
   // Mountain Paralax
-  draw_sprite( buffer, space2, (scroll/3) % SCREEN_W, 0);
-  draw_sprite( buffer, space2, (scroll/3) % SCREEN_W + SCREEN_W, 0);
+  draw_sprite( buffer, parallaxBack, (scroll/3) % SCREEN_W, 0);
+  draw_sprite( buffer, parallaxBack, (scroll/3) % SCREEN_W + SCREEN_W, 0);
 
   // Ground
-  draw_sprite( buffer, groundOverlay, scroll % SCREEN_W, SCREEN_H - 20);
-  draw_sprite( buffer, groundOverlay, scroll % SCREEN_W + SCREEN_W, SCREEN_H - 20);
+  draw_sprite( buffer, groundUnderlay, scroll % SCREEN_W, SCREEN_H - 40);
+  draw_sprite( buffer, groundUnderlay, scroll % SCREEN_W + SCREEN_W, SCREEN_H - 40);
 
   // Energy
   for( unsigned int i = 0; i < energys.size(); i++)
@@ -416,8 +462,8 @@ void game::draw(){
     debries.at(i).draw(buffer);
 
   // Ground underlay
-  draw_sprite( buffer, groundUnderlay, scroll % SCREEN_W, SCREEN_H - 40);
-  draw_sprite( buffer, groundUnderlay, scroll % SCREEN_W + SCREEN_W, SCREEN_H - 40);
+  draw_sprite( buffer, groundOverlay, scroll % SCREEN_W, SCREEN_H - 20);
+  draw_sprite( buffer, groundOverlay, scroll % SCREEN_W + SCREEN_W, SCREEN_H - 20);
 
   // Robot above asteroids
   hectar.draw_overlay( buffer);
