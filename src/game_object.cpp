@@ -50,13 +50,12 @@ void game_object::draw( BITMAP* tempBitmap){
       stretch_sprite( tempBitmap, image, x, y, width, height);
     }
   }
-  // Draw particles instead
-  else{
-  	if( settings[SETTING_PARTICLE_TYPE] != 3){
-	    for( unsigned int i = 0; i < parts.size(); i++){
-	      parts.at(i).draw( tempBitmap);
-	    }
-		}
+
+  // Draw particles
+  if( settings[SETTING_PARTICLE_TYPE] != 3){
+    for( unsigned int i = 0; i < parts.size(); i++){
+      parts.at(i).draw( tempBitmap);
+    }
   }
 
   // Draw bounding box
