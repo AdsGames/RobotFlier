@@ -147,7 +147,8 @@ FONT *load_font_ex( std::string file){
 int random(int newLowest, int newHighest){
   int lowest = newLowest, highest = newHighest;
   int range = (highest - lowest) + 1;
-  int randomNumber = lowest+int(range*rand()/(RAND_MAX + 1.0));
+  int randomNumber; // this doens't work on linux = lowest+int(range*rand()/(RAND_MAX + 1.0));
+  randomNumber = rand() % range + lowest;
   return randomNumber;
 }
 
