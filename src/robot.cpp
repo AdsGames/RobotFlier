@@ -143,7 +143,7 @@ void robot::logic(){
     //Controls movement up and down
     if( (key[KEY_W] || key[KEY_UP] || mouse_b & 1) || ((joy[0].button[0].b || joy[0].button[5].b) && settings[SETTING_CONTROLMODE] != 1)){
       if( settings[SETTING_SOUND] && random( 0, 3) == 1)
-        play_sample( sound_flame, 10, 155, 1000, 0);
+        play_sample( sound_flame, 8, 155, 1000, 0);
       if( speed < 8){
         rocket = true;
         speed += 0.6;

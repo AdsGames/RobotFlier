@@ -16,7 +16,7 @@ void energy::logic(int newMotion, robot *ourRobot){
       ourRobot -> addHealth( 1);
 
     if( settings[SETTING_SOUND])
-      play_sample(soundEffect,255,125,1000,0);
+      play_sample(soundEffect,150,125,1000,0);
 
     isDead = true;
   }
