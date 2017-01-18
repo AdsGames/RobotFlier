@@ -30,7 +30,7 @@ robot::robot( float newX, float newY){
   // Init vars
   gravity = 1.6;
 
-  speed = 15;
+  speed = 20;
   x = newX;
   y = newY;
   width = 70;

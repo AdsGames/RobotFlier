@@ -92,6 +92,9 @@ void change_state(){
 
     //NULL the next state ID
     nextState = STATE_NULL;
+
+    // Ticks back to 0
+    ticks = 0;
   }
 }
 

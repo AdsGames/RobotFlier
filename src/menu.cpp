@@ -147,6 +147,12 @@ void menu::read_settings(){
 
 // Update loop
 void menu::update(){
+  //Menu animations
+  if( animation_pos < 100 && !startClicked)
+    animation_pos += 4;
+  if( animation_pos > 0 && startClicked)
+    animation_pos -= 4;
+
   // Start the game
   if( startClicked && animation_pos <= 0)
     set_next_state( STATE_GAME);
@@ -271,12 +277,6 @@ void menu::update(){
 
 // Draw to screen
 void menu::draw(){
-  //Menu animations
-  if( animation_pos < 100 && !startClicked)
-    animation_pos += 4;
-  if( animation_pos > 0 && startClicked)
-    animation_pos -= 4;
-
   //Draw backdrop
   clear_to_color( buffer, 0xFFFFFF);
 
