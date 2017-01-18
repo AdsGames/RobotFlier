@@ -277,101 +277,108 @@ void menu::update(){
 
 // Draw to screen
 void menu::draw(){
-  //Draw backdrop
-  clear_to_color( buffer, 0xFFFFFF);
+  // SET ALLEGRO GL
+  allegro_gl_set_allegro_mode();
 
   // Menu Background
-  draw_sprite( buffer, img_menu, 0, 0);
+  draw_sprite_hw( img_menu, 0, 0);
 
   // Start button
-  draw_sprite( buffer, start, (animation_pos * 3.2) - start -> w, 400);
+  draw_sprite_hw( start, (animation_pos * 3.2) - start -> w, 400);
 
   // Highscores button
-  draw_sprite( buffer, highscores_button, SCREEN_W - (animation_pos * 1.4), 30);
+  draw_sprite_hw( highscores_button, SCREEN_W - (animation_pos * 1.4), 30);
 
   // Joystick Mode
   if( settings[SETTING_CONTROLMODE] != 1 && joystick_enabled){
-    draw_sprite( buffer, xbox_start, (animation_pos * 3.2) - start -> w + 220, 430);
+    draw_sprite_hw( xbox_start, (animation_pos * 3.2) - start -> w + 220, 430);
   }
 
   // Nice title image
-  draw_sprite( buffer, title, 20, (animation_pos * 1.2) - title -> h);
+  draw_sprite_hw( title, 20, (animation_pos * 1.2) - title -> h);
 
   // Bottom Right Buttons
-  draw_sprite( buffer, ui_credits,  541, SCREEN_H - (animation_pos * ui_credits  -> h)/100);
-  draw_sprite( buffer, ui_controls, 645, SCREEN_H - (animation_pos * ui_controls -> h)/100);
-  draw_sprite( buffer, ui_help,     697, SCREEN_H - (animation_pos * ui_help     -> h)/100);
-  draw_sprite( buffer, ui_options,  749, SCREEN_H - (animation_pos * ui_options  -> h)/100);
+  draw_sprite_hw( ui_credits,  541, SCREEN_H - (animation_pos * ui_credits  -> h)/100);
+  draw_sprite_hw( ui_controls, 645, SCREEN_H - (animation_pos * ui_controls -> h)/100);
+  draw_sprite_hw( ui_help,     697, SCREEN_H - (animation_pos * ui_help     -> h)/100);
+  draw_sprite_hw( ui_options,  749, SCREEN_H - (animation_pos * ui_options  -> h)/100);
 
   //Draw scores
   if( mini_screen == MINISTATE_SCORES){
     // Highscore background
-    draw_sprite( buffer, highscores_table, 200, 50);
+    draw_sprite_hw( highscores_table, 200, 50);
 
     // Title
-    textout_centre_ex( buffer, orbitron, "Highscores", 400, 75, makecol(0,0,0), -1);
+    textout_centre_ex( screen, orbitron, "Highscores", 400, 75, makecol(0,0,0), -1);
 
     // Read the top 10 scores
     for( int i = 0; i < 10; i++){
-      textout_ex(buffer, orbitron, scores[i][0].c_str(), 225, (i * 40) + 120, makecol(0,0,0), -1);
-      textout_right_ex( buffer, orbitron, scores[i][1].c_str(), 575, (i * 40) + 120, makecol(0,0,0), -1);
+      textout_ex( screen, orbitron, scores[i][0].c_str(), 225, (i * 40) + 120, makecol(0,0,0), -1);
+      textout_right_ex( screen, orbitron, scores[i][1].c_str(), 575, (i * 40) + 120, makecol(0,0,0), -1);
     }
   }
   // Tutorial screen
   else if( mini_screen == MINISTATE_TUTORIAL){
-  	draw_sprite( buffer, helpScreen, 0, 0);
+  	draw_sprite_hw( helpScreen, 0, 0);
   }
   // Credits screen
   else if( mini_screen == MINISTATE_CREDITS){
-    draw_sprite( buffer, credits, 0, 0);
+    draw_sprite_hw( credits, 0, 0);
   }
   // Credits screen
   else if( mini_screen == MINISTATE_CONTROLS){
-  	draw_sprite( buffer, controls, 0, 0);
+  	draw_sprite_hw( controls, 0, 0);
   }
   // Option Menu drawing(page and ingame)
   else if( mini_screen == MINISTATE_OPTIONS){
     // Background
-    draw_sprite( buffer, options, 0, 0);
+    draw_sprite_hw( options, 0, 0);
 
     // Buttons
-    draw_sprite( buffer, ui_particle[settings[SETTING_PARTICLE_TYPE]], 280, 407);
-    draw_sprite( buffer, ui_sound[settings[SETTING_SOUND]], 120, 180);
-    draw_sprite( buffer, ui_music[settings[SETTING_MUSIC]], 280, 180);
-    draw_sprite( buffer, ui_window[settings[SETTING_FULLSCREEN]], 120, 407);
-    draw_sprite( buffer, ui_screenshake[settings[SETTING_SCREENSHAKE]], 280, 295);
-    draw_sprite( buffer, ui_control[settings[SETTING_CONTROLMODE]], 120, 295);
+    draw_sprite_hw( ui_particle[settings[SETTING_PARTICLE_TYPE]], 280, 407);
+    draw_sprite_hw( ui_sound[settings[SETTING_SOUND]], 120, 180);
+    draw_sprite_hw( ui_music[settings[SETTING_MUSIC]], 280, 180);
+    draw_sprite_hw( ui_window[settings[SETTING_FULLSCREEN]], 120, 407);
+    draw_sprite_hw( ui_screenshake[settings[SETTING_SCREENSHAKE]], 280, 295);
+    draw_sprite_hw( ui_control[settings[SETTING_CONTROLMODE]], 120, 295);
 
     // Button Text
-    textprintf_ex( buffer, orbitron, 110, 146, makecol( 255, 250, 250),-1,"Sounds   Music           Exit");
-    textprintf_ex( buffer, orbitron, 108, 375, makecol(255,250,250), -1, "Window Particles         Back");
-    textprintf_ex( buffer, orbitron, 120, 260, makecol( 255, 250, 250), -1, "Input  Screen shake");
+    textprintf_ex( screen, orbitron, 110, 146, makecol( 255, 250, 250),-1,"Sounds   Music           Exit");
+    textprintf_ex( screen, orbitron, 108, 375, makecol(255,250,250), -1, "Window Particles         Back");
+    textprintf_ex( screen, orbitron, 120, 260, makecol( 255, 250, 250), -1, "Input  Screen shake");
 
     // Exit and back
-    draw_sprite( buffer, ui_exit, 540, 180);
-    draw_sprite( buffer, ui_back, 540, 407);
+    draw_sprite_hw( ui_exit, 540, 180);
+    draw_sprite_hw( ui_back, 540, 407);
   }
 
-  // Joystick testing
-  if( settings[SETTING_DEBUG] && joystick_enabled){
-    for( int i = 0; i < 8; i++){
-      textprintf_ex( buffer, font, 20, 10 * i + 20, 0xFFFFFF, 0x000000, ("Joystick B" + convertIntToString(i) + ":%i").c_str(), joy[0].button[i].b);
+  // Debug
+  if( settings[SETTING_DEBUG]){
+    // Joystick testing
+    if( joystick_enabled){
+      for( int i = 0; i < 8; i++){
+        textprintf_ex( screen, font, 20, 10 * i + 20, 0xFFFFFF, 0x000000, ("Joystick B" + convertIntToString(i) + ":%i").c_str(), joy[0].button[i].b);
+      }
     }
+    // FPS
+    textprintf_ex( screen, font, SCREEN_W - 100, 20, 0xFFFFFF, 0x000000, "FPS:%i", fps);
   }
 
   // Draw mouse particles
   if( settings[SETTING_PARTICLE_TYPE] == 3){
     if( mouse_rocket_up){
-      draw_sprite( buffer, mouse_rocket, mouse_x - 10, mouse_y);
+      draw_sprite_hw( mouse_rocket, mouse_x - 10, mouse_y);
     }
   }
   else{
     for( unsigned int i = 0; i < mousePart.size(); i++){
-      mousePart.at(i).draw( buffer);
+      mousePart.at(i).draw( screen);
     }
   }
-  draw_sprite( buffer, mouse, mouse_x - 10, mouse_y);
+  draw_sprite_hw( mouse, mouse_x - 10, mouse_y);
 
-  // Buffer to screen
-  draw_sprite( screen, buffer, 0, 0);
+  // UNSET ALLEGRO GL
+  allegro_gl_unset_allegro_mode();
+
+  allegro_gl_flip();
 }

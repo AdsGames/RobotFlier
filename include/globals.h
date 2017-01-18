@@ -8,6 +8,7 @@
 
 // Import libraries
 #include <allegro.h>
+#include <alleggl.h>
 #include <string>
 
 #define SETTING_PARTICLE_TYPE 0

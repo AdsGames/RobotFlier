@@ -5,6 +5,7 @@
  * Robots in space!
  */
 #include <allegro.h>
+#include <alleggl.h>
 #include <alpng.h>
 #include <logg.h>
 #include <string>
@@ -102,13 +103,13 @@ void change_state(){
 void setup(){
   // Initializing
   allegro_init();
+  install_allegro_gl();
   alpng_init();
   install_keyboard();
   install_mouse();
   install_timer();
   install_joystick(JOY_TYPE_AUTODETECT);
   install_sound(DIGI_AUTODETECT,MIDI_AUTODETECT,".");
-  set_color_depth(32);
 
   // Creates a random number generator (based on time)
   srand( time(NULL));

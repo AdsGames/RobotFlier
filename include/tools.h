@@ -36,6 +36,9 @@ extern SAMPLE *logg_load_ex( std::string file);
 extern FONT *load_font_ex( std::string file);
 extern void abort_on_error( std::string message);
 
+// Drawing hardware accelerated
+extern void draw_sprite_hw( BITMAP *image, int x, int y);
+
 // Random generator
 extern int random(int newLowest, int newHighest);
 

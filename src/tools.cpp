@@ -89,10 +89,24 @@ bool keyboard_keypressed(){
 // Error handling loading functions
 // Checks if file exists
 BITMAP *load_bitmap_ex( std::string file){
-  BITMAP *temp_image = NULL;
-  if ( !(temp_image = load_bitmap( file.c_str(), NULL)))
+  BITMAP *temp1 = NULL;
+  BITMAP *temp2 = NULL;
+
+  // convert the sprite to current format, unless it would lose alpha information
+  set_color_conversion( COLORCONV_KEEP_ALPHA);
+  if ( !(temp1 = load_bitmap( file.c_str(), NULL)))
     abort_on_error( std::string("Cannot find image " + file + "\nTry reinstalling from adsgames.net/download/robotflier"));
-  return temp_image;
+
+  // create a video bitmap of the same size and same color depth as the sprite
+  //allegro_gl_set_video_bitmap_color_depth( bitmap_color_depth( temp1));
+  temp2 = create_video_bitmap( temp1 -> w, temp1 -> h);
+  //allegro_gl_set_video_bitmap_color_depth( -1);
+
+  // blit a memory sprite to a video bitmap
+  blit( temp1, temp2, 0, 0, 0, 0, temp1 -> w, temp1 -> h);
+  destroy_bitmap( temp1);
+
+  return temp2;
 }
 
 // Checks if file exists
@@ -142,6 +156,11 @@ FONT *load_font_ex( std::string file){
   return temp_font;
 }
 
+// Drawing hardware accelerated
+void draw_sprite_hw( BITMAP *image, int x, int y){
+  masked_blit( image, screen, 0, 0, x, y, image -> w, image -> h);
+}
+
 
 // Random number generator. Use int random(highest,lowest);
 int random(int newLowest, int newHighest){
@@ -181,12 +200,13 @@ void fade_in(BITMAP* bmp_orig, int speed){
       clear(bmp_buff);
       set_trans_blender(0,0,0,a);
       draw_trans_sprite(bmp_buff,bmp_orig,0,0);
-      vsync();
       blit(bmp_buff,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+      //allegro_gl_flip();
     }
     destroy_bitmap(bmp_buff);
   }
   blit(bmp_orig,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+  //allegro_gl_flip();
 }
 
 // Fade out
@@ -203,12 +223,13 @@ void fade_out(int speed){
          clear(bmp_buff);
          set_trans_blender(0,0,0,a);
          draw_trans_sprite(bmp_buff,bmp_orig,0,0);
-         vsync();
          blit(bmp_buff,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+         //allegro_gl_flip();
       }
     destroy_bitmap(bmp_buff);
     }
     destroy_bitmap(bmp_orig);
   }
   rectfill(screen,0,0,SCREEN_W,SCREEN_H,makecol(0,0,0));
+  //allegro_gl_flip();
 }
