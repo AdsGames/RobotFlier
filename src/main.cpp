@@ -20,26 +20,26 @@
 
 // FPS System
 volatile int ticks = 0;
-int updates_per_second = 60;
+int frames_done = 0;
+int old_time = 0;
+const int updates_per_second = 60;
+int frames_array[10];
+int frame_index = 0;
 volatile int game_time = 0;
 
-int fps;
-int frames_done;
-int old_time;
-
-// Mouse Updater
-mouseListener m_listener;
-keyListener k_listener;
-
 void ticker(){
-  ticks++;
+	ticks++;
 }
 END_OF_FUNCTION(ticker)
 
 void game_time_ticker(){
-  game_time++;
+	game_time++;
 }
-END_OF_FUNCTION(ticker)
+END_OF_FUNCTION(game_time_ticker)
+
+// Mouse Updater
+mouseListener m_listener;
+keyListener k_listener;
 
 // Current state object
 state *currentState = NULL;
@@ -111,17 +111,16 @@ void setup(){
   srand( time(NULL));
 
   // Setup for FPS system
-  LOCK_VARIABLE(ticks);
-  LOCK_FUNCTION(ticker);
-  install_int_ex( ticker, BPS_TO_TIMER(updates_per_second));
+  LOCK_VARIABLE( ticks);
+  LOCK_FUNCTION( ticker);
+  install_int_ex( ticker, BPS_TO_TIMER( updates_per_second));
 
-  LOCK_VARIABLE(game_time);
-  LOCK_FUNCTION(game_time_ticker);
+  LOCK_VARIABLE( game_time);
+  LOCK_FUNCTION( game_time_ticker);
   install_int_ex( game_time_ticker, BPS_TO_TIMER(10));
 
-  // Close button
-  LOCK_FUNCTION(close_button_handler);
-  set_close_button_callback(close_button_handler);
+  for(int i = 0; i < 10; i++)
+    frames_array[i] = 0;
 
   // Game state
   stateID = STATE_NULL;
@@ -169,14 +168,14 @@ int main( int argc, char* argv[]){
   //Set the current game state object
   currentState = new init();
 
-  // Handles exit
-  while(!close_button_pressed){
-    // Runs FPS system
-    while(ticks == 0){
-      rest(1);
+  // Loop
+  while( !key[KEY_ESC]){
+    while( ticks == 0){
+      rest( 1);
     }
-    while(ticks > 0){
+    while( ticks > 0){
       int old_ticks = ticks;
+
       // Check for state change
       change_state();
 
@@ -187,17 +186,21 @@ int main( int argc, char* argv[]){
       update();
 
       ticks--;
-      if(old_ticks <= ticks){
+      if( old_ticks <= ticks){
         break;
       }
     }
-    if(game_time - old_time >= 10){
-      fps = frames_done;
-      frames_done = 0;
-      old_time = game_time;
-    }
+    if(game_time >= old_time + 1){// i.e. a 0.1 second has passed since we last counted the frames{
+			fps -= frames_array[frame_index];// decrement the fps by the frames done a second ago
+			frames_array[frame_index] = frames_done;// store the number of frames done this 0.1 second
+			fps += frames_done;// increment the fps by the newly done frames
+			frame_index = (frame_index + 1) % 10;// increment the frame index and snap it to 10
+			frames_done = 0;
+			old_time += 1;
+		}
     // Update every set amount of frames
     currentState -> draw();
+    frames_done++;
   }
 
   return 0;

@@ -29,6 +29,7 @@
 //Global variables
 extern unsigned int score;
 extern int screenshake;
+extern int fps;
 
 // Data
 extern int stats[4];

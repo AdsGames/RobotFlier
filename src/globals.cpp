@@ -3,6 +3,7 @@
 //Global variables
 unsigned int score;
 int screenshake;
+int fps;
 
 // Data
 int stats[4];

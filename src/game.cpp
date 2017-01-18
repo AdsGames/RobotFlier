@@ -436,6 +436,8 @@ void game::draw(){
 
     textprintf_ex(buffer,font,360,25,makecol(255,250,250),-1,"Last key:%i", keyListener::lastKeyPressed);
     textprintf_ex(buffer,font,360,35,makecol(255,250,250),-1,"Has highscore:%i", check_highscore( scores, score));
+
+    textprintf_ex(buffer,orbitron_14,SCREEN_W - 100,25,makecol(255,250,250),-1,"FPS:%i", fps);
   }
 
   // Mountain Paralax
