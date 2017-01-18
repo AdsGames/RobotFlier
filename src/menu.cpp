@@ -277,9 +277,6 @@ void menu::update(){
 
 // Draw to screen
 void menu::draw(){
-  // SET ALLEGRO GL
-  allegro_gl_set_allegro_mode();
-
   // Menu Background
   draw_sprite_hw( img_menu, 0, 0);
 
@@ -376,9 +373,4 @@ void menu::draw(){
     }
   }
   draw_sprite_hw( mouse, mouse_x - 10, mouse_y);
-
-  // UNSET ALLEGRO GL
-  allegro_gl_unset_allegro_mode();
-
-  allegro_gl_flip();
 }

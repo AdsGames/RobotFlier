@@ -47,20 +47,20 @@ void game_object::draw( BITMAP* tempBitmap){
   // Draw image unless dead
   if( !isDead){
     if( image != NULL){
-      stretch_sprite( tempBitmap, image, x, y, width, height);
+      draw_sprite_hw( image, x, y);
     }
   }
 
   // Draw particles
   if( settings[SETTING_PARTICLE_TYPE] != 3){
     for( unsigned int i = 0; i < parts.size(); i++){
-      parts.at(i).draw( tempBitmap);
+      parts.at(i).draw( screen);
     }
   }
 
   // Draw bounding box
   if( settings[SETTING_DEBUG] == 1){
-    rect( tempBitmap, x, y, x + width, y + height, makecol(88, 88, 88));
+    rect( screen, x, y, x + width, y + height, makecol(88, 88, 88));
   }
 }
 

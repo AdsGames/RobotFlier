@@ -23,7 +23,7 @@ game::game(){
     stats[i] = 0;
 
   // Create buffer
-  buffer = create_bitmap( SCREEN_W, SCREEN_H);
+  buffer = screen;
 
   // Sounds
   sound_bomb = load_sample_ex( "audio/sound_bomb.wav");
@@ -105,7 +105,7 @@ game::~game(){
   destroy_sample( sound_snap);
 
   // Destroy bitmaps
-  destroy_bitmap( buffer);
+  //destroy_bitmap( buffer);
   destroy_bitmap( screenshot);
   destroy_bitmap( space);
   destroy_bitmap( parallaxBack);
@@ -387,7 +387,7 @@ void game::update(){
 // Draw to screen
 void game::draw(){
   // Clear buffer
-  clear_to_color( buffer, 0x000000);
+  //clear_to_color( buffer, 0x000000);
 
   // Draw backgrounds and Ground Overlay
   draw_sprite( buffer, space, scroll/6, 0);
@@ -519,5 +519,5 @@ void game::draw(){
   }
 
   // Draw buffer
-  draw_sprite( screen, buffer, screenshake_x, screenshake_y);
+  //draw_sprite( screen, buffer, screenshake_x, screenshake_y);
 }

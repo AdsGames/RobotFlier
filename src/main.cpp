@@ -203,7 +203,13 @@ int main( int argc, char* argv[]){
 			old_time += 1;
 		}
     // Update every set amount of frames
+    // SET ALLEGRO GL
+    allegro_gl_set_allegro_mode();
     currentState -> draw();
+    // UNSET ALLEGRO GL
+    allegro_gl_unset_allegro_mode();
+    allegro_gl_flip();
+
     frames_done++;
   }
 
