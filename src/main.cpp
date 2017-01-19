@@ -4,10 +4,6 @@
  * 03/01/2016
  * Robots in space!
  */
-#include <allegro.h>
-#include <alleggl.h>
-#include <alpng.h>
-#include <logg.h>
 #include <string>
 #include <time.h>
 
@@ -18,29 +14,19 @@
 #include "game.h"
 #include "mouseListener.h"
 #include "keyListener.h"
+#include "globals.h"
 
-// FPS System
-volatile int ticks = 0;
-int frames_done = 0;
-int old_time = 0;
-const int updates_per_second = 60;
-int frames_array[10];
-int frame_index = 0;
-volatile int game_time = 0;
-
-void ticker(){
-	ticks++;
-}
-END_OF_FUNCTION(ticker)
-
-void game_time_ticker(){
-	game_time++;
-}
-END_OF_FUNCTION(game_time_ticker)
+// Events
+ALLEGRO_DISPLAY *display = NULL;
+ALLEGRO_EVENT_QUEUE* event_queue = NULL;
+ALLEGRO_TIMER* timer = NULL;
 
 // Mouse Updater
 mouseListener m_listener;
 keyListener k_listener;
+
+// Closing or naw
+bool closing = false;
 
 // Current state object
 state *currentState = NULL;
@@ -49,14 +35,6 @@ state *currentState = NULL;
 void clean_up(){
   delete currentState;
 }
-
-// Close button handler
-volatile int close_button_pressed = FALSE;
-void close_button_handler(void){
-  close_button_pressed = TRUE;
-}
-END_OF_FUNCTION(close_button_handler)
-
 
 // Change game screen
 void change_state(){
@@ -82,7 +60,7 @@ void change_state(){
         currentState = new game();
         break;
       case STATE_EXIT:
-        close_button_pressed = true;
+        closing = true;
         break;
       default:
         currentState = new menu();
@@ -93,38 +71,39 @@ void change_state(){
 
     //NULL the next state ID
     nextState = STATE_NULL;
-
-    // Ticks back to 0
-    ticks = 0;
   }
 }
 
 // Sets up game
 void setup(){
+  // Init allegro 5
+  al_init();
+  al_install_keyboard();
+  al_install_mouse();
+  al_init_font_addon();
+  al_init_ttf_addon();
+  al_init_image_addon();
+  al_init_primitives_addon();
+  al_install_audio();
+  al_init_acodec_addon();
+  al_init_primitives_addon();
+
   // Initializing
-  allegro_init();
-  install_allegro_gl();
-  alpng_init();
-  install_keyboard();
-  install_mouse();
-  install_timer();
-  install_joystick(JOY_TYPE_AUTODETECT);
-  install_sound(DIGI_AUTODETECT,MIDI_AUTODETECT,".");
+  timer = al_create_timer(1.0 / MAX_FPS);
+  display = al_create_display( SCREEN_W, SCREEN_H);
+
+  event_queue = al_create_event_queue();
+
+  al_register_event_source( event_queue, al_get_display_event_source(display));
+  al_register_event_source( event_queue, al_get_timer_event_source(timer));
+  al_register_event_source( event_queue, al_get_keyboard_event_source());
+
+  al_clear_to_color( al_map_rgb(0,0,0));
+  al_flip_display();
+  al_start_timer(timer);
 
   // Creates a random number generator (based on time)
   srand( time(NULL));
-
-  // Setup for FPS system
-  LOCK_VARIABLE( ticks);
-  LOCK_FUNCTION( ticker);
-  install_int_ex( ticker, BPS_TO_TIMER( updates_per_second));
-
-  LOCK_VARIABLE( game_time);
-  LOCK_FUNCTION( game_time_ticker);
-  install_int_ex( game_time_ticker, BPS_TO_TIMER(10));
-
-  for(int i = 0; i < 10; i++)
-    frames_array[i] = 0;
 
   // Game state
   stateID = STATE_NULL;
@@ -138,16 +117,36 @@ void setup(){
 
 // Universal update
 void update(){
+  ALLEGRO_EVENT ev;
+  al_wait_for_event(event_queue, &ev);
+
+  if(ev.type == ALLEGRO_EVENT_TIMER){
+    change_state();
+    k_listener.update();
+    currentState -> update();
+  }
+  else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+    closing = true;
+  }
+  else if(ev.type == ALLEGRO_EVENT_KEY_DOWN || ev.type == ALLEGRO_EVENT_KEY_UP){
+    k_listener.on_event( ev.type, ev.keyboard.keycode);
+  }
+  if(al_is_event_queue_empty(event_queue)){
+    al_clear_to_color(al_map_rgb(0,0,0));
+    currentState -> draw();
+    al_flip_display();
+  }
+
   // Update mouse listener vars
   m_listener.update();
   k_listener.update();
 
   // Debug console toggle
-  if( keyListener::keyPressed[KEY_F12])
+  if( keyListener::keyPressed[ALLEGRO_KEY_F12])
     settings[SETTING_DEBUG] = (settings[SETTING_DEBUG] + 1) % 2;
 
   // Check joystick
-  poll_joystick();
+  // poll_joystick();
 }
 
 // main function of program
@@ -173,46 +172,8 @@ int main( int argc, char* argv[]){
   currentState = new init();
 
   // Loop
-  while( !key[KEY_ESC]){
-    while( ticks == 0){
-      rest( 1);
-    }
-    while( ticks > 0){
-      int old_ticks = ticks;
-
-      // Check for state change
-      change_state();
-
-      // Update always
-      currentState -> update();
-
-      // Update
-      update();
-
-      ticks--;
-      if( old_ticks <= ticks){
-        break;
-      }
-    }
-    if(game_time >= old_time + 1){// i.e. a 0.1 second has passed since we last counted the frames{
-			fps -= frames_array[frame_index];// decrement the fps by the frames done a second ago
-			frames_array[frame_index] = frames_done;// store the number of frames done this 0.1 second
-			fps += frames_done;// increment the fps by the newly done frames
-			frame_index = (frame_index + 1) % 10;// increment the frame index and snap it to 10
-			frames_done = 0;
-			old_time += 1;
-		}
-    // Update every set amount of frames
-    // SET ALLEGRO GL
-    allegro_gl_set_allegro_mode();
-    currentState -> draw();
-    // UNSET ALLEGRO GL
-    allegro_gl_unset_allegro_mode();
-    allegro_gl_flip();
-
-    frames_done++;
+  while( !closing){
+    update();
   }
-
   return 0;
 }
-END_OF_MAIN();

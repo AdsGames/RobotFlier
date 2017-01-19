@@ -1,15 +1,15 @@
 #include "game_object.h"
 
 // Constructor
-game_object::game_object( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newSize){
+game_object::game_object( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY, int newSize){
   image = newImage;
   soundEffect = newSoundEffect;
   x = newX;
   y = newY;
   isDead = false;
 
-  height = newImage -> h;
-  width = newImage -> w;
+  height = al_get_bitmap_height(newImage);
+  width = al_get_bitmap_width(newImage);
 
   damage = 0;
 }
@@ -43,24 +43,24 @@ bool game_object::offScreen(){
 }
 
 // Draw
-void game_object::draw( BITMAP* tempBitmap){
+void game_object::draw( ALLEGRO_BITMAP* tempBitmap){
   // Draw image unless dead
   if( !isDead){
     if( image != NULL){
-      draw_sprite_hw( image, x, y);
+      al_draw_bitmap( image, x, y, 0);
     }
   }
 
   // Draw particles
   if( settings[SETTING_PARTICLE_TYPE] != 3){
     for( unsigned int i = 0; i < parts.size(); i++){
-      parts.at(i).draw( screen);
+      parts.at(i).draw( tempBitmap);
     }
   }
 
   // Draw bounding box
   if( settings[SETTING_DEBUG] == 1){
-    rect( screen, x, y, x + width, y + height, makecol(88, 88, 88));
+    al_draw_rectangle( x, y, x + width, y + height, al_map_rgb(88, 88, 88), 1);
   }
 }
 

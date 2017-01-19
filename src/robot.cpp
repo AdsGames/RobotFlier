@@ -52,17 +52,17 @@ robot::~robot(){
   smokePart.clear();
 
   // Destroy samples
-  destroy_sample( sound_flame);
-  destroy_sample( sound_hitground);
+  al_destroy_sample( sound_flame);
+  al_destroy_sample( sound_hitground);
 
   // Destroy images
-  destroy_bitmap( main_robot);
-  destroy_bitmap( robotFire);
-  destroy_bitmap( robotInvincible);
-  destroy_bitmap( robotInvincibleFire);
-  destroy_bitmap( robotInvincibleTop);
-  destroy_bitmap( robotDie);
-  destroy_bitmap( christmas_hat);
+  al_destroy_bitmap( main_robot);
+  al_destroy_bitmap( robotFire);
+  al_destroy_bitmap( robotInvincible);
+  al_destroy_bitmap( robotInvincibleFire);
+  al_destroy_bitmap( robotInvincibleTop);
+  al_destroy_bitmap( robotDie);
+  al_destroy_bitmap( christmas_hat);
 }
 
 // Load images
@@ -103,7 +103,7 @@ void robot::logic(){
     for( int i = 0; i < 800; i++){
       if( random(0,10) == 0){
         int randnum = random(0,255);
-        particle newParticle( x + 20, y + 20, makecol( randnum, randnum, randnum), random( -4, -1), random( -5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
+        particle newParticle( x + 20, y + 20, al_map_rgb( randnum, randnum, randnum), random( -4, -1), random( -5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
         smokePart.push_back( newParticle);
       }
     }
@@ -119,10 +119,10 @@ void robot::logic(){
   if( settings[SETTING_PARTICLE_TYPE] != 3 && rocket){
     for( int i = 0; i < 800; i++){
       if( random( 0, 10) == 0){
-        int part_color = makecol( 255, random(0,255), 0);
+        ALLEGRO_COLOR part_color = al_map_rgb( 255, random(0,255), 0);
         if( settings[SETTING_CHRISTMAS]){
           int red_or_green = random( 0, 1);
-          part_color = makecol( 255 * red_or_green, 255 - red_or_green * 255, 0);
+          part_color = al_map_rgb( 255 * red_or_green, 255 - red_or_green * 255, 0);
         }
         particle newParticle1( x + 21, y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
         particle newParticle2( x + 52, y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
@@ -141,7 +141,7 @@ void robot::logic(){
   // Moving controls
   if( alive){
     //Controls movement up and down
-    if( (key[KEY_W] || key[KEY_UP] || mouse_b & 1) || ((joy[0].button[0].b || joy[0].button[5].b) && settings[SETTING_CONTROLMODE] != 1)){
+    /*if( (key[KEY_W] || key[KEY_UP] || mouse_b & 1) || ((joy[0].button[0].b || joy[0].button[5].b) && settings[SETTING_CONTROLMODE] != 1)){
       if( settings[SETTING_SOUND] && random( 0, 3) == 1)
         play_sample( sound_flame, 8, 155, 1000, 0);
       if( speed < 8){
@@ -155,7 +155,7 @@ void robot::logic(){
       if( speed > -8){
         speed -= 0.6;
       }
-    }
+    }*/
   }
 
   // Dying animation
@@ -163,12 +163,12 @@ void robot::logic(){
     if( y < 550 && !onGround){
       y += 10;
       speed = 0;
-      clear_keybuf();
+      //clear_keybuf();
     }
     else if( y >= 550){
       y = 550;
       onGround = true;
-      clear_keybuf();
+      //clear_keybuf();
     }
   }
 
@@ -182,37 +182,37 @@ void robot::logic(){
     if( !(invincibleTimer > 0)){
       health -= 5;
       if(settings[SETTING_SOUND])
-        play_sample( sound_hitground, 255, 125, 1000, 0);
+        al_play_sample( sound_hitground, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
       screenshake = 30;
     }
   }
 }
 
 // Draw
-void robot::draw( BITMAP *tempBitmap){
+void robot::draw( ALLEGRO_BITMAP *tempBitmap){
   // Draw robot sprite
   if( alive){
     // Invincible
     if( invincibleTimer > 0){
       if( !rocket || (rocket && settings[SETTING_PARTICLE_TYPE] != 3))
-        draw_sprite( tempBitmap, robotInvincible, x, y);
+        al_draw_bitmap( robotInvincible, x, y, 0);
       else if( rocket && settings[SETTING_PARTICLE_TYPE] == 3)
-        draw_sprite( tempBitmap, robotInvincibleFire, x, y);
+        al_draw_bitmap( robotInvincibleFire, x, y, 0);
     }
     // Standard
     else{
       if( !rocket || (rocket && settings[SETTING_PARTICLE_TYPE] != 3))
-        draw_sprite( tempBitmap, main_robot, x, y);
+        al_draw_bitmap( main_robot, x, y, 0);
       else if( rocket && settings[SETTING_PARTICLE_TYPE] == 3)
-        draw_sprite( tempBitmap, robotFire, x, y);
+        al_draw_bitmap( robotFire, x, y, 0);
     }
     // Xmas mode!
     if( settings[SETTING_CHRISTMAS])
-      draw_sprite( tempBitmap, christmas_hat, x + 20, y - 12);
+      al_draw_bitmap( christmas_hat, x + 20, y - 12, 0);
   }
   // Death image
   else{
-    draw_sprite( tempBitmap,robotDie,x,y);
+    al_draw_bitmap( robotDie, x, y, 0);
   }
 
   // Draw particles
@@ -223,7 +223,7 @@ void robot::draw( BITMAP *tempBitmap){
 }
 
 // Draw overlay
-void robot::draw_overlay( BITMAP *tempBitmap){
+void robot::draw_overlay( ALLEGRO_BITMAP *tempBitmap){
   if( alive && invincibleTimer > 0)
-    draw_sprite( tempBitmap, robotInvincibleTop, x, y);
+    al_draw_bitmap( robotInvincibleTop, x, y, 0);
 }

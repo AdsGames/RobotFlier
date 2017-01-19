@@ -1,19 +1,19 @@
 /**
- * Mouse Listener
+ * Mouse Listener 2 (allegro 5)
  * Allan Legemaate
  * Listens for mouse buttons JUST pressed or JUST released
  *   since the last tick
- * 02/01/2017
+ * 18/01/2017
 **/
+
+#include <iostream>
+#include <allegro5/allegro.h>
 
 
 #ifndef MOUSELISTENER_H
 #define MOUSELISTENER_H
 
 #define MAX_MOUSE_BUTTONS 3
-
-#include <allegro.h>
-//#include <iostream>
 
 class mouseListener{
   public:
@@ -22,13 +22,15 @@ class mouseListener{
 
     void update();
 
-    static bool buttonPressed[MAX_MOUSE_BUTTONS];
-    static bool buttonReleased[MAX_MOUSE_BUTTONS];
-    static bool lastTicksButton[MAX_MOUSE_BUTTONS];
-
+    static int mouse_x;
+    static int mouse_y;
+    static unsigned char mouse_button;
+    static unsigned char mouse_pressed;
+    static unsigned char mouse_released;
   protected:
 
   private:
+    static unsigned char mouse_old;
 };
 
 #endif // MOUSELISTENER_H

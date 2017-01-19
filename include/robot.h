@@ -7,7 +7,6 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include <allegro.h>
 #include <vector>
 #include <iostream>
 #include "particle.h"
@@ -22,8 +21,8 @@ class robot{
 
     void load_resources();
     void logic();
-    void draw( BITMAP *tempImage);
-    void draw_overlay( BITMAP *tempImage);
+    void draw( ALLEGRO_BITMAP *tempImage);
+    void draw_overlay( ALLEGRO_BITMAP *tempImage);
 
     // Getters
     int getHealth(){ return health;}
@@ -61,17 +60,17 @@ class robot{
     int width, height;
 
     // Images
-    BITMAP *main_robot;
-    BITMAP *robotFire;
-    BITMAP *robotInvincible;
-    BITMAP *robotInvincibleFire;
-    BITMAP *robotInvincibleTop;
-    BITMAP *robotDie;
-    BITMAP *christmas_hat;
+    ALLEGRO_BITMAP *main_robot;
+    ALLEGRO_BITMAP *robotFire;
+    ALLEGRO_BITMAP *robotInvincible;
+    ALLEGRO_BITMAP *robotInvincibleFire;
+    ALLEGRO_BITMAP *robotInvincibleTop;
+    ALLEGRO_BITMAP *robotDie;
+    ALLEGRO_BITMAP *christmas_hat;
 
     // Sounds
-    SAMPLE* sound_flame;
-    SAMPLE* sound_hitground;
+    ALLEGRO_SAMPLE* sound_flame;
+    ALLEGRO_SAMPLE* sound_hitground;
 
     // Particles
     std::vector<particle> rocketPart;

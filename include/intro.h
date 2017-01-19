@@ -7,8 +7,6 @@
 #ifndef INTRO_H
 #define INTRO_H
 
-#include <allegro.h>
-
 #include "state.h"
 #include "globals.h"
 #include "tools.h"
@@ -24,7 +22,7 @@ class intro : public state{
     void draw() {};
   private:
     // Splash image
-    BITMAP* img_intro;
+    ALLEGRO_BITMAP* img_intro;
 };
 
 #endif // INTRO_H

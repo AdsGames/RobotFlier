@@ -1,7 +1,7 @@
 #include "debrie.h"
 
 // Constructor
-debrie::debrie(BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newDamage, float newMotionMultiplier, int newSize) : game_object( newImage, newSoundEffect, newX, newY, newSize){
+debrie::debrie( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY, int newDamage, float newMotionMultiplier, int newSize) : game_object( newImage, newSoundEffect, newX, newY, newSize){
   if( newSize != -1){
     height = newSize * 8;
     width = newSize * 10;
@@ -28,7 +28,7 @@ void debrie::logic( int newMotion, robot *ourRobot){
 
     // Play sound
     if( settings[SETTING_SOUND])
-      play_sample(soundEffect,255,125,1000,0);
+      al_play_sample( soundEffect, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 
     // Get hit
     isDead = true;
@@ -37,9 +37,9 @@ void debrie::logic( int newMotion, robot *ourRobot){
 		// Make particles
     if( settings[SETTING_PARTICLE_TYPE] != 3){
       int sampling_size = 5;
-      for( int i = 0; i < (image -> w - sampling_size); i += sampling_size){
-        for( int t = 0; t < (image -> h - sampling_size); t += sampling_size){
-          particle newParticle( i + x, t + y, getpixel(image, i, t), random( -8, 8), random( -8, 8), 1, settings[SETTING_PARTICLE_TYPE]);
+      for( int i = 0; i < (al_get_bitmap_width(image) - sampling_size); i += sampling_size){
+        for( int t = 0; t < (al_get_bitmap_height(image) - sampling_size); t += sampling_size){
+          particle newParticle( i + x, t + y, al_get_pixel(image, i, t), random( -8, 8), random( -8, 8), 1, settings[SETTING_PARTICLE_TYPE]);
           parts.push_back( newParticle);
         }
       }

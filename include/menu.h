@@ -22,6 +22,7 @@
 #include "tools.h"
 #include "particle.h"
 #include "mouseListener.h"
+#include "keyListener.h"
 
 class menu : public state{
   public:
@@ -54,47 +55,47 @@ class menu : public state{
     std::vector <particle> menuPart;
 
     // Images
-    BITMAP *buffer;
+    ALLEGRO_BITMAP *buffer;
 
     // Screens
-    BITMAP *img_menu;
-    BITMAP *options;
-    BITMAP *helpScreen;
-    BITMAP *controls;
-    BITMAP *credits;
-    BITMAP *highscores_table;
+    ALLEGRO_BITMAP *img_menu;
+    ALLEGRO_BITMAP *options;
+    ALLEGRO_BITMAP *helpScreen;
+    ALLEGRO_BITMAP *controls;
+    ALLEGRO_BITMAP *credits;
+    ALLEGRO_BITMAP *highscores_table;
 
     // Buttons
-    BITMAP *start;
-    BITMAP *title;
-    BITMAP *highscores_button;
+    ALLEGRO_BITMAP *start;
+    ALLEGRO_BITMAP *title;
+    ALLEGRO_BITMAP *highscores_button;
 
     // Mouse
-    BITMAP *mouse;
-    BITMAP *mouse_rocket;
+    ALLEGRO_BITMAP *mouse;
+    ALLEGRO_BITMAP *mouse_rocket;
 
     // Start button for xbox control
-    BITMAP *xbox_start;
+    ALLEGRO_BITMAP *xbox_start;
 
     // Options menu
-    BITMAP *ui_sound[2];
-    BITMAP *ui_music[2];
-    BITMAP *ui_screenshake[4];
-    BITMAP *ui_window[2];
-    BITMAP *ui_particle[4];
-    BITMAP *ui_control[3];
+    ALLEGRO_BITMAP *ui_sound[2];
+    ALLEGRO_BITMAP *ui_music[2];
+    ALLEGRO_BITMAP *ui_screenshake[4];
+    ALLEGRO_BITMAP *ui_window[2];
+    ALLEGRO_BITMAP *ui_particle[4];
+    ALLEGRO_BITMAP *ui_control[3];
 
-    BITMAP *ui_options;
-    BITMAP *ui_options_small;
-    BITMAP *ui_back;
-    BITMAP *ui_credits;
-    BITMAP *ui_exit;
-    BITMAP *ui_help;
-    BITMAP *ui_screenshot_notification;
-    BITMAP *ui_controls;
+    ALLEGRO_BITMAP *ui_options;
+    ALLEGRO_BITMAP *ui_options_small;
+    ALLEGRO_BITMAP *ui_back;
+    ALLEGRO_BITMAP *ui_credits;
+    ALLEGRO_BITMAP *ui_exit;
+    ALLEGRO_BITMAP *ui_help;
+    ALLEGRO_BITMAP *ui_screenshot_notification;
+    ALLEGRO_BITMAP *ui_controls;
 
     // Music
-    SAMPLE* music_mainmenu;
+    ALLEGRO_SAMPLE* music_mainmenu;
 };
 
 #endif // MENU_H

@@ -10,14 +10,14 @@
 #define SQUARE 1
 #define PIXEL 2
 
-#include <allegro.h>
+#include "globals.h"
 
 class particle{
   public:
     float x;
     float y;
 
-    int color;
+    ALLEGRO_COLOR color;
 
     int size;
     int type;
@@ -25,11 +25,11 @@ class particle{
     int velocity_x;
     int velocity_y;
 
-    particle(int newX, int newY, int newColor, int newXVel, int newYVel, int newSize, int newType);
+    particle(int newX, int newY, ALLEGRO_COLOR newColor, int newXVel, int newYVel, int newSize, int newType);
     ~particle();
 
     void logic();
-    void draw( BITMAP* tempBitmap);
+    void draw( ALLEGRO_BITMAP* tempBitmap);
 
   private:
 };

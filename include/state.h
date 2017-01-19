@@ -7,7 +7,6 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include <allegro.h>
 
 //State variables
 extern int stateID;

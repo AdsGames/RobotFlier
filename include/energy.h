@@ -11,7 +11,7 @@
 class energy : public game_object{
   public:
     // Constructor
-    energy(BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY);
+    energy( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY);
 
     // Logic override
     void logic(int newMotion, robot *ourRobot);

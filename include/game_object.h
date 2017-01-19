@@ -16,7 +16,7 @@
 class game_object{
   public:
     // Constructor
-    game_object( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newSize);
+    game_object( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY, int newSize);
 
     // Destructor
     ~game_object();
@@ -31,13 +31,13 @@ class game_object{
     bool offScreen();
 
     // Draws the object to screen
-    void draw( BITMAP* tempBitmap);
+    void draw( ALLEGRO_BITMAP* tempBitmap);
   protected:
     // Images
-    BITMAP* image;
+    ALLEGRO_BITMAP* image;
 
     // Sounds
-    SAMPLE* soundEffect;
+    ALLEGRO_SAMPLE* soundEffect;
 
     // Position
     float x, y;

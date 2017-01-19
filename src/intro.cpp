@@ -9,21 +9,15 @@ intro::intro(){
 // Destruct state
 intro::~intro(){
   // Clen up
-  destroy_bitmap( img_intro);
+  al_destroy_bitmap( img_intro);
 }
 
 // Update (goto menu!)
 void intro::update(){
-  // SET ALLEGRO GL
-  allegro_gl_set_allegro_mode();
-
   // Intro screen
-  fade_in( img_intro, 16);
-  rest( 1000);
-  fade_out( 16);
-
-  // UNSET ALLEGRO GL
-  allegro_gl_unset_allegro_mode();
+  //fade_in( img_intro, 16);
+  al_rest( 1.0);
+  //fade_out( 16);
 
   // Go to menu
   set_next_state( STATE_MENU);

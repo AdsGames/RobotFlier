@@ -1,7 +1,7 @@
 #include "powerup.h"
 
 // Constructor
-powerup::powerup( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY, int newTimerLength, int newType) : game_object( newImage, newSoundEffect, newX, newY, 0){
+powerup::powerup( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY, int newTimerLength, int newType) : game_object( newImage, newSoundEffect, newX, newY, 0){
   timerLength = newTimerLength;
   type = newType;
 }
@@ -18,7 +18,7 @@ void powerup::logic(int newMotion, robot *ourRobot){
       ourRobot -> setMagneticTimer( timerLength);
 
     if( settings[SETTING_SOUND])
-      play_sample( soundEffect, 255, 125, 1000, 0);
+      al_play_sample( soundEffect, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
     isDead = true;
   }
 }

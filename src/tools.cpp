@@ -72,95 +72,57 @@ void addScore( std::string scoreCopy[][2], int newScore, std::string name){
 // Iterates through the number of buttons in a joystick and returns true if any buttons are pressed
 bool joy_buttonpressed(){
   bool buttonpressed = false;
-  for( int i = 0; i < joy[0].num_buttons; i++)
-    if( joy[0].button[i].b)buttonpressed = true;
+  /*for( int i = 0; i < joy[0].num_buttons; i++)
+    if( joy[0].button[i].b)buttonpressed = true;*/
   return buttonpressed;
 }
 
 // Iterates through the number of buttons in a joystick and returns true if any keys are pressed
 bool keyboard_keypressed(){
-  for( int i = 0; i < 125; i++)
+  /*for( int i = 0; i < 125; i++)
     if( key[i])
-      return true;
+      return true;*/
   return false;
 }
 
 
 // Error handling loading functions
 // Checks if file exists
-BITMAP *load_bitmap_ex( std::string file){
-  BITMAP *temp1 = NULL;
-  BITMAP *temp2 = NULL;
-
-  // convert the sprite to current format, unless it would lose alpha information
-  set_color_conversion( COLORCONV_KEEP_ALPHA);
-  if ( !(temp1 = load_bitmap( file.c_str(), NULL)))
+ALLEGRO_BITMAP *load_bitmap_ex( std::string file){
+  ALLEGRO_BITMAP *temp_image = NULL;
+  if( !(temp_image = al_load_bitmap( file.c_str())))
     abort_on_error( std::string("Cannot find image " + file + "\nTry reinstalling from adsgames.net/download/robotflier"));
-
-  // create a video bitmap of the same size and same color depth as the sprite
-  //allegro_gl_set_video_bitmap_color_depth( bitmap_color_depth( temp1));
-  temp2 = create_video_bitmap( temp1 -> w, temp1 -> h);
-  //allegro_gl_set_video_bitmap_color_depth( -1);
-
-  // blit a memory sprite to a video bitmap
-  blit( temp1, temp2, 0, 0, 0, 0, temp1 -> w, temp1 -> h);
-  destroy_bitmap( temp1);
-
-  return temp2;
+  return temp_image;
 }
 
 // Checks if file exists
-SAMPLE *load_sample_ex( std::string file){
-  SAMPLE *temp_sample = NULL;
-  if ( !(temp_sample = load_sample( file.c_str())))
-    abort_on_error( std::string("Cannot find sample " + file + "\nTry reinstalling from adsgames.net/download/robotflier"));
-  return temp_sample;
-}
-
-// Checks if file exists
-SAMPLE *logg_load_ex( std::string file){
-  SAMPLE *temp_sample = NULL;
-  if ( !(temp_sample = logg_load( file.c_str())))
+ALLEGRO_SAMPLE *load_sample_ex( std::string file){
+  ALLEGRO_SAMPLE *temp_sample = NULL;
+  if( !(temp_sample = al_load_sample( file.c_str())))
     abort_on_error( std::string("Cannot find sample " + file + "\nTry reinstalling from adsgames.net/download/robotflier"));
   return temp_sample;
 }
 
 // A function to streamline error reporting in file loading
 void abort_on_error( std::string message){
-	 set_window_title("Error!");
-	 if (screen != NULL){
-	    set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
-	 }
-	 allegro_message("%s.\n %s\n", message.c_str(), allegro_error);
+  al_show_native_message_box( NULL, "Error", "Warning", "File not found!", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+	 //set_window_title("Error!");
+	 //if (screen != NULL){
+	 //   set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
+	 //}
+	 //allegro_message("%s.\n %s\n", message.c_str());
+
 	 exit(-1);
 }
 
 // Checks if file exists
-FONT *load_font_ex( std::string file){
-  FONT *f1, *f2, *f3, *f4, *f5, *temp_font;
-  if ( (f1 = load_font( file.c_str(), NULL, NULL))){
-    f2 = extract_font_range(f1, ' ', 'A'-1);
-    f3 = extract_font_range(f1, 'A', 'Z');
-    f4 = extract_font_range(f1, 'Z'+1, 'z');
-    temp_font = merge_fonts(f4, f5 = merge_fonts(f2, f3));
-
-    destroy_font(f1);
-    destroy_font(f2);
-    destroy_font(f3);
-    destroy_font(f4);
-    destroy_font(f5);
-  }
-  else{
+ALLEGRO_FONT *load_font_ex( std::string file){
+  ALLEGRO_FONT *temp_font;
+  if ( !(temp_font = al_load_bitmap_font( file.c_str()))){
     abort_on_error( std::string("Cannot find font " + file + "\nTry reinstalling from adsgames.net/download/robotflier"));
   }
   return temp_font;
 }
-
-// Drawing hardware accelerated
-void draw_sprite_hw( BITMAP *image, int x, int y){
-  masked_blit( image, screen, 0, 0, x, y, image -> w, image -> h);
-}
-
 
 // Random number generator. Use int random(highest,lowest);
 int random(int newLowest, int newHighest){
@@ -189,8 +151,8 @@ bool collision(float xMin1, float xMax1, float xMin2, float xMax2, float yMin1, 
 
 // Fades
 // Fade in
-void fade_in(BITMAP* bmp_orig, int speed){
-  BITMAP* bmp_buff;
+void fade_in( ALLEGRO_BITMAP* bmp_orig, int speed){
+  /*BITMAP* bmp_buff;
 
   if((bmp_buff=create_bitmap(SCREEN_W,SCREEN_H))){
     int a;
@@ -206,12 +168,12 @@ void fade_in(BITMAP* bmp_orig, int speed){
     destroy_bitmap(bmp_buff);
   }
   blit(bmp_orig,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-  //allegro_gl_flip();
+  //allegro_gl_flip();*/
 }
 
 // Fade out
 void fade_out(int speed){
-  BITMAP* bmp_orig, *bmp_buff;
+  /*BITMAP* bmp_orig, *bmp_buff;
 
   if((bmp_orig=create_bitmap(SCREEN_W,SCREEN_H))){
     if((bmp_buff=create_bitmap(SCREEN_W,SCREEN_H))){
@@ -231,5 +193,5 @@ void fade_out(int speed){
     destroy_bitmap(bmp_orig);
   }
   rectfill(screen,0,0,SCREEN_W,SCREEN_H,makecol(0,0,0));
-  //allegro_gl_flip();
+  //allegro_gl_flip();*/
 }

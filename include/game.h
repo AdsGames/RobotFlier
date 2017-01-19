@@ -38,7 +38,7 @@ class game : public state{
     void changeTheme( int NewThemeNumber);
 
     // Declare bitmaps
-    BITMAP* buffer;
+    /*BITMAP* buffer;
     BITMAP* screenshot;
 
     // Game images
@@ -96,7 +96,7 @@ class game : public state{
     // Containers of objects
     std::vector<energy> energys;
     std::vector<debrie> debries;
-    std::vector<powerup> powerups;
+    std::vector<powerup> powerups;*/
 };
 
 #endif // GAME_H

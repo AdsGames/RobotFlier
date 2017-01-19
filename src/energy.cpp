@@ -1,7 +1,7 @@
 #include "energy.h"
 
 // Constructor
-energy::energy( BITMAP* newImage, SAMPLE* newSoundEffect, int newX, int newY) : game_object( newImage, newSoundEffect, newX, newY, 0){
+energy::energy( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY) : game_object( newImage, newSoundEffect, newX, newY, 0){
 
 }
 
@@ -16,7 +16,7 @@ void energy::logic(int newMotion, robot *ourRobot){
       ourRobot -> addHealth( 1);
 
     if( settings[SETTING_SOUND])
-      play_sample(soundEffect,150,125,1000,0);
+      al_play_sample( soundEffect, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 
     isDead = true;
   }

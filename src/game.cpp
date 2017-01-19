@@ -3,7 +3,7 @@
 // Constructor
 game::game(){
   // From globals
-  score = 0;
+  /*score = 0;
   screenshake = 0;
 
   // Game related
@@ -86,12 +86,12 @@ game::game(){
 
   // Play music
   if( settings[SETTING_MUSIC] == 1)
-    play_sample( music_ingame, 255, 128, 1000, 1);
+    play_sample( music_ingame, 255, 128, 1000, 1);*/
 }
 
 // Destructor
 game::~game(){
-  // Clear objects
+  /*// Clear objects
   energys.clear();
   debries.clear();
   powerups.clear();
@@ -132,12 +132,12 @@ game::~game(){
 
   // Destroy music
   destroy_sample( music_ingame);
-  destroy_sample( music_death);
+  destroy_sample( music_death);*/
 }
 
 // Themes
 void game::changeTheme( int NewThemeNumber){
-	std::string themeName;
+	/*std::string themeName;
 
 	if( NewThemeNumber == 0)
 		themeName = "moon";
@@ -157,13 +157,13 @@ void game::changeTheme( int NewThemeNumber){
   if( settings[SETTING_CHRISTMAS])
     asteroidImage = load_bitmap_ex("images/objects/asteroid_christmas.png");
   else
-    asteroidImage = load_bitmap_ex( "images/objects/asteroid_" + themeName + ".png");
+    asteroidImage = load_bitmap_ex( "images/objects/asteroid_" + themeName + ".png");*/
 }
 
 // Update logic of game
 void game::update(){
   // Actual game stuff
-  if( !paused){
+  /*if( !paused){
     // Check if hectar has died between logic();
     bool hectarHasDied = hectar.isAlive();
 
@@ -381,7 +381,7 @@ void game::update(){
     // Resume
     if( mouseListener::buttonPressed[1] && collision( 470, 540, mouse_x, mouse_x, 435, 460, mouse_y, mouse_y))
       paused = false;
-  }
+  }*/
 }
 
 // Draw to screen
@@ -390,7 +390,7 @@ void game::draw(){
   //clear_to_color( buffer, 0x000000);
 
   // Draw backgrounds and Ground Overlay
-  draw_sprite( buffer, space, scroll/6, 0);
+  /*draw_sprite( buffer, space, scroll/6, 0);
   draw_sprite( buffer, space, scroll/6 + SCREEN_W, 0);
 
   // Draw HUD
@@ -519,5 +519,5 @@ void game::draw(){
   }
 
   // Draw buffer
-  //draw_sprite( screen, buffer, screenshake_x, screenshake_y);
+  //draw_sprite( screen, buffer, screenshake_x, screenshake_y);*/
 }
