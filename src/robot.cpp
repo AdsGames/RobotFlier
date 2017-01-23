@@ -124,7 +124,7 @@ void robot::logic(){
           int red_or_green = random( 0, 1);
           part_color = al_map_rgb( 255 * red_or_green, 255 - red_or_green * 255, 0);
         }
-        particle newParticle1( x + 21, y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
+        particle newParticle1( x + 21, y + 55, part_color, random( -2, 2), random( 1, 5), 1, settings[SETTING_PARTICLE_TYPE]);
         particle newParticle2( x + 52, y + 55, part_color, random( -2, 2), random( 0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
         rocketPart.push_back( newParticle1);
         rocketPart.push_back( newParticle2);
@@ -179,9 +179,9 @@ void robot::logic(){
   }
   if( y > 550 && alive){
     speed = 14;
-    if( !(invincibleTimer > 0)){
+    if( invincibleTimer <= 0){
       health -= 5;
-      if(settings[SETTING_SOUND])
+      if( settings[SETTING_SOUND])
         al_play_sample( sound_hitground, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
       screenshake = 30;
     }

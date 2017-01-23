@@ -406,27 +406,32 @@ void game::draw(){
   if( settings[SETTING_DEBUG]){
     al_draw_bitmap( debug, 0, 0, 0);
 
+    // Column 1
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 5, 25, ALLEGRO_ALIGN_LEFT, "Motion:%4.2f", motion);
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 5, 35, ALLEGRO_ALIGN_LEFT, "Robot X:%4.2f", hectar.getX());
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 5, 45, ALLEGRO_ALIGN_LEFT, "Robot Y:%4.2f", hectar.getY());
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 5, 55, ALLEGRO_ALIGN_LEFT, "Motion:%4.2f", motion);
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 5, 65, ALLEGRO_ALIGN_LEFT, "Invincible:%i", hectar.getInvincibleTimer());
 
+    // Column 2
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 120, 25, ALLEGRO_ALIGN_LEFT, "Score:%i", score);
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 120, 35, ALLEGRO_ALIGN_LEFT, "Magnetic:%i", hectar.getMagneticTimer());
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 120, 45, ALLEGRO_ALIGN_LEFT, "Mouse X:%i", mouseListener::mouse_x);
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 120, 55, ALLEGRO_ALIGN_LEFT, "Mouse Y:%i", mouseListener::mouse_y);
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 120, 65, ALLEGRO_ALIGN_LEFT, "Particles On:%i", settings[SETTING_PARTICLE_TYPE]);
 
+    // Column 3
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 245, 25, ALLEGRO_ALIGN_LEFT, "LowScore:%i", atoi(scores[9][1].c_str()));
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 245, 35, ALLEGRO_ALIGN_LEFT, "Theme:%i", themeNumber);
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 245, 45, ALLEGRO_ALIGN_LEFT, "Energys:%i", energys.size());
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 245, 55, ALLEGRO_ALIGN_LEFT, "Debris:%i", debries.size());
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 245, 65, ALLEGRO_ALIGN_LEFT, "Powerups:%i", powerups.size());
 
+    // Column 4
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 360, 25, ALLEGRO_ALIGN_LEFT, "Last key:%i", keyListener::lastKeyPressed);
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 360, 35, ALLEGRO_ALIGN_LEFT, "Has highscore:%i", check_highscore( scores, score));
 
+    // FPS
     al_draw_textf( orbitron_18, al_map_rgb( 255, 255, 255), SCREEN_W - 100, 25, ALLEGRO_ALIGN_LEFT, "FPS:%i", fps);
   }
 
