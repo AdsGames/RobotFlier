@@ -340,9 +340,9 @@ void menu::draw(){
     al_draw_bitmap( ui_control[settings[SETTING_CONTROLMODE]], 120, 295, 0);
 
     // Button Text
-    al_draw_text( orbitron_24, al_map_rgb( 255, 250, 250), 110, 146, ALLEGRO_ALIGN_LEFT , "Sounds         Music                            Exit");
-    al_draw_text( orbitron_24, al_map_rgb( 255, 250, 250), 120, 260, ALLEGRO_ALIGN_LEFT , "Input       Screen shake");
-    al_draw_text( orbitron_24, al_map_rgb( 255, 250, 250), 108, 375, ALLEGRO_ALIGN_LEFT , "Window       Particles                        Back");
+    al_draw_text( orbitron_24, al_map_rgb( 255, 250, 250), 110, 154, ALLEGRO_ALIGN_LEFT , "Sounds         Music                            Exit");
+    al_draw_text( orbitron_24, al_map_rgb( 255, 250, 250), 126, 268, ALLEGRO_ALIGN_LEFT , "Input      Screen Shake");
+    al_draw_text( orbitron_24, al_map_rgb( 255, 250, 250), 108, 382, ALLEGRO_ALIGN_LEFT , "Window       Particles                        Back");
 
     // Exit and back
     al_draw_bitmap( ui_exit, 540, 180, 0);

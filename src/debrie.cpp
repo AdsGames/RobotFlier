@@ -41,8 +41,8 @@ void debrie::logic( int newMotion, robot *ourRobot){
 
       // Make some particles
       int sampling_size = 5;
-      for( int i = 0; i < (al_get_bitmap_width(image) - sampling_size); i += sampling_size){
-        for( int t = 0; t < (al_get_bitmap_height(image) - sampling_size); t += sampling_size){
+      for( int i = 0; i < (width - sampling_size); i += sampling_size){
+        for( int t = 0; t < (height - sampling_size); t += sampling_size){
           particle newParticle( i + x, t + y, sample_color, random( -8, 8), random( -8, 8), 1, settings[SETTING_PARTICLE_TYPE]);
           parts.push_back( newParticle);
         }
