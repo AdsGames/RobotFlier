@@ -459,7 +459,7 @@ void game::draw(){
     debries.at(i).draw();
 
   // Ground underlay
-  al_draw_bitmap( groundOverlay, scroll % SCREEN_W, SCREEN_H - 20, 0);
+  al_draw_bitmap( groundOverlay, scroll % SCREEN_W           , SCREEN_H - 20, 0);
   al_draw_bitmap( groundOverlay, scroll % SCREEN_W + SCREEN_W, SCREEN_H - 20, 0);
 
   // Robot above asteroids
@@ -468,32 +468,34 @@ void game::draw(){
   // Lose scripts
   if( hectar.isOnGround()){
     al_draw_bitmap( ui_game_end, 0, 0, 0);
-    al_draw_textf( orbitron_12, al_map_rgb( 0, 0, 0), 130, 125, ALLEGRO_ALIGN_LEFT, "Final Score: %i"      , score                    );
-    al_draw_textf( orbitron_12, al_map_rgb( 0, 0, 0), 130, 165, ALLEGRO_ALIGN_LEFT, "Distance Flown: %i ft", stats[STAT_DISTANCE] / 10);
-    al_draw_textf( orbitron_12, al_map_rgb( 0, 0, 0), 130, 205, ALLEGRO_ALIGN_LEFT, "Energy Collected: %i" , stats[STAT_ENERGY]       );
-    al_draw_textf( orbitron_12, al_map_rgb( 0, 0, 0), 130, 245, ALLEGRO_ALIGN_LEFT, "Powerups Received: %i", stats[STAT_POWERUPS]     );
-    al_draw_textf( orbitron_12, al_map_rgb( 0, 0, 0), 130, 285, ALLEGRO_ALIGN_LEFT, "Debris Collided: %i"  , stats[STAT_DEBRIS]       );
+    al_draw_textf( orbitron_18, al_map_rgb( 0, 0, 0), 130, 125, ALLEGRO_ALIGN_LEFT, "Final Score: %i"      , score                    );
+    al_draw_textf( orbitron_18, al_map_rgb( 0, 0, 0), 130, 165, ALLEGRO_ALIGN_LEFT, "Distance Flown: %i ft", stats[STAT_DISTANCE] / 10);
+    al_draw_textf( orbitron_18, al_map_rgb( 0, 0, 0), 130, 205, ALLEGRO_ALIGN_LEFT, "Energy Collected: %i" , stats[STAT_ENERGY]       );
+    al_draw_textf( orbitron_18, al_map_rgb( 0, 0, 0), 130, 245, ALLEGRO_ALIGN_LEFT, "Powerups Received: %i", stats[STAT_POWERUPS]     );
+    al_draw_textf( orbitron_18, al_map_rgb( 0, 0, 0), 130, 285, ALLEGRO_ALIGN_LEFT, "Debris Collided: %i"  , stats[STAT_DEBRIS]       );
 
     if( check_highscore( scores, score)){
       // Input rectangle
-      al_draw_filled_rectangle( 120, 388, al_get_text_width( orbitron_12, edittext.c_str()) + 132, 432, al_map_rgb( 0  , 0  , 0  ));
-      al_draw_filled_rectangle( 122, 390, al_get_text_width( orbitron_12, edittext.c_str()) + 130, 430, al_map_rgb( 255, 255, 255));
+      al_draw_filled_rectangle( 120, 388, al_get_text_width( orbitron_24, edittext.c_str()) + 138, 432, al_map_rgb( 0  , 0  , 0  ));
+      al_draw_filled_rectangle( 122, 390, al_get_text_width( orbitron_24, edittext.c_str()) + 136, 430, al_map_rgb( 255, 255, 255));
+
+      // Textbox lable
+      al_draw_textf( orbitron_18, al_map_rgb( 0, 0, 0), 129, 370, ALLEGRO_ALIGN_LEFT, "Enter your name:");
 
       // Output the string to the screen
-      al_draw_textf( orbitron_12, al_map_rgb( 0, 0, 0), 126, 390, ALLEGRO_ALIGN_LEFT, "Final Score: %s", edittext.c_str());
+      al_draw_textf( orbitron_24, al_map_rgb( 0, 0, 0), 129, 400, ALLEGRO_ALIGN_LEFT, "%s", edittext.c_str());
 
       // Draw the caret
-      al_draw_line( al_get_text_width( orbitron_12, edittext.substr(0, std::distance( edittext.begin(), iter)).c_str()) + 126,
-                    al_get_text_width( orbitron_12, edittext.substr(0, std::distance( edittext.begin(), iter)).c_str()) + 126,
-                    392, 428, al_map_rgb(0,0,0), 1);
+      al_draw_line( al_get_text_width( orbitron_24, edittext.substr(0, std::distance( edittext.begin(), iter)).c_str()) + 130, 392,
+                    al_get_text_width( orbitron_24, edittext.substr(0, std::distance( edittext.begin(), iter)).c_str()) + 130, 428, al_map_rgb( 0, 0, 0), 2);
 
       // Draw the congrats message
-      al_draw_text( orbitron_12, al_map_rgb( 0, 255, 0), 150, 330, ALLEGRO_ALIGN_LEFT, "New highscore!"            );
-      al_draw_text( orbitron_12, al_map_rgb( 0, 0  , 0), 150, 330, ALLEGRO_ALIGN_LEFT, "Press Enter/   to continue");
+      al_draw_text( orbitron_18, al_map_rgb( 0, 255, 0), 150, 330, ALLEGRO_ALIGN_LEFT, "New highscore!"            );
+      al_draw_text( orbitron_24, al_map_rgb( 0, 0  , 0), 150, 450, ALLEGRO_ALIGN_LEFT, "Press Enter/   to continue");
       al_draw_bitmap( ui_b, 370, 450, 0);
     }
     else{
-      al_draw_text( orbitron_12, al_map_rgb( 0, 0, 0), 150, 395, ALLEGRO_ALIGN_LEFT, "Press Enter/   to continue");
+      al_draw_text( orbitron_24, al_map_rgb( 0, 0, 0), 150, 395, ALLEGRO_ALIGN_LEFT, "Press Enter/   to continue");
       al_draw_bitmap( ui_b, 370, 395, 0);
     }
   }
