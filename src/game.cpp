@@ -86,48 +86,48 @@ game::game(){
 
 // Destructor
 game::~game(){
-  /*// Clear objects
+  // Clear objects
   energys.clear();
   debries.clear();
   powerups.clear();
 
   // Destroy samples
-  destroy_sample( sound_orb);
-  destroy_sample( sound_bomb);
-  destroy_sample( sound_asteroid);
-  destroy_sample( sound_magnet);
-  destroy_sample( sound_star);
-  destroy_sample( sound_snap);
+  al_destroy_sample( sound_orb);
+  al_destroy_sample( sound_bomb);
+  al_destroy_sample( sound_asteroid);
+  al_destroy_sample( sound_magnet);
+  al_destroy_sample( sound_star);
+  al_destroy_sample( sound_snap);
 
   // Destroy bitmaps
   //destroy_bitmap( buffer);
-  destroy_bitmap( screenshot);
-  destroy_bitmap( space);
-  destroy_bitmap( parallaxBack);
-  destroy_bitmap( groundOverlay);
-  destroy_bitmap( groundUnderlay);
-  destroy_bitmap( debug);
-  destroy_bitmap( pauseMenu);
-  destroy_bitmap( ui_game_end);
-  destroy_bitmap( ui_a);
-  destroy_bitmap( ui_b);
-  destroy_bitmap( energyImage);
-  destroy_bitmap( asteroidImage);
-  destroy_bitmap( bombImage);
-  destroy_bitmap( cometImage);
-  destroy_bitmap( powerStar);
-  destroy_bitmap( powerMagnet[0]);
-  destroy_bitmap( powerMagnet[1]);
-  destroy_bitmap( powerMagnet[2]);
-  destroy_bitmap( powerMagnet[3]);
-
-  // Destroy music
-  destroy_sample( music_ingame);
-  destroy_sample( music_death);*/
+  al_destroy_bitmap( screenshot);
+  al_destroy_bitmap( space);
+  al_destroy_bitmap( parallaxBack);
+  al_destroy_bitmap( groundOverlay);
+  al_destroy_bitmap( groundUnderlay);
+  al_destroy_bitmap( debug);
+  al_destroy_bitmap( pauseMenu);
+  al_destroy_bitmap( ui_game_end);
+  al_destroy_bitmap( ui_a);
+  al_destroy_bitmap( ui_b);
+  al_destroy_bitmap( energyImage);
+  al_destroy_bitmap( asteroidImage);
+  al_destroy_bitmap( bombImage);
+  al_destroy_bitmap( cometImage);
+  al_destroy_bitmap( powerStar);
+  al_destroy_bitmap( powerMagnet[0]);
+  al_destroy_bitmap( powerMagnet[1]);
+  al_destroy_bitmap( powerMagnet[2]);
+  al_destroy_bitmap( powerMagnet[3]);
 
   // Stop musics
   al_stop_sample( &currentMusic);
   al_stop_sample( &currentMusic);
+
+  // Destroy music
+  al_destroy_sample( music_ingame);
+  al_destroy_sample( music_death);
 }
 
 // Themes

@@ -8,7 +8,7 @@ init::init(){
   get_desktop_resolution( &width, &height);*/
 
   // Title
-  //set_window_title( "A.D.S. Games - Robot Flier");
+  al_set_window_title( display, "A.D.S. Games - Robot Flier");
 
   //Seed the random number generator with the time
   srand(time(NULL));
