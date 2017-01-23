@@ -18,8 +18,11 @@ int settings[11];
 bool joystick_enabled = false;
 
 // Fonts
-ALLEGRO_FONT *orbitron_12;
-ALLEGRO_FONT *orbitron_18;
-ALLEGRO_FONT *orbitron_24;
-ALLEGRO_FONT *orbitron_30;
-ALLEGRO_FONT *orbitron_36;
+ALLEGRO_FONT *orbitron_12 = NULL;
+ALLEGRO_FONT *orbitron_18 = NULL;
+ALLEGRO_FONT *orbitron_24 = NULL;
+ALLEGRO_FONT *orbitron_30 = NULL;
+ALLEGRO_FONT *orbitron_36 = NULL;
+
+// Current music
+ALLEGRO_SAMPLE_ID currentMusic;

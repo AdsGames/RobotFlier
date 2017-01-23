@@ -83,7 +83,7 @@ game::game(){
 
   // Play music
   if( settings[SETTING_MUSIC] == 1)
-    al_play_sample( music_ingame, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+    al_play_sample( music_ingame, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &currentMusic);
 }
 
 // Destructor
@@ -123,13 +123,13 @@ game::~game(){
   destroy_bitmap( powerMagnet[2]);
   destroy_bitmap( powerMagnet[3]);
 
-  // Stop musics
-  stop_sample( music_death);
-  stop_sample( music_ingame);
-
   // Destroy music
   destroy_sample( music_ingame);
   destroy_sample( music_death);*/
+
+  // Stop musics
+  al_stop_sample( &currentMusic);
+  al_stop_sample( &currentMusic);
 }
 
 // Themes
@@ -169,9 +169,9 @@ void game::update(){
 
     // If its different he died play music
     if( hectarHasDied != hectar.isAlive()){
-      //al_stop_sample( music_ingame);
+      al_stop_sample( &currentMusic);
       if( settings[SETTING_MUSIC] == 1)
-        al_play_sample( music_death, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);
+        al_play_sample( music_death, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &currentMusic);
     }
 
     // Add to distance travelled
@@ -331,7 +331,7 @@ void game::update(){
     //al_save_bitmap((std::string("screenshots/screenshot_") + convertIntToString(screenshotNumber).c_str() + std::string(".png")).c_str(), screen);
 
     // Snap sound
-    al_play_sample( sound_snap, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);
+    al_play_sample( sound_snap, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
   }
 
   //Screen shake

@@ -36,10 +36,14 @@ void debrie::logic( int newMotion, robot *ourRobot){
 
 		// Make particles
     if( settings[SETTING_PARTICLE_TYPE] != 3){
+      // Sample a pixel
+      ALLEGRO_COLOR sample_color = al_get_pixel( image, al_get_bitmap_width(image) / 2, al_get_bitmap_height(image) / 2);
+
+      // Make some particles
       int sampling_size = 5;
       for( int i = 0; i < (al_get_bitmap_width(image) - sampling_size); i += sampling_size){
         for( int t = 0; t < (al_get_bitmap_height(image) - sampling_size); t += sampling_size){
-          particle newParticle( i + x, t + y, al_get_pixel(image, i, t), random( -8, 8), random( -8, 8), 1, settings[SETTING_PARTICLE_TYPE]);
+          particle newParticle( i + x, t + y, sample_color, random( -8, 8), random( -8, 8), 1, settings[SETTING_PARTICLE_TYPE]);
           parts.push_back( newParticle);
         }
       }

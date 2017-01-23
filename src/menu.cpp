@@ -77,13 +77,13 @@ menu::menu(){
 
   // Play music
   if( settings[SETTING_MUSIC] == 1)
-    al_play_sample( music_mainmenu, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+    al_play_sample( music_mainmenu, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &currentMusic);
 }
 
 // Destructor
 menu::~menu(){
   // Stops music
-  //al_stop_sample( music_mainmenu);
+  al_stop_sample( &currentMusic);
 
   // Destroy samples
   al_destroy_sample( music_mainmenu);
@@ -212,10 +212,10 @@ void menu::update(){
     // Music button toggle
     else if( collision( 280, 360, mouseListener::mouse_x, mouseListener::mouse_x, 180, 260, mouseListener::mouse_y, mouseListener::mouse_y)){
       settings[SETTING_MUSIC] = (settings[SETTING_MUSIC] + 1) % 2;
-      //if( settings[SETTING_MUSIC] == 0)
-      //  al_stop_sample( music_mainmenu);
-      //else
-        al_play_sample( music_mainmenu, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+      if( settings[SETTING_MUSIC] == 0)
+        al_stop_sample( &currentMusic);
+      else
+        al_play_sample( music_mainmenu, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &currentMusic);
 
     }
     // Fullscreen toggle
@@ -245,7 +245,6 @@ void menu::update(){
       write_settings();
     }
   }
-
 
   // Update mouse particles
   if( settings[SETTING_PARTICLE_TYPE] != 3 && mouse_rocket_up){
