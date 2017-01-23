@@ -141,9 +141,9 @@ void robot::logic(){
   // Moving controls
   if( alive){
     //Controls movement up and down
-    /*if( (key[KEY_W] || key[KEY_UP] || mouse_b & 1) || ((joy[0].button[0].b || joy[0].button[5].b) && settings[SETTING_CONTROLMODE] != 1)){
+    if( (keyListener::key[ALLEGRO_KEY_W] || keyListener::key[ALLEGRO_KEY_UP] || mouseListener::mouse_button & 1) /*|| ((joy[0].button[0].b || joy[0].button[5].b) && settings[SETTING_CONTROLMODE] != 1)*/){
       if( settings[SETTING_SOUND] && random( 0, 3) == 1)
-        play_sample( sound_flame, 8, 155, 1000, 0);
+        al_play_sample( sound_flame, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
       if( speed < 8){
         rocket = true;
         speed += 0.6;
@@ -155,7 +155,7 @@ void robot::logic(){
       if( speed > -8){
         speed -= 0.6;
       }
-    }*/
+    }
   }
 
   // Dying animation
@@ -189,7 +189,7 @@ void robot::logic(){
 }
 
 // Draw
-void robot::draw( ALLEGRO_BITMAP *tempBitmap){
+void robot::draw(){
   // Draw robot sprite
   if( alive){
     // Invincible
@@ -217,13 +217,13 @@ void robot::draw( ALLEGRO_BITMAP *tempBitmap){
 
   // Draw particles
   for( unsigned int i = 0; i < rocketPart.size(); i++)
-    rocketPart.at(i).draw( tempBitmap);
+    rocketPart.at(i).draw();
   for( unsigned int i = 0; i < smokePart.size(); i++)
-    smokePart.at(i).draw( tempBitmap);
+    smokePart.at(i).draw();
 }
 
 // Draw overlay
-void robot::draw_overlay( ALLEGRO_BITMAP *tempBitmap){
+void robot::draw_overlay(){
   if( alive && invincibleTimer > 0)
     al_draw_bitmap( robotInvincibleTop, x, y, 0);
 }

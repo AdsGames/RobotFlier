@@ -21,4 +21,5 @@ bool joystick_enabled = false;
 ALLEGRO_FONT *orbitron_12;
 ALLEGRO_FONT *orbitron_18;
 ALLEGRO_FONT *orbitron_24;
+ALLEGRO_FONT *orbitron_30;
 ALLEGRO_FONT *orbitron_36;

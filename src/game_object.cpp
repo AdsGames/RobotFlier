@@ -43,7 +43,7 @@ bool game_object::offScreen(){
 }
 
 // Draw
-void game_object::draw( ALLEGRO_BITMAP* tempBitmap){
+void game_object::draw(){
   // Draw image unless dead
   if( !isDead){
     if( image != NULL){
@@ -54,7 +54,7 @@ void game_object::draw( ALLEGRO_BITMAP* tempBitmap){
   // Draw particles
   if( settings[SETTING_PARTICLE_TYPE] != 3){
     for( unsigned int i = 0; i < parts.size(); i++){
-      parts.at(i).draw( tempBitmap);
+      parts.at(i).draw();
     }
   }
 

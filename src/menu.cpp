@@ -370,7 +370,7 @@ void menu::draw(){
   }
   else{
     for( unsigned int i = 0; i < mousePart.size(); i++){
-      mousePart.at(i).draw( buffer);
+      mousePart.at(i).draw();
     }
   }
   al_draw_bitmap( mouse, mouseListener::mouse_x - 10, mouseListener::mouse_y, 0);

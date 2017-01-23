@@ -24,6 +24,7 @@ init::init(){
   orbitron_12 = al_load_ttf_font( "fonts/orbitron_ttf.ttf", 12, 0);
   orbitron_18 = al_load_ttf_font( "fonts/orbitron_ttf.ttf", 18, 0);
   orbitron_24 = al_load_ttf_font( "fonts/orbitron_ttf.ttf", 24, 0);
+  orbitron_30 = al_load_ttf_font( "fonts/orbitron_ttf.ttf", 30, 0);
   orbitron_36 = al_load_ttf_font( "fonts/orbitron_ttf.ttf", 36, 0);
 
   // Go to menu

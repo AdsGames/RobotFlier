@@ -31,7 +31,7 @@ class game_object{
     bool offScreen();
 
     // Draws the object to screen
-    void draw( ALLEGRO_BITMAP* tempBitmap);
+    void draw();
   protected:
     // Images
     ALLEGRO_BITMAP* image;

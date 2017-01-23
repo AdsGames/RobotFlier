@@ -10,6 +10,8 @@
 #include <vector>
 #include <iostream>
 #include "particle.h"
+#include "keyListener.h"
+#include "mouseListener.h"
 #include "tools.h"
 #include "globals.h"
 
@@ -21,8 +23,8 @@ class robot{
 
     void load_resources();
     void logic();
-    void draw( ALLEGRO_BITMAP *tempImage);
-    void draw_overlay( ALLEGRO_BITMAP *tempImage);
+    void draw();
+    void draw_overlay();
 
     // Getters
     int getHealth(){ return health;}

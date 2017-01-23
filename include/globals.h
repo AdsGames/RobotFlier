@@ -55,6 +55,7 @@ extern bool joystick_enabled;
 extern ALLEGRO_FONT *orbitron_12;
 extern ALLEGRO_FONT *orbitron_18;
 extern ALLEGRO_FONT *orbitron_24;
+extern ALLEGRO_FONT *orbitron_30;
 extern ALLEGRO_FONT *orbitron_36;
 
 #endif

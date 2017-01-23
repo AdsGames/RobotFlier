@@ -29,7 +29,7 @@ class particle{
     ~particle();
 
     void logic();
-    void draw( ALLEGRO_BITMAP* tempBitmap);
+    void draw();
 
   private:
 };

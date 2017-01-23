@@ -27,7 +27,7 @@ void particle::logic(){
 }
 
 // Draw
-void particle::draw( ALLEGRO_BITMAP* tempBitmap){
+void particle::draw(){
   if( type == PIXEL){
     al_put_pixel( x, y, color);
   }
