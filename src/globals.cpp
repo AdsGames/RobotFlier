@@ -26,3 +26,6 @@ ALLEGRO_FONT *orbitron_36 = NULL;
 
 // Current music
 ALLEGRO_SAMPLE_ID currentMusic;
+
+// Display
+ALLEGRO_DISPLAY *display = NULL;

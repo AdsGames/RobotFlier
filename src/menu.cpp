@@ -70,7 +70,7 @@ menu::menu(){
   animation_pos = 0;
 
   // Hide mouse
-  al_show_mouse_cursor( NULL);
+  al_hide_mouse_cursor( display);
 
   // Load scores
   updateScores( scores);

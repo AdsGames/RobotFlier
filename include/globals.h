@@ -61,4 +61,7 @@ extern ALLEGRO_FONT *orbitron_36;
 // Current music
 extern ALLEGRO_SAMPLE_ID currentMusic;
 
+// Display
+extern ALLEGRO_DISPLAY *display;
+
 #endif

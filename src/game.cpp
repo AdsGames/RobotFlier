@@ -73,9 +73,7 @@ game::game(){
   changeTheme( 0);
 
   // Mouse
-  //enable_hardware_cursor();
-  //select_mouse_cursor( MOUSE_CURSOR_ARROW);
-  //show_mouse( NULL);
+  al_hide_mouse_cursor( display);
 
   // Init hectar
   hectar = robot( 80, 300);
@@ -350,14 +348,14 @@ void game::update(){
   }
 
   // Pause loop code
-  if( keyListener::keyPressed[ALLEGRO_KEY_ESCAPE] || mouseListener::mouse_pressed & 2 || keyListener::keyPressed[ALLEGRO_KEY_SPACE] /*|| ((joy[0].button[6].b || joy[0].button[7].b) && joystick_enabled && settings[SETTING_CONTROLMODE] != 1)*/){
+  if( keyListener::keyPressed[ALLEGRO_KEY_ESCAPE] || (mouseListener::mouse_pressed & 2) || keyListener::keyPressed[ALLEGRO_KEY_SPACE] /*|| ((joy[0].button[6].b || joy[0].button[7].b) && joystick_enabled && settings[SETTING_CONTROLMODE] != 1)*/){
     if( paused){
       paused = false;
-      //show_mouse( NULL);
+      al_hide_mouse_cursor( display);
     }
     else if( hectar.isAlive()){
       paused = true;
-      //show_mouse( screen);
+      al_show_mouse_cursor( display);
     }
   }
 
@@ -394,14 +392,14 @@ void game::draw(){
   if( hectar.isInvincible()){
     al_draw_filled_circle( 45, 105, 20, al_map_rgb( 255, 255, 255));
     al_draw_bitmap( powerStar, 20, 80, 0);
-    al_draw_textf( orbitron_24, al_map_rgb( 255, 255, 255), 44, 88, ALLEGRO_ALIGN_CENTER, "%i", hectar.getInvincibleTimer()/5);
-    al_draw_textf( orbitron_24, al_map_rgb( 255, 0  ,   0), 45, 90, ALLEGRO_ALIGN_CENTER, "%i", hectar.getInvincibleTimer()/5);
+    al_draw_textf( orbitron_24, al_map_rgb( 255, 255, 255), 44, 94, ALLEGRO_ALIGN_CENTER, "%i", hectar.getInvincibleTimer()/5);
+    al_draw_textf( orbitron_24, al_map_rgb( 255, 0  ,   0), 45, 96, ALLEGRO_ALIGN_CENTER, "%i", hectar.getInvincibleTimer()/5);
   }
   if( hectar.isMagnetic()){
     al_draw_filled_circle( 175, 105, 20, al_map_rgb( 255, 255, 255));
     al_draw_bitmap( powerMagnet[0], 150, 80, 0);
-    al_draw_textf( orbitron_24, al_map_rgb( 255, 255, 255), 174, 88, ALLEGRO_ALIGN_CENTER, "%i", hectar.getMagneticTimer()/5);
-    al_draw_textf( orbitron_24, al_map_rgb( 255, 255, 255), 175, 90, ALLEGRO_ALIGN_CENTER, "%i", hectar.getMagneticTimer()/5);
+    al_draw_textf( orbitron_24, al_map_rgb( 255, 255, 255), 174, 94, ALLEGRO_ALIGN_CENTER, "%i", hectar.getMagneticTimer()/5);
+    al_draw_textf( orbitron_24, al_map_rgb( 255, 0  ,   0), 175, 96, ALLEGRO_ALIGN_CENTER, "%i", hectar.getMagneticTimer()/5);
   }
 
   // Draw the debug window
@@ -433,11 +431,11 @@ void game::draw(){
   }
 
   // Mountain Paralax
-  al_draw_bitmap( parallaxBack, (scroll/3) % SCREEN_W, 0, 0);
+  al_draw_bitmap( parallaxBack, (scroll/3) % SCREEN_W           , 0, 0);
   al_draw_bitmap( parallaxBack, (scroll/3) % SCREEN_W + SCREEN_W, 0, 0);
 
   // Ground
-  al_draw_bitmap( groundUnderlay, scroll % SCREEN_W, SCREEN_H - 40, 0);
+  al_draw_bitmap( groundUnderlay, scroll % SCREEN_W           , SCREEN_H - 40, 0);
   al_draw_bitmap( groundUnderlay, scroll % SCREEN_W + SCREEN_W, SCREEN_H - 40, 0);
 
   // Energy
@@ -501,10 +499,10 @@ void game::draw(){
     al_draw_bitmap( pauseMenu, 130, 140, 0);
 
     // Stats
-    al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 220, 250, ALLEGRO_ALIGN_LEFT, "Distance Flown: %i ft", stats[STAT_DISTANCE] / 10);
-    al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 220, 280, ALLEGRO_ALIGN_LEFT, "Energy Collected: %i" , stats[STAT_ENERGY]       );
-    al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 220, 310, ALLEGRO_ALIGN_LEFT, "Powerups Received: %i", stats[STAT_POWERUPS]     );
-    al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 220, 340, ALLEGRO_ALIGN_LEFT, "Debris Collided: %i"  , stats[STAT_DEBRIS]       );
+    al_draw_textf( orbitron_18, al_map_rgb( 255, 255, 255), 220, 250, ALLEGRO_ALIGN_LEFT, "Distance Flown: %i ft", stats[STAT_DISTANCE] / 10);
+    al_draw_textf( orbitron_18, al_map_rgb( 255, 255, 255), 220, 280, ALLEGRO_ALIGN_LEFT, "Energy Collected: %i" , stats[STAT_ENERGY]       );
+    al_draw_textf( orbitron_18, al_map_rgb( 255, 255, 255), 220, 310, ALLEGRO_ALIGN_LEFT, "Powerups Received: %i", stats[STAT_POWERUPS]     );
+    al_draw_textf( orbitron_18, al_map_rgb( 255, 255, 255), 220, 340, ALLEGRO_ALIGN_LEFT, "Debris Collided: %i"  , stats[STAT_DEBRIS]       );
 
     // Buttons
     al_draw_text( orbitron_18, al_map_rgb( 0, 0, 0), 220, 445, ALLEGRO_ALIGN_LEFT, "Quit"     );

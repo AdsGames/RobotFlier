@@ -17,7 +17,6 @@
 #include "globals.h"
 
 // Events
-ALLEGRO_DISPLAY *display = NULL;
 ALLEGRO_EVENT_QUEUE* event_queue = NULL;
 ALLEGRO_TIMER* timer = NULL;
 
@@ -79,15 +78,19 @@ void setup(){
   // Init allegro 5
   al_init();
 
+  // Input
   al_install_keyboard();
   al_install_mouse();
 
+  // Fonts
   al_init_font_addon();
   al_init_ttf_addon();
 
+  // Graphics
   al_init_image_addon();
   al_init_primitives_addon();
 
+  // Audio
   al_install_audio();
   al_init_acodec_addon();
   al_reserve_samples( 20);
@@ -96,8 +99,8 @@ void setup(){
   timer = al_create_timer(1.0 / MAX_FPS);
   display = al_create_display( SCREEN_W, SCREEN_H);
 
+  // Events
   event_queue = al_create_event_queue();
-
   al_register_event_source( event_queue, al_get_display_event_source(display));
   al_register_event_source( event_queue, al_get_timer_event_source(timer));
   al_register_event_source( event_queue, al_get_keyboard_event_source());
@@ -114,36 +117,43 @@ void setup(){
   nextState = STATE_NULL;
 
   // Clear settings
-  for( int i = 0; i < 11; i++){
+  for( int i = 0; i < 11; i++)
     settings[i] = false;
-  }
 }
 
 // Universal update
 void update(){
+  // Event checking
   ALLEGRO_EVENT ev;
-  al_wait_for_event(event_queue, &ev);
+  al_wait_for_event( event_queue, &ev);
 
-  if(ev.type == ALLEGRO_EVENT_TIMER){
+  // Timer
+  if( ev.type == ALLEGRO_EVENT_TIMER){
+    // Change state (if needed)
     change_state();
+
+    // Update listeners
     k_listener.update();
+    m_listener.update();
+
+    // Update state
     currentState -> update();
   }
-  else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+  // Exit
+  else if( ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
     closing = true;
   }
-  else if(ev.type == ALLEGRO_EVENT_KEY_DOWN || ev.type == ALLEGRO_EVENT_KEY_UP){
+  // Keyboard
+  else if( ev.type == ALLEGRO_EVENT_KEY_DOWN || ev.type == ALLEGRO_EVENT_KEY_UP){
     k_listener.on_event( ev.type, ev.keyboard.keycode);
   }
-  if(al_is_event_queue_empty(event_queue)){
-    al_clear_to_color(al_map_rgb(0,0,0));
+
+  // Queue empty? Lets draw
+  if( al_is_event_queue_empty(event_queue)){
+    al_clear_to_color( al_map_rgb(0,0,0));
     currentState -> draw();
     al_flip_display();
   }
-
-  // Update mouse listener vars
-  m_listener.update();
-  k_listener.update();
 
   // Debug console toggle
   if( keyListener::keyPressed[ALLEGRO_KEY_F12])
