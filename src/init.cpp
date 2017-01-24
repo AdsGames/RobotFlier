@@ -5,6 +5,11 @@ init::init(){
   // Title
   al_set_window_title( display, "A.D.S. Games - Robot Flier");
 
+  // Icon
+  ALLEGRO_BITMAP *the_icon;
+  the_icon = al_load_bitmap( "images/objects/bomb.png");
+  al_set_display_icon( display, the_icon);
+
   //Seed the random number generator with the time
   srand(time(NULL));
   random( 0, 100);
