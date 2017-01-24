@@ -7,7 +7,7 @@ init::init(){
 
   // Icon
   ALLEGRO_BITMAP *the_icon;
-  the_icon = al_load_bitmap( "images/objects/bomb.png");
+  the_icon = load_bitmap_ex( "images/objects/bomb.png");
   al_set_display_icon( display, the_icon);
 
   //Seed the random number generator with the time
@@ -20,7 +20,6 @@ init::init(){
     joystick_enabled = true;
 
   // Loads fonts
-  // Orbitron size 14
   orbitron_12 = al_load_ttf_font( "fonts/orbitron_ttf.ttf", 12, 0);
   orbitron_18 = al_load_ttf_font( "fonts/orbitron_ttf.ttf", 18, 0);
   orbitron_24 = al_load_ttf_font( "fonts/orbitron_ttf.ttf", 24, 0);
