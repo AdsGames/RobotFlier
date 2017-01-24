@@ -176,7 +176,7 @@ void game::update(){
     stats[STAT_DISTANCE] += motion;
 
     // Changes speed
-    if( hectar.isAlive())
+    if( hectar.isAlive() && hectar.isKeyPressed())
       motion = ((score/36) + 6);
     else
       motion *= 0.95;

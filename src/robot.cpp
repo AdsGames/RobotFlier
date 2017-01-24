@@ -30,7 +30,7 @@ robot::robot( float newX, float newY){
   // Init vars
   gravity = 1.6;
 
-  speed = 20;
+  speed = 0;
   x = newX;
   y = newY;
   width = 70;
@@ -43,6 +43,7 @@ robot::robot( float newX, float newY){
   rocket = false;
   onGround = false;
   alive = true;
+  keyPressed = false;
 }
 
 // Destructor
@@ -96,7 +97,8 @@ void robot::logic(){
     magneticTimer--;
 
   // Update robots y position
-  y += gravity - speed;
+  if( keyPressed)
+    y += gravity - speed;
 
   // Death smoke
   if( settings[SETTING_PARTICLE_TYPE] != 3 && !alive){
@@ -142,6 +144,7 @@ void robot::logic(){
   if( alive){
     //Controls movement up and down
     if( (keyListener::key[ALLEGRO_KEY_W] || keyListener::key[ALLEGRO_KEY_UP] || mouseListener::mouse_button & 1) || joystickListener::button[JOY_XBOX_A] || joystickListener::button[JOY_XBOX_BUMPER_LEFT]){
+      keyPressed = true;
       if( settings[SETTING_SOUND] && random( 0, 3) == 1)
         al_play_sample( sound_flame, 0.2, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
       if( speed < 8){
@@ -150,7 +153,7 @@ void robot::logic(){
       }
     }
     //If no keys pressed
-    else{
+    else if( keyPressed){
       rocket = false;
       if( speed > -8){
         speed -= 0.6;

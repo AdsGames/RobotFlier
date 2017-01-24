@@ -39,6 +39,7 @@ class robot{
 
     bool isOnGround(){ return onGround; }
     bool isAlive(){ return alive;}
+    bool isKeyPressed(){ return keyPressed; }
 
     // Invincibility
     bool isInvincible(){ return invincibleTimer > 0;}
@@ -61,6 +62,9 @@ class robot{
     float x, y;
     int health;
     int width, height;
+
+    // Wait for keypress
+    bool keyPressed;
 
     // Images
     ALLEGRO_BITMAP *main_robot;
