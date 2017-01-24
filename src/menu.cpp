@@ -361,16 +361,13 @@ void menu::draw(){
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), SCREEN_W - 100, 20, ALLEGRO_ALIGN_LEFT , "FPS:%i", fps);
   }
 
+  // Draw rocket if no particles
+  if( settings[SETTING_PARTICLE_TYPE] == 3 && mouse_rocket_up)
+    al_draw_bitmap( mouse_rocket, mouseListener::mouse_x - 10, mouseListener::mouse_y, 0);
+
   // Draw mouse particles
-  if( settings[SETTING_PARTICLE_TYPE] == 3){
-    if( mouse_rocket_up){
-      al_draw_bitmap( mouse_rocket, mouseListener::mouse_x - 10, mouseListener::mouse_y, 0);
-    }
-  }
-  else{
-    for( unsigned int i = 0; i < mousePart.size(); i++){
-      mousePart.at(i).draw();
-    }
-  }
+  for( unsigned int i = 0; i < mousePart.size(); i++)
+    mousePart.at(i).draw();
+
   al_draw_bitmap( mouse, mouseListener::mouse_x - 10, mouseListener::mouse_y, 0);
 }

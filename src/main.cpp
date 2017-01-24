@@ -143,6 +143,10 @@ void update(){
 
     // Update state
     currentState -> update();
+
+    // Debug console toggle
+    if( keyListener::keyPressed[ALLEGRO_KEY_F12])
+      settings[SETTING_DEBUG] = (settings[SETTING_DEBUG] + 1) % 2;
   }
   // Exit
   else if( ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
@@ -163,10 +167,6 @@ void update(){
     currentState -> draw();
     al_flip_display();
   }
-
-  // Debug console toggle
-  if( keyListener::keyPressed[ALLEGRO_KEY_F12])
-    settings[SETTING_DEBUG] = (settings[SETTING_DEBUG] + 1) % 2;
 }
 
 // main function of program
