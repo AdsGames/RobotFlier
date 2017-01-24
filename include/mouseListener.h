@@ -6,9 +6,8 @@
  * 18/01/2017
 **/
 
-#include <iostream>
+//#include <iostream>
 #include <allegro5/allegro.h>
-
 
 #ifndef MOUSELISTENER_H
 #define MOUSELISTENER_H

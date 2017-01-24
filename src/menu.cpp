@@ -221,10 +221,10 @@ void menu::update(){
     // Fullscreen toggle
     else if( collision( 120, 200, mouseListener::mouse_x, mouseListener::mouse_x, 400, 480, mouseListener::mouse_y, mouseListener::mouse_y)){
       settings[SETTING_FULLSCREEN] = (settings[SETTING_FULLSCREEN] + 1) % 2;
-      //if( settings[SETTING_FULLSCREEN])
-     //   set_gfx_mode( GFX_AUTODETECT_FULLSCREEN, 800, 600, 0, 0);
-      //else
-      //  set_gfx_mode( GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
+      /*if( settings[SETTING_FULLSCREEN])
+        set_gfx_mode( GFX_AUTODETECT_FULLSCREEN, 800, 600, 0, 0);
+      else
+        set_gfx_mode( GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);*/
     }
     //Screen shake
     else if( collision( 280, 360, mouseListener::mouse_x, mouseListener::mouse_x, 290, 370, mouseListener::mouse_y, mouseListener::mouse_y)){

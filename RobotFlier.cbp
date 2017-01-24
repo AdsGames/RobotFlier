@@ -10,11 +10,9 @@
 				<Option output="build/RobotFlier" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="build/" />
 				<Option object_output="output/" />
-				<Option type="1" />
+				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 				<Compiler>
-					<Add option="-Wfatal-errors" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
@@ -40,6 +38,7 @@
 		<Unit filename="include/globals.h" />
 		<Unit filename="include/init.h" />
 		<Unit filename="include/intro.h" />
+		<Unit filename="include/joystickListener.h" />
 		<Unit filename="include/keyListener.h" />
 		<Unit filename="include/menu.h" />
 		<Unit filename="include/mouseListener.h" />
@@ -58,6 +57,7 @@
 		<Unit filename="src/globals.cpp" />
 		<Unit filename="src/init.cpp" />
 		<Unit filename="src/intro.cpp" />
+		<Unit filename="src/joystickListener.cpp" />
 		<Unit filename="src/keyListener.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/menu.cpp" />
