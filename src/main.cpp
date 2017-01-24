@@ -14,6 +14,7 @@
 #include "game.h"
 #include "mouseListener.h"
 #include "keyListener.h"
+#include "joystickListener.h"
 #include "globals.h"
 
 // Events
@@ -23,6 +24,7 @@ ALLEGRO_TIMER* timer = NULL;
 // Mouse Updater
 mouseListener m_listener;
 keyListener k_listener;
+joystickListener j_listener;
 
 // Closing or naw
 bool closing = false;
@@ -81,6 +83,7 @@ void setup(){
   // Input
   al_install_keyboard();
   al_install_mouse();
+  al_install_joystick();
 
   // Fonts
   al_init_font_addon();
@@ -104,6 +107,7 @@ void setup(){
   al_register_event_source( event_queue, al_get_display_event_source(display));
   al_register_event_source( event_queue, al_get_timer_event_source(timer));
   al_register_event_source( event_queue, al_get_keyboard_event_source());
+  al_register_event_source( event_queue, al_get_joystick_event_source());
 
   al_clear_to_color( al_map_rgb(0,0,0));
   al_flip_display();
@@ -135,6 +139,7 @@ void update(){
     // Update listeners
     k_listener.update();
     m_listener.update();
+    j_listener.update();
 
     // Update state
     currentState -> update();
@@ -147,6 +152,10 @@ void update(){
   else if( ev.type == ALLEGRO_EVENT_KEY_DOWN || ev.type == ALLEGRO_EVENT_KEY_UP){
     k_listener.on_event( ev.type, ev.keyboard.keycode);
   }
+  // Joystick
+  else if( ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN || ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_UP){
+    j_listener.on_event( ev.type, ev.joystick.button);
+  }
 
   // Queue empty? Lets draw
   if( al_is_event_queue_empty(event_queue)){
@@ -158,9 +167,6 @@ void update(){
   // Debug console toggle
   if( keyListener::keyPressed[ALLEGRO_KEY_F12])
     settings[SETTING_DEBUG] = (settings[SETTING_DEBUG] + 1) % 2;
-
-  // Check joystick
-  // poll_joystick();
 }
 
 // main function of program

@@ -2,11 +2,6 @@
 
 // Construct state
 init::init(){
-  // Get graphics resolution
-  /*int width;
-  int height;
-  get_desktop_resolution( &width, &height);*/
-
   // Title
   al_set_window_title( display, "A.D.S. Games - Robot Flier");
 

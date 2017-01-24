@@ -18,6 +18,7 @@
 #include "globals.h"
 #include "mouseListener.h"
 #include "keyListener.h"
+#include "joystickListener.h"
 #include "robot.h"
 
 // Game class

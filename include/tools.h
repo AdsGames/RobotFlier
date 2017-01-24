@@ -22,10 +22,6 @@ extern void updateScores( std::string scoreCopy[][2]);
 extern bool check_highscore( std::string scoreCopy[][2], int score);
 extern void addScore( std::string scoreCopy[][2], int newScore, std::string name);
 
-// Keys
-extern bool joy_buttonpressed();
-extern bool keyboard_keypressed();
-
 // Error handling loading functions
 extern ALLEGRO_BITMAP *load_bitmap_ex( std::string file);
 extern ALLEGRO_SAMPLE *load_sample_ex( std::string file);

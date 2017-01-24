@@ -157,44 +157,44 @@ void menu::update(){
   if( startClicked && animation_pos <= 0)
     set_next_state( STATE_GAME);
 
-  // Start game with controller
-  if( settings[SETTING_CONTROLMODE] != 1 && joystick_enabled){
-    //if( mini_screen == MINISTATE_MENU && joy[0].button[7].b){
-    //  startClicked = true;
-    //}
-  }
-
   // Open submenu or start game
-  if( mini_screen == MINISTATE_MENU && mouseListener::mouse_pressed & 1){
-    // Start game
-    if( collision( mouseListener::mouse_x, mouseListener::mouse_x, 40, 40 + al_get_bitmap_width(start), mouseListener::mouse_y, mouseListener::mouse_y, 410, 410 + al_get_bitmap_height(start)) /*|| joy[0].button[1].b*/){
+  if( mini_screen == MINISTATE_MENU){
+    // Start game with controller
+    if( joystickListener::buttonPressed[JOY_XBOX_START] || joystickListener::buttonPressed[JOY_XBOX_A]){
       startClicked = true;
     }
-    // Scores
-    if( collision( mouseListener::mouse_x, mouseListener::mouse_x, 660, 660 + al_get_bitmap_width(highscores_button), mouseListener::mouse_y, mouseListener::mouse_y, 30, 30 + al_get_bitmap_height(highscores_button))){
-      updateScores( scores);
-      mini_screen = MINISTATE_SCORES;
-    }
-    // Credits menu
-    else if( collision( mouseListener::mouse_x, mouseListener::mouse_x, 542, 644, mouseListener::mouse_y, mouseListener::mouse_y, 548, 600)){
-      mini_screen = MINISTATE_CREDITS;
-    }
-    // Controls menu
-    else if( collision( mouseListener::mouse_x, mouseListener::mouse_x, 644, 696, mouseListener::mouse_y, mouseListener::mouse_y, 548 ,600)){
-      mini_screen = MINISTATE_CONTROLS;
-    }
-    // Help screen
-    else if( collision( mouseListener::mouse_x, mouseListener::mouse_x, 696, 749, mouseListener::mouse_y, mouseListener::mouse_y, 548, 600)){
-      mini_screen = MINISTATE_TUTORIAL;
-    }
-    // Options menu
-    else if( collision( mouseListener::mouse_x, mouseListener::mouse_x, 749, 800, mouseListener::mouse_y, mouseListener::mouse_y, 548, 600)){
-      mini_screen = MINISTATE_OPTIONS;
+    // Buttons
+    if( mouseListener::mouse_pressed & 1){
+      // Start game
+      if( collision( mouseListener::mouse_x, mouseListener::mouse_x, 40, 40 + al_get_bitmap_width(start), mouseListener::mouse_y, mouseListener::mouse_y, 410, 410 + al_get_bitmap_height(start))){
+        startClicked = true;
+      }
+      // Scores
+      else if( collision( mouseListener::mouse_x, mouseListener::mouse_x, 660, 660 + al_get_bitmap_width(highscores_button), mouseListener::mouse_y, mouseListener::mouse_y, 30, 30 + al_get_bitmap_height(highscores_button))){
+        updateScores( scores);
+        mini_screen = MINISTATE_SCORES;
+      }
+      // Credits menu
+      else if( collision( mouseListener::mouse_x, mouseListener::mouse_x, 542, 644, mouseListener::mouse_y, mouseListener::mouse_y, 548, 600)){
+        mini_screen = MINISTATE_CREDITS;
+      }
+      // Controls menu
+      else if( collision( mouseListener::mouse_x, mouseListener::mouse_x, 644, 696, mouseListener::mouse_y, mouseListener::mouse_y, 548 ,600)){
+        mini_screen = MINISTATE_CONTROLS;
+      }
+      // Help screen
+      else if( collision( mouseListener::mouse_x, mouseListener::mouse_x, 696, 749, mouseListener::mouse_y, mouseListener::mouse_y, 548, 600)){
+        mini_screen = MINISTATE_TUTORIAL;
+      }
+      // Options menu
+      else if( collision( mouseListener::mouse_x, mouseListener::mouse_x, 749, 800, mouseListener::mouse_y, mouseListener::mouse_y, 548, 600)){
+        mini_screen = MINISTATE_OPTIONS;
+      }
     }
   }
   // Exit menus
   else if( mini_screen == MINISTATE_TUTORIAL || mini_screen == MINISTATE_CREDITS || mini_screen == MINISTATE_CONTROLS || mini_screen == MINISTATE_SCORES ){
-    if( (keyboard_keypressed() && settings[SETTING_CONTROLMODE] != 3)  || (mouseListener::mouse_pressed & 1 && settings[SETTING_CONTROLMODE] != 3) || (joy_buttonpressed() && settings[SETTING_CONTROLMODE] != 2)){
+    if( keyListener::lastKeyPressed != -1  || mouseListener::mouse_pressed & 1 || joystickListener::lastButtonPressed != -1){
 			mini_screen = MINISTATE_MENU;
 			draw();
     }
@@ -353,8 +353,8 @@ void menu::draw(){
   if( settings[SETTING_DEBUG]){
     // Joystick testing
     if( joystick_enabled){
-      for( int i = 0; i < 8; i++){
-        //al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 20, 10 * i + 20, ALLEGRO_ALIGN_LEFT , "Joystick B %i:%i", joy[0].button[i].b, i);
+      for( int i = 0; i < JOY_MAX_BUTTONS; i++){
+        al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 20, 10 * i + 20, ALLEGRO_ALIGN_LEFT , "Joystick B %i : %i", i, joystickListener::button[i]);
       }
     }
     // FPS

@@ -303,7 +303,7 @@ void game::update(){
           iter--;
         }
       }
-      if( keyListener::key[ALLEGRO_KEY_ENTER] /*|| (joystick_enabled && joy[0].button[1].b && settings[SETTING_CONTROLMODE] != 1)*/){
+      if( keyListener::key[ALLEGRO_KEY_ENTER] || joystickListener::buttonPressed[JOY_XBOX_START] || joystickListener::buttonPressed[JOY_XBOX_A]){
         addScore( scores, score, edittext);
         set_next_state( STATE_MENU);
       }
@@ -311,7 +311,7 @@ void game::update(){
   }
 
   // Screenshot
-  if( keyListener::keyPressed[ALLEGRO_KEY_F11] /*|| (joystick_enabled && joy[0].button[3].b && settings[SETTING_CONTROLMODE] != 1)*/){
+  if( keyListener::keyPressed[ALLEGRO_KEY_F11] || joystickListener::buttonPressed[3]){
     // Count screenshots
   	int screenshotNumber;
 
@@ -326,7 +326,7 @@ void game::update(){
 	  write.close();
 
 	  // Save to file
-    //al_save_bitmap((std::string("screenshots/screenshot_") + convertIntToString(screenshotNumber).c_str() + std::string(".png")).c_str(), screen);
+    al_save_bitmap((std::string("screenshots/screenshot_") + convertIntToString(screenshotNumber).c_str() + std::string(".png")).c_str(), al_get_backbuffer(display));
 
     // Snap sound
     al_play_sample( sound_snap, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
@@ -342,13 +342,16 @@ void game::update(){
 
   // Random test stuff for devs
   if( settings[SETTING_DEBUG]){
-    if( keyListener::key[ALLEGRO_KEY_R])score += 10;
-    if( keyListener::key[ALLEGRO_KEY_E]/* || joy[0].button[2].b*/)hectar.addHealth(1);
-    if( keyListener::key[ALLEGRO_KEY_T])hectar.addHealth(-100);
+    if( keyListener::key[ALLEGRO_KEY_R])
+      score += 10;
+    if( keyListener::key[ALLEGRO_KEY_E] || joystickListener::button[2])
+      hectar.addHealth(1);
+    if( keyListener::key[ALLEGRO_KEY_T])
+      hectar.addHealth(-100);
   }
 
   // Pause loop code
-  if( keyListener::keyPressed[ALLEGRO_KEY_ESCAPE] || (mouseListener::mouse_pressed & 2) || keyListener::keyPressed[ALLEGRO_KEY_SPACE] /*|| ((joy[0].button[6].b || joy[0].button[7].b) && joystick_enabled && settings[SETTING_CONTROLMODE] != 1)*/){
+  if( keyListener::keyPressed[ALLEGRO_KEY_ESCAPE] || mouseListener::mouse_pressed & 2 || keyListener::keyPressed[ALLEGRO_KEY_SPACE] || joystickListener::buttonPressed[JOY_XBOX_START]){
     if( paused){
       paused = false;
       al_hide_mouse_cursor( display);

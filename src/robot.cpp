@@ -141,7 +141,7 @@ void robot::logic(){
   // Moving controls
   if( alive){
     //Controls movement up and down
-    if( (keyListener::key[ALLEGRO_KEY_W] || keyListener::key[ALLEGRO_KEY_UP] || mouseListener::mouse_button & 1) /*|| ((joy[0].button[0].b || joy[0].button[5].b) && settings[SETTING_CONTROLMODE] != 1)*/){
+    if( (keyListener::key[ALLEGRO_KEY_W] || keyListener::key[ALLEGRO_KEY_UP] || mouseListener::mouse_button & 1) || joystickListener::button[JOY_XBOX_A] || joystickListener::button[JOY_XBOX_BUMPER_LEFT]){
       if( settings[SETTING_SOUND] && random( 0, 3) == 1)
         al_play_sample( sound_flame, 0.2, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
       if( speed < 8){

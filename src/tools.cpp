@@ -68,24 +68,6 @@ void addScore( std::string scoreCopy[][2], int newScore, std::string name){
   saveFile.close();
 }
 
-
-// Iterates through the number of buttons in a joystick and returns true if any buttons are pressed
-bool joy_buttonpressed(){
-  bool buttonpressed = false;
-  /*for( int i = 0; i < joy[0].num_buttons; i++)
-    if( joy[0].button[i].b)buttonpressed = true;*/
-  return buttonpressed;
-}
-
-// Iterates through the number of buttons in a joystick and returns true if any keys are pressed
-bool keyboard_keypressed(){
-  /*for( int i = 0; i < 125; i++)
-    if( key[i])
-      return true;*/
-  return false;
-}
-
-
 // Error handling loading functions
 // Checks if file exists
 ALLEGRO_BITMAP *load_bitmap_ex( std::string file){

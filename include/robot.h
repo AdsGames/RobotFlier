@@ -12,6 +12,7 @@
 #include "particle.h"
 #include "keyListener.h"
 #include "mouseListener.h"
+#include "joystickListener.h"
 #include "tools.h"
 #include "globals.h"
 

@@ -23,6 +23,7 @@
 #include "particle.h"
 #include "mouseListener.h"
 #include "keyListener.h"
+#include "joystickListener.h"
 
 class menu : public state{
   public:
