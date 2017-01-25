@@ -12,6 +12,7 @@ game::game(){
   themeNumber = 0;
   screenshake_x = 0;
   screenshake_y = 0;
+  arrow_animation = 0.0f;
   paused = false;
 
   // End game menu
@@ -40,6 +41,7 @@ game::game(){
   ui_game_end = load_bitmap_ex( "images/gui/ui_game_end.png");
   ui_a = load_bitmap_ex("images/gui/ui_a.png");
   ui_b = load_bitmap_ex("images/gui/ui_b.png");
+  ui_up = load_bitmap_ex("images/gui/ui_up.png");
   debug = load_bitmap_ex( "images/gui/debug.png");
 
   // Background
@@ -180,6 +182,10 @@ void game::update(){
       motion = ((score/36) + 6);
     else
       motion *= 0.95;
+
+    // Arrow animation
+    if( !hectar.isKeyPressed())
+      arrow_animation += 0.15;
 
     // No negative scores
     if( score < 0)
@@ -456,6 +462,14 @@ void game::draw(){
 
   // Draw robot
   hectar.draw();
+
+  // Start arrow
+  if( !hectar.isKeyPressed()){
+    if( joystick_enabled)
+      al_draw_bitmap( ui_a, hectar.getX() + 15, hectar.getY() - 60 - sin(arrow_animation) * 10, 0);
+    else
+      al_draw_bitmap( ui_up, hectar.getX() + 15, hectar.getY() - 70 - sin(arrow_animation) * 10, 0);
+  }
 
   // Asteroids
   for( unsigned int i = 0; i < debries.size(); i++)

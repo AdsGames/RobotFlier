@@ -53,6 +53,7 @@ class game : public state{
     ALLEGRO_BITMAP *ui_game_end;
     ALLEGRO_BITMAP *ui_a;
     ALLEGRO_BITMAP *ui_b;
+    ALLEGRO_BITMAP *ui_up;
 
     // Danger images
     ALLEGRO_BITMAP* energyImage;
@@ -84,6 +85,7 @@ class game : public state{
     int themeNumber;
     int screenshake_x;
     int screenshake_y;
+    double arrow_animation;
     float motion;
 
     // Declare booleans
