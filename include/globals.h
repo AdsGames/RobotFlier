@@ -39,8 +39,8 @@
 extern unsigned int score;
 extern int screenshake;
 extern int fps;
-extern const int SCREEN_W;
-extern const int SCREEN_H;
+extern int SCREEN_W;
+extern int SCREEN_H;
 
 // Data
 extern int stats[4];

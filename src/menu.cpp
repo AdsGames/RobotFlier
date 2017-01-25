@@ -221,10 +221,30 @@ void menu::update(){
     // Fullscreen toggle
     else if( collision( 120, 200, mouseListener::mouse_x, mouseListener::mouse_x, 400, 480, mouseListener::mouse_y, mouseListener::mouse_y)){
       settings[SETTING_FULLSCREEN] = (settings[SETTING_FULLSCREEN] + 1) % 2;
-      /*if( settings[SETTING_FULLSCREEN])
-        set_gfx_mode( GFX_AUTODETECT_FULLSCREEN, 800, 600, 0, 0);
-      else
-        set_gfx_mode( GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);*/
+
+      if( settings[SETTING_FULLSCREEN]){
+        // Fullscreen stuff
+        al_destroy_display( display);
+        al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+        display = al_create_display( SCREEN_W, SCREEN_H);
+
+        ALLEGRO_DISPLAY_MODE disp_data;
+        al_get_display_mode(al_get_num_display_modes() - 1, &disp_data);
+        float sx = disp_data.width / (float)SCREEN_W;
+        float sy = disp_data.height / (float)SCREEN_H;
+
+        ALLEGRO_TRANSFORM trans;
+        al_identity_transform(&trans);
+        al_scale_transform(&trans, sx, sy);
+        al_use_transform(&trans);
+        al_hide_mouse_cursor( display);
+      }
+      else{
+        al_destroy_display( display);
+        al_set_new_display_flags(ALLEGRO_WINDOWED);
+        display = al_create_display( SCREEN_W, SCREEN_H);
+        al_hide_mouse_cursor( display);
+      }
     }
     //Screen shake
     else if( collision( 280, 360, mouseListener::mouse_x, mouseListener::mouse_x, 290, 370, mouseListener::mouse_y, mouseListener::mouse_y)){

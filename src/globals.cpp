@@ -5,8 +5,8 @@ unsigned int score;
 int screenshake;
 
 int fps = 0;;
-const int SCREEN_W = 800;
-const int SCREEN_H = 600;
+int SCREEN_W = 800;
+int SCREEN_H = 600;
 
 // Data
 int stats[4];
