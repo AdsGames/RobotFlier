@@ -26,6 +26,12 @@ mouseListener m_listener;
 keyListener k_listener;
 joystickListener j_listener;
 
+// Fps timer
+double old_time = 0;
+const float MAX_FPS = 60;
+int frames_array[100];
+int frame_index = 0;
+
 // Closing or naw
 bool closing = false;
 
@@ -123,6 +129,10 @@ void setup(){
   // Clear settings
   for( int i = 0; i < 11; i++)
     settings[i] = false;
+
+  // Clear frams array
+  for( int i = 0; i < 100; i++)
+    frames_array[i] = 0;
 }
 
 // Universal update
@@ -160,12 +170,30 @@ void update(){
   else if( ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN || ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_UP){
     j_listener.on_event( ev.type, ev.joystick.button);
   }
+  // Joystick plugged or unplugged
+  else if( ev.type == ALLEGRO_EVENT_JOYSTICK_CONFIGURATION){
+    al_reconfigure_joysticks();
+    joystick_enabled = (al_get_num_joysticks() > 0);
+  }
 
   // Queue empty? Lets draw
   if( al_is_event_queue_empty(event_queue)){
     al_clear_to_color( al_map_rgb(0,0,0));
     currentState -> draw();
     al_flip_display();
+
+    // Update fps buffer
+    for( int i = 99; i > 0; i--)
+      frames_array[i] = frames_array[i - 1];
+    frames_array[0] = (1.0/(al_get_time() - old_time));
+    old_time = al_get_time();
+
+    int fps_total = 0;
+    for( int i = 0; i < 100; i++)
+      fps_total += frames_array[i];
+
+    // FPS = average
+    fps = fps_total/100;
   }
 }
 

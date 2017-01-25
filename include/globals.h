@@ -39,7 +39,6 @@
 extern unsigned int score;
 extern int screenshake;
 extern int fps;
-extern const float MAX_FPS;
 extern const int SCREEN_W;
 extern const int SCREEN_H;
 

@@ -4,8 +4,7 @@
 unsigned int score;
 int screenshake;
 
-int fps;
-const float MAX_FPS = 60;
+int fps = 0;;
 const int SCREEN_W = 800;
 const int SCREEN_H = 600;
 

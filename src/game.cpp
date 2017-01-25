@@ -229,7 +229,7 @@ void game::update(){
     }
 
     // Spawning
-    if( hectar.isAlive()){
+    if( hectar.isAlive() && hectar.isKeyPressed()){
       // Energy ball spawning
       if( random(0,50) == 0 || (settings[SETTING_MEGA] && random(0, 20))){
         energy newEnergyBall( energyImage, sound_orb, SCREEN_W, random(30,550));
@@ -435,7 +435,7 @@ void game::draw(){
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 360, 35, ALLEGRO_ALIGN_LEFT, "Has highscore:%i", check_highscore( scores, score));
 
     // FPS
-    al_draw_textf( orbitron_18, al_map_rgb( 255, 255, 255), SCREEN_W - 100, 25, ALLEGRO_ALIGN_LEFT, "FPS:%i", fps);
+    al_draw_textf( orbitron_18, al_map_rgb( 255, 255, 255), SCREEN_W - 100, 25, ALLEGRO_ALIGN_LEFT, "FPS:%f", fps);
   }
 
   // Mountain Paralax

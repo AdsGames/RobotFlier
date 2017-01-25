@@ -255,7 +255,7 @@ void menu::update(){
           int red_or_green = random( 0, 1) * 255;
           part_color = al_map_rgb( red_or_green, 255 - red_or_green, 0);
         }
-        particle newParticle( mouseListener::mouse_x, mouseListener::mouse_y + 16, part_color, random( -2, 2), random( 4, 8), 1, settings[SETTING_PARTICLE_TYPE]);
+        particle newParticle( mouseListener::mouse_x, mouseListener::mouse_y + 16, part_color, random( -2, 2), random( 8, 20), 1, settings[SETTING_PARTICLE_TYPE]);
         mousePart.push_back( newParticle);
       }
     }

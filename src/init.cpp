@@ -15,9 +15,7 @@ init::init(){
   random( 0, 100);
 
   //Joystick detector
-  joystick_enabled = false;
-  if( al_get_num_joysticks > 0)
-    joystick_enabled = true;
+  joystick_enabled = bool(al_get_num_joysticks() > 0);
 
   // Loads fonts
   orbitron_12 = al_load_ttf_font( "fonts/orbitron_ttf.ttf", 12, 0);
