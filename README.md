@@ -2,7 +2,7 @@
 An ADS Games production! A space arcade game where you have to fly through space and collect energy.
 
 #### Linking
-You must link with allegro 5 and allegro png. This can be found here:
+You must link with allegro 5. This can be found here:
 - [Allegro 5](http://liballeg.org/download.html)
 
 Your linker settings should look something like this:
