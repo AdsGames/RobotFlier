@@ -7,7 +7,6 @@
 #ifndef STATE_H
 #define STATE_H
 
-
 //State variables
 extern int stateID;
 extern int nextState;

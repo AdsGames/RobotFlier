@@ -3,29 +3,29 @@
 // Constructor
 robot::robot(){
   // NULLIFY
-  main_robot = NULL;
-  robotFire = NULL;
-  robotInvincible = NULL;
-  robotInvincibleFire = NULL;
-  robotInvincibleTop = NULL;
-  robotDie = NULL;
-  christmas_hat = NULL;
-  sound_flame = NULL;
-  sound_hitground = NULL;
+  main_robot = nullptr;
+  robotFire = nullptr;
+  robotInvincible = nullptr;
+  robotInvincibleFire = nullptr;
+  robotInvincibleTop = nullptr;
+  robotDie = nullptr;
+  christmas_hat = nullptr;
+  sound_flame = nullptr;
+  sound_hitground = nullptr;
 }
 
 // Constructor
 robot::robot( float newX, float newY){
   // NULLIFY
-  main_robot = NULL;
-  robotFire = NULL;
-  robotInvincible = NULL;
-  robotInvincibleFire = NULL;
-  robotInvincibleTop = NULL;
-  robotDie = NULL;
-  christmas_hat = NULL;
-  sound_flame = NULL;
-  sound_hitground = NULL;
+  main_robot = nullptr;
+  robotFire = nullptr;
+  robotInvincible = nullptr;
+  robotInvincibleFire = nullptr;
+  robotInvincibleTop = nullptr;
+  robotDie = nullptr;
+  christmas_hat = nullptr;
+  sound_flame = nullptr;
+  sound_hitground = nullptr;
 
   // Init vars
   gravity = 1.6;
@@ -146,7 +146,7 @@ void robot::logic(){
     if( (keyListener::key[ALLEGRO_KEY_W] || keyListener::key[ALLEGRO_KEY_UP] || mouseListener::mouse_button & 1) || joystickListener::button[JOY_XBOX_A] || joystickListener::button[JOY_XBOX_BUMPER_LEFT]){
       keyPressed = true;
       if( settings[SETTING_SOUND] && random( 0, 3) == 1)
-        al_play_sample( sound_flame, 0.2, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+        al_play_sample( sound_flame, 0.2, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
       if( speed < 8){
         rocket = true;
         speed += 0.6;
@@ -185,7 +185,7 @@ void robot::logic(){
     if( invincibleTimer <= 0){
       health -= 5;
       if( settings[SETTING_SOUND])
-        al_play_sample( sound_hitground, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+        al_play_sample( sound_hitground, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
       screenshake = 30;
     }
   }

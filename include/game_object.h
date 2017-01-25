@@ -8,6 +8,9 @@
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_color.h>
+
 #include "globals.h"
 #include "particle.h"
 #include "tools.h"

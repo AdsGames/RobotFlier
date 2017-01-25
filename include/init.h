@@ -7,6 +7,9 @@
 #ifndef INIT_H
 #define INIT_H
 
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
+
 #include "state.h"
 #include "globals.h"
 #include "tools.h"

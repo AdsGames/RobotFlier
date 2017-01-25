@@ -48,11 +48,11 @@ game::game(){
   space = load_bitmap_ex( "images/backgrounds/space.png");
 
   // Nullfiy bitmaps not loaded yet
-  screenshot = NULL;
-  asteroidImage = NULL;
-  parallaxBack = NULL;
-  groundOverlay = NULL;
-  groundUnderlay = NULL;
+  screenshot = nullptr;
+  asteroidImage = nullptr;
+  parallaxBack = nullptr;
+  groundOverlay = nullptr;
+  groundUnderlay = nullptr;
 
 
   // Objects
@@ -335,7 +335,7 @@ void game::update(){
     al_save_bitmap((std::string("screenshots/screenshot_") + convertIntToString(screenshotNumber).c_str() + std::string(".png")).c_str(), al_get_backbuffer(display));
 
     // Snap sound
-    al_play_sample( sound_snap, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+    al_play_sample( sound_snap, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
   }
 
   //Screen shake

@@ -46,7 +46,7 @@ bool game_object::offScreen(){
 void game_object::draw(){
   // Draw image unless dead
   if( !isDead){
-    if( image != NULL){
+    if( image != nullptr){
       al_draw_scaled_bitmap( image, 0, 0, al_get_bitmap_width(image), al_get_bitmap_height(image), x, y, width, height, 0);
     }
   }

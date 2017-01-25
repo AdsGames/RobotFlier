@@ -7,11 +7,14 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
-#include "globals.h"
+#include <allegro5/allegro_native_dialog.h>
+
 #include <time.h>
 #include <math.h>
 #include <fstream>
 #include <sstream>
+
+#include "globals.h"
 
 // Conversions
 extern std::string convertIntToString( int number);

@@ -71,7 +71,7 @@ void addScore( std::string scoreCopy[][2], int newScore, std::string name){
 // Error handling loading functions
 // Checks if file exists
 ALLEGRO_BITMAP *load_bitmap_ex( std::string file){
-  ALLEGRO_BITMAP *temp_image = NULL;
+  ALLEGRO_BITMAP *temp_image = nullptr;
   if( !(temp_image = al_load_bitmap( file.c_str())))
     abort_on_error( std::string("Cannot find image " + file + "\nTry reinstalling from adsgames.net/download/robotflier"));
   return temp_image;
@@ -79,7 +79,7 @@ ALLEGRO_BITMAP *load_bitmap_ex( std::string file){
 
 // Checks if file exists
 ALLEGRO_SAMPLE *load_sample_ex( std::string file){
-  ALLEGRO_SAMPLE *temp_sample = NULL;
+  ALLEGRO_SAMPLE *temp_sample = nullptr;
   if( !(temp_sample = al_load_sample( file.c_str())))
     abort_on_error( std::string("Cannot find sample " + file + "\nTry reinstalling from adsgames.net/download/robotflier"));
   return temp_sample;
@@ -87,7 +87,7 @@ ALLEGRO_SAMPLE *load_sample_ex( std::string file){
 
 // A function to streamline error reporting in file loading
 void abort_on_error( std::string message){
-  al_show_native_message_box( NULL, "Error", "Warning", message.c_str(), NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+  al_show_native_message_box( nullptr, "Error", "Warning", message.c_str(), nullptr, ALLEGRO_MESSAGEBOX_YES_NO);
 	 //set_window_title("Error!");
 	 //if (screen != NULL){
 	 //   set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);

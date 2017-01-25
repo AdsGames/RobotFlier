@@ -11,7 +11,7 @@ init::init(){
   al_set_display_icon( display, the_icon);
 
   //Seed the random number generator with the time
-  srand(time(NULL));
+  srand(time(nullptr));
   random( 0, 100);
 
   //Joystick detector

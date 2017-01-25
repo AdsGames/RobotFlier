@@ -10,6 +10,8 @@
 #define SQUARE 1
 #define PIXEL 2
 
+#include <allegro5/allegro_primitives.h>
+
 #include "globals.h"
 
 class particle{

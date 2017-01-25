@@ -7,6 +7,9 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_color.h>
+
 #include "state.h"
 #include "globals.h"
 #include "tools.h"

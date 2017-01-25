@@ -18,7 +18,7 @@ void powerup::logic(int newMotion, robot *ourRobot){
       ourRobot -> setMagneticTimer( timerLength);
 
     if( settings[SETTING_SOUND])
-      al_play_sample( soundEffect, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+      al_play_sample( soundEffect, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
     isDead = true;
   }
 }
