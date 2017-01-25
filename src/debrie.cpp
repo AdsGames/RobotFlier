@@ -1,19 +1,21 @@
 #include "debrie.h"
 
 // Constructor
-debrie::debrie( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY, int newDamage, float newMotionMultiplier, int newSize) : game_object( newImage, newSoundEffect, newX, newY, newSize){
+debrie::debrie( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY, int newDamage, float newMotionMultiplier, float newAcceleration, int newSize) : game_object( newImage, newSoundEffect, newX, newY){
   if( newSize != -1){
     height = newSize * 8;
     width = newSize * 10;
   }
   motion_multiplier = newMotionMultiplier;
   damage = newDamage;
+  acceleration = newAcceleration;
 }
 
 // Logic
 void debrie::logic( int newMotion, robot *ourRobot){
   // Move across screen
   x -= newMotion * motion_multiplier;
+  motion_multiplier += acceleration;
 
   // Allow for some padding (since we use bounding box)
   int collisionBuffer = height / 3;

@@ -2,10 +2,10 @@
 
 int mouseListener::mouse_x = 0;
 int mouseListener::mouse_y = 0;
-unsigned char mouseListener::mouse_button = 0b00000000;
-unsigned char mouseListener::mouse_pressed = 0b00000000;
-unsigned char mouseListener::mouse_released = 0b00000000;
-unsigned char mouseListener::mouse_old = 0b00000000;
+unsigned char mouseListener::mouse_button = 0;
+unsigned char mouseListener::mouse_pressed = 0;
+unsigned char mouseListener::mouse_released = 0;
+unsigned char mouseListener::mouse_old = 0;
 
 mouseListener::mouseListener(){
 }

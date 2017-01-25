@@ -1,7 +1,7 @@
 #include "powerup.h"
 
 // Constructor
-powerup::powerup( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY, int newTimerLength, int newType) : game_object( newImage, newSoundEffect, newX, newY, 0){
+powerup::powerup( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY, int newTimerLength, int newType) : game_object( newImage, newSoundEffect, newX, newY){
   timerLength = newTimerLength;
   type = newType;
 }

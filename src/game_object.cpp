@@ -1,7 +1,7 @@
 #include "game_object.h"
 
 // Constructor
-game_object::game_object( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY, int newSize){
+game_object::game_object( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY){
   image = newImage;
   soundEffect = newSoundEffect;
   x = newX;

@@ -87,7 +87,7 @@ ALLEGRO_SAMPLE *load_sample_ex( std::string file){
 
 // A function to streamline error reporting in file loading
 void abort_on_error( std::string message){
-  al_show_native_message_box( NULL, "Error", "Warning", "File not found!", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+  al_show_native_message_box( NULL, "Error", "Warning", message.c_str(), NULL, ALLEGRO_MESSAGEBOX_YES_NO);
 	 //set_window_title("Error!");
 	 //if (screen != NULL){
 	 //   set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
@@ -128,52 +128,4 @@ bool collision(float xMin1, float xMax1, float xMin2, float xMax2, float yMin1, 
     return true;
   }
   return false;
-}
-
-
-// Fades
-// Fade in
-void fade_in( ALLEGRO_BITMAP* bmp_orig, int speed){
-  /*BITMAP* bmp_buff;
-
-  if((bmp_buff=create_bitmap(SCREEN_W,SCREEN_H))){
-    int a;
-    if (speed<=0)speed=16;
-
-    for(a=0;a<256;a+=speed){
-      clear(bmp_buff);
-      set_trans_blender(0,0,0,a);
-      draw_trans_sprite(bmp_buff,bmp_orig,0,0);
-      blit(bmp_buff,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-      //allegro_gl_flip();
-    }
-    destroy_bitmap(bmp_buff);
-  }
-  blit(bmp_orig,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-  //allegro_gl_flip();*/
-}
-
-// Fade out
-void fade_out(int speed){
-  /*BITMAP* bmp_orig, *bmp_buff;
-
-  if((bmp_orig=create_bitmap(SCREEN_W,SCREEN_H))){
-    if((bmp_buff=create_bitmap(SCREEN_W,SCREEN_H))){
-      int a;
-      blit(screen,bmp_orig,0,0,0,0,SCREEN_W,SCREEN_H);
-      if (speed<=0)speed=16;
-
-      for(a=255-speed;a>0;a-=speed){
-         clear(bmp_buff);
-         set_trans_blender(0,0,0,a);
-         draw_trans_sprite(bmp_buff,bmp_orig,0,0);
-         blit(bmp_buff,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-         //allegro_gl_flip();
-      }
-    destroy_bitmap(bmp_buff);
-    }
-    destroy_bitmap(bmp_orig);
-  }
-  rectfill(screen,0,0,SCREEN_W,SCREEN_H,makecol(0,0,0));
-  //allegro_gl_flip();*/
 }

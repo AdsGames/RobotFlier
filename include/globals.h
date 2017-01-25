@@ -36,7 +36,7 @@
 #define STAT_DEBRIS 3
 
 //Global variables
-extern unsigned int score;
+extern int score;
 extern int screenshake;
 extern int fps;
 extern int SCREEN_W;

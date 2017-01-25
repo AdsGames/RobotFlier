@@ -243,17 +243,17 @@ void game::update(){
       }
       // Asteroids spawning
       if( (score >= 100 && random(0,50) == 0) || (settings[SETTING_MEGA] && random(0, 20))){
-        debrie newAsteroid( asteroidImage, sound_asteroid, SCREEN_W, random(30,550), 5, 1, random(4,20));
+        debrie newAsteroid( asteroidImage, sound_asteroid, SCREEN_W, random( 30, 400), 5, 1.0f, 0.0f, random(4,20));
         debries.push_back( newAsteroid);
       }
       // Bomb spawning
       if( (score >= 200 && random(0,80) == 0) || (settings[SETTING_MEGA] && random(0, 20))){
-        debrie newBomb( bombImage, sound_bomb, SCREEN_W, random(30,550), 10, 1.6f);
+        debrie newBomb( bombImage, sound_bomb, SCREEN_W, random(30,550), 10, 1.0f, 0.01f);
         debries.push_back( newBomb);
       }
       // Comets spawning
       if( (score >= 300 && random(0,200) == 0) || (settings[SETTING_MEGA] && random(0, 20))){
-        debrie newComet( cometImage, sound_asteroid, SCREEN_W, random(30,550), 5, 2.0f);
+        debrie newComet( cometImage, sound_asteroid, SCREEN_W, random(30,550), 5, 1.4f, 0.01f);
         debries.push_back( newComet);
       }
 
@@ -441,7 +441,7 @@ void game::draw(){
     al_draw_textf( orbitron_12, al_map_rgb( 255, 255, 255), 360, 35, ALLEGRO_ALIGN_LEFT, "Has highscore:%i", check_highscore( scores, score));
 
     // FPS
-    al_draw_textf( orbitron_18, al_map_rgb( 255, 255, 255), SCREEN_W - 100, 25, ALLEGRO_ALIGN_LEFT, "FPS:%f", fps);
+    al_draw_textf( orbitron_18, al_map_rgb( 255, 255, 255), SCREEN_W - 100, 25, ALLEGRO_ALIGN_LEFT, "FPS:%i", fps);
   }
 
   // Mountain Paralax
@@ -471,7 +471,7 @@ void game::draw(){
       al_draw_bitmap( ui_up, hectar.getX() + 15, hectar.getY() - 70 - sin(arrow_animation) * 10, 0);
   }
 
-  // Asteroids
+  // Debris
   for( unsigned int i = 0; i < debries.size(); i++)
     debries.at(i).draw();
 

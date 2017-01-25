@@ -38,6 +38,13 @@ bool closing = false;
 // Current state object
 state *currentState = NULL;
 
+// Functions
+void clean_up();
+void change_state();
+void setup();
+void update();
+void draw();
+
 // Delete game state and free state resources
 void clean_up(){
   delete currentState;

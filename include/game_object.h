@@ -16,7 +16,7 @@
 class game_object{
   public:
     // Constructor
-    game_object( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY, int newSize);
+    game_object( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY);
 
     // Destructor
     ~game_object();
