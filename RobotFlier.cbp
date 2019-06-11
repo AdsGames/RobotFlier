@@ -47,7 +47,6 @@
 					<Add option="-lz" />
 					<Add option="-ljpeg" />
 					<Add option="-lwebp" />
-					<Add option="-lopenal" />
 					<Add option="-ldsound" />
 					<Add option="-lwsock32" />
 					<Add option="-ldumb" />
@@ -98,6 +97,7 @@
 					<Add option="-lgdi32" />
 					<Add option="-lcomdlg32" />
 					<Add option="-lole32" />
+					<Add option="-latomic" />
 					<Add option="-lwinmm" />
 					<Add option="-lkernel32" />
 					<Add option="-lpsapi" />
@@ -110,7 +110,6 @@
 					<Add option="-lz" />
 					<Add option="-ljpeg" />
 					<Add option="-lwebp" />
-					<Add option="-lopenal" />
 					<Add option="-ldsound" />
 					<Add option="-lwsock32" />
 					<Add option="-ldumb" />
@@ -125,10 +124,11 @@
 					<Add option="-logg" />
 					<Add option="-lphysfs" />
 					<Add option="-lgcc" />
-					<Add option="-lpthread" />
+					<Add option="-lwinpthread" />
 					<Add option="-lstdc++" />
+					<Add option="-lgcc" />
 					<Add option="-Wl,-Bdynamic" />
-					<Add option="-lopenal" />
+					<Add option="-lopenal32" />
 				</Linker>
 			</Target>
 		</Build>
@@ -152,9 +152,12 @@
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-std=c++14" />
+			<Add option="-DAL_LIBTYPE_STATIC" />
 			<Add option="-DALLEGRO_STATICLINK" />
 		</Compiler>
 		<Linker>
+			<Add option="-static-libstdc++" />
+			<Add option="-static-libgcc" />
 			<Add option="-static" />
 		</Linker>
 		<Unit filename="include/debrie.h" />
