@@ -14,7 +14,7 @@
 #include "globals.h"
 #include "tools.h"
 
-class init : public state{
+class init : public state {
   public:
     // Construct/deconstruct
     init();

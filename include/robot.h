@@ -16,7 +16,7 @@
 #include "tools.h"
 #include "globals.h"
 
-class robot{
+class robot {
   public:
     robot();
     robot( float newX, float newY);
@@ -28,28 +28,58 @@ class robot{
     void draw_overlay();
 
     // Getters
-    int getHealth(){ return health;}
-    void addHealth( int amount){ health += amount; }
+    int getHealth() {
+      return health;
+    }
+    void addHealth( int amount) {
+      health += amount;
+    }
 
-    float getX(){ return x; }
-    float getY(){ return y; }
+    float getX() {
+      return x;
+    }
+    float getY() {
+      return y;
+    }
 
-    float getWidth(){ return width; }
-    float getHeight(){ return height; }
+    float getWidth() {
+      return width;
+    }
+    float getHeight() {
+      return height;
+    }
 
-    bool isOnGround(){ return onGround; }
-    bool isAlive(){ return alive;}
-    bool isKeyPressed(){ return keyPressed; }
+    bool isOnGround() {
+      return onGround;
+    }
+    bool isAlive() {
+      return alive;
+    }
+    bool isKeyPressed() {
+      return keyPressed;
+    }
 
     // Invincibility
-    bool isInvincible(){ return invincibleTimer > 0;}
-    int getInvincibleTimer(){ return invincibleTimer; }
-    void setInvincibleTimer( int newTimer){ invincibleTimer += newTimer; }
+    bool isInvincible() {
+      return invincibleTimer > 0;
+    }
+    int getInvincibleTimer() {
+      return invincibleTimer;
+    }
+    void setInvincibleTimer( int newTimer) {
+      invincibleTimer += newTimer;
+    }
 
     // Magnetic
-    bool isMagnetic(){ return magneticTimer > 0;}
-    int getMagneticTimer(){ return magneticTimer; }
-    void setMagneticTimer( int newTimer){ magneticTimer += newTimer; }
+    bool isMagnetic() {
+      return magneticTimer > 0;
+    }
+    int getMagneticTimer() {
+      return magneticTimer;
+    }
+    void setMagneticTimer( int newTimer) {
+      magneticTimer += newTimer;
+    }
   protected:
 
   private:
@@ -76,8 +106,8 @@ class robot{
     ALLEGRO_BITMAP *christmas_hat;
 
     // Sounds
-    ALLEGRO_SAMPLE* sound_flame;
-    ALLEGRO_SAMPLE* sound_hitground;
+    ALLEGRO_SAMPLE *sound_flame;
+    ALLEGRO_SAMPLE *sound_hitground;
 
     // Particles
     std::vector<particle> rocketPart;

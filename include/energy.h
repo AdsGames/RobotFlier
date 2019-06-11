@@ -8,10 +8,10 @@
 
 #include "game_object.h"
 
-class energy : public game_object{
+class energy : public game_object {
   public:
     // Constructor
-    energy( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY);
+    energy( ALLEGRO_BITMAP *newImage, ALLEGRO_SAMPLE *newSoundEffect, int newX, int newY);
 
     // Logic override
     void logic(int newMotion, robot *ourRobot);

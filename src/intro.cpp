@@ -1,19 +1,19 @@
 #include "intro.h"
 
 // Construct state
-intro::intro(){
+intro::intro() {
   // Load intro image
   img_intro = load_bitmap_ex("images/backgrounds/intro.png");
 }
 
 // Destruct state
-intro::~intro(){
+intro::~intro() {
   // Clen up
   al_destroy_bitmap( img_intro);
 }
 
 // Update (goto menu!)
-void intro::update(){
+void intro::update() {
   // Intro screen
   //fade_in( img_intro, 16);
   al_rest( 1.0);

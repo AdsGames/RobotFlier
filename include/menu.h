@@ -25,7 +25,7 @@
 #include "keyListener.h"
 #include "joystickListener.h"
 
-class menu : public state{
+class menu : public state {
   public:
     // Construct/deconstruct
     menu();
@@ -96,7 +96,7 @@ class menu : public state{
     ALLEGRO_BITMAP *ui_controls;
 
     // Music
-    ALLEGRO_SAMPLE* music_mainmenu;
+    ALLEGRO_SAMPLE *music_mainmenu;
 };
 
 #endif // MENU_H

@@ -16,10 +16,10 @@
 #include "tools.h"
 #include "robot.h"
 
-class game_object{
+class game_object {
   public:
     // Constructor
-    game_object( ALLEGRO_BITMAP* newImage, ALLEGRO_SAMPLE* newSoundEffect, int newX, int newY);
+    game_object( ALLEGRO_BITMAP *newImage, ALLEGRO_SAMPLE *newSoundEffect, int newX, int newY);
 
     // Destructor
     ~game_object();
@@ -37,10 +37,10 @@ class game_object{
     void draw();
   protected:
     // Images
-    ALLEGRO_BITMAP* image;
+    ALLEGRO_BITMAP *image;
 
     // Sounds
-    ALLEGRO_SAMPLE* soundEffect;
+    ALLEGRO_SAMPLE *soundEffect;
 
     // Position
     float x, y;

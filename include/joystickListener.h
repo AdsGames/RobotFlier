@@ -31,8 +31,7 @@
 #include <iostream>
 #include <allegro5/allegro.h>
 
-class joystickListener
-{
+class joystickListener {
   public:
     joystickListener();
     virtual ~joystickListener();

@@ -11,7 +11,7 @@
 #include "globals.h"
 #include "tools.h"
 
-class intro : public state{
+class intro : public state {
   public:
     // Construct/deconstruct
     intro();
@@ -22,7 +22,7 @@ class intro : public state{
     void draw() {};
   private:
     // Splash image
-    ALLEGRO_BITMAP* img_intro;
+    ALLEGRO_BITMAP *img_intro;
 };
 
 #endif // INTRO_H

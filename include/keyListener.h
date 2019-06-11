@@ -12,8 +12,7 @@
 #include <iostream>
 #include <allegro5/allegro.h>
 
-class keyListener
-{
+class keyListener {
   public:
     keyListener();
     virtual ~keyListener();

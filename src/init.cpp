@@ -1,7 +1,7 @@
 #include "init.h"
 
 // Construct state
-init::init(){
+init::init() {
   // Title
   al_set_window_title( display, "A.D.S. Games - Robot Flier");
 
@@ -29,6 +29,6 @@ init::init(){
 }
 
 // Destruct state
-init::~init(){
+init::~init() {
 
 }

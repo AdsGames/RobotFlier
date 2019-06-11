@@ -14,7 +14,7 @@
 
 #include "globals.h"
 
-class particle{
+class particle {
   public:
     float x;
     float y;
