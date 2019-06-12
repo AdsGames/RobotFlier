@@ -29,13 +29,11 @@ class game : public state {
   public:
     // Construct/deconstruct
     game();
-    ~game();
+    virtual ~game();
 
     // Override parent
-    void update();
-    void draw();
-
-  protected:
+    virtual void update() override;
+    virtual void draw() override;
 
   private:
     // Change theme

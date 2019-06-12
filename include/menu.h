@@ -29,18 +29,16 @@ class menu : public state {
   public:
     // Construct/deconstruct
     menu();
-    ~menu();
+    virtual ~menu();
 
     // Override parent
-    void update();
-    void draw();
-
-  protected:
+    virtual void update() override;
+    virtual void draw() override;
 
   private:
     // Settings
-    void read_settings();
-    void write_settings();
+    static void read_settings();
+    static void write_settings();
 
     // Vars
     int animation_pos;

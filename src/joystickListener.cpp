@@ -7,17 +7,6 @@ bool joystickListener::lastTicksButton[JOY_MAX_BUTTONS] = { false};
 int joystickListener::lastButtonPressed = -1;
 int joystickListener::lastButtonReleased = -1;
 
-
-// Constructor
-joystickListener::joystickListener() {
-
-}
-
-// Destructor
-joystickListener::~joystickListener() {
-
-}
-
 // For allegro 5, we use events
 void joystickListener::on_event (ALLEGRO_EVENT_TYPE event_type, int buttoncode) {
   // Button down

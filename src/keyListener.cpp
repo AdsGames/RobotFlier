@@ -7,16 +7,6 @@ bool keyListener::lastTicksKey[ALLEGRO_KEY_MAX] = { false};
 int keyListener::lastKeyPressed = -1;
 int keyListener::lastKeyReleased = -1;
 
-// Constructor
-keyListener::keyListener() {
-
-}
-
-// Destructor
-keyListener::~keyListener() {
-
-}
-
 // For allegro 5, we use events
 void keyListener::on_event (ALLEGRO_EVENT_TYPE event_type, int keycode) {
   // Key down

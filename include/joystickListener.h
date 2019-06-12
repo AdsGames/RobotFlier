@@ -33,11 +33,8 @@
 
 class joystickListener {
   public:
-    joystickListener();
-    virtual ~joystickListener();
-
-    void on_event (ALLEGRO_EVENT_TYPE event_type, int keycode);
-    void update();
+    static void on_event (ALLEGRO_EVENT_TYPE event_type, int buttoncode);
+    static void update();
 
     static bool button[JOY_MAX_BUTTONS];
     static bool buttonPressed[JOY_MAX_BUTTONS];
@@ -45,7 +42,6 @@ class joystickListener {
 
     static int lastButtonPressed;
     static int lastButtonReleased;
-  protected:
   private:
     static bool lastTicksButton[JOY_MAX_BUTTONS];
 };

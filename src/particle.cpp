@@ -1,18 +1,15 @@
 #include "particle.h"
 
 // Constructor
-particle::particle (int newX, int newY, ALLEGRO_COLOR newColor, int newXVel, int newYVel, int newSize, int newType) {
-  x = newX;
-  y = newY;
+particle::particle (int x, int y, ALLEGRO_COLOR color, int velocity_x, int velocity_y, int size, int type)
+  : x(x),
+    y(y),
+    size(size),
+    type(type),
+    velocity_x(velocity_x),
+    velocity_y(velocity_y),
+    color(color) {
 
-  color = newColor;
-
-  size = newSize;
-
-  type = newType;
-
-  velocity_x = newXVel;
-  velocity_y = newYVel;
 }
 
 // Destructor
@@ -21,9 +18,15 @@ particle::~particle() {
 }
 
 // Logic
-void particle::logic() {
+void particle::update() {
   x += velocity_x;
   y += velocity_y;
+}
+
+// Scrolly by
+void particle::scroll(float x, float y) {
+  this -> x += x;
+  this -> y += y;
 }
 
 // Draw

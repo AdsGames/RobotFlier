@@ -21,6 +21,7 @@
 					<Add option="-lallegro_monolith-static" />
 					<Add option="-lfreetype" />
 					<Add option="-lharfbuzz" />
+					<Add option="-lfreetype" />
 					<Add option="-lwinpthread" />
 					<Add option="-lbz2" />
 					<Add option="-lusp10" />
@@ -28,7 +29,6 @@
 					<Add option="-ldwrite" />
 					<Add option="-lpng16" />
 					<Add option="-lz" />
-					<Add option="-lfreetype" />
 					<Add option="-lgraphite2" />
 					<Add option="-lgdiplus" />
 					<Add option="-luser32" />
@@ -44,7 +44,6 @@
 					<Add option="-lopengl32" />
 					<Add option="-lglu32" />
 					<Add option="-lpng" />
-					<Add option="-lz" />
 					<Add option="-ljpeg" />
 					<Add option="-lwebp" />
 					<Add option="-ldsound" />
@@ -58,12 +57,9 @@
 					<Add option="-logg" />
 					<Add option="-lopusfile" />
 					<Add option="-lopus" />
-					<Add option="-logg" />
 					<Add option="-lphysfs" />
 					<Add option="-lgcc" />
-					<Add option="-lwinpthread" />
 					<Add option="-lstdc++" />
-					<Add option="-lgcc" />
 					<Add option="-Wl,-Bdynamic" />
 					<Add option="-lopenal" />
 				</Linker>
@@ -83,6 +79,7 @@
 					<Add option="-lallegro_monolith-static" />
 					<Add option="-lfreetype" />
 					<Add option="-lharfbuzz" />
+					<Add option="-lfreetype" />
 					<Add option="-lwinpthread" />
 					<Add option="-lbz2" />
 					<Add option="-lusp10" />
@@ -90,7 +87,6 @@
 					<Add option="-ldwrite" />
 					<Add option="-lpng16" />
 					<Add option="-lz" />
-					<Add option="-lfreetype" />
 					<Add option="-lgraphite2" />
 					<Add option="-lgdiplus" />
 					<Add option="-luser32" />
@@ -107,7 +103,6 @@
 					<Add option="-lopengl32" />
 					<Add option="-lglu32" />
 					<Add option="-lpng" />
-					<Add option="-lz" />
 					<Add option="-ljpeg" />
 					<Add option="-lwebp" />
 					<Add option="-ldsound" />
@@ -121,20 +116,16 @@
 					<Add option="-logg" />
 					<Add option="-lopusfile" />
 					<Add option="-lopus" />
-					<Add option="-logg" />
 					<Add option="-lphysfs" />
 					<Add option="-lgcc" />
-					<Add option="-lwinpthread" />
 					<Add option="-lstdc++" />
-					<Add option="-lgcc" />
 					<Add option="-Wl,-Bdynamic" />
-					<Add option="-lopenal32" />
+					<Add option="-lopenal" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wnon-virtual-dtor" />
-			<Add option="-Wshadow" />
 			<Add option="-Winit-self" />
 			<Add option="-Wredundant-decls" />
 			<Add option="-Wcast-align" />

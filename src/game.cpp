@@ -305,23 +305,23 @@ void game::update() {
         // Letters
         if (newkey >= ALLEGRO_KEY_A && newkey <= ALLEGRO_KEY_Z && edittext.length() < 14) {
           iter = edittext.insert (iter, newkey + 96 - (keyListener::key[ALLEGRO_KEY_LSHIFT] * 32));
-          iter++;
+          ++iter;
         }
         // Numbers
         else if (newkey >= ALLEGRO_KEY_0 && newkey <= ALLEGRO_KEY_9 && edittext.length() < 14) {
           iter = edittext.insert (iter, newkey + 21);
-          iter++;
+          ++iter;
         }
         // Some other, "special" key was pressed, handle it here
         else if (newkey == ALLEGRO_KEY_BACKSPACE && iter != edittext.begin()) {
-          iter--;
+          --iter;
           iter = edittext.erase (iter);
         }
         else if (newkey == ALLEGRO_KEY_RIGHT && iter != edittext.end()) {
-          iter++;
+          ++iter;
         }
         else if (newkey == ALLEGRO_KEY_LEFT && iter != edittext.begin()) {
-          iter--;
+          --iter;
         }
       }
 
@@ -348,7 +348,7 @@ void game::update() {
     write.close();
 
     // Save to file
-    al_save_bitmap ((std::string ("screenshots/screenshot_") + convertIntToString (screenshotNumber).c_str() + std::string (".png")).c_str(), al_get_backbuffer (display));
+    al_save_bitmap ((std::string("screenshots/screenshot_") + std::to_string (screenshotNumber).c_str() + ".png").c_str(), al_get_backbuffer (display));
 
     // Snap sound
     al_play_sample (sound_snap, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);

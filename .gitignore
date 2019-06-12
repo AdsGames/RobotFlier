@@ -43,3 +43,4 @@ Icon
 *.res
 *.dll
 *.exe
+CppCheckResults.xml

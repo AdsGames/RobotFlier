@@ -8,7 +8,7 @@
 #define INIT_H
 
 #include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
+
 
 #include "state.h"
 #include "globals.h"
@@ -18,15 +18,11 @@ class init : public state {
   public:
     // Construct/deconstruct
     init();
-    ~init();
+    virtual ~init();
 
     // Override parent
-    void update() {};
-    void draw() {};
-
-  protected:
-
-  private:
+    virtual void update() override {};
+    virtual void draw() override {};
 };
 
 #endif // INIT_H

@@ -7,13 +7,6 @@ unsigned char mouseListener::mouse_pressed = 0;
 unsigned char mouseListener::mouse_released = 0;
 unsigned char mouseListener::mouse_old = 0;
 
-mouseListener::mouseListener() {
-}
-
-mouseListener::~mouseListener() {
-}
-
-
 // Check those buttons!
 void mouseListener::update() {
   // Get state

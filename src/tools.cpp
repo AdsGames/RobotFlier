@@ -1,28 +1,11 @@
 #include "tools.h"
 
-// Conversions
-// Convert int to string
-std::string convertIntToString (int number) {
-  std::stringstream ss;
-  ss << number;
-  return ss.str();
-}
-
-// Convert string to int
-int convertStringToInt (std::string newString) {
-  int result;
-  std::stringstream (newString) >> result;
-  return result;
-}
-
+#include <allegro5/allegro_ttf.h>
 
 // Scores
 // Check highscores
-bool check_highscore (std::string scoreCopy[][2], int newScore) {
-  if (newScore > atoi (scoreCopy[9][1].c_str()))
-    return true;
-
-  return false;
+bool check_highscore (std::string scoreCopy[][2], int score) {
+  return (score > atoi (scoreCopy[9][1].c_str()));
 }
 
 // Read High Scores
@@ -55,7 +38,7 @@ void addScore (std::string scoreCopy[][2], int newScore, std::string name) {
         scoreCopy[t][0] = scoreCopy[t - 1][0];
       }
 
-      scoreCopy[i][1] = convertIntToString (newScore);
+      scoreCopy[i][1] = std::to_string (newScore);
       scoreCopy[i][0] = name;
       break;
     }
@@ -87,33 +70,27 @@ ALLEGRO_BITMAP *load_bitmap_ex (std::string file) {
 ALLEGRO_SAMPLE *load_sample_ex (std::string file) {
   ALLEGRO_SAMPLE *temp_sample = nullptr;
 
-  if (! (temp_sample = al_load_sample (file.c_str())))
+  if (!(temp_sample = al_load_sample (file.c_str())))
     abort_on_error (std::string ("Cannot find sample " + file + "\nTry reinstalling from adsgames.net/download/robotflier"));
 
   return temp_sample;
 }
 
-// A function to streamline error reporting in file loading
-void abort_on_error (std::string message) {
-  al_show_native_message_box (nullptr, "Error", "Warning", message.c_str(), nullptr, ALLEGRO_MESSAGEBOX_YES_NO);
-  //set_window_title("Error!");
-  //if (screen != NULL){
-  //   set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
-  //}
-  //allegro_message("%s.\n %s\n", message.c_str());
-
-  exit (-1);
-}
-
 // Checks if file exists
-ALLEGRO_FONT *load_font_ex (std::string file) {
+ALLEGRO_FONT *load_font_ex (std::string file, int size, int flags) {
   ALLEGRO_FONT *temp_font;
 
-  if (! (temp_font = al_load_bitmap_font (file.c_str()))) {
+  if (!(temp_font = al_load_ttf_font(file.c_str(), size, flags))) {
     abort_on_error (std::string ("Cannot find font " + file + "\nTry reinstalling from adsgames.net/download/robotflier"));
   }
 
   return temp_font;
+}
+
+// A function to streamline error reporting in file loading
+void abort_on_error (std::string message) {
+  al_show_native_message_box (nullptr, "Error", "Warning", message.c_str(), nullptr, ALLEGRO_MESSAGEBOX_YES_NO);
+  exit (-1);
 }
 
 // Random number generator. Use int random(highest,lowest);
@@ -123,13 +100,6 @@ int random (int newLowest, int newHighest) {
   int randomNumber; // this doens't work on linux = lowest+int(range*rand()/(RAND_MAX + 1.0));
   randomNumber = rand() % range + lowest;
   return randomNumber;
-}
-
-
-// Math related functions
-// Get distance between 2 points
-float Get2dDistance (float x1, float y1, float x2, float y2) {
-  return sqrt (((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)));
 }
 
 // Function to check for collision

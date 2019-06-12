@@ -28,59 +28,28 @@ class robot {
     void draw_overlay();
 
     // Getters
-    int getHealth() {
-      return health;
-    }
-    void addHealth (int amount) {
-      health += amount;
-    }
+    int getHealth() const;
+    void addHealth (int amount);
 
-    float getX() {
-      return x;
-    }
-    float getY() {
-      return y;
-    }
+    float getX() const;
+    float getY() const;
 
-    float getWidth() {
-      return width;
-    }
-    float getHeight() {
-      return height;
-    }
+    float getWidth() const;
+    float getHeight() const;
 
-    bool isOnGround() {
-      return onGround;
-    }
-    bool isAlive() {
-      return alive;
-    }
-    bool isKeyPressed() {
-      return keyPressed;
-    }
+    bool isOnGround() const;
+    bool isAlive() const;
+    bool isKeyPressed() const;
 
     // Invincibility
-    bool isInvincible() {
-      return invincibleTimer > 0;
-    }
-    int getInvincibleTimer() {
-      return invincibleTimer;
-    }
-    void setInvincibleTimer (int newTimer) {
-      invincibleTimer += newTimer;
-    }
+    bool isInvincible() const;
+    int getInvincibleTimer() const;
+    void setInvincibleTimer (int newTimer);
 
     // Magnetic
-    bool isMagnetic() {
-      return magneticTimer > 0;
-    }
-    int getMagneticTimer() {
-      return magneticTimer;
-    }
-    void setMagneticTimer (int newTimer) {
-      magneticTimer += newTimer;
-    }
-  protected:
+    bool isMagnetic() const;
+    int getMagneticTimer() const;
+    void setMagneticTimer (int newTimer);
 
   private:
     // Robot specific

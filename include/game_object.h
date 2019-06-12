@@ -28,10 +28,10 @@ class game_object {
     void logic (int newMotion);
 
     // Has it been hit?
-    bool dead();
+    bool dead() const;
 
     // Has it passed the screen bounds?
-    bool offScreen();
+    bool offScreen() const;
 
     // Draws the object to screen
     void draw();

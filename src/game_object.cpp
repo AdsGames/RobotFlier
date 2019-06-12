@@ -24,23 +24,20 @@ void game_object::logic (int newMotion) {
   //Update particles
   if (settings[SETTING_PARTICLE_TYPE] != 3) {
     for (unsigned int i = 0; i < parts.size(); i++) {
-      parts.at (i).logic();
-      parts.at (i).x -= newMotion;
+      parts.at (i).update();
+      parts.at (i).scroll(newMotion, 0.0f);
     }
   }
 }
 
 // Has it been hit?
-bool game_object::dead() {
+bool game_object::dead() const {
   return isDead;
 }
 
 // Is the object off screen?
-bool game_object::offScreen() {
-  if (x <= 0 - width)
-    return true;
-
-  return false;
+bool game_object::offScreen() const {
+  return (x <= 0 - width);
 }
 
 // Draw

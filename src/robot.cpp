@@ -1,17 +1,8 @@
 #include "robot.h"
 
 // Constructor
-robot::robot() {
-  // NULLIFY
-  main_robot = nullptr;
-  robotFire = nullptr;
-  robotInvincible = nullptr;
-  robotInvincibleFire = nullptr;
-  robotInvincibleTop = nullptr;
-  robotDie = nullptr;
-  christmas_hat = nullptr;
-  sound_flame = nullptr;
-  sound_hitground = nullptr;
+robot::robot()
+  : robot (0.0f, 0.0f) {
 }
 
 // Constructor
@@ -113,7 +104,7 @@ void robot::logic() {
   }
 
   for (unsigned int i = 0; i < smokePart.size(); i++) {
-    smokePart.at (i).logic();
+    smokePart.at (i).update();
 
     if (random (0, 10) == 0) {
       smokePart.erase (smokePart.begin() + i);
@@ -140,7 +131,7 @@ void robot::logic() {
   }
 
   for (unsigned int i = 0; i < rocketPart.size(); i++) {
-    rocketPart.at (i).logic();
+    rocketPart.at (i).update();
 
     if (random (0, 2) == 0) {
       rocketPart.erase (rocketPart.begin() + i);
@@ -211,14 +202,14 @@ void robot::draw() {
   if (alive) {
     // Invincible
     if (invincibleTimer > 0) {
-      if (!rocket || (rocket && settings[SETTING_PARTICLE_TYPE] != 3))
+      if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3)
         al_draw_bitmap (robotInvincible, x, y, 0);
       else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3)
         al_draw_bitmap (robotInvincibleFire, x, y, 0);
     }
     // Standard
     else {
-      if (!rocket || (rocket && settings[SETTING_PARTICLE_TYPE] != 3))
+      if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3)
         al_draw_bitmap (main_robot, x, y, 0);
       else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3)
         al_draw_bitmap (robotFire, x, y, 0);
@@ -245,4 +236,60 @@ void robot::draw() {
 void robot::draw_overlay() {
   if (alive && invincibleTimer > 0)
     al_draw_bitmap (robotInvincibleTop, x, y, 0);
+}
+
+
+
+// Getters
+int robot::getHealth() const {
+  return health;
+}
+void robot::addHealth (int amount) {
+  health += amount;
+}
+
+float robot::getX() const {
+  return x;
+}
+float robot::getY() const {
+  return y;
+}
+
+float robot::getWidth() const {
+  return width;
+}
+float robot::getHeight() const {
+  return height;
+}
+
+bool robot::isOnGround() const {
+  return onGround;
+}
+bool robot::isAlive() const {
+  return alive;
+}
+bool robot::isKeyPressed() const {
+  return keyPressed;
+}
+
+// Invincibility
+bool robot::isInvincible() const {
+  return invincibleTimer > 0;
+}
+int robot::getInvincibleTimer() const {
+  return invincibleTimer;
+}
+void robot::setInvincibleTimer (int newTimer) {
+  invincibleTimer += newTimer;
+}
+
+// Magnetic
+bool robot::isMagnetic() const {
+  return magneticTimer > 0;
+}
+int robot::getMagneticTimer() const {
+  return magneticTimer;
+}
+void robot::setMagneticTimer (int newTimer) {
+  magneticTimer += newTimer;
 }

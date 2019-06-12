@@ -6,6 +6,7 @@ menu::menu() {
   startMove = false;
   startClicked = false;
   mouse_rocket_up = false;
+  mouseMove = mouseListener::mouse_y;
 
   // Screen on
   mini_screen = MINISTATE_MENU;
@@ -15,7 +16,7 @@ menu::menu() {
 
   // Load intro image
   // Random menu
-  img_menu = load_bitmap_ex ("images/backgrounds/background_" + convertIntToString (random (0, 3)) + ".png");
+  img_menu = load_bitmap_ex ("images/backgrounds/background_" + std::to_string (random (0, 3)) + ".png");
   start = load_bitmap_ex ("images/gui/start.png");
   highscores_button = load_bitmap_ex ("images/gui/highscores.png");
   mouse = load_bitmap_ex ("images/gui/mouse.png");
@@ -291,7 +292,7 @@ void menu::update() {
   }
 
   for (unsigned int i = 0; i < mousePart.size(); i++) {
-    mousePart.at (i).logic();
+    mousePart.at (i).update();
 
     if (random (0, 10) == 0)
       mousePart.erase (mousePart.begin() + i);
