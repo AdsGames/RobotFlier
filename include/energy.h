@@ -11,13 +11,13 @@
 class energy : public game_object {
   public:
     // Constructor
-    energy( ALLEGRO_BITMAP *newImage, ALLEGRO_SAMPLE *newSoundEffect, int newX, int newY);
+    energy (ALLEGRO_BITMAP *newImage, ALLEGRO_SAMPLE *newSoundEffect, int newX, int newY);
 
     // Logic override
-    void logic(int newMotion, robot *ourRobot);
+    void logic (int newMotion, robot *ourRobot);
 
     // Move towards robot
-    void move_towards( float mov_x, float mov_y, float speed);
+    void move_towards (float mov_x, float mov_y, float speed);
 };
 
 #endif

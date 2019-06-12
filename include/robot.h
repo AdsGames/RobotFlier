@@ -19,7 +19,7 @@
 class robot {
   public:
     robot();
-    robot( float newX, float newY);
+    robot (float newX, float newY);
     ~robot();
 
     void load_resources();
@@ -31,7 +31,7 @@ class robot {
     int getHealth() {
       return health;
     }
-    void addHealth( int amount) {
+    void addHealth (int amount) {
       health += amount;
     }
 
@@ -66,7 +66,7 @@ class robot {
     int getInvincibleTimer() {
       return invincibleTimer;
     }
-    void setInvincibleTimer( int newTimer) {
+    void setInvincibleTimer (int newTimer) {
       invincibleTimer += newTimer;
     }
 
@@ -77,7 +77,7 @@ class robot {
     int getMagneticTimer() {
       return magneticTimer;
     }
-    void setMagneticTimer( int newTimer) {
+    void setMagneticTimer (int newTimer) {
       magneticTimer += newTimer;
     }
   protected:

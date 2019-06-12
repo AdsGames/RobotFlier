@@ -27,7 +27,7 @@ class particle {
     int velocity_x;
     int velocity_y;
 
-    particle(int newX, int newY, ALLEGRO_COLOR newColor, int newXVel, int newYVel, int newSize, int newType);
+    particle (int newX, int newY, ALLEGRO_COLOR newColor, int newXVel, int newYVel, int newSize, int newType);
     ~particle();
 
     void logic();

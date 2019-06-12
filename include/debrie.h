@@ -11,10 +11,10 @@
 class debrie : public game_object {
   public:
     // Constructor
-    debrie( ALLEGRO_BITMAP *newImage, ALLEGRO_SAMPLE *newSoundEffect, int newX, int newY, int newDamage, float newMotionMultiplier = 1.0f, float newAcceleration = 0.0f, int newSize = -1);
+    debrie (ALLEGRO_BITMAP *newImage, ALLEGRO_SAMPLE *newSoundEffect, int newX, int newY, int newDamage, float newMotionMultiplier = 1.0f, float newAcceleration = 0.0f, int newSize = -1);
 
     // Logic override
-    void logic( int newMotion, robot *ourRobot);
+    void logic (int newMotion, robot *ourRobot);
   private:
     // Motion multiplier
     float motion_multiplier;

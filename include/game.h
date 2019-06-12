@@ -39,7 +39,7 @@ class game : public state {
 
   private:
     // Change theme
-    void changeTheme( int NewThemeNumber);
+    void changeTheme (int NewThemeNumber);
 
     // Declare bitmaps
     ALLEGRO_BITMAP *screenshot;

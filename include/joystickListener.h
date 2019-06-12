@@ -36,7 +36,7 @@ class joystickListener {
     joystickListener();
     virtual ~joystickListener();
 
-    void on_event( ALLEGRO_EVENT_TYPE event_type, int keycode);
+    void on_event (ALLEGRO_EVENT_TYPE event_type, int keycode);
     void update();
 
     static bool button[JOY_MAX_BUTTONS];

@@ -1,7 +1,7 @@
 #include "particle.h"
 
 // Constructor
-particle::particle(int newX, int newY, ALLEGRO_COLOR newColor, int newXVel, int newYVel, int newSize, int newType) {
+particle::particle (int newX, int newY, ALLEGRO_COLOR newColor, int newXVel, int newYVel, int newSize, int newType) {
   x = newX;
   y = newY;
 
@@ -28,13 +28,13 @@ void particle::logic() {
 
 // Draw
 void particle::draw() {
-  if( type == PIXEL) {
-    al_put_pixel( x, y, color);
+  if (type == PIXEL) {
+    al_put_pixel (x, y, color);
   }
-  else if( type == SQUARE) {
-    al_draw_rectangle( x, y, x + size, y + size, color, 1);
+  else if (type == SQUARE) {
+    al_draw_rectangle (x, y, x + size, y + size, color, 1);
   }
-  else if( type == CIRCLE) {
-    al_draw_circle( x, y, size, color, 1);
+  else if (type == CIRCLE) {
+    al_draw_circle (x, y, size, color, 1);
   }
 }

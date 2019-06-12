@@ -17,7 +17,7 @@ class keyListener {
     keyListener();
     virtual ~keyListener();
 
-    void on_event( ALLEGRO_EVENT_TYPE event_type, int keycode);
+    void on_event (ALLEGRO_EVENT_TYPE event_type, int keycode);
     void update();
 
     static bool key[ALLEGRO_KEY_MAX];
