@@ -79,7 +79,6 @@
 					<Add option="-lallegro_monolith-static" />
 					<Add option="-lfreetype" />
 					<Add option="-lharfbuzz" />
-					<Add option="-lfreetype" />
 					<Add option="-lwinpthread" />
 					<Add option="-lbz2" />
 					<Add option="-lusp10" />
