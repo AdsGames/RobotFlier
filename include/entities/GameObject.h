@@ -11,21 +11,22 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_color.h>
 
+#include "entities/Robot.h"
+#include "entities/Particle.h"
 #include "globals.h"
-#include "particle.h"
 #include "tools.h"
-#include "robot.h"
 
-class game_object {
+
+class GameObject {
   public:
     // Constructor
-    game_object (ALLEGRO_BITMAP *newImage, ALLEGRO_SAMPLE *newSoundEffect, int newX, int newY);
+    GameObject(ALLEGRO_BITMAP *sprite, const int x, const int y);
 
     // Destructor
-    ~game_object();
+    ~GameObject();
 
     // Updates asteroid logic
-    void logic (int newMotion);
+    void logic(int newMotion);
 
     // Has it been hit?
     bool dead() const;
@@ -37,10 +38,7 @@ class game_object {
     void draw();
   protected:
     // Images
-    ALLEGRO_BITMAP *image;
-
-    // Sounds
-    ALLEGRO_SAMPLE *soundEffect;
+    ALLEGRO_BITMAP *sprite;
 
     // Position
     float x, y;
@@ -52,7 +50,7 @@ class game_object {
     bool isDead;
 
     // Particles
-    std::vector<particle> parts;
+    std::vector<Particle> parts;
 
     // Damage
     int damage;

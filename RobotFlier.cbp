@@ -18,50 +18,16 @@
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
-					<Add option="-lallegro_monolith-static" />
-					<Add option="-lfreetype" />
-					<Add option="-lharfbuzz" />
-					<Add option="-lfreetype" />
-					<Add option="-lwinpthread" />
-					<Add option="-lbz2" />
-					<Add option="-lusp10" />
-					<Add option="-lrpcrt4" />
-					<Add option="-ldwrite" />
-					<Add option="-lpng16" />
-					<Add option="-lz" />
-					<Add option="-lgraphite2" />
-					<Add option="-lgdiplus" />
-					<Add option="-luser32" />
-					<Add option="-lgdi32" />
-					<Add option="-lcomdlg32" />
-					<Add option="-lole32" />
-					<Add option="-lwinmm" />
-					<Add option="-lkernel32" />
-					<Add option="-lpsapi" />
-					<Add option="-lshlwapi" />
-					<Add option="-ld3d9" />
-					<Add option="-ldinput8" />
-					<Add option="-lopengl32" />
-					<Add option="-lglu32" />
-					<Add option="-lpng" />
-					<Add option="-ljpeg" />
-					<Add option="-lwebp" />
-					<Add option="-ldsound" />
-					<Add option="-lwsock32" />
-					<Add option="-ldumb" />
-					<Add option="-lm" />
-					<Add option="-lFLAC" />
-					<Add option="-lvorbisfile" />
-					<Add option="-lvorbis" />
-					<Add option="-ltheoradec" />
-					<Add option="-logg" />
-					<Add option="-lopusfile" />
-					<Add option="-lopus" />
-					<Add option="-lphysfs" />
-					<Add option="-lgcc" />
-					<Add option="-lstdc++" />
-					<Add option="-Wl,-Bdynamic" />
-					<Add option="-lopenal" />
+					<Add option="-lallegro" />
+					<Add option="-lallegro_acodec" />
+					<Add option="-lallegro_audio" />
+					<Add option="-lallegro_color" />
+					<Add option="-lallegro_dialog" />
+					<Add option="-lallegro_font" />
+					<Add option="-lallegro_image" />
+					<Add option="-lallegro_main" />
+					<Add option="-lallegro_primitives" />
+					<Add option="-lallegro_ttf" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -76,6 +42,9 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
+					<Add option="-static" />
 					<Add option="-lallegro_monolith-static" />
 					<Add option="-lfreetype" />
 					<Add option="-lharfbuzz" />
@@ -145,45 +114,42 @@
 			<Add option="-DAL_LIBTYPE_STATIC" />
 			<Add option="-DALLEGRO_STATICLINK" />
 		</Compiler>
-		<Linker>
-			<Add option="-static-libstdc++" />
-			<Add option="-static-libgcc" />
-			<Add option="-static" />
-		</Linker>
-		<Unit filename="include/debrie.h" />
-		<Unit filename="include/energy.h" />
+		<Unit filename="include/ScoreTable.h" />
+		<Unit filename="include/entities/Debris.h" />
+		<Unit filename="include/entities/Energy.h" />
+		<Unit filename="include/entities/GameObject.h" />
+		<Unit filename="include/entities/Particle.h" />
+		<Unit filename="include/entities/Powerup.h" />
+		<Unit filename="include/entities/Robot.h" />
 		<Unit filename="include/game.h" />
-		<Unit filename="include/game_object.h" />
 		<Unit filename="include/globals.h" />
 		<Unit filename="include/init.h" />
+		<Unit filename="include/input/joystickListener.h" />
+		<Unit filename="include/input/keyListener.h" />
+		<Unit filename="include/input/mouseListener.h" />
 		<Unit filename="include/intro.h" />
-		<Unit filename="include/joystickListener.h" />
-		<Unit filename="include/keyListener.h" />
 		<Unit filename="include/menu.h" />
-		<Unit filename="include/mouseListener.h" />
-		<Unit filename="include/particle.h" />
-		<Unit filename="include/powerup.h" />
-		<Unit filename="include/robot.h" />
 		<Unit filename="include/state.h" />
 		<Unit filename="include/tools.h" />
 		<Unit filename="res/resources.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
-		<Unit filename="src/debrie.cpp" />
-		<Unit filename="src/energy.cpp" />
+		<Unit filename="src/ScoreTable.cpp" />
+		<Unit filename="src/entities/Debris.cpp" />
+		<Unit filename="src/entities/Energy.cpp" />
+		<Unit filename="src/entities/GameObject.cpp" />
+		<Unit filename="src/entities/Particle.cpp" />
+		<Unit filename="src/entities/Powerup.cpp" />
+		<Unit filename="src/entities/Robot.cpp" />
 		<Unit filename="src/game.cpp" />
-		<Unit filename="src/game_object.cpp" />
 		<Unit filename="src/globals.cpp" />
 		<Unit filename="src/init.cpp" />
+		<Unit filename="src/input/joystickListener.cpp" />
+		<Unit filename="src/input/keyListener.cpp" />
+		<Unit filename="src/input/mouseListener.cpp" />
 		<Unit filename="src/intro.cpp" />
-		<Unit filename="src/joystickListener.cpp" />
-		<Unit filename="src/keyListener.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/menu.cpp" />
-		<Unit filename="src/mouseListener.cpp" />
-		<Unit filename="src/particle.cpp" />
-		<Unit filename="src/powerup.cpp" />
-		<Unit filename="src/robot.cpp" />
 		<Unit filename="src/state.cpp" />
 		<Unit filename="src/tools.cpp" />
 		<Extensions>

@@ -10,26 +10,26 @@
 #include <vector>
 #include <iostream>
 #include "particle.h"
-#include "keyListener.h"
-#include "mouseListener.h"
-#include "joystickListener.h"
+#include "input/keyListener.h"
+#include "input/mouseListener.h"
+#include "input/joystickListener.h"
 #include "tools.h"
 #include "globals.h"
 
-class robot {
+class Robot {
   public:
-    robot();
-    robot (float newX, float newY);
-    ~robot();
+    Robot();
+    Robot(float x, float y);
+    ~Robot();
 
-    void load_resources();
+    void loadResources();
     void logic();
     void draw();
-    void draw_overlay();
+    void drawOverlay();
 
     // Getters
     int getHealth() const;
-    void addHealth (int amount);
+    void addHealth(int amount);
 
     float getX() const;
     float getY() const;
@@ -44,12 +44,12 @@ class robot {
     // Invincibility
     bool isInvincible() const;
     int getInvincibleTimer() const;
-    void setInvincibleTimer (int newTimer);
+    void setInvincibleTimer(int time);
 
     // Magnetic
     bool isMagnetic() const;
     int getMagneticTimer() const;
-    void setMagneticTimer (int newTimer);
+    void setMagneticTimer(int time);
 
   private:
     // Robot specific
@@ -66,21 +66,21 @@ class robot {
     bool keyPressed;
 
     // Images
-    ALLEGRO_BITMAP *main_robot;
+    ALLEGRO_BITMAP *mainRobot;
     ALLEGRO_BITMAP *robotFire;
     ALLEGRO_BITMAP *robotInvincible;
     ALLEGRO_BITMAP *robotInvincibleFire;
     ALLEGRO_BITMAP *robotInvincibleTop;
     ALLEGRO_BITMAP *robotDie;
-    ALLEGRO_BITMAP *christmas_hat;
+    ALLEGRO_BITMAP *christmasHat;
 
     // Sounds
-    ALLEGRO_SAMPLE *sound_flame;
-    ALLEGRO_SAMPLE *sound_hitground;
+    ALLEGRO_SAMPLE *soundFlame;
+    ALLEGRO_SAMPLE *soundHitground;
 
     // Particles
-    std::vector<particle> rocketPart;
-    std::vector<particle> smokePart;
+    std::vector<Particle> rocketPart;
+    std::vector<Particle> smokePart;
 };
 
 #endif // ROBOT_H

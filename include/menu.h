@@ -17,13 +17,15 @@
 #include <vector>
 #include <time.h>
 
+#include "entities/Particle.h"
+
 #include "state.h"
 #include "globals.h"
 #include "tools.h"
-#include "particle.h"
-#include "mouseListener.h"
-#include "keyListener.h"
-#include "joystickListener.h"
+#include "ScoreTable.h"
+#include "input/mouseListener.h"
+#include "input/keyListener.h"
+#include "input/joystickListener.h"
 
 class menu : public state {
   public:
@@ -40,6 +42,9 @@ class menu : public state {
     static void read_settings();
     static void write_settings();
 
+    // Score table
+    ScoreTable highscores;
+
     // Vars
     int animation_pos;
 
@@ -50,8 +55,8 @@ class menu : public state {
     bool mouse_rocket_up;
 
     // Particles
-    std::vector <particle> mousePart;
-    std::vector <particle> menuPart;
+    std::vector <Particle> mousePart;
+    std::vector <Particle> menuPart;
 
     // Images
     ALLEGRO_BITMAP *buffer;

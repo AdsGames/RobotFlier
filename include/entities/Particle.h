@@ -14,10 +14,10 @@
 
 #include "globals.h"
 
-class particle {
+class Particle {
   public:
-    particle (int x, int y, ALLEGRO_COLOR color, int velocity_x, int velocity_y, int size, int type);
-    ~particle();
+    Particle(int x, int y, ALLEGRO_COLOR color, int velocity_x, int velocity_y, int size, int type);
+    ~Particle();
 
     void update();
     void scroll(float x, float y);

@@ -14,7 +14,7 @@
 
 class keyListener {
   public:
-    static void on_event (ALLEGRO_EVENT_TYPE event_type, int keycode);
+    static void on_event(ALLEGRO_EVENT_TYPE event_type, int keycode);
     static void update();
 
     static bool key[ALLEGRO_KEY_MAX];

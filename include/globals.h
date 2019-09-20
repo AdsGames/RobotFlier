@@ -37,7 +37,6 @@ extern int SCREEN_H;
 
 // Data
 extern int stats[4];
-extern std::string scores[10][2];
 extern int settings[11];
 
 // Is the joystick enabled?

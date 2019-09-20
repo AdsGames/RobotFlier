@@ -33,7 +33,7 @@
 
 class joystickListener {
   public:
-    static void on_event (ALLEGRO_EVENT_TYPE event_type, int buttoncode);
+    static void on_event(ALLEGRO_EVENT_TYPE event_type, int buttoncode);
     static void update();
 
     static bool button[JOY_MAX_BUTTONS];

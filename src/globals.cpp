@@ -10,7 +10,6 @@ int SCREEN_H = 600;
 
 // Data
 int stats[4];
-std::string scores[10][2];
 int settings[11];
 
 // Is the joystick enabled?

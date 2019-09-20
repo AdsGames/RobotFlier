@@ -14,15 +14,16 @@
 #include "globals.h"
 #include "tools.h"
 
-#include "energy.h"
-#include "debrie.h"
-#include "powerup.h"
-#include "particle.h"
+#include "entities/Energy.h"
+#include "entities/Debris.h"
+#include "entities/Powerup.h"
+#include "entities/Particle.h"
+#include "entities/Robot.h"
 #include "globals.h"
-#include "mouseListener.h"
-#include "keyListener.h"
-#include "joystickListener.h"
-#include "robot.h"
+#include "ScoreTable.h"
+#include "input/mouseListener.h"
+#include "input/keyListener.h"
+#include "input/joystickListener.h"
 
 // Game class
 class game : public state {
@@ -36,8 +37,11 @@ class game : public state {
     virtual void draw() override;
 
   private:
+    // Score table
+    ScoreTable highscores;
+
     // Change theme
-    void changeTheme (int NewThemeNumber);
+    void changeTheme(int NewThemeNumber);
 
     // Declare bitmaps
     ALLEGRO_BITMAP *screenshot;
@@ -79,7 +83,7 @@ class game : public state {
     ALLEGRO_SAMPLE *music_death;
 
     // Our robot
-    robot hectar;
+    Robot hectar;
 
     // Declare integers
     int scroll;
@@ -97,9 +101,9 @@ class game : public state {
     std::string::iterator iter;
 
     // Containers of objects
-    std::vector<energy> energys;
-    std::vector<debrie> debries;
-    std::vector<powerup> powerups;
+    std::vector<Energy> energys;
+    std::vector<Debris> debries;
+    std::vector<Powerup> powerups;
 };
 
 #endif // GAME_H

@@ -44,3 +44,4 @@ Icon
 *.dll
 *.exe
 CppCheckResults.xml
+scores.dat
