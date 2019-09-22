@@ -329,7 +329,7 @@ void game::update() {
       }
 
       if(keyListener::key[ALLEGRO_KEY_ENTER] || joystickListener::buttonPressed[JOY_XBOX_START] || joystickListener::buttonPressed[JOY_XBOX_A]) {
-        highscores.add(edittext ,score);
+        highscores.add(edittext, score);
         set_next_state(STATE_MENU);
       }
     }
