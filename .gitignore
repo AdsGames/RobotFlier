@@ -45,3 +45,4 @@ Icon
 *.exe
 CppCheckResults.xml
 scores.dat
+build/screenshots
