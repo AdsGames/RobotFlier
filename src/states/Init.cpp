@@ -1,4 +1,4 @@
-#include "init.h"
+#include "Init.h"
 
 // Construct state
 init::init() {

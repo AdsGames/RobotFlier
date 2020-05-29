@@ -9,12 +9,14 @@
 
 #include <vector>
 #include <iostream>
-#include "particle.h"
-#include "input/keyListener.h"
-#include "input/mouseListener.h"
-#include "input/joystickListener.h"
-#include "tools.h"
-#include "globals.h"
+
+#include "Particle.h"
+
+#include "../input/keyListener.h"
+#include "../input/mouseListener.h"
+#include "../input/joystickListener.h"
+#include "../helpers/tools.h"
+#include "../constants/globals.h"
 
 class Robot {
   public:

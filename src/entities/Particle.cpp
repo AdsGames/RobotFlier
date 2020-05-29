@@ -1,4 +1,4 @@
-#include "entities/Particle.h"
+#include "Particle.h"
 
 // Constructor
 Particle::Particle(int x, int y, ALLEGRO_COLOR color, int velocity_x, int velocity_y, int size, int type)

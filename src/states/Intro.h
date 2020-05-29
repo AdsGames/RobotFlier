@@ -7,9 +7,9 @@
 #ifndef INTRO_H
 #define INTRO_H
 
-#include "state.h"
-#include "globals.h"
-#include "tools.h"
+#include "State.h"
+#include "../constants/globals.h"
+#include "../helpers/tools.h"
 
 class intro : public state {
   public:

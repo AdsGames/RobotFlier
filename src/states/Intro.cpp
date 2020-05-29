@@ -1,4 +1,4 @@
-#include "intro.h"
+#include "Intro.h"
 
 // Construct state
 intro::intro() {

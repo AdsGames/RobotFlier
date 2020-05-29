@@ -1,4 +1,4 @@
-#include "input/mouseListener.h"
+#include "mouseListener.h"
 
 int mouseListener::mouse_x = 0;
 int mouseListener::mouse_y = 0;

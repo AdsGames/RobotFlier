@@ -12,15 +12,17 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_ttf.h>
 
-#include "state.h"
-#include "init.h"
-#include "intro.h"
-#include "menu.h"
-#include "game.h"
+#include "states/Game.h"
+#include "states/Init.h"
+#include "states/Intro.h"
+#include "states/Menu.h"
+#include "states/Game.h"
+
 #include "input/mouseListener.h"
 #include "input/keyListener.h"
 #include "input/joystickListener.h"
-#include "globals.h"
+
+#include "constants/globals.h"
 
 // Events
 ALLEGRO_EVENT_QUEUE *event_queue = nullptr;

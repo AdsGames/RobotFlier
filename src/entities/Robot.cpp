@@ -1,4 +1,4 @@
-#include "entities/Robot.h"
+#include "Robot.h"
 
 // Constructor
 Robot::Robot()

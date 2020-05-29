@@ -15,7 +15,6 @@
 				<Compiler>
 					<Add option="-Og" />
 					<Add option="-g" />
-					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-lallegro" />
@@ -114,44 +113,44 @@
 			<Add option="-DAL_LIBTYPE_STATIC" />
 			<Add option="-DALLEGRO_STATICLINK" />
 		</Compiler>
-		<Unit filename="include/ScoreTable.h" />
-		<Unit filename="include/entities/Debris.h" />
-		<Unit filename="include/entities/Energy.h" />
-		<Unit filename="include/entities/GameObject.h" />
-		<Unit filename="include/entities/Particle.h" />
-		<Unit filename="include/entities/Powerup.h" />
-		<Unit filename="include/entities/Robot.h" />
-		<Unit filename="include/game.h" />
-		<Unit filename="include/globals.h" />
-		<Unit filename="include/init.h" />
-		<Unit filename="include/input/joystickListener.h" />
-		<Unit filename="include/input/keyListener.h" />
-		<Unit filename="include/input/mouseListener.h" />
-		<Unit filename="include/intro.h" />
-		<Unit filename="include/menu.h" />
-		<Unit filename="include/state.h" />
-		<Unit filename="include/tools.h" />
 		<Unit filename="res/resources.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
-		<Unit filename="src/ScoreTable.cpp" />
+		<Unit filename="src/constants/globals.cpp" />
+		<Unit filename="src/constants/globals.h" />
 		<Unit filename="src/entities/Debris.cpp" />
+		<Unit filename="src/entities/Debris.h" />
 		<Unit filename="src/entities/Energy.cpp" />
+		<Unit filename="src/entities/Energy.h" />
 		<Unit filename="src/entities/GameObject.cpp" />
+		<Unit filename="src/entities/GameObject.h" />
 		<Unit filename="src/entities/Particle.cpp" />
+		<Unit filename="src/entities/Particle.h" />
 		<Unit filename="src/entities/Powerup.cpp" />
+		<Unit filename="src/entities/Powerup.h" />
 		<Unit filename="src/entities/Robot.cpp" />
-		<Unit filename="src/game.cpp" />
-		<Unit filename="src/globals.cpp" />
-		<Unit filename="src/init.cpp" />
+		<Unit filename="src/entities/Robot.h" />
+		<Unit filename="src/helpers/tools.cpp" />
+		<Unit filename="src/helpers/tools.h" />
 		<Unit filename="src/input/joystickListener.cpp" />
+		<Unit filename="src/input/joystickListener.h" />
 		<Unit filename="src/input/keyListener.cpp" />
+		<Unit filename="src/input/keyListener.h" />
 		<Unit filename="src/input/mouseListener.cpp" />
-		<Unit filename="src/intro.cpp" />
+		<Unit filename="src/input/mouseListener.h" />
 		<Unit filename="src/main.cpp" />
-		<Unit filename="src/menu.cpp" />
-		<Unit filename="src/state.cpp" />
-		<Unit filename="src/tools.cpp" />
+		<Unit filename="src/states/ScoreTable.cpp" />
+		<Unit filename="src/states/ScoreTable.h" />
+		<Unit filename="src/states/game.cpp" />
+		<Unit filename="src/states/game.h" />
+		<Unit filename="src/states/init.cpp" />
+		<Unit filename="src/states/init.h" />
+		<Unit filename="src/states/intro.cpp" />
+		<Unit filename="src/states/intro.h" />
+		<Unit filename="src/states/menu.cpp" />
+		<Unit filename="src/states/menu.h" />
+		<Unit filename="src/states/state.cpp" />
+		<Unit filename="src/states/state.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

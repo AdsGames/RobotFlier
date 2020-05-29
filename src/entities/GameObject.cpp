@@ -1,4 +1,4 @@
-#include "entities/GameObject.h"
+#include "GameObject.h"
 
 // Constructor
 GameObject::GameObject(ALLEGRO_BITMAP *sprite, const int x, const int y) {
