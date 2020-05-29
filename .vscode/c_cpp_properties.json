@@ -1,0 +1,11 @@
+{
+  "configurations": [
+    {
+      "name": "Default",
+      "intelliSenseMode": "gcc-x86",
+      "cStandard": "c11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
