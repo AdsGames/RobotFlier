@@ -3,20 +3,19 @@
 #include <fstream>
 
 // Default CTOR
-ScoreTable::ScoreTable()
-  : ScoreTable("scores.dat") {
-
-}
+ScoreTable::ScoreTable() : ScoreTable("scores.dat") {}
 
 // Pass file to CTOR
-ScoreTable::ScoreTable(const std::string &path)
-  : path(path),
-    default_table("Allan\n600\nDanward\n500\nL.K.\n400\nDudefaceIII\n300\nJohnny\n200\nSlimeKnight\n175\nBilly\n150\nJimothy\n125\nCarter\n100\nAndrew\n10") {
-
-  for(int i = 0; i < TABLE_SIZE; i++)
+ScoreTable::ScoreTable(const std::string& path)
+    : path(path),
+      default_table(
+          "Allan\n600\nDanward\n500\nL.K."
+          "\n400\nDudefaceIII\n300\nJohnny\n200\nSlimeKnight\n175\nBilly\n150\n"
+          "Jimothy\n125\nCarter\n100\nAndrew\n10") {
+  for (int i = 0; i < TABLE_SIZE; i++)
     scores[i] = 0;
 
-  if(!read()) {
+  if (!read()) {
     create();
     read();
   }
@@ -26,7 +25,7 @@ ScoreTable::ScoreTable(const std::string &path)
 bool ScoreTable::create() {
   std::ofstream w(path);
 
-  if(!w) {
+  if (!w) {
     w.close();
     return false;
   }
@@ -41,12 +40,12 @@ bool ScoreTable::create() {
 bool ScoreTable::read() {
   std::ifstream r(path);
 
-  if(!r) {
+  if (!r) {
     r.close();
     return false;
   }
 
-  for(int i = 0; i < TABLE_SIZE; i++) {
+  for (int i = 0; i < TABLE_SIZE; i++) {
     r >> names[i];
     r >> scores[i];
   }
@@ -60,12 +59,12 @@ bool ScoreTable::read() {
 bool ScoreTable::write() {
   std::ofstream w(path);
 
-  if(!w) {
+  if (!w) {
     w.close();
     return false;
   }
 
-  for(int i = 0; i < TABLE_SIZE; i++) {
+  for (int i = 0; i < TABLE_SIZE; i++) {
     w << names[i] << "\n" << scores[i] << "\n";
   }
 
@@ -75,19 +74,19 @@ bool ScoreTable::write() {
 }
 
 // Add score
-void ScoreTable::add(const std::string &name, int score) {
+void ScoreTable::add(const std::string& name, int score) {
   // Update List
-  for(int i = 0; i < TABLE_SIZE; i++) {
-    if(score > scores[i]) {
-      for(int t = 9; t > i; t--) {
+  for (int i = 0; i < TABLE_SIZE; i++) {
+    if (score > scores[i]) {
+      for (int t = 9; t > i; t--) {
         scores[t] = scores[t - 1];
-        names[t] = names[t - 1];
+        names[t]  = names[t - 1];
       }
 
       scores[i] = score;
-      names[i] = name;
+      names[i]  = name;
 
-      if(name == "") {
+      if (name == "") {
         names[i] = "Player";
       }
 

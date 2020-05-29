@@ -9,19 +9,24 @@
 #include "GameObject.h"
 
 class Powerup : public GameObject {
-  public:
-    // Constructor
-    Powerup(ALLEGRO_BITMAP *sprite, ALLEGRO_SAMPLE *sound, const int x, const int y, const int timerLength, const int type);
+ public:
+  // Constructor
+  Powerup(ALLEGRO_BITMAP* sprite,
+          ALLEGRO_SAMPLE* sound,
+          const int       x,
+          const int       y,
+          const int       timerLength,
+          const int       type);
 
-    // Logic override
-    void logic(const int motion, Robot *robot);
+  // Logic override
+  void logic(const int motion, Robot* robot);
 
-    // Vars
-    int timerLength;
-    int type;
-  private:
-    ALLEGRO_SAMPLE *sound;
+  // Vars
+  int timerLength;
+  int type;
+
+ private:
+  ALLEGRO_SAMPLE* sound;
 };
 
 #endif
-

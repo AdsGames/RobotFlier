@@ -8,19 +8,19 @@
 #define TOOLS_H
 
 #include <allegro5/allegro_native_dialog.h>
-
-#include <time.h>
 #include <math.h>
+#include <time.h>
+
 #include <fstream>
 #include <sstream>
 
 #include "../constants/globals.h"
 
 // Error handling loading functions
-extern ALLEGRO_BITMAP *load_bitmap_ex(std::string file);
-extern ALLEGRO_SAMPLE *load_sample_ex(std::string file);
-extern ALLEGRO_SAMPLE *logg_load_ex(std::string file);
-extern ALLEGRO_FONT *load_font_ex(std::string file, int size, int flags);
+extern ALLEGRO_BITMAP* load_bitmap_ex(std::string file);
+extern ALLEGRO_SAMPLE* load_sample_ex(std::string file);
+extern ALLEGRO_SAMPLE* logg_load_ex(std::string file);
+extern ALLEGRO_FONT*   load_font_ex(std::string file, int size, int flags);
 
 extern void abort_on_error(std::string message);
 
@@ -28,6 +28,13 @@ extern void abort_on_error(std::string message);
 extern int random(int newLowest, int newHighest);
 
 // Math related functions
-extern bool collision(float xMin1, float xMax1, float xMin2, float xMax2, float yMin1, float yMax1, float yMin2, float yMax2);
+extern bool collision(float xMin1,
+                      float xMax1,
+                      float xMin2,
+                      float xMax2,
+                      float yMin1,
+                      float yMax1,
+                      float yMin2,
+                      float yMax2);
 
-#endif // TOOLS_H
+#endif  // TOOLS_H

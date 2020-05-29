@@ -6,16 +6,16 @@ init::init() {
   al_set_window_title(display, "A.D.S. Games - Robot Flier");
 
   // Icon
-  ALLEGRO_BITMAP *the_icon;
+  ALLEGRO_BITMAP* the_icon;
   the_icon = load_bitmap_ex("images/objects/bomb.png");
   al_set_display_icon(display, the_icon);
 
-  //Seed the random number generator with the time
+  // Seed the random number generator with the time
   srand(time(nullptr));
   random(0, 100);
 
-  //Joystick detector
-  joystick_enabled = bool (al_get_num_joysticks() > 0);
+  // Joystick detector
+  joystick_enabled = bool(al_get_num_joysticks() > 0);
 
   // Loads fonts
   orbitron_12 = load_font_ex("fonts/orbitron_ttf.ttf", 12, 0);
@@ -29,6 +29,4 @@ init::init() {
 }
 
 // Destruct state
-init::~init() {
-
-}
+init::~init() {}
