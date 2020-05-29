@@ -25,6 +25,14 @@
       ],
     },
     {
+      "label": "Rebuild",
+      "type": "shell",
+      "command": "make clean && make -j8",
+      "problemMatcher": [
+        "$gcc"
+      ],
+    },
+    {
       "label": "Run",
       "type": "shell",
       "command": "cd ./build && RobotFlier",

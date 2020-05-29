@@ -44,6 +44,7 @@ Icon
 *.res
 *.dll
 *.exe
+build/RobotFlier
 CppCheckResults.xml
 scores.dat
 build/screenshots

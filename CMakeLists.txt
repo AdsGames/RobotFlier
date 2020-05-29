@@ -27,6 +27,9 @@ find_library(ALLEGRO_PRIMITIVES_LIBRARY NAMES liballegro_primitives.dll.a liball
 find_library(ALLEGRO_TTF_LIBRARY NAMES liballegro_ttf.dll.a liballegro_ttf.so)
 
 add_executable (RobotFlier ${SOURCES})
+
+target_compile_options(RobotFlier PRIVATE -Wall -Wextra -pedantic)
+
 target_link_libraries(RobotFlier ${ALLEGRO_LIBRARY})
 target_link_libraries(RobotFlier ${ALLEGRO_ACODEC_LIBRARY})
 target_link_libraries(RobotFlier ${ALLEGRO_AUDIO_LIBRARY})
@@ -37,4 +40,5 @@ target_link_libraries(RobotFlier ${ALLEGRO_IMAGE_LIBRARY})
 target_link_libraries(RobotFlier ${ALLEGRO_MAIN_LIBRARY})
 target_link_libraries(RobotFlier ${ALLEGRO_PRIMITIVES_LIBRARY})
 target_link_libraries(RobotFlier ${ALLEGRO_TTF_LIBRARY})
+
 target_include_directories(RobotFlier PRIVATE ${INCLUDE_DIRS})

@@ -5,12 +5,12 @@ GameObject::GameObject(ALLEGRO_BITMAP* sprite, const int x, const int y) {
   this->sprite = sprite;
   this->x = x;
   this->y = y;
-  isDead = false;
+  this->isDead = false;
 
-  height = al_get_bitmap_height(sprite);
-  width = al_get_bitmap_width(sprite);
+  this->height = al_get_bitmap_height(sprite);
+  this->width = al_get_bitmap_width(sprite);
 
-  damage = 0;
+  this->damage = 0;
 }
 
 // Destructor
