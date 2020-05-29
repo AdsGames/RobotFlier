@@ -10,7 +10,7 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_color.h>
 
-#include "state.h"
+#include "State.h"
 #include "ScoreTable.h"
 
 #include "../constants/globals.h"

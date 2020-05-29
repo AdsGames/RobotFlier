@@ -9,7 +9,9 @@
 
 #include <vector>
 #include <iostream>
-#include "particle.h"
+
+#include "Particle.h"
+
 #include "../input/keyListener.h"
 #include "../input/mouseListener.h"
 #include "../input/joystickListener.h"

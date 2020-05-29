@@ -10,7 +10,7 @@
 #include <allegro5/allegro_font.h>
 
 
-#include "state.h"
+#include "State.h"
 #include "../constants/globals.h"
 #include "../helpers/tools.h"
 

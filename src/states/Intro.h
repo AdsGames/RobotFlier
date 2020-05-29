@@ -7,7 +7,7 @@
 #ifndef INTRO_H
 #define INTRO_H
 
-#include "state.h"
+#include "State.h"
 #include "../constants/globals.h"
 #include "../helpers/tools.h"
 

@@ -12,11 +12,11 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_ttf.h>
 
-#include "states/game.h"
-#include "states/init.h"
-#include "states/intro.h"
-#include "states/menu.h"
-#include "states/game.h"
+#include "states/Game.h"
+#include "states/Init.h"
+#include "states/Intro.h"
+#include "states/Menu.h"
+#include "states/Game.h"
 
 #include "input/mouseListener.h"
 #include "input/keyListener.h"

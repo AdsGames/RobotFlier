@@ -17,7 +17,7 @@
 #include <vector>
 #include <time.h>
 
-#include "state.h"
+#include "State.h"
 #include "ScoreTable.h"
 
 #include "../entities/Particle.h"
