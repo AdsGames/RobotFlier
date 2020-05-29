@@ -1,4 +1,4 @@
-#include "input/keyListener.h"
+#include "keyListener.h"
 
 bool keyListener::key[ALLEGRO_KEY_MAX] = { false };
 bool keyListener::keyPressed[ALLEGRO_KEY_MAX] = { false};

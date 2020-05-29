@@ -1,4 +1,4 @@
-#include "entities/Energy.h"
+#include "Energy.h"
 
 // Constructor
 Energy::Energy(ALLEGRO_BITMAP *sprite, ALLEGRO_SAMPLE *sound, const int x, const int y) : GameObject(sprite, x, y) {

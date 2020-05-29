@@ -17,15 +17,17 @@
 #include <vector>
 #include <time.h>
 
-#include "entities/Particle.h"
-
 #include "state.h"
-#include "globals.h"
-#include "tools.h"
 #include "ScoreTable.h"
-#include "input/mouseListener.h"
-#include "input/keyListener.h"
-#include "input/joystickListener.h"
+
+#include "../entities/Particle.h"
+
+#include "../constants/globals.h"
+#include "../helpers/tools.h"
+
+#include "../input/mouseListener.h"
+#include "../input/keyListener.h"
+#include "../input/joystickListener.h"
 
 class menu : public state {
   public:

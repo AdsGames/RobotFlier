@@ -11,10 +11,10 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_color.h>
 
-#include "entities/Robot.h"
-#include "entities/Particle.h"
-#include "globals.h"
-#include "tools.h"
+#include "Robot.h"
+#include "Particle.h"
+#include "../constants/globals.h"
+#include "../helpers/tools.h"
 
 
 class GameObject {
