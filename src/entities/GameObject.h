@@ -8,52 +8,52 @@
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
-#include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_color.h>
+#include <allegro5/allegro_primitives.h>
 
-#include "Robot.h"
-#include "Particle.h"
 #include "../constants/globals.h"
 #include "../helpers/tools.h"
-
+#include "Particle.h"
+#include "Robot.h"
 
 class GameObject {
-  public:
-    // Constructor
-    GameObject(ALLEGRO_BITMAP *sprite, const int x, const int y);
+ public:
+  // Constructor
+  GameObject(ALLEGRO_BITMAP* sprite, const int x, const int y);
 
-    // Destructor
-    ~GameObject();
+  // Destructor
+  ~GameObject();
 
-    // Updates asteroid logic
-    void logic(int newMotion);
+  // Updates asteroid logic
+  void logic(int newMotion);
 
-    // Has it been hit?
-    bool dead() const;
+  // Has it been hit?
+  bool dead() const;
 
-    // Has it passed the screen bounds?
-    bool offScreen() const;
+  // Has it passed the screen bounds?
+  bool offScreen() const;
 
-    // Draws the object to screen
-    void draw();
-  protected:
-    // Images
-    ALLEGRO_BITMAP *sprite;
+  // Draws the object to screen
+  void draw();
 
-    // Position
-    float x, y;
+ protected:
+  // Images
+  ALLEGRO_BITMAP* sprite;
 
-    // Size
-    int height, width;
+  // Position
+  float x, y;
 
-    // Dead or naw
-    bool isDead;
+  // Size
+  int height, width;
 
-    // Particles
-    std::vector<Particle> parts;
+  // Dead or naw
+  bool isDead;
 
-    // Damage
-    int damage;
+  // Particles
+  std::vector<Particle> parts;
+
+  // Damage
+  int damage;
 };
 
-#endif // GAME_OBJECT_H
+#endif  // GAME_OBJECT_H

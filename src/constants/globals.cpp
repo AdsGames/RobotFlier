@@ -1,10 +1,10 @@
 #include "globals.h"
 
-//Global variables
+// Global variables
 int score;
 int screenshake;
 
-int fps = 0;
+int fps      = 0;
 int SCREEN_W = 800;
 int SCREEN_H = 600;
 
@@ -16,14 +16,14 @@ int settings[11];
 bool joystick_enabled = false;
 
 // Fonts
-ALLEGRO_FONT *orbitron_12 = nullptr;
-ALLEGRO_FONT *orbitron_18 = nullptr;
-ALLEGRO_FONT *orbitron_24 = nullptr;
-ALLEGRO_FONT *orbitron_30 = nullptr;
-ALLEGRO_FONT *orbitron_36 = nullptr;
+ALLEGRO_FONT* orbitron_12 = nullptr;
+ALLEGRO_FONT* orbitron_18 = nullptr;
+ALLEGRO_FONT* orbitron_24 = nullptr;
+ALLEGRO_FONT* orbitron_30 = nullptr;
+ALLEGRO_FONT* orbitron_36 = nullptr;
 
 // Current music
 ALLEGRO_SAMPLE_ID currentMusic;
 
 // Display
-ALLEGRO_DISPLAY *display = nullptr;
+ALLEGRO_DISPLAY* display = nullptr;

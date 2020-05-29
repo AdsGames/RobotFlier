@@ -9,28 +9,27 @@
 #include "GameObject.h"
 
 class Debris : public GameObject {
-  public:
-    // Constructor
-    Debris(
-      ALLEGRO_BITMAP *sprite,
-      ALLEGRO_SAMPLE *sound,
-      const int x,
-      const int y,
-      const int damage,
-      const float motionMultiplier = 1.0f,
-      const float acceleration = 0.0f,
-      const int size = -1
-    );
+ public:
+  // Constructor
+  Debris(ALLEGRO_BITMAP* sprite,
+         ALLEGRO_SAMPLE* sound,
+         const int       x,
+         const int       y,
+         const int       damage,
+         const float     motionMultiplier = 1.0f,
+         const float     acceleration     = 0.0f,
+         const int       size             = -1);
 
-    // Logic override
-    void logic(const int motion, Robot *robot);
-  private:
-    // Motion multiplier
-    float motionMultiplier;
-    float acceleration;
+  // Logic override
+  void logic(const int motion, Robot* robot);
 
-    // Sound
-    ALLEGRO_SAMPLE *sound;
+ private:
+  // Motion multiplier
+  float motionMultiplier;
+  float acceleration;
+
+  // Sound
+  ALLEGRO_SAMPLE* sound;
 };
 
 #endif

@@ -14,94 +14,92 @@
 #define MINISTATE_CONTROLS 4
 #define MINISTATE_SCORES 5
 
-#include <vector>
 #include <time.h>
 
-#include "State.h"
-#include "ScoreTable.h"
-
-#include "../entities/Particle.h"
+#include <vector>
 
 #include "../constants/globals.h"
+#include "../entities/Particle.h"
 #include "../helpers/tools.h"
-
-#include "../input/mouseListener.h"
-#include "../input/keyListener.h"
 #include "../input/joystickListener.h"
+#include "../input/keyListener.h"
+#include "../input/mouseListener.h"
+#include "ScoreTable.h"
+#include "State.h"
 
 class menu : public state {
-  public:
-    // Construct/deconstruct
-    menu();
-    virtual ~menu();
+ public:
+  // Construct/deconstruct
+  menu();
+  virtual ~menu();
 
-    // Override parent
-    virtual void update() override;
-    virtual void draw() override;
+  // Override parent
+  virtual void update() override;
+  virtual void draw() override;
 
-  private:
-    // Settings
-    static void read_settings();
-    static void write_settings();
+ private:
+  // Settings
+  static void read_settings();
+  static void write_settings();
 
-    // Score table
-    ScoreTable highscores;
+  // Score table
+  ScoreTable highscores;
 
-    // Vars
-    int animation_pos;
+  // Vars
+  int animation_pos;
 
-    int mouseMove;
-    int mini_screen;
-    bool startMove;
-    bool startClicked;
-    bool mouse_rocket_up;
+  int  mouseMove;
+  int  mini_screen;
+  bool startMove;
+  bool startClicked;
+  bool mouse_rocket_up;
 
-    // Particles
-    std::vector <Particle> mousePart;
-    std::vector <Particle> menuPart;
+  // Particles
+  std::vector<Particle> mousePart;
+  std::vector<Particle> menuPart;
 
-    // Images
-    ALLEGRO_BITMAP *buffer;
+  // Images
+  ALLEGRO_BITMAP* buffer;
 
-    // Screens
-    ALLEGRO_BITMAP *img_menu;
-    ALLEGRO_BITMAP *options;
-    ALLEGRO_BITMAP *helpScreen;
-    ALLEGRO_BITMAP *controls;
-    ALLEGRO_BITMAP *credits;
-    ALLEGRO_BITMAP *highscores_table;
+  // Screens
+  ALLEGRO_BITMAP* img_menu;
+  ALLEGRO_BITMAP* options;
+  ALLEGRO_BITMAP* helpScreen;
+  ALLEGRO_BITMAP* controls;
+  ALLEGRO_BITMAP* credits;
+  ALLEGRO_BITMAP* highscores_table;
 
-    // Buttons
-    ALLEGRO_BITMAP *start;
-    ALLEGRO_BITMAP *title;
-    ALLEGRO_BITMAP *highscores_button;
+  // Buttons
+  ALLEGRO_BITMAP* start;
+  ALLEGRO_BITMAP* title;
+  ALLEGRO_BITMAP* highscores_button;
 
-    // Mouse
-    ALLEGRO_BITMAP *mouse;
-    ALLEGRO_BITMAP *mouse_rocket;
+  // Mouse
+  ALLEGRO_BITMAP* mouse;
+  ALLEGRO_BITMAP* mouse_rocket;
 
-    // Start button for xbox control
-    ALLEGRO_BITMAP *xbox_start;
+  // Start button for xbox control
+  ALLEGRO_BITMAP* xbox_start;
 
-    // Options menu
-    ALLEGRO_BITMAP *ui_sound[2];
-    ALLEGRO_BITMAP *ui_music[2];
-    ALLEGRO_BITMAP *ui_screenshake[4];
-    ALLEGRO_BITMAP *ui_window[2];
-    ALLEGRO_BITMAP *ui_particle[4];
-    ALLEGRO_BITMAP *ui_control[3];
+  // Options menu
+  ALLEGRO_BITMAP* ui_sound[2];
+  ALLEGRO_BITMAP* ui_music[2];
+  ALLEGRO_BITMAP* ui_screenshake[4];
+  ALLEGRO_BITMAP* ui_window[2];
+  ALLEGRO_BITMAP* ui_particle[4];
+  ALLEGRO_BITMAP* ui_control[3];
 
-    ALLEGRO_BITMAP *ui_options;
-    ALLEGRO_BITMAP *ui_options_small;
-    ALLEGRO_BITMAP *ui_back;
-    ALLEGRO_BITMAP *ui_credits;
-    ALLEGRO_BITMAP *ui_exit;
-    ALLEGRO_BITMAP *ui_help;
-    ALLEGRO_BITMAP *ui_screenshot_notification;
-    ALLEGRO_BITMAP *ui_controls;
+  ALLEGRO_BITMAP* ui_options;
+  ALLEGRO_BITMAP* ui_options_small;
+  ALLEGRO_BITMAP* ui_back;
+  ALLEGRO_BITMAP* ui_credits;
+  ALLEGRO_BITMAP* ui_exit;
+  ALLEGRO_BITMAP* ui_help;
+  ALLEGRO_BITMAP* ui_screenshot_notification;
+  ALLEGRO_BITMAP* ui_controls;
 
-    // Music
-    ALLEGRO_SAMPLE *music_mainmenu;
+  // Music
+  ALLEGRO_SAMPLE* music_mainmenu;
 };
 
-#endif // MENU_H
+#endif  // MENU_H

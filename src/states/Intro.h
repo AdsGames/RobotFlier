@@ -7,22 +7,23 @@
 #ifndef INTRO_H
 #define INTRO_H
 
-#include "State.h"
 #include "../constants/globals.h"
 #include "../helpers/tools.h"
+#include "State.h"
 
 class intro : public state {
-  public:
-    // Construct/deconstruct
-    intro();
-    virtual ~intro();
+ public:
+  // Construct/deconstruct
+  intro();
+  virtual ~intro();
 
-    // Override parent
-    virtual void update() override;
-    virtual void draw() override {};
-  private:
-    // Splash image
-    ALLEGRO_BITMAP *img_intro;
+  // Override parent
+  virtual void update() override;
+  virtual void draw() override{};
+
+ private:
+  // Splash image
+  ALLEGRO_BITMAP* img_intro;
 };
 
-#endif // INTRO_H
+#endif  // INTRO_H

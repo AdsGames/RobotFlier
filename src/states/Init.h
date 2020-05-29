@@ -9,20 +9,19 @@
 
 #include <allegro5/allegro_font.h>
 
-
-#include "State.h"
 #include "../constants/globals.h"
 #include "../helpers/tools.h"
+#include "State.h"
 
 class init : public state {
-  public:
-    // Construct/deconstruct
-    init();
-    virtual ~init();
+ public:
+  // Construct/deconstruct
+  init();
+  virtual ~init();
 
-    // Override parent
-    virtual void update() override {};
-    virtual void draw() override {};
+  // Override parent
+  virtual void update() override{};
+  virtual void draw() override{};
 };
 
-#endif // INIT_H
+#endif  // INIT_H

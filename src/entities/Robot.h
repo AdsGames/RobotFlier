@@ -7,82 +7,81 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include <vector>
 #include <iostream>
+#include <vector>
 
-#include "Particle.h"
-
+#include "../constants/globals.h"
+#include "../helpers/tools.h"
+#include "../input/joystickListener.h"
 #include "../input/keyListener.h"
 #include "../input/mouseListener.h"
-#include "../input/joystickListener.h"
-#include "../helpers/tools.h"
-#include "../constants/globals.h"
+#include "Particle.h"
 
 class Robot {
-  public:
-    Robot();
-    Robot(float x, float y);
-    ~Robot();
+ public:
+  Robot();
+  Robot(float x, float y);
+  ~Robot();
 
-    void loadResources();
-    void logic();
-    void draw();
-    void drawOverlay();
+  void loadResources();
+  void logic();
+  void draw();
+  void drawOverlay();
 
-    // Getters
-    int getHealth() const;
-    void addHealth(int amount);
+  // Getters
+  int  getHealth() const;
+  void addHealth(int amount);
 
-    float getX() const;
-    float getY() const;
+  float getX() const;
+  float getY() const;
 
-    float getWidth() const;
-    float getHeight() const;
+  float getWidth() const;
+  float getHeight() const;
 
-    bool isOnGround() const;
-    bool isAlive() const;
-    bool isKeyPressed() const;
+  bool isOnGround() const;
+  bool isAlive() const;
+  bool isKeyPressed() const;
 
-    // Invincibility
-    bool isInvincible() const;
-    int getInvincibleTimer() const;
-    void setInvincibleTimer(int time);
+  // Invincibility
+  bool isInvincible() const;
+  int  getInvincibleTimer() const;
+  void setInvincibleTimer(int time);
 
-    // Magnetic
-    bool isMagnetic() const;
-    int getMagneticTimer() const;
-    void setMagneticTimer(int time);
+  // Magnetic
+  bool isMagnetic() const;
+  int  getMagneticTimer() const;
+  void setMagneticTimer(int time);
 
-  private:
-    // Robot specific
-    float gravity, speed;
-    bool alive;
-    int invincibleTimer, magneticTimer;
-    bool rocket;
-    bool onGround;
-    float x, y;
-    int health;
-    int width, height;
+ private:
+  // Robot specific
+  float gravity, speed;
+  bool  alive;
+  int   invincibleTimer, magneticTimer;
+  bool  rocket;
+  bool  onGround;
+  float x, y;
+  int   health;
+  int   width, height;
 
-    // Wait for keypress
-    bool keyPressed;
+  // Wait for keypress
+  bool keyPressed;
 
-    // Images
-    ALLEGRO_BITMAP *mainRobot;
-    ALLEGRO_BITMAP *robotFire;
-    ALLEGRO_BITMAP *robotInvincible;
-    ALLEGRO_BITMAP *robotInvincibleFire;
-    ALLEGRO_BITMAP *robotInvincibleTop;
-    ALLEGRO_BITMAP *robotDie;
-    ALLEGRO_BITMAP *christmasHat;
+  // Images
+  ALLEGRO_BITMAP* mainRobot;
+  ALLEGRO_BITMAP* robotFire;
+  ALLEGRO_BITMAP* robotInvincible;
+  ALLEGRO_BITMAP* robotInvincibleFire;
+  ALLEGRO_BITMAP* robotInvincibleTop;
+  ALLEGRO_BITMAP* robotDie;
+  ALLEGRO_BITMAP* christmasHat;
 
-    // Sounds
-    ALLEGRO_SAMPLE *soundFlame;
-    ALLEGRO_SAMPLE *soundHitground;
+  // Sounds
+  ALLEGRO_SAMPLE* soundFlame;
+  ALLEGRO_SAMPLE* soundHitground;
 
-    // Particles
-    std::vector<Particle> rocketPart;
-    std::vector<Particle> smokePart;
+  // Particles
+  std::vector<Particle> rocketPart;
+  std::vector<Particle> smokePart;
 };
 
-#endif // ROBOT_H
+#endif  // ROBOT_H
