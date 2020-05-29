@@ -3,60 +3,60 @@
 // Constructor
 game::game() {
   // From globals
-  score       = 0;
+  score = 0;
   screenshake = 0;
 
   // Game related
-  scroll          = 0;
-  motion          = 5;
-  themeNumber     = 0;
-  screenshake_x   = 0;
-  screenshake_y   = 0;
+  scroll = 0;
+  motion = 5;
+  themeNumber = 0;
+  screenshake_x = 0;
+  screenshake_y = 0;
   arrow_animation = 0.0f;
-  paused          = false;
+  paused = false;
 
   // End game menu
   edittext = "Player";
-  iter     = edittext.end();
+  iter = edittext.end();
 
   // Reset stats
   for (int i = 0; i < 4; i++)
     stats[i] = 0;
 
   // Sounds
-  sound_bomb     = load_sample_ex("audio/sound_bomb.wav");
-  sound_orb      = load_sample_ex("audio/sound_orb.wav");
+  sound_bomb = load_sample_ex("audio/sound_bomb.wav");
+  sound_orb = load_sample_ex("audio/sound_orb.wav");
   sound_asteroid = load_sample_ex("audio/sound_asteroid.wav");
-  sound_magnet   = load_sample_ex("audio/sound_magnet.wav");
-  sound_star     = load_sample_ex("audio/sound_star.wav");
-  sound_snap     = load_sample_ex("audio/sound_snap.wav");
+  sound_magnet = load_sample_ex("audio/sound_magnet.wav");
+  sound_star = load_sample_ex("audio/sound_star.wav");
+  sound_snap = load_sample_ex("audio/sound_snap.wav");
 
   // Music
-  music_death  = load_sample_ex("audio/music_death.ogg");
+  music_death = load_sample_ex("audio/music_death.ogg");
   music_ingame = load_sample_ex("audio/music_ingame.ogg");
 
   // Images
   // Gui
-  pauseMenu   = load_bitmap_ex("images/gui/pauseMenu.png");
+  pauseMenu = load_bitmap_ex("images/gui/pauseMenu.png");
   ui_game_end = load_bitmap_ex("images/gui/ui_game_end.png");
-  ui_a        = load_bitmap_ex("images/gui/ui_a.png");
-  ui_b        = load_bitmap_ex("images/gui/ui_b.png");
-  ui_up       = load_bitmap_ex("images/gui/ui_up.png");
-  debug       = load_bitmap_ex("images/gui/debug.png");
+  ui_a = load_bitmap_ex("images/gui/ui_a.png");
+  ui_b = load_bitmap_ex("images/gui/ui_b.png");
+  ui_up = load_bitmap_ex("images/gui/ui_up.png");
+  debug = load_bitmap_ex("images/gui/debug.png");
 
   // Background
   space = load_bitmap_ex("images/backgrounds/space.png");
 
   // Nullfiy bitmaps not loaded yet
-  screenshot     = nullptr;
-  asteroidImage  = nullptr;
-  parallaxBack   = nullptr;
-  groundOverlay  = nullptr;
+  screenshot = nullptr;
+  asteroidImage = nullptr;
+  parallaxBack = nullptr;
+  groundOverlay = nullptr;
   groundUnderlay = nullptr;
 
   // Objects
-  cometImage     = load_bitmap_ex("images/objects/comet.png");
-  powerStar      = load_bitmap_ex("images/objects/powerStar.png");
+  cometImage = load_bitmap_ex("images/objects/comet.png");
+  powerStar = load_bitmap_ex("images/objects/powerStar.png");
   powerMagnet[0] = load_bitmap_ex("images/objects/powerMagnet.png");
   powerMagnet[1] = load_bitmap_ex("images/objects/powerMagnetTwo.png");
   powerMagnet[2] = load_bitmap_ex("images/objects/powerMagnetThree.png");
@@ -64,10 +64,10 @@ game::game() {
 
   if (settings[SETTING_CHRISTMAS]) {
     energyImage = load_bitmap_ex("images/objects/energy_christmas.png");
-    bombImage   = load_bitmap_ex("images/objects/bomb_christmas.png");
+    bombImage = load_bitmap_ex("images/objects/bomb_christmas.png");
   } else {
     energyImage = load_bitmap_ex("images/objects/energy.png");
-    bombImage   = load_bitmap_ex("images/objects/bomb.png");
+    bombImage = load_bitmap_ex("images/objects/bomb.png");
   }
 
   // Sets the level to 1

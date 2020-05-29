@@ -1,11 +1,11 @@
 #include "keyListener.h"
 
-bool keyListener::key[ALLEGRO_KEY_MAX]          = {false};
-bool keyListener::keyPressed[ALLEGRO_KEY_MAX]   = {false};
-bool keyListener::keyReleased[ALLEGRO_KEY_MAX]  = {false};
+bool keyListener::key[ALLEGRO_KEY_MAX] = {false};
+bool keyListener::keyPressed[ALLEGRO_KEY_MAX] = {false};
+bool keyListener::keyReleased[ALLEGRO_KEY_MAX] = {false};
 bool keyListener::lastTicksKey[ALLEGRO_KEY_MAX] = {false};
-int  keyListener::lastKeyPressed                = -1;
-int  keyListener::lastKeyReleased               = -1;
+int keyListener::lastKeyPressed = -1;
+int keyListener::lastKeyReleased = -1;
 
 // For allegro 5, we use events
 void keyListener::on_event(ALLEGRO_EVENT_TYPE event_type, int keycode) {
@@ -20,25 +20,25 @@ void keyListener::on_event(ALLEGRO_EVENT_TYPE event_type, int keycode) {
 // Check those keys!
 void keyListener::update() {
   // Reset last key
-  lastKeyPressed  = -1;
+  lastKeyPressed = -1;
   lastKeyReleased = -1;
 
   // Check key just pressed
   for (int i = 0; i < ALLEGRO_KEY_MAX; i++) {
     // Clear old values
-    keyPressed[i]  = false;
+    keyPressed[i] = false;
     keyReleased[i] = false;
 
     // Pressed since last tick?
     if (key[i] == true && lastTicksKey[i] == false) {
-      keyPressed[i]  = true;
+      keyPressed[i] = true;
       lastKeyPressed = i;
       // std::cout << "Key: " << i << " pressed. \n";
     }
 
     // Released since last tick?
     if (key[i] == false && lastTicksKey[i] == true) {
-      keyReleased[i]  = true;
+      keyReleased[i] = true;
       lastKeyReleased = i;
       // std::cout << "Key: " << i << " released. \n";
     }

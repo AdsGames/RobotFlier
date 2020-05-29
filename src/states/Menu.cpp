@@ -3,10 +3,10 @@
 // Construct state
 menu::menu() {
   // Init vars
-  startMove       = false;
-  startClicked    = false;
+  startMove = false;
+  startClicked = false;
   mouse_rocket_up = false;
-  mouseMove       = mouseListener::mouse_y;
+  mouseMove = mouseListener::mouse_y;
 
   // Screen on
   mini_screen = MINISTATE_MENU;
@@ -16,14 +16,14 @@ menu::menu() {
 
   // Load intro image
   // Random menu
-  img_menu          = load_bitmap_ex("images/backgrounds/background_" +
+  img_menu = load_bitmap_ex("images/backgrounds/background_" +
                             std::to_string(random(0, 3)) + ".png");
-  start             = load_bitmap_ex("images/gui/start.png");
+  start = load_bitmap_ex("images/gui/start.png");
   highscores_button = load_bitmap_ex("images/gui/highscores.png");
-  mouse             = load_bitmap_ex("images/gui/mouse.png");
-  mouse_rocket      = load_bitmap_ex("images/gui/mouse_rocket.png");
-  title             = load_bitmap_ex("images/gui/title.png");
-  options           = load_bitmap_ex("images/gui/options.png");
+  mouse = load_bitmap_ex("images/gui/mouse.png");
+  mouse_rocket = load_bitmap_ex("images/gui/mouse_rocket.png");
+  title = load_bitmap_ex("images/gui/title.png");
+  options = load_bitmap_ex("images/gui/options.png");
 
   ui_sound[1] = load_bitmap_ex("images/gui/ui_sound_on.png");
   ui_sound[0] = load_bitmap_ex("images/gui/ui_sound_off.png");
@@ -48,20 +48,20 @@ menu::menu() {
   ui_screenshake[2] = load_bitmap_ex("images/gui/ui_screenshake_medium.png");
   ui_screenshake[3] = load_bitmap_ex("images/gui/ui_screenshake_high.png");
 
-  ui_options       = load_bitmap_ex("images/gui/ui_options.png");
+  ui_options = load_bitmap_ex("images/gui/ui_options.png");
   ui_options_small = load_bitmap_ex("images/gui/ui_options_small.png");
-  ui_back          = load_bitmap_ex("images/gui/ui_back.png");
-  credits          = load_bitmap_ex("images/gui/credits.png");
-  ui_credits       = load_bitmap_ex("images/gui/ui_credits.png");
+  ui_back = load_bitmap_ex("images/gui/ui_back.png");
+  credits = load_bitmap_ex("images/gui/credits.png");
+  ui_credits = load_bitmap_ex("images/gui/ui_credits.png");
   highscores_table = load_bitmap_ex("images/gui/highscores_table.png");
-  ui_help          = load_bitmap_ex("images/gui/ui_help.png");
-  helpScreen       = load_bitmap_ex("images/gui/helpScreen.png");
-  ui_exit          = load_bitmap_ex("images/gui/ui_exit.png");
-  xbox_start       = load_bitmap_ex("images/gui/xbox_start.png");
+  ui_help = load_bitmap_ex("images/gui/ui_help.png");
+  helpScreen = load_bitmap_ex("images/gui/helpScreen.png");
+  ui_exit = load_bitmap_ex("images/gui/ui_exit.png");
+  xbox_start = load_bitmap_ex("images/gui/xbox_start.png");
   ui_screenshot_notification =
       load_bitmap_ex("images/gui/ui_screenshot_notification.png");
   ui_controls = load_bitmap_ex("images/gui/ui_controls.png");
-  controls    = load_bitmap_ex("images/gui/controls.png");
+  controls = load_bitmap_ex("images/gui/controls.png");
 
   // Load that menu music
   music_mainmenu = load_sample_ex("audio/music_mainmenu.ogg");
@@ -320,7 +320,7 @@ void menu::update() {
 
         if (settings[SETTING_CHRISTMAS]) {
           int red_or_green = random(0, 1) * 255;
-          part_color       = al_map_rgb(red_or_green, 255 - red_or_green, 0);
+          part_color = al_map_rgb(red_or_green, 255 - red_or_green, 0);
         }
 
         Particle newParticle(
@@ -344,7 +344,7 @@ void menu::update() {
 
   // Check if mouse is going up
   mouse_rocket_up = (mouseListener::mouse_y < mouseMove);
-  mouseMove       = mouseListener::mouse_y;
+  mouseMove = mouseListener::mouse_y;
 }
 
 // Draw to screen

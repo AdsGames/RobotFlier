@@ -11,6 +11,8 @@
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_primitives.h>
 
+#include <vector>
+
 #include "../constants/globals.h"
 #include "../helpers/tools.h"
 #include "Particle.h"

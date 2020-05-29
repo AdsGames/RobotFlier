@@ -80,11 +80,11 @@ void ScoreTable::add(const std::string& name, int score) {
     if (score > scores[i]) {
       for (int t = 9; t > i; t--) {
         scores[t] = scores[t - 1];
-        names[t]  = names[t - 1];
+        names[t] = names[t - 1];
       }
 
       scores[i] = score;
-      names[i]  = name;
+      names[i] = name;
 
       if (name == "") {
         names[i] = "Player";

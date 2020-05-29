@@ -19,7 +19,7 @@ class ScoreTable {
 
   void add(const std::string& name, int score);
 
-  int         getScore(int index) const;
+  int getScore(int index) const;
   std::string getName(int index) const;
 
  private:
@@ -33,7 +33,7 @@ class ScoreTable {
   bool write();
 
   std::string names[TABLE_SIZE];
-  int         scores[TABLE_SIZE];
+  int scores[TABLE_SIZE];
 };
 
 #endif  // SCORETABLE_H

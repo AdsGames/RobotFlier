@@ -13,12 +13,12 @@ class Debris : public GameObject {
   // Constructor
   Debris(ALLEGRO_BITMAP* sprite,
          ALLEGRO_SAMPLE* sound,
-         const int       x,
-         const int       y,
-         const int       damage,
-         const float     motionMultiplier = 1.0f,
-         const float     acceleration     = 0.0f,
-         const int       size             = -1);
+         const int x,
+         const int y,
+         const int damage,
+         const float motionMultiplier = 1.0f,
+         const float acceleration = 0.0f,
+         const int size = -1);
 
   // Logic override
   void logic(const int motion, Robot* robot);

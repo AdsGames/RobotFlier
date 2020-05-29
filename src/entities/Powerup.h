@@ -13,10 +13,10 @@ class Powerup : public GameObject {
   // Constructor
   Powerup(ALLEGRO_BITMAP* sprite,
           ALLEGRO_SAMPLE* sound,
-          const int       x,
-          const int       y,
-          const int       timerLength,
-          const int       type);
+          const int x,
+          const int y,
+          const int timerLength,
+          const int type);
 
   // Logic override
   void logic(const int motion, Robot* robot);

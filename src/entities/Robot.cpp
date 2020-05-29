@@ -1,37 +1,43 @@
 #include "Robot.h"
 
+#include "../constants/globals.h"
+#include "../helpers/tools.h"
+#include "../input/joystickListener.h"
+#include "../input/keyListener.h"
+#include "../input/mouseListener.h"
+
 // Constructor
 Robot::Robot() : Robot(0.0f, 0.0f) {}
 
 // Constructor
 Robot::Robot(float x, float y) {
   // NULLIFY
-  mainRobot           = nullptr;
-  robotFire           = nullptr;
-  robotInvincible     = nullptr;
+  mainRobot = nullptr;
+  robotFire = nullptr;
+  robotInvincible = nullptr;
   robotInvincibleFire = nullptr;
-  robotInvincibleTop  = nullptr;
-  robotDie            = nullptr;
-  christmasHat        = nullptr;
-  soundFlame          = nullptr;
-  soundHitground      = nullptr;
+  robotInvincibleTop = nullptr;
+  robotDie = nullptr;
+  christmasHat = nullptr;
+  soundFlame = nullptr;
+  soundHitground = nullptr;
 
   // Init vars
   gravity = 1.6;
 
-  speed           = 0;
-  this->x         = x;
-  this->y         = y;
-  width           = 70;
-  height          = 70;
+  speed = 0;
+  this->x = x;
+  this->y = y;
+  width = 70;
+  height = 70;
   invincibleTimer = 0;
-  magneticTimer   = 0;
+  magneticTimer = 0;
 
   health = 100;
 
-  rocket     = false;
-  onGround   = false;
-  alive      = true;
+  rocket = false;
+  onGround = false;
+  alive = true;
   keyPressed = false;
 }
 
@@ -58,16 +64,16 @@ Robot::~Robot() {
 // Load images
 void Robot::loadResources() {
   // Images
-  mainRobot           = load_bitmap_ex("images/robot/robot.png");
-  robotFire           = load_bitmap_ex("images/robot/robotfire.png");
-  robotInvincible     = load_bitmap_ex("images/robot/robotInvincible.png");
+  mainRobot = load_bitmap_ex("images/robot/robot.png");
+  robotFire = load_bitmap_ex("images/robot/robotfire.png");
+  robotInvincible = load_bitmap_ex("images/robot/robotInvincible.png");
   robotInvincibleFire = load_bitmap_ex("images/robot/robotInvincibleFire.png");
-  robotInvincibleTop  = load_bitmap_ex("images/robot/robotInvincibleTop.png");
-  robotDie            = load_bitmap_ex("images/robot/robotDie.png");
-  christmasHat        = load_bitmap_ex("images/robot/christmas_hat.png");
+  robotInvincibleTop = load_bitmap_ex("images/robot/robotInvincibleTop.png");
+  robotDie = load_bitmap_ex("images/robot/robotDie.png");
+  christmasHat = load_bitmap_ex("images/robot/christmas_hat.png");
 
   // Sounds
-  soundFlame     = load_sample_ex("audio/sound_flame.wav");
+  soundFlame = load_sample_ex("audio/sound_flame.wav");
   soundHitground = load_sample_ex("audio/sound_hitground.wav");
 }
 
@@ -75,7 +81,7 @@ void Robot::loadResources() {
 void Robot::logic() {
   // Check if you are dead!
   if (health < 1) {
-    alive  = false;
+    alive = false;
     health = 0;
   }
 
@@ -94,7 +100,7 @@ void Robot::logic() {
   if (settings[SETTING_PARTICLE_TYPE] != 3 && !alive) {
     for (int i = 0; i < 800; i++) {
       if (random(0, 10) == 0) {
-        int      randnum = random(0, 255);
+        int randnum = random(0, 255);
         Particle newParticle(
             x + 20, y + 20, al_map_rgb(randnum, randnum, randnum),
             random(-4, -1), random(-5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
@@ -176,7 +182,7 @@ void Robot::logic() {
       speed = 0;
       // clear_keybuf();
     } else if (y >= 550) {
-      y        = 550;
+      y = 550;
       onGround = true;
       // clear_keybuf();
     }
@@ -184,7 +190,7 @@ void Robot::logic() {
 
   // Touching top or bottom
   if (y < 0) {
-    y     = 0;
+    y = 0;
     speed = 0;
   }
 

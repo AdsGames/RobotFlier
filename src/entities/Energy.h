@@ -13,8 +13,8 @@ class Energy : public GameObject {
   // Constructor
   Energy(ALLEGRO_BITMAP* sprite,
          ALLEGRO_SAMPLE* sound,
-         const int       x,
-         const int       y);
+         const int x,
+         const int y);
 
   // Logic override
   void logic(const int motion, Robot* robot);

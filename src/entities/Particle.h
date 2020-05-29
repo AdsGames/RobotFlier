@@ -16,13 +16,13 @@
 
 class Particle {
  public:
-  Particle(int           x,
-           int           y,
+  Particle(int x,
+           int y,
            ALLEGRO_COLOR color,
-           int           velocity_x,
-           int           velocity_y,
-           int           size,
-           int           type);
+           int velocity_x,
+           int velocity_y,
+           int size,
+           int type);
   ~Particle();
 
   void update();

@@ -1,10 +1,12 @@
 #include "Energy.h"
 
+#include "../constants/globals.h"
+
 // Constructor
 Energy::Energy(ALLEGRO_BITMAP* sprite,
                ALLEGRO_SAMPLE* sound,
-               const int       x,
-               const int       y)
+               const int x,
+               const int y)
     : GameObject(sprite, x, y) {
   this->sound = sound;
 }

@@ -3,22 +3,22 @@
 // Constructor
 Debris::Debris(ALLEGRO_BITMAP* sprite,
                ALLEGRO_SAMPLE* sound,
-               const int       x,
-               const int       y,
-               const int       damage,
-               const float     motionMultiplier,
-               const float     acceleration,
-               const int       size)
+               const int x,
+               const int y,
+               const int damage,
+               const float motionMultiplier,
+               const float acceleration,
+               const int size)
     : GameObject(sprite, x, y) {
   if (size != -1) {
     height = size * 8;
-    width  = size * 10;
+    width = size * 10;
   }
 
-  this->sound            = sound;
+  this->sound = sound;
   this->motionMultiplier = motionMultiplier;
-  this->damage           = damage;
-  this->acceleration     = acceleration;
+  this->damage = damage;
+  this->acceleration = acceleration;
 }
 
 // Logic

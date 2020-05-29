@@ -48,8 +48,8 @@ class menu : public state {
   // Vars
   int animation_pos;
 
-  int  mouseMove;
-  int  mini_screen;
+  int mouseMove;
+  int mini_screen;
   bool startMove;
   bool startClicked;
   bool mouse_rocket_up;

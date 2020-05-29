@@ -4,7 +4,7 @@
 intro::intro() {
   // Load intro image
   img_intro = load_bitmap_ex("images/backgrounds/intro.png");
-  int a     = 0;
+  int a = 0;
 }
 
 // Destruct state

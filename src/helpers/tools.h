@@ -13,6 +13,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <string>
 
 #include "../constants/globals.h"
 
@@ -20,7 +21,7 @@
 extern ALLEGRO_BITMAP* load_bitmap_ex(std::string file);
 extern ALLEGRO_SAMPLE* load_sample_ex(std::string file);
 extern ALLEGRO_SAMPLE* logg_load_ex(std::string file);
-extern ALLEGRO_FONT*   load_font_ex(std::string file, int size, int flags);
+extern ALLEGRO_FONT* load_font_ex(std::string file, int size, int flags);
 
 extern void abort_on_error(std::string message);
 

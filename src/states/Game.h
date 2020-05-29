@@ -84,23 +84,23 @@ class game : public state {
   Robot hectar;
 
   // Declare integers
-  int    scroll;
-  int    themeNumber;
-  int    screenshake_x;
-  int    screenshake_y;
+  int scroll;
+  int themeNumber;
+  int screenshake_x;
+  int screenshake_y;
   double arrow_animation;
-  float  motion;
+  float motion;
 
   // Declare booleans
   bool paused;
 
   // Text input
-  std::string           edittext;
+  std::string edittext;
   std::string::iterator iter;
 
   // Containers of objects
-  std::vector<Energy>  energys;
-  std::vector<Debris>  debries;
+  std::vector<Energy> energys;
+  std::vector<Debris> debries;
   std::vector<Powerup> powerups;
 };
 

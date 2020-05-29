@@ -10,12 +10,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../constants/globals.h"
-#include "../helpers/tools.h"
-#include "../input/joystickListener.h"
-#include "../input/keyListener.h"
-#include "../input/mouseListener.h"
-#include "Particle.h"
+#include "./Particle.h"
 
 class Robot {
  public:
@@ -29,7 +24,7 @@ class Robot {
   void drawOverlay();
 
   // Getters
-  int  getHealth() const;
+  int getHealth() const;
   void addHealth(int amount);
 
   float getX() const;
@@ -44,24 +39,24 @@ class Robot {
 
   // Invincibility
   bool isInvincible() const;
-  int  getInvincibleTimer() const;
+  int getInvincibleTimer() const;
   void setInvincibleTimer(int time);
 
   // Magnetic
   bool isMagnetic() const;
-  int  getMagneticTimer() const;
+  int getMagneticTimer() const;
   void setMagneticTimer(int time);
 
  private:
   // Robot specific
   float gravity, speed;
-  bool  alive;
-  int   invincibleTimer, magneticTimer;
-  bool  rocket;
-  bool  onGround;
+  bool alive;
+  int invincibleTimer, magneticTimer;
+  bool rocket;
+  bool onGround;
   float x, y;
-  int   health;
-  int   width, height;
+  int health;
+  int width, height;
 
   // Wait for keypress
   bool keyPressed;

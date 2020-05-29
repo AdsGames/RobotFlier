@@ -10,7 +10,11 @@
       },
       "problemMatcher": [
         "$gcc"
-      ]
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     },
     {
       "label": "Build",
@@ -19,10 +23,6 @@
       "problemMatcher": [
         "$gcc"
       ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
     },
     {
       "label": "Run",
