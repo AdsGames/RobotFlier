@@ -10,20 +10,22 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_color.h>
 
-#include "state.h"
-#include "globals.h"
-#include "tools.h"
-
-#include "entities/Energy.h"
-#include "entities/Debris.h"
-#include "entities/Powerup.h"
-#include "entities/Particle.h"
-#include "entities/Robot.h"
-#include "globals.h"
+#include "State.h"
 #include "ScoreTable.h"
-#include "input/mouseListener.h"
-#include "input/keyListener.h"
-#include "input/joystickListener.h"
+
+#include "../constants/globals.h"
+#include "../helpers/tools.h"
+
+#include "../entities/Energy.h"
+#include "../entities/Debris.h"
+#include "../entities/Powerup.h"
+#include "../entities/Particle.h"
+#include "../entities/Robot.h"
+
+#include "../input/mouseListener.h"
+#include "../input/keyListener.h"
+#include "../input/joystickListener.h"
+
 
 // Game class
 class game : public state {

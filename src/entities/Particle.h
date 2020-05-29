@@ -12,7 +12,7 @@
 
 #include <allegro5/allegro_primitives.h>
 
-#include "globals.h"
+#include "../constants/globals.h"
 
 class Particle {
   public:

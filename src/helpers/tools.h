@@ -14,7 +14,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "globals.h"
+#include "../constants/globals.h"
 
 // Error handling loading functions
 extern ALLEGRO_BITMAP *load_bitmap_ex(std::string file);

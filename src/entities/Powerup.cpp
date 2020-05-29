@@ -1,4 +1,4 @@
-#include "entities/Powerup.h"
+#include "Powerup.h"
 
 // Constructor
 Powerup::Powerup(ALLEGRO_BITMAP *sprite, ALLEGRO_SAMPLE *sound, const int x, const int y, int timerLength, const int type) : GameObject(sprite, x, y) {

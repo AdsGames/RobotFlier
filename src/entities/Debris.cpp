@@ -1,4 +1,4 @@
-#include "entities/Debris.h"
+#include "Debris.h"
 
 // Constructor
 Debris::Debris(
