@@ -4,13 +4,14 @@
  * 03/01/2016
  * Main game state
  */
-#ifndef GAME_H
-#define GAME_H
+#ifndef STATE_GAME_H
+#define STATE_GAME_H
 
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_primitives.h>
 
 #include "../constants/globals.h"
+#include "../engine/State.h"
 #include "../entities/Debris.h"
 #include "../entities/Energy.h"
 #include "../entities/Particle.h"
@@ -21,7 +22,6 @@
 #include "../input/keyListener.h"
 #include "../input/mouseListener.h"
 #include "ScoreTable.h"
-#include "State.h"
 
 // Game class
 class game : public state {
@@ -104,4 +104,4 @@ class game : public state {
   std::vector<Powerup> powerups;
 };
 
-#endif  // GAME_H
+#endif  // STATE_GAME_H

@@ -4,8 +4,8 @@
  * 30/12/2016
  * Compartmentalize program
  */
-#ifndef STATE_H
-#define STATE_H
+#ifndef ENGINE_STATE_H
+#define ENGINE_STATE_H
 
 // State variables
 extern int stateID;
@@ -37,4 +37,4 @@ class state {
   virtual void update() = 0;
 };
 
-#endif  // STATE_H
+#endif  // ENGINE_STATE_H

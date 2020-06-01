@@ -1,5 +1,7 @@
 #include "GameObject.h"
 
+#include "../constants/settings.h"
+
 // Constructor
 GameObject::GameObject(ALLEGRO_BITMAP* sprite, const int x, const int y) {
   this->sprite = sprite;
@@ -19,7 +21,7 @@ GameObject::~GameObject() {}
 // Updates object logic
 void GameObject::logic(int newMotion) {
   // Update particles
-  if (settings[SETTING_PARTICLE_TYPE] != 3) {
+  if (settings.get<int>("particleType", 0) != 3) {
     for (unsigned int i = 0; i < parts.size(); i++) {
       parts.at(i).update();
       parts.at(i).scroll(newMotion, 0.0f);
@@ -49,14 +51,14 @@ void GameObject::draw() {
   }
 
   // Draw particles
-  if (settings[SETTING_PARTICLE_TYPE] != 3) {
+  if (settings.get<int>("particleType", 0) != 3) {
     for (unsigned int i = 0; i < parts.size(); i++) {
       parts.at(i).draw();
     }
   }
 
   // Draw bounding box
-  if (settings[SETTING_DEBUG] == 1) {
+  if (settings.get<bool>("debug", false) == 1) {
     al_draw_rectangle(x, y, x + width, y + height, al_map_rgb(88, 88, 88), 1);
   }
 }

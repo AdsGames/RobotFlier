@@ -1,5 +1,7 @@
 #include "Menu.h"
 
+#include "../constants/settings.h"
+
 // Construct state
 menu::menu() {
   // Init vars
@@ -66,22 +68,17 @@ menu::menu() {
   // Load that menu music
   music_mainmenu = load_sample_ex("audio/music_mainmenu.ogg");
 
-  // Read settings from file
-  read_settings();
-
   // Init animation vars
   animation_pos = 0;
 
   // Hide mouse
   al_hide_mouse_cursor(display);
 
-  // Load scores
-  highscores = ScoreTable("scores.dat");
-
   // Play music
-  if (settings[SETTING_MUSIC] == 1)
+  if (settings.get<bool>("music", true) == 1) {
     al_play_sample(music_mainmenu, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP,
                    &currentMusic);
+  }
 }
 
 // Destructor
@@ -131,26 +128,6 @@ menu::~menu() {
   al_destroy_bitmap(ui_help);
   al_destroy_bitmap(ui_screenshot_notification);
   al_destroy_bitmap(ui_controls);
-}
-
-// Writes the settings to file
-void menu::write_settings() {
-  std::ofstream settings_file("data/settings.dat");
-
-  for (int i = 0; i < 7; i++)
-    settings_file << settings[i] << " ";
-
-  settings_file.close();
-}
-
-// Reads the data from file
-void menu::read_settings() {
-  std::ifstream read("data/settings.dat");
-
-  for (int i = 0; i < 7; i++)
-    read >> settings[i];
-
-  read.close();
 }
 
 // Update loop
@@ -233,22 +210,22 @@ void menu::update() {
     // Particles toggle
     if (collision(280, 360, mouseListener::mouse_x, mouseListener::mouse_x, 400,
                   480, mouseListener::mouse_y, mouseListener::mouse_y)) {
-      settings[SETTING_PARTICLE_TYPE] =
-          (settings[SETTING_PARTICLE_TYPE] + 1) % 4;
+      settings.set("particleType",
+                   (settings.get<int>("particleType", 0) + 1) % 4);
     }
     // Sound button toggle
     else if (collision(120, 200, mouseListener::mouse_x, mouseListener::mouse_x,
                        180, 260, mouseListener::mouse_y,
                        mouseListener::mouse_y)) {
-      settings[SETTING_SOUND] = (settings[SETTING_SOUND] + 1) % 2;
+      settings.set("sound", !settings.get<bool>("sound", true));
     }
     // Music button toggle
     else if (collision(280, 360, mouseListener::mouse_x, mouseListener::mouse_x,
                        180, 260, mouseListener::mouse_y,
                        mouseListener::mouse_y)) {
-      settings[SETTING_MUSIC] = (settings[SETTING_MUSIC] + 1) % 2;
+      settings.set("music", !settings.get<bool>("music", true));
 
-      if (settings[SETTING_MUSIC] == 0)
+      if (settings.get<bool>("music", true) == 0)
         al_stop_sample(&currentMusic);
       else
         al_play_sample(music_mainmenu, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE,
@@ -259,9 +236,10 @@ void menu::update() {
     else if (collision(120, 200, mouseListener::mouse_x, mouseListener::mouse_x,
                        400, 480, mouseListener::mouse_y,
                        mouseListener::mouse_y)) {
-      settings[SETTING_FULLSCREEN] = (settings[SETTING_FULLSCREEN] + 1) % 2;
+      settings.set("fullscreen",
+                   (settings.get<bool>("fullscreen", false) + 1) % 2);
 
-      if (settings[SETTING_FULLSCREEN]) {
+      if (settings.get<bool>("fullscreen", false)) {
         // Fullscreen stuff
         al_destroy_display(display);
         al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
@@ -288,19 +266,21 @@ void menu::update() {
     else if (collision(280, 360, mouseListener::mouse_x, mouseListener::mouse_x,
                        290, 370, mouseListener::mouse_y,
                        mouseListener::mouse_y)) {
-      settings[SETTING_SCREENSHAKE] = (settings[SETTING_SCREENSHAKE] + 1) % 4;
+      settings.set("screenshake",
+                   (settings.get<int>("screenshake", 0) + 1) % 4);
     }
     // Control Toggle
     else if (collision(120, 200, mouseListener::mouse_x, mouseListener::mouse_x,
                        290, 370, mouseListener::mouse_y,
                        mouseListener::mouse_y)) {
-      settings[SETTING_CONTROLMODE] = ((settings[SETTING_CONTROLMODE] + 1) % 3);
+      settings.set("controlMode",
+                   (settings.get<int>("controlMode", 0) + 1) % 3);
     }
     // Power off
     else if (collision(540, 620, mouseListener::mouse_x, mouseListener::mouse_x,
                        180, 260, mouseListener::mouse_y,
                        mouseListener::mouse_y)) {
-      write_settings();
+      // write_settings();
       set_next_state(STATE_EXIT);
     }
     // Exit menu
@@ -308,24 +288,25 @@ void menu::update() {
                        407, 487, mouseListener::mouse_y,
                        mouseListener::mouse_y)) {
       mini_screen = MINISTATE_MENU;
-      write_settings();
+      // write_settings();
     }
   }
 
   // Update mouse particles
-  if (settings[SETTING_PARTICLE_TYPE] != 3 && mouse_rocket_up) {
+  if (settings.get<int>("particleType", 0) != 3 && mouse_rocket_up) {
     for (int i = 0; i < 500; i++) {
       if (random(1, 10) == 1) {
         ALLEGRO_COLOR part_color = al_map_rgb(255, random(0, 255), 0);
 
-        if (settings[SETTING_CHRISTMAS]) {
+        if (settings.get<bool>("christmas", false)) {
           int red_or_green = random(0, 1) * 255;
           part_color = al_map_rgb(red_or_green, 255 - red_or_green, 0);
         }
 
-        Particle newParticle(
-            mouseListener::mouse_x, mouseListener::mouse_y + 16, part_color,
-            random(-2, 2), random(8, 20), 1, settings[SETTING_PARTICLE_TYPE]);
+        Particle newParticle(mouseListener::mouse_x,
+                             mouseListener::mouse_y + 16, part_color,
+                             random(-2, 2), random(8, 20), 1,
+                             settings.get<int>("particleType", 0));
         mousePart.push_back(newParticle);
       }
     }
@@ -360,7 +341,7 @@ void menu::draw() {
   al_draw_bitmap(highscores_button, SCREEN_W - (animation_pos * 1.4), 30, 0);
 
   // Joystick Mode
-  if (settings[SETTING_CONTROLMODE] != 1 && joystick_enabled) {
+  if (settings.get<int>("controlMode", 0) != 1 && joystick_enabled) {
     al_draw_bitmap(xbox_start,
                    (animation_pos * 3.2) - al_get_bitmap_width(start) + 220,
                    430, 0);
@@ -420,12 +401,16 @@ void menu::draw() {
     al_draw_bitmap(options, 0, 0, 0);
 
     // Buttons
-    al_draw_bitmap(ui_particle[settings[SETTING_PARTICLE_TYPE]], 280, 407, 0);
-    al_draw_bitmap(ui_sound[settings[SETTING_SOUND]], 120, 180, 0);
-    al_draw_bitmap(ui_music[settings[SETTING_MUSIC]], 280, 180, 0);
-    al_draw_bitmap(ui_window[settings[SETTING_FULLSCREEN]], 120, 407, 0);
-    al_draw_bitmap(ui_screenshake[settings[SETTING_SCREENSHAKE]], 280, 295, 0);
-    al_draw_bitmap(ui_control[settings[SETTING_CONTROLMODE]], 120, 295, 0);
+    al_draw_bitmap(ui_particle[settings.get<int>("particleType", 0)], 280, 407,
+                   0);
+    al_draw_bitmap(ui_sound[settings.get<bool>("sound", true)], 120, 180, 0);
+    al_draw_bitmap(ui_music[settings.get<bool>("music", true)], 280, 180, 0);
+    al_draw_bitmap(ui_window[settings.get<bool>("fullscreen", false)], 120, 407,
+                   0);
+    al_draw_bitmap(ui_screenshake[settings.get<int>("screenshake", 0)], 280,
+                   295, 0);
+    al_draw_bitmap(ui_control[settings.get<int>("controlMode", 0)], 120, 295,
+                   0);
 
     // Button Text
     al_draw_text(orbitron_24, al_map_rgb(255, 250, 250), 110, 154,
@@ -443,7 +428,7 @@ void menu::draw() {
   }
 
   // Debug
-  if (settings[SETTING_DEBUG]) {
+  if (settings.get<bool>("debug", false)) {
     // Joystick testing
     if (joystick_enabled) {
       for (int i = 0; i < JOY_MAX_BUTTONS; i++) {
@@ -459,7 +444,7 @@ void menu::draw() {
   }
 
   // Draw rocket if no particles
-  if (settings[SETTING_PARTICLE_TYPE] == 3 && mouse_rocket_up)
+  if (settings.get<int>("particleType", 0) == 3 && mouse_rocket_up)
     al_draw_bitmap(mouse_rocket, mouseListener::mouse_x - 10,
                    mouseListener::mouse_y, 0);
 

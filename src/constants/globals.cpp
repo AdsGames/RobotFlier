@@ -10,7 +10,6 @@ int SCREEN_H = 600;
 
 // Data
 int stats[4];
-int settings[11];
 
 // Is the joystick enabled?
 bool joystick_enabled = false;

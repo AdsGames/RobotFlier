@@ -13,6 +13,7 @@
 #include <string>
 
 #include "constants/globals.h"
+#include "constants/settings.h"
 #include "input/joystickListener.h"
 #include "input/keyListener.h"
 #include "input/mouseListener.h"
@@ -23,13 +24,13 @@
 
 // Events
 ALLEGRO_EVENT_QUEUE* event_queue = nullptr;
-ALLEGRO_TIMER*       timer       = nullptr;
+ALLEGRO_TIMER* timer = nullptr;
 
 // Fps timer
-double      old_time = 0;
-const float MAX_FPS  = 60;
-int         frames_array[100];
-int         frame_index = 0;
+double old_time = 0;
+const float MAX_FPS = 60;
+int frames_array[100];
+int frame_index = 0;
 
 // Closing or naw
 bool closing = false;
@@ -111,7 +112,7 @@ void setup() {
   al_reserve_samples(20);
 
   // Initializing
-  timer   = al_create_timer(1.0 / MAX_FPS);
+  timer = al_create_timer(1.0 / MAX_FPS);
   display = al_create_display(SCREEN_W, SCREEN_H);
 
   // Events
@@ -129,16 +130,13 @@ void setup() {
   srand(time(nullptr));
 
   // Game state
-  stateID   = STATE_NULL;
+  stateID = STATE_NULL;
   nextState = STATE_NULL;
 
-  // Clear settings
-  for (int i = 0; i < 11; i++)
-    settings[i] = false;
-
   // Clear frams array
-  for (int i = 0; i < 100; i++)
+  for (int i = 0; i < 100; i++) {
     frames_array[i] = 0;
+  }
 }
 
 // Universal update
@@ -161,8 +159,9 @@ void update() {
     currentState->update();
 
     // Debug console toggle
-    if (keyListener::keyPressed[ALLEGRO_KEY_F12])
-      settings[SETTING_DEBUG] = (settings[SETTING_DEBUG] + 1) % 2;
+    if (keyListener::keyPressed[ALLEGRO_KEY_F12]) {
+      settings.set("debug", !settings.get<bool>("debug", false));
+    }
   }
   // Exit
   else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -195,7 +194,7 @@ void update() {
       frames_array[i] = frames_array[i - 1];
 
     frames_array[0] = (1.0 / (al_get_time() - old_time));
-    old_time        = al_get_time();
+    old_time = al_get_time();
 
     int fps_total = 0;
 
@@ -208,21 +207,9 @@ void update() {
 }
 
 // main function of program
-int main(int argc, char* argv[]) {
+int main() {
   // Setup game
   setup();
-
-  // Copy over the command line args
-  for (int i = 1; i < argc; i++) {
-    if (strcmp(argv[i], "mega") == 0)
-      settings[SETTING_MEGA] = true;
-    else if (strcmp(argv[i], "supershake") == 0)
-      settings[SETTING_SUPERSHAKE] = true;
-    else if (strcmp(argv[i], "merrychristmas") == 0)
-      settings[SETTING_CHRISTMAS] = true;
-
-    std::cout << argv[i];
-  }
 
   // Set the current state ID
   stateID = STATE_INIT;

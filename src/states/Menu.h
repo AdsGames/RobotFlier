@@ -4,8 +4,8 @@
  * 03/01/2016
  * The menu of Robot Flier
  */
-#ifndef MENU_H
-#define MENU_H
+#ifndef STATE_MENU_H
+#define STATE_MENU_H
 
 #define MINISTATE_MENU 0
 #define MINISTATE_TUTORIAL 1
@@ -19,13 +19,13 @@
 #include <vector>
 
 #include "../constants/globals.h"
+#include "../engine/State.h"
 #include "../entities/Particle.h"
 #include "../helpers/tools.h"
 #include "../input/joystickListener.h"
 #include "../input/keyListener.h"
 #include "../input/mouseListener.h"
 #include "ScoreTable.h"
-#include "State.h"
 
 class menu : public state {
  public:
@@ -102,4 +102,4 @@ class menu : public state {
   ALLEGRO_SAMPLE* music_mainmenu;
 };
 
-#endif  // MENU_H
+#endif  // STATE_MENU_H

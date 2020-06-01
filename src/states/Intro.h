@@ -4,12 +4,12 @@
  * 30/12/2016
  * A pretty nice splash screen
  */
-#ifndef INTRO_H
-#define INTRO_H
+#ifndef STATE_INTRO_H
+#define STATE_INTRO_H
 
 #include "../constants/globals.h"
+#include "../engine/State.h"
 #include "../helpers/tools.h"
-#include "State.h"
 
 class intro : public state {
  public:
@@ -26,4 +26,4 @@ class intro : public state {
   ALLEGRO_BITMAP* img_intro;
 };
 
-#endif  // INTRO_H
+#endif  // STATE_INTRO_H

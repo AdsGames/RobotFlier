@@ -5,8 +5,8 @@
  * Easy highscore management
  **/
 
-#ifndef SCORETABLE_H
-#define SCORETABLE_H
+#ifndef STATE_SCORETABLE_H
+#define STATE_SCORETABLE_H
 
 #include <string>
 
@@ -36,4 +36,4 @@ class ScoreTable {
   int scores[TABLE_SIZE];
 };
 
-#endif  // SCORETABLE_H
+#endif  // STATE_SCORETABLE_H

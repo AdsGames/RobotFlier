@@ -4,14 +4,14 @@
  * 30/12/2016
  * Program inits here
  */
-#ifndef INIT_H
-#define INIT_H
+#ifndef STATE_INIT_H
+#define STATE_INIT_H
 
 #include <allegro5/allegro_font.h>
 
 #include "../constants/globals.h"
+#include "../engine/State.h"
 #include "../helpers/tools.h"
-#include "State.h"
 
 class init : public state {
  public:
@@ -24,4 +24,4 @@ class init : public state {
   virtual void draw() override{};
 };
 
-#endif  // INIT_H
+#endif  // STATE_INIT_H

@@ -86,7 +86,13 @@
     "*.tcc": "cpp",
     "memory_resource": "cpp",
     "cfenv": "cpp",
-    "cinttypes": "cpp"
+    "cinttypes": "cpp",
+    "regex": "cpp",
+    "future": "cpp",
+    "compare": "cpp",
+    "concepts": "cpp",
+    "ranges": "cpp",
+    "stop_token": "cpp"
   },
   "cmake.configureOnOpen": true
 }

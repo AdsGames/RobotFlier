@@ -4,7 +4,7 @@
       "name": "Default",
       "intelliSenseMode": "gcc-x86",
       "cStandard": "c11",
-      "cppStandard": "c++14"
+      "cppStandard": "c++17"
     }
   ],
   "version": 4

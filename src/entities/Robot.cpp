@@ -1,6 +1,7 @@
 #include "Robot.h"
 
 #include "../constants/globals.h"
+#include "../constants/settings.h"
 #include "../helpers/tools.h"
 #include "../input/joystickListener.h"
 #include "../input/keyListener.h"
@@ -97,13 +98,14 @@ void Robot::logic() {
     y += gravity - speed;
 
   // Death smoke
-  if (settings[SETTING_PARTICLE_TYPE] != 3 && !alive) {
+  if (settings.get<int>("particleType", 0) != 3 && !alive) {
     for (int i = 0; i < 800; i++) {
       if (random(0, 10) == 0) {
         int randnum = random(0, 255);
-        Particle newParticle(
-            x + 20, y + 20, al_map_rgb(randnum, randnum, randnum),
-            random(-4, -1), random(-5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
+        Particle newParticle(x + 20, y + 20,
+                             al_map_rgb(randnum, randnum, randnum),
+                             random(-4, -1), random(-5, -3), 1,
+                             settings.get<int>("particleType", 0));
         smokePart.push_back(newParticle);
       }
     }
@@ -118,21 +120,23 @@ void Robot::logic() {
   }
 
   // Rocket particles
-  if (settings[SETTING_PARTICLE_TYPE] != 3 && rocket) {
+  if (settings.get<int>("particleType", 0) != 3 && rocket) {
     for (int i = 0; i < 800; i++) {
       if (random(0, 10) == 0) {
         ALLEGRO_COLOR part_color = al_map_rgb(255, random(0, 255), 0);
 
-        if (settings[SETTING_CHRISTMAS]) {
+        if (settings.get<bool>("christmas", false)) {
           int red_or_green = random(0, 1);
           part_color =
               al_map_rgb(255 * red_or_green, 255 - red_or_green * 255, 0);
         }
 
         Particle newParticle1(x + 21, y + 55, part_color, random(-2, 2),
-                              random(1, 5), 1, settings[SETTING_PARTICLE_TYPE]);
+                              random(1, 5), 1,
+                              settings.get<int>("particleType", 0));
         Particle newParticle2(x + 52, y + 55, part_color, random(-2, 2),
-                              random(0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
+                              random(0, 4), 1,
+                              settings.get<int>("particleType", 0));
         rocketPart.push_back(newParticle1);
         rocketPart.push_back(newParticle2);
       }
@@ -156,7 +160,7 @@ void Robot::logic() {
         joystickListener::button[JOY_XBOX_BUMPER_LEFT]) {
       keyPressed = true;
 
-      if (settings[SETTING_SOUND] && random(0, 3) == 1)
+      if (settings.get<bool>("sound", true) && random(0, 3) == 1)
         al_play_sample(soundFlame, 0.05, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE,
                        nullptr);
 
@@ -200,7 +204,7 @@ void Robot::logic() {
     if (invincibleTimer <= 0) {
       health -= 5;
 
-      if (settings[SETTING_SOUND])
+      if (settings.get<bool>("sound", true))
         al_play_sample(soundHitground, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE,
                        nullptr);
 
@@ -215,21 +219,21 @@ void Robot::draw() {
   if (alive) {
     // Invincible
     if (invincibleTimer > 0) {
-      if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3)
+      if (!rocket || settings.get<int>("particleType", 0) != 3)
         al_draw_bitmap(robotInvincible, x, y, 0);
-      else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3)
+      else if (rocket && settings.get<int>("particleType", 0) == 3)
         al_draw_bitmap(robotInvincibleFire, x, y, 0);
     }
     // Standard
     else {
-      if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3)
+      if (!rocket || settings.get<int>("particleType", 0) != 3)
         al_draw_bitmap(mainRobot, x, y, 0);
-      else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3)
+      else if (rocket && settings.get<int>("particleType", 0) == 3)
         al_draw_bitmap(robotFire, x, y, 0);
     }
 
     // Xmas mode!
-    if (settings[SETTING_CHRISTMAS])
+    if (settings.get<bool>("christmas", false))
       al_draw_bitmap(christmasHat, x + 20, y - 12, 0);
   }
   // Death image

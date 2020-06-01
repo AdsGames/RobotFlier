@@ -1,6 +1,7 @@
 #include "Energy.h"
 
 #include "../constants/globals.h"
+#include "../constants/settings.h"
 
 // Constructor
 Energy::Energy(ALLEGRO_BITMAP* sprite,
@@ -21,11 +22,13 @@ void Energy::logic(const int motion, Robot* robot) {
     score += 5;
     stats[STAT_ENERGY] += 1;
 
-    if (robot->getHealth() < 100)
+    if (robot->getHealth() < 100) {
       robot->addHealth(1);
+    }
 
-    if (settings[SETTING_SOUND])
+    if (settings.get<bool>("sound", true)) {
       al_play_sample(sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
+    }
 
     isDead = true;
   }
