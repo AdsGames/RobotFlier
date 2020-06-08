@@ -66,6 +66,6 @@ jobs:
     - name: Make
       run: |
         $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw32\include;"
-        make
+        C:\msys64\usr\bin\make
       
      
