@@ -40,13 +40,10 @@ jobs:
     - name: Run CMake
       run: cmake -G "Unix Makefiles" .
     
-    - name: Update C++ Include Path
+    - name: Make
       run: |
         export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/local/include"
-        which make
-      
-    - name: Make
-      run: make
+        make
    
   build-windoze:
     name: Build Windows
@@ -55,11 +52,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      
-    - name: Update C++ Include Path
-      run: |
-        $env:Path += ";C:\msys64\mingw32\i686-w64-mingw32\lib;C:\msys64\mingw32\lib;C:\msys64\mingw32;C:\msys64\bin;C:\msys64\usr\bin;"
-        which make
 
     - name: Install Libraries
       run: |
@@ -69,6 +61,8 @@ jobs:
       run: cmake -G "MSYS Makefiles" .
       
     - name: Make
-      run: make
+      run: |
+        $env:Path += ";C:\msys64\mingw32\i686-w64-mingw32\lib;C:\msys64\mingw32\lib;C:\msys64\mingw32;C:\msys64\bin;C:\msys64\usr\bin;"
+        make
       
      
