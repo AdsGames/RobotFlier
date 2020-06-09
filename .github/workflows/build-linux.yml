@@ -1,4 +1,4 @@
-name: Test Build
+name: Build Linux
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-
+    name: Build Linux
     runs-on: ubuntu-latest
 
     steps:
@@ -20,11 +20,7 @@ jobs:
         sudo apt install liballegro5-dev liballegro-acodec5-dev liballegro-audio5-dev liballegro-image5-dev liballegro-dialog5-dev liballegro-ttf5-dev
         
     - name: Run CMake
-      uses: lukka/run-cmake@v2.5
-      with:
-        cmakeGenerator: "UNIX Makefiles"
-        buildDirectory: ./build
+      run: cmake -G "Unix Makefiles" .
       
     - name: Make
       run: make
-      
