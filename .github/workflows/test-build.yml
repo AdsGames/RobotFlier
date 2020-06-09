@@ -60,12 +60,11 @@ jobs:
       
     - name: Run CMake
       run: |
-        $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw32\lib;"
+        $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw32\lib;C:\msys64\mingw32\include;"
         cmake -G "MSYS Makefiles" .
       
     - name: Make
       run: |
-        $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw32\include;"
-        C:\msys64\usr\bin\make
+        make
       
      
