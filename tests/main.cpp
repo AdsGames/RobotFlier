@@ -1,19 +1,27 @@
 #define CATCH_CONFIG_MAIN
 
+#include <string>
+
+#include "../src/engine/Settings/SettingManager.h"
 #include "catch2/catch.hpp"
 
-int Factorial( int number ) {
-  return number <= 1 ? number : Factorial( number - 1 ) * number;  // fail
-// return number <= 1 ? 1      : Factorial( number - 1 ) * number;  // pass
+SettingManager settings = SettingManager("./data/settings.dat");
+
+TEST_CASE("Load booleans", "[single-file]") {
+  REQUIRE(settings.get<bool>("bool1", false) == true);
+  REQUIRE(settings.get<bool>("bool2", true) == false);
 }
 
-TEST_CASE( "Factorial of 0 is 1 (fail)", "[single-file]" ) {
-  REQUIRE( Factorial(0) == 1 );
+TEST_CASE("Load integers", "[single-file]") {
+  REQUIRE(settings.get<int>("int1", 0) == 1);
+  REQUIRE(settings.get<int>("int2", 0) == 93458345);
 }
 
-TEST_CASE( "Factorials of 1 and higher are computed (pass)", "[single-file]" ) {
-  REQUIRE( Factorial(1) == 1 );
-  REQUIRE( Factorial(2) == 2 );
-  REQUIRE( Factorial(3) == 6 );
-  REQUIRE( Factorial(10) == 3628800 );
+TEST_CASE("Load strings", "[single-file]") {
+  REQUIRE(settings.get<std::string>("testStr1", "") == "trueStr");
+}
+
+TEST_CASE("Load booleans", "[single-file]") {
+  REQUIRE(settings.get<float>("testFloat1", 0.0f) == 0.01f);
+  REQUIRE(settings.get<float>("testFloat2", 0.0f) == 0.00002f);
 }
