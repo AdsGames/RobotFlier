@@ -1,4 +1,8 @@
 # RobotFlier
+![Build Windows](https://github.com/AdsGames/RobotFlier/workflows/Build%20Windows/badge.svg)
+![Build Linux](https://github.com/AdsGames/RobotFlier/workflows/Build%20Linux/badge.svg)
+![Build Mac OS](https://github.com/AdsGames/RobotFlier/workflows/Build%20Mac%20OS/badge.svg)
+
 An ADS Games production! A space arcade game where you have to fly through space and collect energy.
 
 #### Linking
