@@ -18,7 +18,7 @@ class SettingManager {
   // Getters
   template <class T>
   T get(const std::string key, T fallback) const {
-    auto pair = this.findSetting(key);
+    auto pair = this->findSetting(key);
 
     try {
       return std::get<T>(pair.second);
