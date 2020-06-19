@@ -1,4 +1,4 @@
-name: Build Linux
+name: Test Linux
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build Linux
+    name: Test Linux
     runs-on: ubuntu-latest
 
     steps:
