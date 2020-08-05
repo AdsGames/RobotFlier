@@ -14,9 +14,10 @@
 
 #include "constants/globals.h"
 #include "constants/settings.h"
-#include "input/joystickListener.h"
-#include "input/keyListener.h"
-#include "input/mouseListener.h"
+#include "engine/Display/DisplayMode.h"
+#include "engine/Input/JoystickListener.h"
+#include "engine/Input/KeyListener.h"
+#include "engine/Input/MouseListener.h"
 #include "states/Game.h"
 #include "states/Init.h"
 #include "states/Intro.h"
@@ -25,6 +26,8 @@
 // Events
 ALLEGRO_EVENT_QUEUE* event_queue = nullptr;
 ALLEGRO_TIMER* timer = nullptr;
+ALLEGRO_DISPLAY* display = nullptr;
+ALLEGRO_BITMAP* buffer;
 
 // Fps timer
 double old_time = 0;
@@ -36,7 +39,12 @@ int frame_index = 0;
 bool closing = false;
 
 // Current state object
-state* currentState = nullptr;
+state* current_state = nullptr;
+
+// Input listener wrapper classes
+MouseListener m_listener;
+KeyListener k_listener;
+JoystickListener j_listener;
 
 // Functions
 void clean_up();
@@ -51,25 +59,25 @@ void change_state() {
   if (nextState != STATE_NULL) {
     // Delete the current state
     if (nextState != STATE_EXIT) {
-      delete currentState;
+      delete current_state;
     }
 
     // Change the state
     switch (nextState) {
       case STATE_INIT:
-        currentState = new init();
+        current_state = new init();
         break;
 
       case STATE_INTRO:
-        currentState = new intro();
+        current_state = new intro();
         break;
 
       case STATE_MENU:
-        currentState = new menu();
+        current_state = new menu();
         break;
 
       case STATE_GAME:
-        currentState = new game();
+        current_state = new game();
         break;
 
       case STATE_EXIT:
@@ -77,7 +85,7 @@ void change_state() {
         break;
 
       default:
-        currentState = new menu();
+        current_state = new menu();
     }
 
     // Change the current state ID
@@ -92,6 +100,9 @@ void change_state() {
 void setup() {
   // Init allegro 5
   al_init();
+
+  // Window title
+  al_set_window_title(display, "Loading...");
 
   // Input
   al_install_keyboard();
@@ -111,9 +122,14 @@ void setup() {
   al_init_acodec_addon();
   al_reserve_samples(20);
 
+  // Set display mode to windowed
+  DisplayMode::setActiveDisplay(&display);
+  DisplayMode::setMode(2);
+  buffer = al_create_bitmap(DisplayMode::getDrawWidth(),
+                            DisplayMode::getDrawHeight());
+
   // Initializing
   timer = al_create_timer(1.0 / MAX_FPS);
-  display = al_create_display(SCREEN_W, SCREEN_H);
 
   // Events
   event_queue = al_create_event_queue();
@@ -125,6 +141,9 @@ void setup() {
   al_clear_to_color(al_map_rgb(0, 0, 0));
   al_flip_display();
   al_start_timer(timer);
+
+  // Window title
+  al_set_window_title(display, "Robot Flier");
 
   // Creates a random number generator (based on time)
   srand(time(nullptr));
@@ -151,15 +170,15 @@ void update() {
     change_state();
 
     // Update listeners
-    keyListener::update();
-    mouseListener::update();
-    joystickListener::update();
+    m_listener.update();
+    k_listener.update();
+    j_listener.update();
 
     // Update state
-    currentState->update();
+    current_state->update();
 
     // Debug console toggle
-    if (keyListener::keyPressed[ALLEGRO_KEY_F12]) {
+    if (k_listener.keyPressed[ALLEGRO_KEY_F12]) {
       settings.set("debug", !settings.get<bool>("debug", false));
     }
   }
@@ -170,12 +189,12 @@ void update() {
   // Keyboard
   else if (ev.type == ALLEGRO_EVENT_KEY_DOWN ||
            ev.type == ALLEGRO_EVENT_KEY_UP) {
-    keyListener::on_event(ev.type, ev.keyboard.keycode);
+    k_listener.on_event(ev.type, ev.keyboard.keycode);
   }
   // Joystick
   else if (ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN ||
            ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_UP) {
-    joystickListener::on_event(ev.type, ev.joystick.button);
+    j_listener.on_event(ev.type, ev.joystick.button);
   }
   // Joystick plugged or unplugged
   else if (ev.type == ALLEGRO_EVENT_JOYSTICK_CONFIGURATION) {
@@ -185,8 +204,19 @@ void update() {
 
   // Queue empty? Lets draw
   if (al_is_event_queue_empty(event_queue)) {
+    // Render a frame
+    al_set_target_bitmap(buffer);
     al_clear_to_color(al_map_rgb(0, 0, 0));
-    currentState->draw();
+    current_state->draw();
+
+    al_set_target_backbuffer(display);
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+    al_draw_scaled_bitmap(
+        buffer, 0, 0, DisplayMode::getDrawWidth(), DisplayMode::getDrawHeight(),
+        DisplayMode::getTranslationX(), DisplayMode::getTranslationY(),
+        DisplayMode::getScaleWidth(), DisplayMode::getScaleHeight(), 0);
+
+    // Flip (OpenGL)
     al_flip_display();
 
     // Update fps buffer
@@ -215,7 +245,7 @@ int main() {
   stateID = STATE_INIT;
 
   // Set the current game state object
-  currentState = new init();
+  current_state = new init();
 
   // Loop
   while (!closing) {

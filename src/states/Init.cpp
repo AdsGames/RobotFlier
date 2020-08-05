@@ -1,14 +1,16 @@
 #include "Init.h"
 
+#include "../constants/globals.h"
+
 // Construct state
 init::init() {
   // Title
-  al_set_window_title(display, "A.D.S. Games - Robot Flier");
+  // al_set_window_title(display, "A.D.S. Games - Robot Flier");
 
   // Icon
-  ALLEGRO_BITMAP* the_icon;
-  the_icon = load_bitmap_ex("images/objects/bomb.png");
-  al_set_display_icon(display, the_icon);
+  // ALLEGRO_BITMAP* the_icon;
+  // the_icon = load_bitmap_ex("images/objects/bomb.png");
+  // al_set_display_icon(display, the_icon);
 
   // Seed the random number generator with the time
   srand(time(nullptr));

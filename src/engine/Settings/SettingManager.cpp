@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <exception>
 #include <fstream>
+#include <iostream>
 
 #include "../../helpers/stringFns.h"
 
@@ -11,10 +12,9 @@ struct FileIOException : public std::exception {
 };
 
 // Constructor
-SettingManager::SettingManager() {}
-
-SettingManager::SettingManager(const std::string file) {
-  load(file);
+SettingManager::SettingManager(const std::string file, const bool autosave)
+    : file_name(file), autosave(autosave) {
+  load(file_name);
 }
 
 // Load file
@@ -26,31 +26,52 @@ void SettingManager::load(const std::string file) {
     throw FileIOException();
   }
 
-  if (fileStream.is_open()) {
-    while (getline(fileStream, line)) {
-      // Split string
-      int delimLoc = line.find("=");
-      if (delimLoc == -1) {
-        continue;
-      }
-
-      // Get values
-      std::string key = line.substr(0, delimLoc);
-      std::string value = line.substr(delimLoc + 1, line.length());
-
-      // Conversion
-      if (stringFns::isBoolean(value)) {
-        set(key, stringFns::toBoolean(value));
-      } else if (stringFns::isInteger(value)) {
-        set(key, stringFns::toInteger(value));
-      } else if (stringFns::isFloat(value)) {
-        set(key, stringFns::toFloat(value));
-      } else {
-        set(key, value);
-      }
+  while (getline(fileStream, line)) {
+    // Split string
+    int delimLoc = line.find("=");
+    if (delimLoc == -1) {
+      continue;
     }
-    fileStream.close();
+
+    // Get values
+    std::string key = line.substr(0, delimLoc);
+    std::string value = line.substr(delimLoc + 1, line.length());
+
+    // Conversion
+    if (stringFns::isBoolean(value)) {
+      settings[key] = stringFns::toBoolean(value);
+    } else if (stringFns::isInteger(value)) {
+      settings[key] = stringFns::toInteger(value);
+    } else if (stringFns::isFloat(value)) {
+      settings[key] = stringFns::toFloat(value);
+    } else {
+      settings[key] = value;
+    }
   }
+
+  fileStream.close();
+}
+
+// Save file
+void SettingManager::save() {
+  save(file_name);
+}
+
+void SettingManager::save(const std::string file) {
+  std::ofstream fileStream(file);
+  std::string line = "";
+
+  if (!fileStream.is_open()) {
+    throw FileIOException();
+  }
+
+  for (auto const& [key, value] : this->settings) {
+    fileStream << key + "=";
+    fileStream << getString(key);
+    fileStream << "\n";
+  }
+
+  fileStream.close();
 }
 
 // Setters
@@ -60,6 +81,10 @@ void SettingManager::set(const std::string key, SettingType value) {
 
 void SettingManager::set(const Setting pair) {
   settings[pair.first] = pair.second;
+
+  if (autosave) {
+    save();
+  }
 }
 
 // Setting exists
@@ -80,5 +105,5 @@ const Setting SettingManager::findSetting(const std::string key) const {
     return *it;
   }
 
-  return {"", ""};
+  throw std::string("Could not find setting");
 }

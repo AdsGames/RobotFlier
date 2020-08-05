@@ -7,7 +7,6 @@
 #ifndef STATE_INTRO_H
 #define STATE_INTRO_H
 
-#include "../constants/globals.h"
 #include "../engine/State.h"
 #include "../helpers/tools.h"
 

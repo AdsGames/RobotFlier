@@ -23,6 +23,3 @@ ALLEGRO_FONT* orbitron_36 = nullptr;
 
 // Current music
 ALLEGRO_SAMPLE_ID currentMusic;
-
-// Display
-ALLEGRO_DISPLAY* display = nullptr;

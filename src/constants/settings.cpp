@@ -1,3 +1,3 @@
 #include "settings.h"
 
-SettingManager settings = SettingManager("data/settings.dat");
+SettingManager settings = SettingManager("data/settings.dat", true);

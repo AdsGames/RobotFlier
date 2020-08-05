@@ -11,19 +11,36 @@ typedef std::pair<std::string, SettingType> Setting;
 class SettingManager {
  public:
   // Constructor
-  SettingManager();
-  SettingManager(const std::string file);
+  SettingManager(const std::string file, const bool autosave = false);
   void load(const std::string file);
+  void save();
+  void save(const std::string file);
 
   // Getters
   template <class T>
   T get(const std::string key, T fallback) const {
-    auto pair = this->findSetting(key);
-
     try {
+      auto pair = this->findSetting(key);
       return std::get<T>(pair.second);
     } catch (const std::bad_variant_access&) {
       return fallback;
+    }
+  }
+
+  std::string getString(const std::string key) const {
+    auto pair = this->findSetting(key);
+
+    switch (pair.second.index()) {
+      case 0:
+        return std::get<std::string>(pair.second);
+      case 1:
+        return std::to_string(std::get<int>(pair.second));
+      case 2:
+        return std::get<bool>(pair.second) ? "true" : "false";
+      case 3:
+        return std::to_string(std::get<float>(pair.second));
+      default:
+        return "";
     }
   }
 
@@ -34,6 +51,9 @@ class SettingManager {
  private:
   const Setting findSetting(const std::string key) const;
   bool settingExists(const std::string key) const;
+
+  std::string file_name;
+  bool autosave;
 
   std::variant<SettingType> test;
   std::map<std::string, SettingType> settings;

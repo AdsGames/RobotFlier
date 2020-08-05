@@ -1,9 +1,9 @@
-particleType=0
-sound=true
-music=true
-fullscreen=true
+christmas=false
 controlMode=0
-debug=true
+debug=false
+fullscreen=1
 mega=false
+music=true
+particleType=1
 screenshake=true
-christmas=true
+sound=true

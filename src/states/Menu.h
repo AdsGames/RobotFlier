@@ -18,13 +18,9 @@
 
 #include <vector>
 
-#include "../constants/globals.h"
+#include "../engine/Particles/Particle.h"
 #include "../engine/State.h"
-#include "../entities/Particle.h"
 #include "../helpers/tools.h"
-#include "../input/joystickListener.h"
-#include "../input/keyListener.h"
-#include "../input/mouseListener.h"
 #include "ScoreTable.h"
 
 class menu : public state {

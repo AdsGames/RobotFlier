@@ -2,10 +2,10 @@
 
 #include "../constants/globals.h"
 #include "../constants/settings.h"
+#include "../engine/Input/JoystickListener.h"
+#include "../engine/Input/KeyListener.h"
+#include "../engine/Input/MouseListener.h"
 #include "../helpers/tools.h"
-#include "../input/joystickListener.h"
-#include "../input/keyListener.h"
-#include "../input/mouseListener.h"
 
 // Constructor
 Robot::Robot() : Robot(0.0f, 0.0f) {}
@@ -154,10 +154,10 @@ void Robot::logic() {
   // Moving controls
   if (alive) {
     // Controls movement up and down
-    if ((keyListener::key[ALLEGRO_KEY_W] || keyListener::key[ALLEGRO_KEY_UP] ||
-         mouseListener::mouse_button & 1) ||
-        joystickListener::button[JOY_XBOX_A] ||
-        joystickListener::button[JOY_XBOX_BUMPER_LEFT]) {
+    if ((KeyListener::key[ALLEGRO_KEY_W] || KeyListener::key[ALLEGRO_KEY_UP] ||
+         MouseListener::mouse_button & 1) ||
+        JoystickListener::button[JOY_XBOX_A] ||
+        JoystickListener::button[JOY_XBOX_BUMPER_LEFT]) {
       keyPressed = true;
 
       if (settings.get<bool>("sound", true) && random(0, 3) == 1)

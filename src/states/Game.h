@@ -7,20 +7,20 @@
 #ifndef STATE_GAME_H
 #define STATE_GAME_H
 
+#include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_primitives.h>
 
-#include "../constants/globals.h"
+#include "../engine/Input/JoystickListener.h"
+#include "../engine/Input/KeyListener.h"
+#include "../engine/Input/MouseListener.h"
+#include "../engine/Particles/Particle.h"
 #include "../engine/State.h"
 #include "../entities/Debris.h"
 #include "../entities/Energy.h"
-#include "../entities/Particle.h"
 #include "../entities/Powerup.h"
 #include "../entities/Robot.h"
 #include "../helpers/tools.h"
-#include "../input/joystickListener.h"
-#include "../input/keyListener.h"
-#include "../input/mouseListener.h"
 #include "ScoreTable.h"
 
 // Game class

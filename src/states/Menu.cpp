@@ -1,6 +1,10 @@
 #include "Menu.h"
 
+#include "../constants/globals.h"
 #include "../constants/settings.h"
+#include "../engine/Input/JoystickListener.h"
+#include "../engine/Input/KeyListener.h"
+#include "../engine/Input/MouseListener.h"
 
 // Construct state
 menu::menu() {
@@ -8,7 +12,7 @@ menu::menu() {
   startMove = false;
   startClicked = false;
   mouse_rocket_up = false;
-  mouseMove = mouseListener::mouse_y;
+  mouseMove = MouseListener::mouse_y;
 
   // Screen on
   mini_screen = MINISTATE_MENU;
@@ -36,9 +40,9 @@ menu::menu() {
   ui_window[1] = load_bitmap_ex("images/gui/ui_window_windowed.png");
   ui_window[0] = load_bitmap_ex("images/gui/ui_window_fullscreen.png");
 
-  ui_particle[0] = load_bitmap_ex("images/gui/ui_particle_circle.png");
+  ui_particle[0] = load_bitmap_ex("images/gui/ui_particle_pixel.png");
   ui_particle[1] = load_bitmap_ex("images/gui/ui_particle_square.png");
-  ui_particle[2] = load_bitmap_ex("images/gui/ui_particle_pixel.png");
+  ui_particle[2] = load_bitmap_ex("images/gui/ui_particle_circle.png");
   ui_particle[3] = load_bitmap_ex("images/gui/ui_particle_off.png");
 
   ui_control[0] = load_bitmap_ex("images/gui/ui_control_xbox.png");
@@ -72,7 +76,7 @@ menu::menu() {
   animation_pos = 0;
 
   // Hide mouse
-  al_hide_mouse_cursor(display);
+  // al_hide_mouse_cursor(display);
 
   // Play music
   if (settings.get<bool>("music", true) == 1) {
@@ -133,61 +137,64 @@ menu::~menu() {
 // Update loop
 void menu::update() {
   // Menu animations
-  if (animation_pos < 100 && !startClicked)
+  if (animation_pos < 100 && !startClicked) {
     animation_pos += 4;
+  }
 
-  if (animation_pos > 0 && startClicked)
+  if (animation_pos > 0 && startClicked) {
     animation_pos -= 4;
+  }
 
   // Start the game
-  if (startClicked && animation_pos <= 0)
+  if (startClicked && animation_pos <= 0) {
     set_next_state(STATE_GAME);
+  }
 
   // Open submenu or start game
   if (mini_screen == MINISTATE_MENU) {
     // Start game with controller
-    if (joystickListener::buttonPressed[JOY_XBOX_START] ||
-        joystickListener::buttonPressed[JOY_XBOX_A]) {
+    if (JoystickListener::buttonPressed[JOY_XBOX_START] ||
+        JoystickListener::buttonPressed[JOY_XBOX_A]) {
       startClicked = true;
     }
 
     // Buttons
-    if (mouseListener::mouse_pressed & 1) {
+    if (MouseListener::mouse_pressed & 1) {
       // Start game
-      if (collision(mouseListener::mouse_x, mouseListener::mouse_x, 40,
-                    40 + al_get_bitmap_width(start), mouseListener::mouse_y,
-                    mouseListener::mouse_y, 410,
+      if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 40,
+                    40 + al_get_bitmap_width(start), MouseListener::mouse_y,
+                    MouseListener::mouse_y, 410,
                     410 + al_get_bitmap_height(start))) {
         startClicked = true;
       }
       // Scores
-      else if (collision(mouseListener::mouse_x, mouseListener::mouse_x, 660,
+      else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 660,
                          660 + al_get_bitmap_width(highscores_button),
-                         mouseListener::mouse_y, mouseListener::mouse_y, 30,
+                         MouseListener::mouse_y, MouseListener::mouse_y, 30,
                          30 + al_get_bitmap_height(highscores_button))) {
         mini_screen = MINISTATE_SCORES;
       }
       // Credits menu
-      else if (collision(mouseListener::mouse_x, mouseListener::mouse_x, 542,
-                         644, mouseListener::mouse_y, mouseListener::mouse_y,
+      else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 542,
+                         644, MouseListener::mouse_y, MouseListener::mouse_y,
                          548, 600)) {
         mini_screen = MINISTATE_CREDITS;
       }
       // Controls menu
-      else if (collision(mouseListener::mouse_x, mouseListener::mouse_x, 644,
-                         696, mouseListener::mouse_y, mouseListener::mouse_y,
+      else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 644,
+                         696, MouseListener::mouse_y, MouseListener::mouse_y,
                          548, 600)) {
         mini_screen = MINISTATE_CONTROLS;
       }
       // Help screen
-      else if (collision(mouseListener::mouse_x, mouseListener::mouse_x, 696,
-                         749, mouseListener::mouse_y, mouseListener::mouse_y,
+      else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 696,
+                         749, MouseListener::mouse_y, MouseListener::mouse_y,
                          548, 600)) {
         mini_screen = MINISTATE_TUTORIAL;
       }
       // Options menu
-      else if (collision(mouseListener::mouse_x, mouseListener::mouse_x, 749,
-                         800, mouseListener::mouse_y, mouseListener::mouse_y,
+      else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 749,
+                         800, MouseListener::mouse_y, MouseListener::mouse_y,
                          548, 600)) {
         mini_screen = MINISTATE_OPTIONS;
       }
@@ -198,31 +205,31 @@ void menu::update() {
            mini_screen == MINISTATE_CREDITS ||
            mini_screen == MINISTATE_CONTROLS ||
            mini_screen == MINISTATE_SCORES) {
-    if (keyListener::lastKeyPressed != -1 || mouseListener::mouse_pressed & 1 ||
-        joystickListener::lastButtonPressed != -1) {
+    if (KeyListener::lastKeyPressed != -1 || MouseListener::mouse_pressed & 1 ||
+        JoystickListener::lastButtonPressed != -1) {
       mini_screen = MINISTATE_MENU;
       draw();
     }
   }
   // Options
   else if (mini_screen == MINISTATE_OPTIONS &&
-           mouseListener::mouse_pressed & 1) {
+           MouseListener::mouse_pressed & 1) {
     // Particles toggle
-    if (collision(280, 360, mouseListener::mouse_x, mouseListener::mouse_x, 400,
-                  480, mouseListener::mouse_y, mouseListener::mouse_y)) {
+    if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x, 400,
+                  480, MouseListener::mouse_y, MouseListener::mouse_y)) {
       settings.set("particleType",
                    (settings.get<int>("particleType", 0) + 1) % 4);
     }
     // Sound button toggle
-    else if (collision(120, 200, mouseListener::mouse_x, mouseListener::mouse_x,
-                       180, 260, mouseListener::mouse_y,
-                       mouseListener::mouse_y)) {
+    else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
+                       180, 260, MouseListener::mouse_y,
+                       MouseListener::mouse_y)) {
       settings.set("sound", !settings.get<bool>("sound", true));
     }
     // Music button toggle
-    else if (collision(280, 360, mouseListener::mouse_x, mouseListener::mouse_x,
-                       180, 260, mouseListener::mouse_y,
-                       mouseListener::mouse_y)) {
+    else if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x,
+                       180, 260, MouseListener::mouse_y,
+                       MouseListener::mouse_y)) {
       settings.set("music", !settings.get<bool>("music", true));
 
       if (settings.get<bool>("music", true) == 0)
@@ -233,60 +240,60 @@ void menu::update() {
 
     }
     // Fullscreen toggle
-    else if (collision(120, 200, mouseListener::mouse_x, mouseListener::mouse_x,
-                       400, 480, mouseListener::mouse_y,
-                       mouseListener::mouse_y)) {
+    else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
+                       400, 480, MouseListener::mouse_y,
+                       MouseListener::mouse_y)) {
       settings.set("fullscreen",
                    (settings.get<bool>("fullscreen", false) + 1) % 2);
 
       if (settings.get<bool>("fullscreen", false)) {
         // Fullscreen stuff
-        al_destroy_display(display);
-        al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-        display = al_create_display(SCREEN_W, SCREEN_H);
+        // al_destroy_display(display);
+        // al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+        // display = al_create_display(SCREEN_W, SCREEN_H);
 
-        ALLEGRO_DISPLAY_MODE disp_data;
-        al_get_display_mode(al_get_num_display_modes() - 1, &disp_data);
-        float sx = disp_data.width / (float)SCREEN_W;
-        float sy = disp_data.height / (float)SCREEN_H;
+        // ALLEGRO_DISPLAY_MODE disp_data;
+        // al_get_display_mode(al_get_num_display_modes() - 1, &disp_data);
+        // float sx = disp_data.width / (float)SCREEN_W;
+        // float sy = disp_data.height / (float)SCREEN_H;
 
-        ALLEGRO_TRANSFORM trans;
-        al_identity_transform(&trans);
-        al_scale_transform(&trans, sx, sy);
-        al_use_transform(&trans);
-        al_hide_mouse_cursor(display);
+        // ALLEGRO_TRANSFORM trans;
+        // al_identity_transform(&trans);
+        // al_scale_transform(&trans, sx, sy);
+        // al_use_transform(&trans);
+        // al_hide_mouse_cursor(display);
       } else {
-        al_destroy_display(display);
-        al_set_new_display_flags(ALLEGRO_WINDOWED);
-        display = al_create_display(SCREEN_W, SCREEN_H);
-        al_hide_mouse_cursor(display);
+        // al_destroy_display(display);
+        // al_set_new_display_flags(ALLEGRO_WINDOWED);
+        // display = al_create_display(SCREEN_W, SCREEN_H);
+        // al_hide_mouse_cursor(display);
       }
     }
     // Screen shake
-    else if (collision(280, 360, mouseListener::mouse_x, mouseListener::mouse_x,
-                       290, 370, mouseListener::mouse_y,
-                       mouseListener::mouse_y)) {
+    else if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x,
+                       290, 370, MouseListener::mouse_y,
+                       MouseListener::mouse_y)) {
       settings.set("screenshake",
                    (settings.get<int>("screenshake", 0) + 1) % 4);
     }
     // Control Toggle
-    else if (collision(120, 200, mouseListener::mouse_x, mouseListener::mouse_x,
-                       290, 370, mouseListener::mouse_y,
-                       mouseListener::mouse_y)) {
+    else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
+                       290, 370, MouseListener::mouse_y,
+                       MouseListener::mouse_y)) {
       settings.set("controlMode",
                    (settings.get<int>("controlMode", 0) + 1) % 3);
     }
     // Power off
-    else if (collision(540, 620, mouseListener::mouse_x, mouseListener::mouse_x,
-                       180, 260, mouseListener::mouse_y,
-                       mouseListener::mouse_y)) {
+    else if (collision(540, 620, MouseListener::mouse_x, MouseListener::mouse_x,
+                       180, 260, MouseListener::mouse_y,
+                       MouseListener::mouse_y)) {
       // write_settings();
       set_next_state(STATE_EXIT);
     }
     // Exit menu
-    else if (collision(540, 620, mouseListener::mouse_x, mouseListener::mouse_x,
-                       407, 487, mouseListener::mouse_y,
-                       mouseListener::mouse_y)) {
+    else if (collision(540, 620, MouseListener::mouse_x, MouseListener::mouse_x,
+                       407, 487, MouseListener::mouse_y,
+                       MouseListener::mouse_y)) {
       mini_screen = MINISTATE_MENU;
       // write_settings();
     }
@@ -303,8 +310,8 @@ void menu::update() {
           part_color = al_map_rgb(red_or_green, 255 - red_or_green, 0);
         }
 
-        Particle newParticle(mouseListener::mouse_x,
-                             mouseListener::mouse_y + 16, part_color,
+        Particle newParticle(MouseListener::mouse_x,
+                             MouseListener::mouse_y + 16, part_color,
                              random(-2, 2), random(8, 20), 1,
                              settings.get<int>("particleType", 0));
         mousePart.push_back(newParticle);
@@ -320,12 +327,12 @@ void menu::update() {
   }
 
   // Close game
-  if (keyListener::key[ALLEGRO_KEY_ESCAPE])
+  if (KeyListener::key[ALLEGRO_KEY_ESCAPE])
     set_next_state(STATE_EXIT);
 
   // Check if mouse is going up
-  mouse_rocket_up = (mouseListener::mouse_y < mouseMove);
-  mouseMove = mouseListener::mouse_y;
+  mouse_rocket_up = (MouseListener::mouse_y < mouseMove);
+  mouseMove = MouseListener::mouse_y;
 }
 
 // Draw to screen
@@ -431,10 +438,10 @@ void menu::draw() {
   if (settings.get<bool>("debug", false)) {
     // Joystick testing
     if (joystick_enabled) {
-      for (int i = 0; i < JOY_MAX_BUTTONS; i++) {
+      for (int i = 0; i < JoystickListener::JOY_MAX_BUTTONS; i++) {
         al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 20, 10 * i + 20,
                       ALLEGRO_ALIGN_LEFT, "Joystick B %i : %i", i,
-                      joystickListener::button[i]);
+                      JoystickListener::button[i]);
       }
     }
 
@@ -444,13 +451,15 @@ void menu::draw() {
   }
 
   // Draw rocket if no particles
-  if (settings.get<int>("particleType", 0) == 3 && mouse_rocket_up)
-    al_draw_bitmap(mouse_rocket, mouseListener::mouse_x - 10,
-                   mouseListener::mouse_y, 0);
+  if (settings.get<int>("particleType", 0) == 3 && mouse_rocket_up) {
+    al_draw_bitmap(mouse_rocket, MouseListener::mouse_x - 10,
+                   MouseListener::mouse_y, 0);
+  }
 
   // Draw mouse particles
-  for (unsigned int i = 0; i < mousePart.size(); i++)
+  for (unsigned int i = 0; i < mousePart.size(); i++) {
     mousePart.at(i).draw();
+  }
 
-  al_draw_bitmap(mouse, mouseListener::mouse_x - 10, mouseListener::mouse_y, 0);
+  al_draw_bitmap(mouse, MouseListener::mouse_x - 10, MouseListener::mouse_y, 0);
 }

@@ -1,5 +1,8 @@
 #include "Debris.h"
 
+#include <allegro5/allegro_audio.h>
+
+#include "../constants/globals.h"
 #include "../constants/settings.h"
 
 // Constructor

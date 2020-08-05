@@ -7,6 +7,8 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_font.h>
 #include <allegro5/allegro_native_dialog.h>
 #include <math.h>
 #include <time.h>
@@ -14,8 +16,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-
-#include "../constants/globals.h"
 
 // Error handling loading functions
 extern ALLEGRO_BITMAP* load_bitmap_ex(std::string file);

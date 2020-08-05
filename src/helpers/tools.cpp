@@ -2,6 +2,8 @@
 
 #include <allegro5/allegro_ttf.h>
 
+#include "../constants/globals.h"
+
 // Error handling loading functions
 // Checks if file exists
 ALLEGRO_BITMAP* load_bitmap_ex(std::string file) {

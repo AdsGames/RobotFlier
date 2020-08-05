@@ -1,5 +1,6 @@
 #include "Game.h"
 
+#include "../constants/globals.h"
 #include "../constants/settings.h"
 
 // Constructor
@@ -76,7 +77,7 @@ game::game() {
   changeTheme(0);
 
   // Mouse
-  al_hide_mouse_cursor(display);
+  // al_hide_mouse_cursor(display);
 
   // Init hectar
   hectar = Robot(80, 300);
@@ -320,15 +321,15 @@ void game::update() {
     // Lose scripts
     if (hectar.isOnGround()) {
       // Name input
-      if (score > highscores.getScore(9) && keyListener::lastKeyPressed != -1) {
+      if (score > highscores.getScore(9) && KeyListener::lastKeyPressed != -1) {
         // Last key pressed
-        int newkey = keyListener::lastKeyPressed;
+        int newkey = KeyListener::lastKeyPressed;
 
         // Letters
         if (newkey >= ALLEGRO_KEY_A && newkey <= ALLEGRO_KEY_Z &&
             edittext.length() < 14) {
           iter = edittext.insert(
-              iter, newkey + 96 - (keyListener::key[ALLEGRO_KEY_LSHIFT] * 32));
+              iter, newkey + 96 - (KeyListener::key[ALLEGRO_KEY_LSHIFT] * 32));
           ++iter;
         }
         // Numbers
@@ -348,9 +349,9 @@ void game::update() {
         }
       }
 
-      if (keyListener::key[ALLEGRO_KEY_ENTER] ||
-          joystickListener::buttonPressed[JOY_XBOX_START] ||
-          joystickListener::buttonPressed[JOY_XBOX_A]) {
+      if (KeyListener::key[ALLEGRO_KEY_ENTER] ||
+          JoystickListener::buttonPressed[JOY_XBOX_START] ||
+          JoystickListener::buttonPressed[JOY_XBOX_A]) {
         highscores.add(edittext, score);
         set_next_state(STATE_MENU);
       }
@@ -358,8 +359,8 @@ void game::update() {
   }
 
   // Screenshot
-  if (keyListener::keyPressed[ALLEGRO_KEY_F11] ||
-      joystickListener::buttonPressed[3]) {
+  if (KeyListener::keyPressed[ALLEGRO_KEY_F11] ||
+      JoystickListener::buttonPressed[3]) {
     // Count screenshots
     int screenshotNumber;
 
@@ -374,10 +375,10 @@ void game::update() {
     write.close();
 
     // Save to file
-    al_save_bitmap((std::string("screenshots/screenshot_") +
-                    std::to_string(screenshotNumber).c_str() + ".png")
-                       .c_str(),
-                   al_get_backbuffer(display));
+    // al_save_bitmap((std::string("screenshots/screenshot_") +
+    //                 std::to_string(screenshotNumber).c_str() + ".png")
+    //                    .c_str(),
+    //                al_get_backbuffer(display));
 
     // Snap sound
     al_play_sample(sound_snap, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
@@ -398,48 +399,48 @@ void game::update() {
 
   // Random test stuff for devs
   if (settings.get<bool>("debug", false)) {
-    if (keyListener::key[ALLEGRO_KEY_R])
+    if (KeyListener::key[ALLEGRO_KEY_R])
       score += 10;
 
-    if (keyListener::key[ALLEGRO_KEY_E] || joystickListener::button[2])
+    if (KeyListener::key[ALLEGRO_KEY_E] || JoystickListener::button[2])
       hectar.addHealth(1);
 
-    if (keyListener::key[ALLEGRO_KEY_T])
+    if (KeyListener::key[ALLEGRO_KEY_T])
       hectar.addHealth(-100);
   }
 
   // Pause loop code
-  if (keyListener::keyPressed[ALLEGRO_KEY_ESCAPE] ||
-      mouseListener::mouse_pressed & 2 ||
-      keyListener::keyPressed[ALLEGRO_KEY_SPACE] ||
-      joystickListener::buttonPressed[JOY_XBOX_START]) {
+  if (KeyListener::keyPressed[ALLEGRO_KEY_ESCAPE] ||
+      MouseListener::mouse_pressed & 2 ||
+      KeyListener::keyPressed[ALLEGRO_KEY_SPACE] ||
+      JoystickListener::buttonPressed[JOY_XBOX_START]) {
     if (paused) {
       paused = false;
-      al_hide_mouse_cursor(display);
+      // al_hide_mouse_cursor(display);
     } else if (hectar.isAlive()) {
       paused = true;
-      al_show_mouse_cursor(display);
+      // al_show_mouse_cursor(display);
     }
   }
 
   // Pause Menu Scripts
   if (paused) {
     // Quit game
-    if (mouseListener::mouse_pressed & 1 &&
-        collision(220, 280, mouseListener::mouse_x, mouseListener::mouse_x, 435,
-                  460, mouseListener::mouse_y, mouseListener::mouse_y))
+    if (MouseListener::mouse_pressed & 1 &&
+        collision(220, 280, MouseListener::mouse_x, MouseListener::mouse_x, 435,
+                  460, MouseListener::mouse_y, MouseListener::mouse_y))
       set_next_state(STATE_EXIT);
 
     // Menu
-    if (mouseListener::mouse_pressed & 1 &&
-        collision(300, 430, mouseListener::mouse_x, mouseListener::mouse_x, 435,
-                  460, mouseListener::mouse_y, mouseListener::mouse_y))
+    if (MouseListener::mouse_pressed & 1 &&
+        collision(300, 430, MouseListener::mouse_x, MouseListener::mouse_x, 435,
+                  460, MouseListener::mouse_y, MouseListener::mouse_y))
       set_next_state(STATE_MENU);
 
     // Resume
-    if (mouseListener::mouse_pressed & 1 &&
-        collision(470, 540, mouseListener::mouse_x, mouseListener::mouse_x, 435,
-                  460, mouseListener::mouse_y, mouseListener::mouse_y))
+    if (MouseListener::mouse_pressed & 1 &&
+        collision(470, 540, MouseListener::mouse_x, MouseListener::mouse_x, 435,
+                  460, MouseListener::mouse_y, MouseListener::mouse_y))
       paused = false;
   }
 }
@@ -502,9 +503,9 @@ void game::draw() {
     al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 120, 35,
                   ALLEGRO_ALIGN_LEFT, "Magnetic:%i", hectar.getMagneticTimer());
     al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 120, 45,
-                  ALLEGRO_ALIGN_LEFT, "Mouse X:%i", mouseListener::mouse_x);
+                  ALLEGRO_ALIGN_LEFT, "Mouse X:%i", MouseListener::mouse_x);
     al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 120, 55,
-                  ALLEGRO_ALIGN_LEFT, "Mouse Y:%i", mouseListener::mouse_y);
+                  ALLEGRO_ALIGN_LEFT, "Mouse Y:%i", MouseListener::mouse_y);
     al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 120, 65,
                   ALLEGRO_ALIGN_LEFT, "Particles On:%i",
                   settings.get<int>("particleType", 0));
@@ -524,7 +525,7 @@ void game::draw() {
     // Column 4
     al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 360, 25,
                   ALLEGRO_ALIGN_LEFT, "Last key:%i",
-                  keyListener::lastKeyPressed);
+                  KeyListener::lastKeyPressed);
     al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 360, 35,
                   ALLEGRO_ALIGN_LEFT, "Has highscore:%i",
                   score > highscores.getScore(9));

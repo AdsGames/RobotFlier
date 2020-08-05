@@ -9,7 +9,6 @@
 
 #include <allegro5/allegro_font.h>
 
-#include "../constants/globals.h"
 #include "../engine/State.h"
 #include "../helpers/tools.h"
 

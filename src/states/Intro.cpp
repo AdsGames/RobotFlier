@@ -1,5 +1,7 @@
 #include "Intro.h"
 
+#include "../constants/globals.h"
+
 // Construct state
 intro::intro() {
   // Load intro image

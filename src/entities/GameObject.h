@@ -13,9 +13,8 @@
 
 #include <vector>
 
-#include "../constants/globals.h"
+#include "../engine/Particles/Particle.h"
 #include "../helpers/tools.h"
-#include "Particle.h"
 #include "Robot.h"
 
 class GameObject {

@@ -1,5 +1,6 @@
 #include "GameObject.h"
 
+#include "../constants/globals.h"
 #include "../constants/settings.h"
 
 // Constructor

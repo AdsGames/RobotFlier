@@ -1,6 +1,6 @@
 /**
- * Key Listener 2 (allegro 5!)
- *   Allan Legemaate
+ * Key Listener
+ * Allan Legemaate
  * Listens for keys JUST pressed or JUST released
  *   since the last tick
  * 18/01/2017
@@ -11,12 +11,13 @@
 
 #include <allegro5/allegro.h>
 
-#include <iostream>
-
-class keyListener {
+class KeyListener {
  public:
-  static void on_event(ALLEGRO_EVENT_TYPE event_type, int keycode);
-  static void update();
+  KeyListener(){};
+  virtual ~KeyListener(){};
+
+  void on_event(ALLEGRO_EVENT_TYPE event_type, const int keycode);
+  void update();
 
   static bool key[ALLEGRO_KEY_MAX];
   static bool keyPressed[ALLEGRO_KEY_MAX];
@@ -24,7 +25,9 @@ class keyListener {
 
   static int lastKeyPressed;
   static int lastKeyReleased;
+  static bool anyKeyPressed;
 
+ protected:
  private:
   static bool lastTicksKey[ALLEGRO_KEY_MAX];
 };

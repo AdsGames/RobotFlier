@@ -7,10 +7,12 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
+#include <allegro5/allegro_audio.h>
+
 #include <iostream>
 #include <vector>
 
-#include "./Particle.h"
+#include "../engine/Particles/Particle.h"
 
 class Robot {
  public:
