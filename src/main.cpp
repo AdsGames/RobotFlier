@@ -14,6 +14,7 @@
 
 #include "constants/globals.h"
 #include "constants/settings.h"
+#include "engine/Assets/AssetManager.h"
 #include "engine/Display/DisplayMode.h"
 #include "engine/Input/JoystickListener.h"
 #include "engine/Input/KeyListener.h"
@@ -45,6 +46,7 @@ state* current_state = nullptr;
 MouseListener m_listener;
 KeyListener k_listener;
 JoystickListener j_listener;
+AssetManager asset_manager;
 
 // Functions
 void clean_up();
@@ -124,7 +126,7 @@ void setup() {
 
   // Set display mode to windowed
   DisplayMode::setActiveDisplay(&display);
-  DisplayMode::setMode(2);
+  DisplayMode::setMode(1);
   buffer = al_create_bitmap(DisplayMode::getDrawWidth(),
                             DisplayMode::getDrawHeight());
 
@@ -156,6 +158,9 @@ void setup() {
   for (int i = 0; i < 100; i++) {
     frames_array[i] = 0;
   }
+
+  // Load assets
+  asset_manager.load("data/assets.dat");
 }
 
 // Universal update

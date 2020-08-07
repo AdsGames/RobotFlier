@@ -13,30 +13,26 @@
 #include <string>
 
 class Sound {
-  public:
-    Sound();
-    virtual ~Sound();
-    void load_wav(std::string path);
-    void load_ogg(std::string path);
-    void play();
-    void play(float volume);
-    void stop();
-    void play_random_frequency(const int min, const int max);
-    void play_at_volume(const float volume);
-    ALLEGRO_SAMPLE_ID* getSampleId();
-    ALLEGRO_SAMPLE* getSample();
+ public:
+  Sound();
+  Sound(const std::string path);
 
-    bool getIsPlaying() {
-      return is_playing;
-    }
+  virtual ~Sound();
 
-  private:
+  void play(const float volume = 1.0f, const bool loop = false);
+  void stop();
 
-    ALLEGRO_SAMPLE* sample;
-    ALLEGRO_SAMPLE_ID* sample_id;
+  void load(const std::string path);
 
-    bool is_wav;
-    bool is_playing;
+  bool isPlaying();
+
+ private:
+  static ALLEGRO_SAMPLE* loadSample(const std::string file);
+
+  ALLEGRO_SAMPLE* sample;
+  ALLEGRO_SAMPLE_ID* sample_id;
+
+  bool is_playing;
 };
 
-#endif // SOUND_H
+#endif  // SOUND_H

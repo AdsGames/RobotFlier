@@ -32,11 +32,6 @@ class UIHandler {
                             std::string anchorID,
                             std::string id);
 
-  [
-      [deprecated("Look up using getElementById instead using "
-                  "getElementByText")]] UIElement*
-  getElementByText(std::string text);
-
   UIElement* getElementById(std::string id);
 
   std::vector<UIElement*> getUIElements();

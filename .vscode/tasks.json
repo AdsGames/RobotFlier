@@ -8,9 +8,7 @@
       "windows": {
         "command": "make -j8 RobotFlier && cd ./build && RobotFlier.exe"
       },
-      "problemMatcher": [
-        "$gcc"
-      ],
+      "problemMatcher": ["$gcc"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -20,17 +18,13 @@
       "label": "Build",
       "type": "shell",
       "command": "make -j8 RobotFlier",
-      "problemMatcher": [
-        "$gcc"
-      ],
+      "problemMatcher": ["$gcc"]
     },
     {
       "label": "Rebuild",
       "type": "shell",
-      "command": "make clean && make -j8 RobotFlier",
-      "problemMatcher": [
-        "$gcc"
-      ],
+      "command": "make clean && cmake -G \"MSYS Makefiles\" . && make -j8 RobotFlier",
+      "problemMatcher": ["$gcc"]
     },
     {
       "label": "Run",

@@ -9,7 +9,7 @@
 // Create UI handler
 UIHandler::UIHandler() {
   // Load cursor image
-  ui_cursor = tools::load_bitmap_ex("images/cursor.png");
+  // ui_cursor = tools::load_bitmap_ex("images/cursor.png");
 
   // Focused element
   focusedElement = -1;
@@ -67,21 +67,6 @@ void UIHandler::createAnchoredButton(std::string text,
   ui_elements.push_back(new Button(
       getElementById(anchorID)->getX() + getElementById(anchorID)->getWidth(),
       getElementById(anchorID)->getY(), text, id, font));
-}
-
-// Search for element by text
-UIElement* UIHandler::getElementByText(std::string text) {
-  // Find element
-  for (unsigned int i = 0; i < ui_elements.size(); i++) {
-    if (ui_elements.at(i)->getText() == text) {
-      return ui_elements.at(i);
-    }
-  }
-
-  tools::log_message("Warning: not found " + text);
-
-  // Not found
-  return nullptr;
 }
 
 // Search for elemnt by ID

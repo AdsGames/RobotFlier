@@ -16,54 +16,10 @@ void tools::abort_on_error(std::string message, std::string title) {
   exit(-1);
 }
 
-// Load sample if exits, or throw error
-ALLEGRO_SAMPLE* tools::load_sample_ex(std::string file) {
-  // Log file
-  log_message("Loading sound " + file, true);
-
-  // Check if file exists
-  std::ifstream f(file.c_str());
-
-  if (!f.good())
-    abort_on_error(
-        std::string("Cannot find sample " + file +
-                    "\nYour file is gone and there's nothing I can do. Sorry."),
-        "File Not Found");
-
-  // Attempt to load
-  ALLEGRO_SAMPLE* temp_sample = nullptr;
-
-  if (!(temp_sample = al_load_sample(file.c_str())))
-    abort_on_error(
-        std::string("There was an error loading " + file + "\nOh no :("),
-        "Loading Error");
-
-  return temp_sample;
-}
-
-// Load bitmap if exits, or throw error
-ALLEGRO_BITMAP* tools::load_bitmap_ex(std::string file) {
-  // Log file
-  log_message("Loading bitmap " + file, true);
-
-  // Check if file exists
-  std::ifstream f(file.c_str());
-
-  if (!f.good())
-    abort_on_error(
-        std::string("Cannot find image " + file +
-                    "\nYour file is gone and there's nothing I can do. Sorry."),
-        "File Not Found");
-
-  // Attempt to load
-  ALLEGRO_BITMAP* temp_image = nullptr;
-
-  if (!(temp_image = al_load_bitmap(file.c_str())))
-    abort_on_error(
-        std::string("There was an error loading " + file + "... \nSorry..."),
-        "Loading Error");
-
-  return temp_image;
+// Check if file exists
+bool tools::file_exists(std::string filePath) {
+  std::ifstream file(filePath.c_str());
+  return file.good();
 }
 
 // Text offset x

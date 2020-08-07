@@ -3,80 +3,57 @@
 #include "../Common/Tools.h"
 
 // Ctor
-Sound::Sound() {
-  sample = nullptr;
-  sample_id = nullptr;
+Sound::Sound() : sample(nullptr), sample_id(nullptr), is_playing(false) {}
 
-  is_wav = false;
-  is_playing = false;
+Sound::Sound(const std::string path) : Sound() {
+  load(path);
 }
 
 // Dtor
 Sound::~Sound() {
-  al_destroy_sample(sample);
-}
-
-// Get sample ID
-ALLEGRO_SAMPLE_ID* Sound::getSampleId() {
-  return sample_id;
-}
-
-// Get sample
-ALLEGRO_SAMPLE* Sound::getSample() {
-  return sample;
+  // al_destroy_sample(sample);
 }
 
 // Load WAV from file
-void Sound::load_wav(std::string path) {
-  is_wav = true;
-  sample = tools::load_sample_ex(path);
-}
-
-// Load OGG frim file
-void Sound::load_ogg(std::string path) {
-  is_wav = false;
-  sample = tools::load_sample_ex(path);
+void Sound::load(std::string path) {
+  sample = loadSample(path);
 }
 
 // Play sound
-void Sound::play() {
-  this->play(1.0f);
-}
-
-// Play sound at volume
-void Sound::play(const float volume) {
-  if (!sample)
+void Sound::play(const float volume, const bool loop) {
+  if (!sample) {
     return;
-
-  if (is_wav) {
-    is_playing = true;
-    al_play_sample(sample, volume, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
-  } else {
-    is_playing = true;
-    al_play_sample(sample, volume, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, sample_id);
   }
-}
 
-// Play at sample random frequency
-void Sound::play_random_frequency(const int newMin, const int newMax) {
-  if (!sample)
-    return;
-
-  if (is_wav) {
-    al_play_sample(sample, 1.0, 0.0,
-                   (float)tools::random_int(newMin, newMax) / 100,
-                   ALLEGRO_PLAYMODE_ONCE, nullptr);
-  }
+  ALLEGRO_PLAYMODE playMode =
+      loop ? ALLEGRO_PLAYMODE_LOOP : ALLEGRO_PLAYMODE_ONCE;
+  is_playing = true;
+  al_play_sample(sample, volume, 0.0, 1.0, playMode, sample_id);
 }
 
 // Stop sound
 void Sound::stop() {
-  if (!sample)
+  if (!sample) {
     return;
-
-  if (!is_wav) {
-    al_stop_samples();
   }
 
+  al_stop_samples();
   is_playing = false;
+}
+
+bool Sound::isPlaying() {
+  return is_playing;
+}
+
+// Load sample if exits, or throw error
+ALLEGRO_SAMPLE* Sound::loadSample(std::string file) {
+  // Attempt to load
+  ALLEGRO_SAMPLE* temp_sample = al_load_sample(file.c_str());
+
+  if (!temp_sample) {
+    tools::abort_on_error("There was an error loading " + file + "\nOh no :(",
+                          "Loading Error");
+  }
+
+  return temp_sample;
 }
