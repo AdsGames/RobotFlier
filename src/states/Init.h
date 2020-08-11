@@ -20,7 +20,7 @@ class init : public state {
 
   // Override parent
   virtual void update() override{};
-  virtual void draw() override{};
+  virtual void draw() override;
 };
 
 #endif  // STATE_INIT_H

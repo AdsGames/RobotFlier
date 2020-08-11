@@ -1,9 +1,9 @@
 /**
- * Sound
- * Danny Van Stemp
- * Wrapper for allegro sample
- * Easy interface to interact with samples
- * 23/11/2018
+ * Texture
+ * Allan Legemaate
+ * Wrapper for allegro bitmap
+ * Easy interface to interact with bitmaps
+ * 10/08/2020
  **/
 
 #ifndef TEXTURE_H
@@ -20,12 +20,15 @@ class Texture {
   virtual ~Texture();
 
   void load(const std::string path);
+  void create(const int width, const int height);
+
+  void draw(const int x, const int y, const int flags);
 
   int getWidth();
   int getHeight();
 
  private:
-  static ALLEGRO_BITMAP* loadBitmap(const std::string file);
+  static ALLEGRO_BITMAP* loadBitmap(const std::string& file);
 
   ALLEGRO_BITMAP* texture;
 };

@@ -3,7 +3,7 @@
 #include <allegro5/allegro_audio.h>
 
 #include "../constants/globals.h"
-#include "../constants/settings.h"
+#include "../engine/Core.h"
 
 // Constructor
 Debris::Debris(ALLEGRO_BITMAP* sprite,
@@ -49,16 +49,14 @@ void Debris::logic(const int motion, Robot* robot) {
     screenshake += damage * 4;
 
     // Play sound
-    if (settings.get<bool>("sound", true)) {
-      al_play_sample(sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
-    }
+    al_play_sample(sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
 
     // Get hit
     isDead = true;
     stats[STAT_DEBRIS] += 1;
 
     // Make particles
-    if (settings.get<int>("particleTypes", 0) != 3) {
+    if (Engine::settings.get<int>("particleTypes", 0) != 3) {
       // Sample a pixel
       ALLEGRO_COLOR sample_color =
           al_get_pixel(sprite, al_get_bitmap_width(sprite) / 2,
@@ -71,7 +69,7 @@ void Debris::logic(const int motion, Robot* robot) {
         for (int t = 0; t < (height - sampling_size); t += sampling_size) {
           Particle newParticle(i + x, t + y, sample_color, random(-8, 8),
                                random(-8, 8), 1,
-                               settings.get<int>("particleType", 0));
+                               Engine::settings.get<int>("particleType", 0));
           parts.push_back(newParticle);
         }
       }

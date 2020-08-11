@@ -18,8 +18,11 @@
 
 #include <vector>
 
+#include "../engine/Audio/Stream.h"
+#include "../engine/Fonts/Font.h"
 #include "../engine/Particles/Particle.h"
 #include "../engine/State.h"
+#include "../engine/Textures/Texture.h"
 #include "../helpers/tools.h"
 #include "ScoreTable.h"
 
@@ -35,8 +38,8 @@ class menu : public state {
 
  private:
   // Settings
-  static void read_settings();
-  static void write_settings();
+  static void readSettings();
+  static void writeSettings();
 
   // Score table
   ScoreTable highscores;
@@ -54,48 +57,51 @@ class menu : public state {
   std::vector<Particle> mousePart;
   std::vector<Particle> menuPart;
 
-  // Images
-  ALLEGRO_BITMAP* buffer;
-
   // Screens
-  ALLEGRO_BITMAP* img_menu;
-  ALLEGRO_BITMAP* options;
-  ALLEGRO_BITMAP* helpScreen;
-  ALLEGRO_BITMAP* controls;
-  ALLEGRO_BITMAP* credits;
-  ALLEGRO_BITMAP* highscores_table;
+  Texture img_menu;
+  Texture options;
+  Texture helpScreen;
+  Texture controls;
+  Texture credits;
+  Texture highscores_table;
 
   // Buttons
-  ALLEGRO_BITMAP* start;
-  ALLEGRO_BITMAP* title;
-  ALLEGRO_BITMAP* highscores_button;
+  Texture start;
+  Texture title;
+  Texture highscores_button;
 
   // Mouse
-  ALLEGRO_BITMAP* mouse;
-  ALLEGRO_BITMAP* mouse_rocket;
+  Texture mouse;
+  Texture mouse_rocket;
 
   // Start button for xbox control
-  ALLEGRO_BITMAP* xbox_start;
+  Texture xbox_start;
 
   // Options menu
-  ALLEGRO_BITMAP* ui_sound[2];
-  ALLEGRO_BITMAP* ui_music[2];
-  ALLEGRO_BITMAP* ui_screenshake[4];
-  ALLEGRO_BITMAP* ui_window[2];
-  ALLEGRO_BITMAP* ui_particle[4];
-  ALLEGRO_BITMAP* ui_control[3];
+  Texture ui_sound[2];
+  Texture ui_music[2];
+  Texture ui_screenshake[4];
+  Texture ui_window[2];
+  Texture ui_particle[4];
+  Texture ui_control[3];
 
-  ALLEGRO_BITMAP* ui_options;
-  ALLEGRO_BITMAP* ui_options_small;
-  ALLEGRO_BITMAP* ui_back;
-  ALLEGRO_BITMAP* ui_credits;
-  ALLEGRO_BITMAP* ui_exit;
-  ALLEGRO_BITMAP* ui_help;
-  ALLEGRO_BITMAP* ui_screenshot_notification;
-  ALLEGRO_BITMAP* ui_controls;
+  Texture ui_options;
+  Texture ui_options_small;
+  Texture ui_back;
+  Texture ui_credits;
+  Texture ui_exit;
+  Texture ui_help;
+  Texture ui_screenshot_notification;
+  Texture ui_controls;
 
   // Music
-  ALLEGRO_SAMPLE* music_mainmenu;
+  Stream music_mainmenu;
+
+  // Fonts
+  Font orbitron_36;
+  Font orbitron_24;
+  Font orbitron_18;
+  Font orbitron_12;
 };
 
 #endif  // STATE_MENU_H

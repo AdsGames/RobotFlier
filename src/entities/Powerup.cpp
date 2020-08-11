@@ -3,7 +3,7 @@
 #include <allegro5/allegro_audio.h>
 
 #include "../constants/globals.h"
-#include "../constants/settings.h"
+#include "../engine/Core.h"
 
 // Constructor
 Powerup::Powerup(ALLEGRO_BITMAP* sprite,
@@ -32,9 +32,7 @@ void Powerup::logic(const int motion, Robot* robot) {
     else
       robot->setMagneticTimer(timerLength);
 
-    if (settings.get<bool>("sound", true)) {
-      al_play_sample(sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
-    }
+    al_play_sample(sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
 
     isDead = true;
   }

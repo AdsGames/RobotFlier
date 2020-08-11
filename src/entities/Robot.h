@@ -12,13 +12,13 @@
 #include <iostream>
 #include <vector>
 
+#include "../engine/Audio/Sound.h"
 #include "../engine/Particles/Particle.h"
+#include "../engine/Textures/Texture.h"
 
 class Robot {
  public:
-  Robot();
-  Robot(float x, float y);
-  ~Robot();
+  Robot(float x = 0.0f, float y = 0.0f);
 
   void loadResources();
   void logic();
@@ -64,17 +64,17 @@ class Robot {
   bool keyPressed;
 
   // Images
-  ALLEGRO_BITMAP* mainRobot;
-  ALLEGRO_BITMAP* robotFire;
-  ALLEGRO_BITMAP* robotInvincible;
-  ALLEGRO_BITMAP* robotInvincibleFire;
-  ALLEGRO_BITMAP* robotInvincibleTop;
-  ALLEGRO_BITMAP* robotDie;
-  ALLEGRO_BITMAP* christmasHat;
+  Texture mainRobot;
+  Texture robotFire;
+  Texture robotInvincible;
+  Texture robotInvincibleFire;
+  Texture robotInvincibleTop;
+  Texture robotDie;
+  Texture christmasHat;
 
   // Sounds
-  ALLEGRO_SAMPLE* soundFlame;
-  ALLEGRO_SAMPLE* soundHitground;
+  Sound soundFlame;
+  Sound soundHitground;
 
   // Particles
   std::vector<Particle> rocketPart;

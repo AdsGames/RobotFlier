@@ -11,12 +11,6 @@ struct FileIOException : public std::exception {
   const char* what() const throw() { return "File I/O Exception"; }
 };
 
-// Constructor
-SettingManager::SettingManager(const std::string file, const bool autosave)
-    : file_name(file), autosave(autosave) {
-  load(file_name);
-}
-
 // Load file
 void SettingManager::load(const std::string file) {
   std::string line;
@@ -50,6 +44,9 @@ void SettingManager::load(const std::string file) {
   }
 
   fileStream.close();
+
+  // Set internal file name
+  file_name = file;
 }
 
 // Save file
@@ -106,4 +103,9 @@ const Setting SettingManager::findSetting(const std::string key) const {
   }
 
   throw std::string("Could not find setting");
+}
+
+// Set autosave
+void SettingManager::setAutosave(const bool autosave) {
+  this->autosave = autosave;
 }

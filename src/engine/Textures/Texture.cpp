@@ -11,26 +11,69 @@ Texture::Texture(const std::string path) {
 
 // Dtor
 Texture::~Texture() {
-  // al_destroy_bitmap(texture);
+  if (texture) {
+    // al_destroy_bitmap(texture);
+  }
 }
 
-// Load WAV from file
+/**
+ * Load texture from file
+ * @param path, path to file
+ */
 void Texture::load(std::string path) {
   texture = loadBitmap(path);
 }
 
-// Get height
+/**
+ * Create texture with specified dimensions
+ * @param width, width of texture
+ * @param height, height of texture
+ */
+void Texture::create(const int width, const int height) {
+  texture = al_create_bitmap(width, height);
+}
+
+/**
+ * Return height of loaded texture
+ */
 int Texture::getHeight() {
-  return 0;
+  if (!texture) {
+    return 0;
+  }
+
+  return al_get_bitmap_height(texture);
 }
 
-// Get width
+/**
+ * Return width of loaded texture
+ */
 int Texture::getWidth() {
-  return 0;
+  if (!texture) {
+    return 0;
+  }
+
+  return al_get_bitmap_width(texture);
 }
 
-// Load bitmap if exits, or throw error
-ALLEGRO_BITMAP* Texture::loadBitmap(std::string file) {
+/**
+ * Draw texture to screen
+ * @param x, x position to draw to
+ * @param y, y position to draw to
+ * @param flags, config flags passed to al_draw_bitmap
+ */
+void Texture::draw(const int x, const int y, const int flags) {
+  if (!texture) {
+    return;
+  }
+
+  al_draw_bitmap(texture, x, y, flags);
+}
+
+/**
+ * Load bitmap from file
+ * @param file, path to image
+ */
+ALLEGRO_BITMAP* Texture::loadBitmap(const std::string& file) {
   // Attempt to load
   ALLEGRO_BITMAP* temp_image = al_load_bitmap(file.c_str());
 

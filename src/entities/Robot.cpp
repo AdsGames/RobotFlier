@@ -1,34 +1,18 @@
 #include "Robot.h"
 
 #include "../constants/globals.h"
-#include "../constants/settings.h"
+#include "../engine/Core.h"
 #include "../engine/Input/JoystickListener.h"
 #include "../engine/Input/KeyListener.h"
 #include "../engine/Input/MouseListener.h"
 #include "../helpers/tools.h"
 
 // Constructor
-Robot::Robot() : Robot(0.0f, 0.0f) {}
-
-// Constructor
-Robot::Robot(float x, float y) {
-  // NULLIFY
-  mainRobot = nullptr;
-  robotFire = nullptr;
-  robotInvincible = nullptr;
-  robotInvincibleFire = nullptr;
-  robotInvincibleTop = nullptr;
-  robotDie = nullptr;
-  christmasHat = nullptr;
-  soundFlame = nullptr;
-  soundHitground = nullptr;
-
+Robot::Robot(float x, float y) : x(x), y(y) {
   // Init vars
   gravity = 1.6;
 
   speed = 0;
-  this->x = x;
-  this->y = y;
   width = 70;
   height = 70;
   invincibleTimer = 0;
@@ -42,40 +26,20 @@ Robot::Robot(float x, float y) {
   keyPressed = false;
 }
 
-// Destructor
-Robot::~Robot() {
-  // Clear particles
-  rocketPart.clear();
-  smokePart.clear();
-
-  // Destroy samples
-  al_destroy_sample(soundFlame);
-  al_destroy_sample(soundHitground);
-
-  // Destroy images
-  al_destroy_bitmap(mainRobot);
-  al_destroy_bitmap(robotFire);
-  al_destroy_bitmap(robotInvincible);
-  al_destroy_bitmap(robotInvincibleFire);
-  al_destroy_bitmap(robotInvincibleTop);
-  al_destroy_bitmap(robotDie);
-  al_destroy_bitmap(christmasHat);
-}
-
 // Load images
 void Robot::loadResources() {
   // Images
-  mainRobot = load_bitmap_ex("images/robot/robot.png");
-  robotFire = load_bitmap_ex("images/robot/robotfire.png");
-  robotInvincible = load_bitmap_ex("images/robot/robotInvincible.png");
-  robotInvincibleFire = load_bitmap_ex("images/robot/robotInvincibleFire.png");
-  robotInvincibleTop = load_bitmap_ex("images/robot/robotInvincibleTop.png");
-  robotDie = load_bitmap_ex("images/robot/robotDie.png");
-  christmasHat = load_bitmap_ex("images/robot/christmas_hat.png");
+  mainRobot = Engine::asset_manager.getImage("robot");
+  robotFire = Engine::asset_manager.getImage("robotfire");
+  robotInvincible = Engine::asset_manager.getImage("robotInvincible");
+  robotInvincibleFire = Engine::asset_manager.getImage("robotInvincibleFire");
+  robotInvincibleTop = Engine::asset_manager.getImage("robotInvincibleTop");
+  robotDie = Engine::asset_manager.getImage("robotDie");
+  christmasHat = Engine::asset_manager.getImage("christmas_hat");
 
   // Sounds
-  soundFlame = load_sample_ex("audio/sound_flame.wav");
-  soundHitground = load_sample_ex("audio/sound_hitground.wav");
+  soundFlame = Engine::asset_manager.getAudio("flame");
+  soundHitground = Engine::asset_manager.getAudio("hitground");
 }
 
 // Update
@@ -98,14 +62,14 @@ void Robot::logic() {
     y += gravity - speed;
 
   // Death smoke
-  if (settings.get<int>("particleType", 0) != 3 && !alive) {
+  if (Engine::settings.get<int>("particleType", 0) != 3 && !alive) {
     for (int i = 0; i < 800; i++) {
       if (random(0, 10) == 0) {
         int randnum = random(0, 255);
         Particle newParticle(x + 20, y + 20,
                              al_map_rgb(randnum, randnum, randnum),
                              random(-4, -1), random(-5, -3), 1,
-                             settings.get<int>("particleType", 0));
+                             Engine::settings.get<int>("particleType", 0));
         smokePart.push_back(newParticle);
       }
     }
@@ -120,12 +84,12 @@ void Robot::logic() {
   }
 
   // Rocket particles
-  if (settings.get<int>("particleType", 0) != 3 && rocket) {
+  if (Engine::settings.get<int>("particleType", 0) != 3 && rocket) {
     for (int i = 0; i < 800; i++) {
       if (random(0, 10) == 0) {
         ALLEGRO_COLOR part_color = al_map_rgb(255, random(0, 255), 0);
 
-        if (settings.get<bool>("christmas", false)) {
+        if (Engine::settings.get<bool>("christmas", false)) {
           int red_or_green = random(0, 1);
           part_color =
               al_map_rgb(255 * red_or_green, 255 - red_or_green * 255, 0);
@@ -133,10 +97,10 @@ void Robot::logic() {
 
         Particle newParticle1(x + 21, y + 55, part_color, random(-2, 2),
                               random(1, 5), 1,
-                              settings.get<int>("particleType", 0));
+                              Engine::settings.get<int>("particleType", 0));
         Particle newParticle2(x + 52, y + 55, part_color, random(-2, 2),
                               random(0, 4), 1,
-                              settings.get<int>("particleType", 0));
+                              Engine::settings.get<int>("particleType", 0));
         rocketPart.push_back(newParticle1);
         rocketPart.push_back(newParticle2);
       }
@@ -160,9 +124,9 @@ void Robot::logic() {
         JoystickListener::button[JOY_XBOX_BUMPER_LEFT]) {
       keyPressed = true;
 
-      if (settings.get<bool>("sound", true) && random(0, 3) == 1)
-        al_play_sample(soundFlame, 0.05, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE,
-                       nullptr);
+      if (random(0, 3) == 1) {
+        soundFlame.play(0.05);
+      }
 
       if (speed < 8) {
         rocket = true;
@@ -203,11 +167,7 @@ void Robot::logic() {
 
     if (invincibleTimer <= 0) {
       health -= 5;
-
-      if (settings.get<bool>("sound", true))
-        al_play_sample(soundHitground, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE,
-                       nullptr);
-
+      soundHitground.play();
       screenshake = 30;
     }
   }
@@ -219,40 +179,43 @@ void Robot::draw() {
   if (alive) {
     // Invincible
     if (invincibleTimer > 0) {
-      if (!rocket || settings.get<int>("particleType", 0) != 3)
-        al_draw_bitmap(robotInvincible, x, y, 0);
-      else if (rocket && settings.get<int>("particleType", 0) == 3)
-        al_draw_bitmap(robotInvincibleFire, x, y, 0);
+      if (!rocket || Engine::settings.get<int>("particleType", 0) != 3)
+        robotInvincible.draw(x, y, 0);
+      else if (rocket && Engine::settings.get<int>("particleType", 0) == 3)
+        robotInvincibleFire.draw(x, y, 0);
     }
     // Standard
     else {
-      if (!rocket || settings.get<int>("particleType", 0) != 3)
-        al_draw_bitmap(mainRobot, x, y, 0);
-      else if (rocket && settings.get<int>("particleType", 0) == 3)
-        al_draw_bitmap(robotFire, x, y, 0);
+      if (!rocket || Engine::settings.get<int>("particleType", 0) != 3)
+        mainRobot.draw(x, y, 0);
+      else if (rocket && Engine::settings.get<int>("particleType", 0) == 3)
+        robotFire.draw(x, y, 0);
     }
 
     // Xmas mode!
-    if (settings.get<bool>("christmas", false))
-      al_draw_bitmap(christmasHat, x + 20, y - 12, 0);
+    if (Engine::settings.get<bool>("christmas", false)) {
+      christmasHat.draw(x + 20, y - 12, 0);
+    }
   }
   // Death image
   else {
-    al_draw_bitmap(robotDie, x, y, 0);
+    robotDie.draw(x, y, 0);
   }
 
   // Draw particles
-  for (auto& part : rocketPart)
+  for (auto& part : rocketPart) {
     part.draw();
+  }
 
-  for (auto& part : smokePart)
+  for (auto& part : smokePart) {
     part.draw();
+  }
 }
 
 // Draw overlay
 void Robot::drawOverlay() {
   if (alive && invincibleTimer > 0)
-    al_draw_bitmap(robotInvincibleTop, x, y, 0);
+    robotInvincibleTop.draw(x, y, 0);
 }
 
 // Getters

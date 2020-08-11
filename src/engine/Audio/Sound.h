@@ -6,8 +6,8 @@
  * 23/11/2018
  **/
 
-#ifndef SOUND_H
-#define SOUND_H
+#ifndef ENGINE_AUDIO_SOUND_H
+#define ENGINE_AUDIO_SOUND_H
 
 #include <allegro5/allegro_audio.h>
 #include <string>
@@ -15,24 +15,24 @@
 class Sound {
  public:
   Sound();
-  Sound(const std::string path);
+  Sound(const std::string& path);
 
   virtual ~Sound();
 
-  void play(const float volume = 1.0f, const bool loop = false);
-  void stop();
+  void play(const float gain = 1.0f,
+            const float pan = 0.0f,
+            const float speed = 1.0f,
+            const bool loop = false);
 
-  void load(const std::string path);
+  void load(const std::string& path);
 
-  bool isPlaying();
+  static void setGlobalGain(const float gain);
 
  private:
-  static ALLEGRO_SAMPLE* loadSample(const std::string file);
+  static ALLEGRO_SAMPLE* loadSample(const std::string& file);
+  static bool globalGain;
 
   ALLEGRO_SAMPLE* sample;
-  ALLEGRO_SAMPLE_ID* sample_id;
-
-  bool is_playing;
 };
 
-#endif  // SOUND_H
+#endif  // ENGINE_AUDIO_SOUND_H

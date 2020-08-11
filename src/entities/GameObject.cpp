@@ -1,7 +1,7 @@
 #include "GameObject.h"
 
 #include "../constants/globals.h"
-#include "../constants/settings.h"
+#include "../engine/Core.h"
 
 // Constructor
 GameObject::GameObject(ALLEGRO_BITMAP* sprite, const int x, const int y) {
@@ -22,7 +22,7 @@ GameObject::~GameObject() {}
 // Updates object logic
 void GameObject::logic(int newMotion) {
   // Update particles
-  if (settings.get<int>("particleType", 0) != 3) {
+  if (Engine::settings.get<int>("particleType", 0) != 3) {
     for (unsigned int i = 0; i < parts.size(); i++) {
       parts.at(i).update();
       parts.at(i).scroll(newMotion, 0.0f);
@@ -52,14 +52,14 @@ void GameObject::draw() {
   }
 
   // Draw particles
-  if (settings.get<int>("particleType", 0) != 3) {
+  if (Engine::settings.get<int>("particleType", 0) != 3) {
     for (unsigned int i = 0; i < parts.size(); i++) {
       parts.at(i).draw();
     }
   }
 
   // Draw bounding box
-  if (settings.get<bool>("debug", false) == 1) {
+  if (Engine::settings.get<bool>("debug", false) == 1) {
     al_draw_rectangle(x, y, x + width, y + height, al_map_rgb(88, 88, 88), 1);
   }
 }

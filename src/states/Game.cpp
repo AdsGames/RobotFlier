@@ -1,7 +1,7 @@
 #include "Game.h"
 
 #include "../constants/globals.h"
-#include "../constants/settings.h"
+#include "../engine/Core.h"
 
 // Constructor
 game::game() {
@@ -65,7 +65,7 @@ game::game() {
   powerMagnet[2] = load_bitmap_ex("images/objects/powerMagnetThree.png");
   powerMagnet[3] = load_bitmap_ex("images/objects/powerMagnetFour.png");
 
-  if (settings.get<bool>("christmas", false)) {
+  if (Engine::settings.get<bool>("christmas", false)) {
     energyImage = load_bitmap_ex("images/objects/energy_christmas.png");
     bombImage = load_bitmap_ex("images/objects/bomb_christmas.png");
   } else {
@@ -87,7 +87,7 @@ game::game() {
   highscores = ScoreTable("scores.dat");
 
   // Play music
-  if (settings.get<bool>("music", true) == 1)
+  if (Engine::settings.get<bool>("music", true) == 1)
     al_play_sample(music_ingame, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE,
                    &currentMusic);
 }
@@ -160,7 +160,7 @@ void game::changeTheme(int NewThemeNumber) {
       load_bitmap_ex("images/ground/groundUnderlay_" + themeName + ".png");
   parallaxBack = load_bitmap_ex("images/ground/paralax_" + themeName + ".png");
 
-  if (settings.get<bool>("christmas", false))
+  if (Engine::settings.get<bool>("christmas", false))
     asteroidImage = load_bitmap_ex("images/objects/asteroid_christmas.png");
   else
     asteroidImage =
@@ -181,7 +181,7 @@ void game::update() {
     if (hectarHasDied != hectar.isAlive()) {
       al_stop_sample(&currentMusic);
 
-      if (settings.get<bool>("music", true) == 1)
+      if (Engine::settings.get<bool>("music", true) == 1)
         al_play_sample(music_death, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP,
                        &currentMusic);
     }
@@ -257,14 +257,14 @@ void game::update() {
     if (hectar.isAlive() && hectar.isKeyPressed()) {
       // Energy ball spawning
       if (random(0, 50) == 0 ||
-          (settings.get<bool>("mega", false) && random(0, 20))) {
+          (Engine::settings.get<bool>("mega", false) && random(0, 20))) {
         Energy newEnergyBall(energyImage, sound_orb, SCREEN_W, random(30, 550));
         energys.push_back(newEnergyBall);
       }
 
       // Asteroids spawning
       if ((score >= 100 && random(0, 50) == 0) ||
-          (settings.get<bool>("mega", false) && random(0, 20))) {
+          (Engine::settings.get<bool>("mega", false) && random(0, 20))) {
         Debris newAsteroid(asteroidImage, sound_asteroid, SCREEN_W,
                            random(30, 400), 5, 1.0f, 0.0f, random(4, 20));
         debries.push_back(newAsteroid);
@@ -272,7 +272,7 @@ void game::update() {
 
       // Bomb spawning
       if ((score >= 200 && random(0, 80) == 0) ||
-          (settings.get<bool>("mega", false) && random(0, 20))) {
+          (Engine::settings.get<bool>("mega", false) && random(0, 20))) {
         Debris newBomb(bombImage, sound_bomb, SCREEN_W, random(30, 550), 10,
                        1.0f, 0.01f);
         debries.push_back(newBomb);
@@ -280,7 +280,7 @@ void game::update() {
 
       // Comets spawning
       if ((score >= 300 && random(0, 200) == 0) ||
-          (settings.get<bool>("mega", false) && random(0, 20))) {
+          (Engine::settings.get<bool>("mega", false) && random(0, 20))) {
         Debris newComet(cometImage, sound_asteroid, SCREEN_W, random(30, 550),
                         5, 1.4f, 0.01f);
         debries.push_back(newComet);
@@ -385,12 +385,12 @@ void game::update() {
   }
 
   // Screen shake
-  if (screenshake > 0 && settings.get<int>("screenshake", 0) != 0) {
+  if (screenshake > 0 && Engine::settings.get<int>("screenshake", 0) != 0) {
     screenshake_x = screenshake_y =
-        random(-(screenshake * settings.get<int>("screenshake", 0) +
-                 100 * settings.get<bool>("supershake", false)),
-               screenshake * settings.get<int>("screenshake", 0) +
-                   100 * settings.get<bool>("supershake", false));
+        random(-(screenshake * Engine::settings.get<int>("screenshake", 0) +
+                 100 * Engine::settings.get<bool>("supershake", false)),
+               screenshake * Engine::settings.get<int>("screenshake", 0) +
+                   100 * Engine::settings.get<bool>("supershake", false));
     screenshake--;
   }
 
@@ -398,7 +398,7 @@ void game::update() {
     screenshake_x = screenshake_y = 0;
 
   // Random test stuff for devs
-  if (settings.get<bool>("debug", false)) {
+  if (Engine::settings.get<bool>("debug", false)) {
     if (KeyListener::key[ALLEGRO_KEY_R])
       score += 10;
 
@@ -481,7 +481,7 @@ void game::draw() {
   }
 
   // Draw the debug window
-  if (settings.get<bool>("debug", false)) {
+  if (Engine::settings.get<bool>("debug", false)) {
     al_draw_bitmap(debug, 0, 0, 0);
 
     // Column 1
@@ -508,7 +508,7 @@ void game::draw() {
                   ALLEGRO_ALIGN_LEFT, "Mouse Y:%i", MouseListener::mouse_y);
     al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 120, 65,
                   ALLEGRO_ALIGN_LEFT, "Particles On:%i",
-                  settings.get<int>("particleType", 0));
+                  Engine::settings.get<int>("particleType", 0));
 
     // Column 3
     al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 245, 25,

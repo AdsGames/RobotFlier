@@ -10,8 +10,7 @@ typedef std::pair<std::string, SettingType> Setting;
 
 class SettingManager {
  public:
-  // Constructor
-  SettingManager(const std::string file, const bool autosave = false);
+  // File IO
   void load(const std::string file);
   void save();
   void save(const std::string file);
@@ -47,6 +46,8 @@ class SettingManager {
   // Setters
   void set(const std::string key, SettingType value);
   void set(const Setting pair);
+
+  void setAutosave(const bool autosave);
 
  private:
   const Setting findSetting(const std::string key) const;

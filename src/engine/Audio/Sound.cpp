@@ -2,51 +2,64 @@
 
 #include "../Common/Tools.h"
 
-// Ctor
-Sound::Sound() : sample(nullptr), sample_id(nullptr), is_playing(false) {}
+// Init global gain
+bool Sound::globalGain = 1.0f;
 
-Sound::Sound(const std::string path) : Sound() {
+// Ctor
+Sound::Sound() : sample(nullptr) {}
+
+Sound::Sound(const std::string& path) : Sound() {
   load(path);
 }
 
 // Dtor
 Sound::~Sound() {
-  // al_destroy_sample(sample);
+  if (sample) {
+    // al_destroy_sample(sample);
+  }
 }
 
-// Load WAV from file
-void Sound::load(std::string path) {
+/**
+ * Load and assign audio file to given path
+ * @param path, path to audio file
+ */
+void Sound::load(const std::string& path) {
   sample = loadSample(path);
 }
 
-// Play sound
-void Sound::play(const float volume, const bool loop) {
+/**
+ * Play sound if it exists
+ * @param gain, floating point gain
+ * @param pan, left right balance
+ * @param speed, playback speed/frequency
+ * @param loop, loop status
+ */
+void Sound::play(const float gain,
+                 const float pan,
+                 const float speed,
+                 const bool loop) {
   if (!sample) {
     return;
   }
 
   ALLEGRO_PLAYMODE playMode =
       loop ? ALLEGRO_PLAYMODE_LOOP : ALLEGRO_PLAYMODE_ONCE;
-  is_playing = true;
-  al_play_sample(sample, volume, 0.0, 1.0, playMode, sample_id);
+  al_play_sample(sample, gain, pan, speed, playMode, nullptr);
 }
 
-// Stop sound
-void Sound::stop() {
-  if (!sample) {
-    return;
-  }
-
-  al_stop_samples();
-  is_playing = false;
+/**
+ * Set global gain of sound effects
+ * @param gain, global gain
+ */
+void Sound::setGlobalGain(const float gain) {
+  Sound::globalGain = gain;
 }
 
-bool Sound::isPlaying() {
-  return is_playing;
-}
-
-// Load sample if exits, or throw error
-ALLEGRO_SAMPLE* Sound::loadSample(std::string file) {
+/**
+ * Load sample from file
+ * @param file, path to audio file
+ */
+ALLEGRO_SAMPLE* Sound::loadSample(const std::string& file) {
   // Attempt to load
   ALLEGRO_SAMPLE* temp_sample = al_load_sample(file.c_str());
 

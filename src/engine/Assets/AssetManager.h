@@ -8,11 +8,12 @@
 #ifndef ASSET_MANAGER_H
 #define ASSET_MANAGER_H
 
-#include <allegro5/allegro_font.h>
 #include <string>
 #include <vector>
 
 #include "../Audio/Sound.h"
+#include "../Audio/Stream.h"
+#include "../Fonts/Font.h"
 #include "../Textures/Texture.h"
 
 template <class T>
@@ -27,20 +28,23 @@ class AssetManager {
   AssetManager();
   ~AssetManager();
 
-  const Sound& getAudio(const std::string key);
-  const Texture& getImage(const std::string key);
-  const ALLEGRO_FONT* getFont(const std::string key);
+  const Sound& getAudio(const std::string& key);
+  const Texture& getImage(const std::string& key);
+  const Font& getFont(const std::string& key);
+  const Stream& getStream(const std::string& key);
 
-  void load(const std::string file);
+  void loadImage(const std::string& key, const std::string& path);
+  void loadAudio(const std::string& key, const std::string& path);
+  void loadFont(const std::string& key,
+                const std::string& path,
+                const int size);
+  void loadStream(const std::string& key, const std::string& path);
 
  private:
-  void loadImages(ALLEGRO_CONFIG* config, const std::string sectionName);
-  void loadAudio(ALLEGRO_CONFIG* config, const std::string sectionName);
-  void loadFonts(ALLEGRO_CONFIG* config, const std::string sectionName);
-
   std::vector<AssetContainer<Sound>> loaded_audio;
   std::vector<AssetContainer<Texture>> loaded_image;
-  std::vector<AssetContainer<ALLEGRO_FONT*>> loaded_font;
+  std::vector<AssetContainer<Font>> loaded_font;
+  std::vector<AssetContainer<Stream>> loaded_stream;
 };
 
 #endif  // ASSET_MANAGER_H
