@@ -19,8 +19,8 @@ menu::menu() {
 
   // Load intro image
   // Random menu
-  img_menu = Engine::asset_manager.getImage("background_" +
-                                            std::to_string(random(0, 3)));
+  img_menu = Engine::asset_manager.getImage(
+      "background_" + std::to_string(Engine::random.randomInt(0, 3)));
   start = Engine::asset_manager.getImage("start");
   highscores_button = Engine::asset_manager.getImage("highscores");
   mouse = Engine::asset_manager.getImage("mouse");
@@ -82,8 +82,8 @@ menu::menu() {
   // al_hide_mouse_cursor(display);
 
   // Play music
-  if (Engine::settings.get<bool>("music", true) == 0) {
-    music_mainmenu.play();
+  if (Engine::settings.get<bool>("music", false) == true) {
+    music_mainmenu.play(true);
   }
 }
 
@@ -191,10 +191,10 @@ void menu::update() {
                        MouseListener::mouse_y)) {
       Engine::settings.set("music", !Engine::settings.get<bool>("music", true));
 
-      if (Engine::settings.get<bool>("music", true) == 0) {
-        music_mainmenu.stop();
-      } else {
+      if (Engine::settings.get<bool>("music", false)) {
         music_mainmenu.play(true);
+      } else {
+        music_mainmenu.stop();
       }
 
     }
@@ -262,18 +262,19 @@ void menu::update() {
   // Update mouse particles
   if (Engine::settings.get<int>("particleType", 0) != 3 && mouse_rocket_up) {
     for (int i = 0; i < 500; i++) {
-      if (random(1, 10) == 1) {
-        ALLEGRO_COLOR part_color = al_map_rgb(255, random(0, 255), 0);
+      if (Engine::random.randomInt(1, 10) == 1) {
+        ALLEGRO_COLOR part_color =
+            al_map_rgb(255, Engine::random.randomInt(0, 255), 0);
 
         if (Engine::settings.get<bool>("christmas", false)) {
-          int red_or_green = random(0, 1) * 255;
+          int red_or_green = Engine::random.randomInt(0, 1) * 255;
           part_color = al_map_rgb(red_or_green, 255 - red_or_green, 0);
         }
 
-        Particle newParticle(MouseListener::mouse_x,
-                             MouseListener::mouse_y + 16, part_color,
-                             random(-2, 2), random(8, 20), 1,
-                             Engine::settings.get<int>("particleType", 0));
+        Particle newParticle(
+            MouseListener::mouse_x, MouseListener::mouse_y + 16, part_color,
+            Engine::random.randomInt(-2, 2), Engine::random.randomInt(8, 20), 1,
+            Engine::settings.get<int>("particleType", 0));
         mousePart.push_back(newParticle);
       }
     }
@@ -282,7 +283,7 @@ void menu::update() {
   for (unsigned int i = 0; i < mousePart.size(); i++) {
     mousePart.at(i).update();
 
-    if (random(0, 10) == 0)
+    if (Engine::random.randomInt(0, 10) == 0)
       mousePart.erase(mousePart.begin() + i);
   }
 
@@ -312,63 +313,63 @@ void menu::draw() {
   }
 
   // Nice title image
-  title.draw(20, (animation_pos * 1.2) - title.getHeight(), 0);
+  title.draw(20, (animation_pos * 1.2) - title.getHeight());
 
   // Bottom Right Buttons
   ui_credits.draw(541,
-                  SCREEN_H - (animation_pos * ui_credits.getHeight()) / 100, 0);
+                  SCREEN_H - (animation_pos * ui_credits.getHeight()) / 100);
 
-  ui_controls.draw(
-      645, SCREEN_H - (animation_pos * ui_controls.getHeight()) / 100, 0);
+  ui_controls.draw(645,
+                   SCREEN_H - (animation_pos * ui_controls.getHeight()) / 100);
 
-  ui_help.draw(697, SCREEN_H - (animation_pos * ui_help.getHeight()) / 100, 0);
+  ui_help.draw(697, SCREEN_H - (animation_pos * ui_help.getHeight()) / 100);
 
   ui_options.draw(749,
-                  SCREEN_H - (animation_pos * ui_options.getHeight()) / 100, 0);
+                  SCREEN_H - (animation_pos * ui_options.getHeight()) / 100);
 
   // Draw scores
   if (mini_screen == MINISTATE_SCORES) {
     // Highscore background
-    highscores_table.draw(200, 50, 0);
+    highscores_table.draw(200, 50);
 
     // Title
-    orbitron_36.draw(400, 75, "Highscores", ALLEGRO_ALIGN_CENTRE);
+    orbitron_36.draw(400, 75, "Highscores", al_map_rgb(0, 0, 0),
+                     ALLEGRO_ALIGN_CENTRE);
 
     // Read the top 10 scores
     for (int i = 0; i < 10; i++) {
       orbitron_24.draw(225, (i * 40) + 130,
                        std::to_string(highscores.getScore(i)),
-                       ALLEGRO_ALIGN_CENTRE);
+                       al_map_rgb(0, 0, 0), ALLEGRO_ALIGN_CENTRE);
       orbitron_18.draw(575, (i * 40) + 132, highscores.getName(i),
-                       ALLEGRO_ALIGN_RIGHT);
+                       al_map_rgb(0, 0, 0), ALLEGRO_ALIGN_RIGHT);
     }
   }
   // Tutorial screen
   else if (mini_screen == MINISTATE_TUTORIAL) {
-    helpScreen.draw(0, 0, 0);
+    helpScreen.draw(0, 0);
   }
   // Credits screen
   else if (mini_screen == MINISTATE_CREDITS) {
-    credits.draw(0, 0, 0);
+    credits.draw(0, 0);
   }
   // Credits screen
   else if (mini_screen == MINISTATE_CONTROLS) {
-    controls.draw(0, 0, 0);
+    controls.draw(0, 0);
   }
   // Option Menu drawing(page and ingame)
   else if (mini_screen == MINISTATE_OPTIONS) {
     // Background
-    options.draw(0, 0, 0);
+    options.draw(0, 0);
 
     // Buttons
-    ui_particle[Engine::settings.get<int>("particleType", 0)].draw(280, 407, 0);
-    ui_sound[Engine::settings.get<bool>("sound", true)].draw(120, 180, 0);
-    ui_music[Engine::settings.get<bool>("music", true)].draw(280, 180, 0);
-    ui_window[Engine::settings.get<bool>("fullscreen", false)].draw(120, 407,
-                                                                    0);
+    ui_particle[Engine::settings.get<int>("particleType", 0)].draw(280, 407);
+    ui_sound[Engine::settings.get<bool>("sound", true)].draw(120, 180);
+    ui_music[Engine::settings.get<bool>("music", true)].draw(280, 180);
+    ui_window[Engine::settings.get<bool>("fullscreen", false)].draw(120, 407);
     ui_screenshake[Engine::settings.get<int>("screenshake", 0)].draw(280, 295,
                                                                      0);
-    ui_control[Engine::settings.get<int>("controlMode", 0)].draw(120, 295, 0);
+    ui_control[Engine::settings.get<int>("controlMode", 0)].draw(120, 295);
 
     // Button Text
     orbitron_24.draw(110, 154,
@@ -378,8 +379,8 @@ void menu::draw() {
                      "Window       Particles                        Back");
 
     // Exit and back
-    ui_exit.draw(540, 180, 0);
-    ui_back.draw(540, 407, 0);
+    ui_exit.draw(540, 180);
+    ui_back.draw(540, 407);
   }
 
   // Debug
@@ -399,7 +400,7 @@ void menu::draw() {
 
   // Draw rocket if no particles
   if (Engine::settings.get<int>("particleType", 0) == 3 && mouse_rocket_up) {
-    mouse_rocket.draw(MouseListener::mouse_x - 10, MouseListener::mouse_y, 0);
+    mouse_rocket.draw(MouseListener::mouse_x - 10, MouseListener::mouse_y);
   }
 
   // Draw mouse particles

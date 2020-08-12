@@ -1,7 +1,17 @@
 #include "Game.h"
 
+#include <algorithm>
+#include <fstream>
+
 #include "../constants/globals.h"
 #include "../engine/Core.h"
+#include "../entities/debris/Asteroid.h"
+#include "../entities/debris/Bomb.h"
+#include "../entities/debris/Comet.h"
+#include "../entities/powerups/Magnet.h"
+#include "../entities/powerups/PowerStar.h"
+#include "../helpers/stringFns.h"
+#include "../helpers/tools.h"
 
 // Constructor
 game::game() {
@@ -23,55 +33,41 @@ game::game() {
   iter = edittext.end();
 
   // Reset stats
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++) {
     stats[i] = 0;
+  }
 
   // Sounds
-  sound_bomb = load_sample_ex("audio/sound_bomb.wav");
-  sound_orb = load_sample_ex("audio/sound_orb.wav");
-  sound_asteroid = load_sample_ex("audio/sound_asteroid.wav");
-  sound_magnet = load_sample_ex("audio/sound_magnet.wav");
-  sound_star = load_sample_ex("audio/sound_star.wav");
-  sound_snap = load_sample_ex("audio/sound_snap.wav");
+  sound_snap = Engine::asset_manager.getAudio("snap");
 
   // Music
-  music_death = load_sample_ex("audio/music_death.ogg");
-  music_ingame = load_sample_ex("audio/music_ingame.ogg");
+  music_death = Engine::asset_manager.getStream("death");
+  music_ingame = Engine::asset_manager.getStream("in_game");
 
   // Images
   // Gui
-  pauseMenu = load_bitmap_ex("images/gui/pauseMenu.png");
-  ui_game_end = load_bitmap_ex("images/gui/ui_game_end.png");
-  ui_a = load_bitmap_ex("images/gui/ui_a.png");
-  ui_b = load_bitmap_ex("images/gui/ui_b.png");
-  ui_up = load_bitmap_ex("images/gui/ui_up.png");
-  debug = load_bitmap_ex("images/gui/debug.png");
+  pauseMenu = Engine::asset_manager.getImage("pauseMenu");
+  ui_game_end = Engine::asset_manager.getImage("ui_game_end");
+  ui_a = Engine::asset_manager.getImage("ui_a");
+  ui_b = Engine::asset_manager.getImage("ui_b");
+  ui_up = Engine::asset_manager.getImage("ui_up");
+  debug = Engine::asset_manager.getImage("debug");
 
   // Background
-  space = load_bitmap_ex("images/backgrounds/space.png");
+  space = Engine::asset_manager.getImage("space");
+
+  // Fonts
+  orbitron_12 = Engine::asset_manager.getFont("orbitron_12");
+  orbitron_18 = Engine::asset_manager.getFont("orbitron_18");
+  orbitron_24 = Engine::asset_manager.getFont("orbitron_24");
+  orbitron_30 = Engine::asset_manager.getFont("orbitron_30");
 
   // Nullfiy bitmaps not loaded yet
   screenshot = nullptr;
-  asteroidImage = nullptr;
-  parallaxBack = nullptr;
-  groundOverlay = nullptr;
-  groundUnderlay = nullptr;
 
   // Objects
-  cometImage = load_bitmap_ex("images/objects/comet.png");
-  powerStar = load_bitmap_ex("images/objects/powerStar.png");
-  powerMagnet[0] = load_bitmap_ex("images/objects/powerMagnet.png");
-  powerMagnet[1] = load_bitmap_ex("images/objects/powerMagnetTwo.png");
-  powerMagnet[2] = load_bitmap_ex("images/objects/powerMagnetThree.png");
-  powerMagnet[3] = load_bitmap_ex("images/objects/powerMagnetFour.png");
-
-  if (Engine::settings.get<bool>("christmas", false)) {
-    energyImage = load_bitmap_ex("images/objects/energy_christmas.png");
-    bombImage = load_bitmap_ex("images/objects/bomb_christmas.png");
-  } else {
-    energyImage = load_bitmap_ex("images/objects/energy.png");
-    bombImage = load_bitmap_ex("images/objects/bomb.png");
-  }
+  powerStar = Engine::asset_manager.getImage("powerStar");
+  powerMagnet = Engine::asset_manager.getImage("powerMagnet");
 
   // Sets the level to 1
   changeTheme(0);
@@ -87,9 +83,9 @@ game::game() {
   highscores = ScoreTable("scores.dat");
 
   // Play music
-  if (Engine::settings.get<bool>("music", true) == 1)
-    al_play_sample(music_ingame, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE,
-                   &currentMusic);
+  if (Engine::settings.get<bool>("music", true) == 1) {
+    music_ingame.play(true);
+  }
 }
 
 // Destructor
@@ -99,72 +95,31 @@ game::~game() {
   debries.clear();
   powerups.clear();
 
-  // Destroy samples
-  al_destroy_sample(sound_orb);
-  al_destroy_sample(sound_bomb);
-  al_destroy_sample(sound_asteroid);
-  al_destroy_sample(sound_magnet);
-  al_destroy_sample(sound_star);
-  al_destroy_sample(sound_snap);
-
-  // Destroy bitmaps
-  // destroy_bitmap( buffer);
-  al_destroy_bitmap(screenshot);
-  al_destroy_bitmap(space);
-  al_destroy_bitmap(parallaxBack);
-  al_destroy_bitmap(groundOverlay);
-  al_destroy_bitmap(groundUnderlay);
-  al_destroy_bitmap(debug);
-  al_destroy_bitmap(pauseMenu);
-  al_destroy_bitmap(ui_game_end);
-  al_destroy_bitmap(ui_a);
-  al_destroy_bitmap(ui_b);
-  al_destroy_bitmap(energyImage);
-  al_destroy_bitmap(asteroidImage);
-  al_destroy_bitmap(bombImage);
-  al_destroy_bitmap(cometImage);
-  al_destroy_bitmap(powerStar);
-  al_destroy_bitmap(powerMagnet[0]);
-  al_destroy_bitmap(powerMagnet[1]);
-  al_destroy_bitmap(powerMagnet[2]);
-  al_destroy_bitmap(powerMagnet[3]);
-
-  // Stop musics
-  al_stop_sample(&currentMusic);
-  al_stop_sample(&currentMusic);
-
-  // Destroy music
-  al_destroy_sample(music_ingame);
-  al_destroy_sample(music_death);
+  // Stop music
+  music_ingame.stop();
+  music_death.stop();
 }
 
 // Themes
-void game::changeTheme(int NewThemeNumber) {
+void game::changeTheme(int themeNumber) {
   std::string themeName;
 
-  if (NewThemeNumber == 0)
+  if (themeNumber == 0)
     themeName = "moon";
-  else if (NewThemeNumber == 1)
+  else if (themeNumber == 1)
     themeName = "mars";
-  else if (NewThemeNumber == 2)
+  else if (themeNumber == 2)
     themeName = "sun";
-  else if (NewThemeNumber == 3)
+  else if (themeNumber == 3)
     themeName = "dark";
 
-  themeNumber = NewThemeNumber;
+  this->themeNumber = themeNumber;
 
   // Other theme images
-  groundOverlay =
-      load_bitmap_ex("images/ground/groundOverlay_" + themeName + ".png");
+  groundOverlay = Engine::asset_manager.getImage("groundOverlay_" + themeName);
   groundUnderlay =
-      load_bitmap_ex("images/ground/groundUnderlay_" + themeName + ".png");
-  parallaxBack = load_bitmap_ex("images/ground/paralax_" + themeName + ".png");
-
-  if (Engine::settings.get<bool>("christmas", false))
-    asteroidImage = load_bitmap_ex("images/objects/asteroid_christmas.png");
-  else
-    asteroidImage =
-        load_bitmap_ex("images/objects/asteroid_" + themeName + ".png");
+      Engine::asset_manager.getImage("groundUnderlay_" + themeName);
+  parallaxBack = Engine::asset_manager.getImage("paralax_" + themeName);
 }
 
 // Update logic of game
@@ -179,11 +134,11 @@ void game::update() {
 
     // If its different he died play music
     if (hectarHasDied != hectar.isAlive()) {
-      al_stop_sample(&currentMusic);
+      music_ingame.stop();
 
-      if (Engine::settings.get<bool>("music", true) == 1)
-        al_play_sample(music_death, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP,
-                       &currentMusic);
+      if (Engine::settings.get<bool>("music", true) == 1) {
+        music_death.play(true);
+      }
     }
 
     // Add to distance travelled
@@ -218,103 +173,94 @@ void game::update() {
       changeTheme(3);
 
     // Energy
-    for (unsigned int i = 0; i < energys.size(); i++) {
-      energys.at(i).logic(motion, &hectar);
+    for (auto& energy : energys) {
+      energy.logic(motion, &hectar);
 
       // Magnet
-      if (hectar.isMagnetic())
-        energys.at(i).move_towards(hectar.getX() + hectar.getWidth() / 2,
-                                   hectar.getY() + hectar.getHeight() / 2,
-                                   (float)hectar.getMagneticTimer());
-
-      if (energys.at(i).offScreen() || energys.at(i).dead()) {
-        energys.erase(energys.begin() + i);
-        i--;
+      if (hectar.isMagnetic()) {
+        energy.moveTowards(hectar.getX() + hectar.getWidth() / 2,
+                           hectar.getY() + hectar.getHeight() / 2,
+                           (float)hectar.getMagneticTimer());
       }
     }
+
+    energys.erase(std::remove_if(energys.begin(), energys.end(),
+                                 [](auto& energy) -> bool {
+                                   return energy.offScreen() || energy.dead();
+                                 }),
+                  energys.end());
 
     // Debries
-    for (unsigned int i = 0; i < debries.size(); i++) {
-      debries.at(i).logic(motion, &hectar);
-
-      if (debries.at(i).offScreen()) {
-        debries.erase(debries.begin() + i);
-        i--;
-      }
+    for (auto& deb : debries) {
+      deb->logic(motion, &hectar);
     }
+
+    debries.erase(
+        std::remove_if(debries.begin(), debries.end(),
+                       [](auto& deb) -> bool { return deb->offScreen(); }),
+        debries.end());
 
     // Powerups
-    for (unsigned int i = 0; i < powerups.size(); i++) {
-      powerups.at(i).logic(motion, &hectar);
-
-      if (powerups.at(i).offScreen() || powerups.at(i).dead()) {
-        powerups.erase(powerups.begin() + i);
-        i--;
-      }
+    for (auto& powerup : powerups) {
+      powerup->logic(motion, &hectar);
     }
+
+    powerups.erase(std::remove_if(powerups.begin(), powerups.end(),
+                                  [](auto& powerup) -> bool {
+                                    return powerup->offScreen() ||
+                                           powerup->dead();
+                                  }),
+                   powerups.end());
 
     // Spawning
     if (hectar.isAlive() && hectar.isKeyPressed()) {
       // Energy ball spawning
-      if (random(0, 50) == 0 ||
-          (Engine::settings.get<bool>("mega", false) && random(0, 20))) {
-        Energy newEnergyBall(energyImage, sound_orb, SCREEN_W, random(30, 550));
-        energys.push_back(newEnergyBall);
+      if (Engine::random.randomInt(0, 50) == 0) {
+        energys.push_back(Energy(SCREEN_W, Engine::random.randomInt(30, 550)));
       }
 
       // Asteroids spawning
-      if ((score >= 100 && random(0, 50) == 0) ||
-          (Engine::settings.get<bool>("mega", false) && random(0, 20))) {
-        Debris newAsteroid(asteroidImage, sound_asteroid, SCREEN_W,
-                           random(30, 400), 5, 1.0f, 0.0f, random(4, 20));
-        debries.push_back(newAsteroid);
+      if (score >= 100 && Engine::random.randomInt(0, 50) == 0) {
+        debries.push_back(std::make_unique<Asteroid>(Asteroid(
+            SCREEN_W, Engine::random.randomInt(30, 550), themeNumber)));
       }
 
       // Bomb spawning
-      if ((score >= 200 && random(0, 80) == 0) ||
-          (Engine::settings.get<bool>("mega", false) && random(0, 20))) {
-        Debris newBomb(bombImage, sound_bomb, SCREEN_W, random(30, 550), 10,
-                       1.0f, 0.01f);
-        debries.push_back(newBomb);
+      if (score >= 200 && Engine::random.randomInt(0, 80) == 0) {
+        debries.push_back(std::make_unique<Bomb>(
+            Bomb(SCREEN_W, Engine::random.randomInt(30, 550))));
       }
 
       // Comets spawning
-      if ((score >= 300 && random(0, 200) == 0) ||
-          (Engine::settings.get<bool>("mega", false) && random(0, 20))) {
-        Debris newComet(cometImage, sound_asteroid, SCREEN_W, random(30, 550),
-                        5, 1.4f, 0.01f);
-        debries.push_back(newComet);
+      if (score >= 300 && Engine::random.randomInt(0, 200) == 0) {
+        debries.push_back(std::make_unique<Comet>(
+            Comet(SCREEN_W, Engine::random.randomInt(30, 550))));
       }
 
       // Powerup spawning
-      if (score >= 100 && random(0, 3000) == 0) {
-        Powerup newPowerup(powerStar, sound_star, SCREEN_W, random(30, 600),
-                           500, 1);
-        powerups.push_back(newPowerup);
+      if (score >= 100 && Engine::random.randomInt(0, 3000) == 0) {
+        powerups.push_back(std::make_unique<PowerStar>(
+            PowerStar(SCREEN_W, Engine::random.randomInt(30, 600))));
       }
 
-      if (score >= 100 && random(0, 500) == 0) {
-        Powerup newPowerup(powerMagnet[0], sound_magnet, SCREEN_W,
-                           random(30, 600), 500, 10);
-        powerups.push_back(newPowerup);
+      if (score >= 100 && Engine::random.randomInt(0, 500) == 0) {
+        powerups.push_back(std::make_unique<Magnet>(
+            Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 0)));
       }
 
-      if (score >= 200 && random(0, 1000) == 0) {
-        Powerup newPowerup(powerMagnet[1], sound_magnet, SCREEN_W,
-                           random(30, 600), 750, 11);
-        powerups.push_back(newPowerup);
+      if (score >= 200 && Engine::random.randomInt(0, 1000) == 0) {
+        powerups.push_back(std::make_unique<Magnet>(
+            Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 1)));
       }
 
-      if (score >= 300 && random(0, 2000) == 0) {
-        Powerup newPowerup(powerMagnet[2], sound_magnet, SCREEN_W,
-                           random(30, 600), 1000, 12);
-        powerups.push_back(newPowerup);
+      if (score >= 300 && Engine::random.randomInt(0, 2000) == 0) {
+        powerups.push_back(std::make_unique<Magnet>(
+            Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 2)));
       }
 
-      if (score >= 500 && random(0, 3000) == 0) {
-        Powerup newPowerup(powerMagnet[3], sound_magnet, SCREEN_W,
-                           random(30, 600), 1500, 13);
-        powerups.push_back(newPowerup);
+      if (score >= 500 && Engine::random.randomInt(0, 3000) == 0) {
+        powerups.push_back(std::make_unique<Magnet>(
+            Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 3)));
       }
     }
 
@@ -381,16 +327,16 @@ void game::update() {
     //                al_get_backbuffer(display));
 
     // Snap sound
-    al_play_sample(sound_snap, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
+    sound_snap.play();
   }
 
   // Screen shake
   if (screenshake > 0 && Engine::settings.get<int>("screenshake", 0) != 0) {
-    screenshake_x = screenshake_y =
-        random(-(screenshake * Engine::settings.get<int>("screenshake", 0) +
-                 100 * Engine::settings.get<bool>("supershake", false)),
-               screenshake * Engine::settings.get<int>("screenshake", 0) +
-                   100 * Engine::settings.get<bool>("supershake", false));
+    screenshake_x = screenshake_y = Engine::random.randomInt(
+        -(screenshake * Engine::settings.get<int>("screenshake", 0) +
+          100 * Engine::settings.get<bool>("supershake", false)),
+        screenshake * Engine::settings.get<int>("screenshake", 0) +
+            100 * Engine::settings.get<bool>("supershake", false));
     screenshake--;
   }
 
@@ -448,15 +394,15 @@ void game::update() {
 // Draw to screen
 void game::draw() {
   // Draw backgrounds and Ground Overlay
-  al_draw_bitmap(space, scroll / 6, 0, 0);
-  al_draw_bitmap(space, scroll / 6 + SCREEN_W, 0, 0);
+  space.draw(scroll / 6, 0);
+  space.draw(scroll / 6 + SCREEN_W, 0);
 
   // Draw HUD
   // Info
-  al_draw_textf(orbitron_30, al_map_rgb(255, 255, 255), 10, 10,
-                ALLEGRO_ALIGN_LEFT, "Score:%i", score);
-  al_draw_textf(orbitron_30, al_map_rgb(255, 255, 255), 10, 38,
-                ALLEGRO_ALIGN_LEFT, "Health:%i", hectar.getHealth());
+  orbitron_30.draw(10, 10, stringFns::format("Score:%i", score),
+                   al_map_rgb(255, 255, 255));
+  orbitron_30.draw(10, 38, stringFns::format("Health:%i", hectar.getHealth()),
+                   al_map_rgb(255, 255, 255));
   al_draw_filled_rectangle(10, 68, 10 + (hectar.getHealth() * 1.7), 78,
                            al_map_rgb(255 - hectar.getHealth() * 2.5,
                                       0 + hectar.getHealth() * 2.5, 0));
@@ -464,93 +410,101 @@ void game::draw() {
   // Power up timers
   if (hectar.isInvincible()) {
     al_draw_filled_circle(45, 105, 20, al_map_rgb(255, 255, 255));
-    al_draw_bitmap(powerStar, 20, 80, 0);
-    al_draw_textf(orbitron_24, al_map_rgb(255, 255, 255), 44, 94,
-                  ALLEGRO_ALIGN_CENTER, "%i", hectar.getInvincibleTimer() / 5);
-    al_draw_textf(orbitron_24, al_map_rgb(255, 0, 0), 45, 96,
-                  ALLEGRO_ALIGN_CENTER, "%i", hectar.getInvincibleTimer() / 5);
+    powerStar.draw(20, 80);
+    orbitron_24.draw(44, 94, std::to_string(hectar.getInvincibleTimer() / 5),
+                     al_map_rgb(255, 255, 255), ALLEGRO_ALIGN_CENTER);
+    orbitron_24.draw(45, 96, std::to_string(hectar.getInvincibleTimer() / 5),
+                     al_map_rgb(255, 0, 0), ALLEGRO_ALIGN_CENTER);
   }
 
   if (hectar.isMagnetic()) {
     al_draw_filled_circle(175, 105, 20, al_map_rgb(255, 255, 255));
-    al_draw_bitmap(powerMagnet[0], 150, 80, 0);
-    al_draw_textf(orbitron_24, al_map_rgb(255, 255, 255), 174, 94,
-                  ALLEGRO_ALIGN_CENTER, "%i", hectar.getMagneticTimer() / 5);
-    al_draw_textf(orbitron_24, al_map_rgb(255, 0, 0), 175, 96,
-                  ALLEGRO_ALIGN_CENTER, "%i", hectar.getMagneticTimer() / 5);
+    powerMagnet.draw(175, 150, 80);
+    orbitron_24.draw(174, 94, std::to_string(hectar.getMagneticTimer() / 5),
+                     al_map_rgb(255, 255, 255), ALLEGRO_ALIGN_CENTER);
+    orbitron_24.draw(175, 96, std::to_string(hectar.getMagneticTimer() / 5),
+                     al_map_rgb(255, 0, 0), ALLEGRO_ALIGN_CENTER);
   }
 
   // Draw the debug window
   if (Engine::settings.get<bool>("debug", false)) {
-    al_draw_bitmap(debug, 0, 0, 0);
+    debug.draw(0, 0, 0);
 
     // Column 1
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 5, 25,
-                  ALLEGRO_ALIGN_LEFT, "Motion:%4.2f", motion);
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 5, 35,
-                  ALLEGRO_ALIGN_LEFT, "Robot X:%4.2f", hectar.getX());
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 5, 45,
-                  ALLEGRO_ALIGN_LEFT, "Robot Y:%4.2f", hectar.getY());
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 5, 55,
-                  ALLEGRO_ALIGN_LEFT, "Motion:%4.2f", motion);
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 5, 65,
-                  ALLEGRO_ALIGN_LEFT, "Invincible:%i",
-                  hectar.getInvincibleTimer());
+    orbitron_12.draw(5, 25, stringFns::format("Motion:%4.2f", motion),
+                     al_map_rgb(255, 255, 255));
+    orbitron_12.draw(5, 35, stringFns::format("Robot X:%4.2f", hectar.getX()),
+                     al_map_rgb(255, 255, 255));
+    orbitron_12.draw(5, 45, stringFns::format("Robot Y:%4.2f", hectar.getY()),
+                     al_map_rgb(255, 255, 255));
+    orbitron_12.draw(5, 55, stringFns::format("Motion:%4.2f", motion),
+                     al_map_rgb(255, 255, 255));
+    orbitron_12.draw(
+        5, 65, stringFns::format("Invincible:%i", hectar.getInvincibleTimer()),
+        al_map_rgb(255, 255, 255));
 
     // Column 2
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 120, 25,
-                  ALLEGRO_ALIGN_LEFT, "Score:%i", score);
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 120, 35,
-                  ALLEGRO_ALIGN_LEFT, "Magnetic:%i", hectar.getMagneticTimer());
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 120, 45,
-                  ALLEGRO_ALIGN_LEFT, "Mouse X:%i", MouseListener::mouse_x);
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 120, 55,
-                  ALLEGRO_ALIGN_LEFT, "Mouse Y:%i", MouseListener::mouse_y);
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 120, 65,
-                  ALLEGRO_ALIGN_LEFT, "Particles On:%i",
-                  Engine::settings.get<int>("particleType", 0));
+    orbitron_12.draw(120, 25, stringFns::format("Score:%i", score),
+                     al_map_rgb(255, 255, 255));
+    orbitron_12.draw(
+        120, 35, stringFns::format("Magnetic:%i", hectar.getMagneticTimer()),
+        al_map_rgb(255, 255, 255));
+    orbitron_12.draw(120, 45,
+                     stringFns::format("Mouse X:%i", MouseListener::mouse_x),
+                     al_map_rgb(255, 255, 255));
+    orbitron_12.draw(120, 55,
+                     stringFns::format("Mouse Y:%i", MouseListener::mouse_y),
+                     al_map_rgb(255, 255, 255));
+    orbitron_12.draw(
+        120, 65,
+        stringFns::format("Particles On:%i",
+                          Engine::settings.get<int>("particleType", 0)),
+        al_map_rgb(255, 255, 255));
 
     // Column 3
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 245, 25,
-                  ALLEGRO_ALIGN_LEFT, "LowScore:%i", highscores.getScore(9));
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 245, 35,
-                  ALLEGRO_ALIGN_LEFT, "Theme:%i", themeNumber);
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 245, 45,
-                  ALLEGRO_ALIGN_LEFT, "Energys:%i", energys.size());
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 245, 55,
-                  ALLEGRO_ALIGN_LEFT, "Debris:%i", debries.size());
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 245, 65,
-                  ALLEGRO_ALIGN_LEFT, "Powerups:%i", powerups.size());
+    orbitron_12.draw(245, 25,
+                     stringFns::format("LowScore:%i", highscores.getScore(9)),
+                     al_map_rgb(255, 255, 255));
+    orbitron_12.draw(245, 35, stringFns::format("Theme:%i", themeNumber),
+                     al_map_rgb(255, 255, 255));
+    orbitron_12.draw(245, 45, stringFns::format("Energys:%i", energys.size()),
+                     al_map_rgb(255, 255, 255));
+    orbitron_12.draw(245, 55, stringFns::format("Debris:%i", debries.size()),
+                     al_map_rgb(255, 255, 255));
+    orbitron_12.draw(245, 65, stringFns::format("Powerups:%i", powerups.size()),
+                     al_map_rgb(255, 255, 255));
 
     // Column 4
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 360, 25,
-                  ALLEGRO_ALIGN_LEFT, "Last key:%i",
-                  KeyListener::lastKeyPressed);
-    al_draw_textf(orbitron_12, al_map_rgb(255, 255, 255), 360, 35,
-                  ALLEGRO_ALIGN_LEFT, "Has highscore:%i",
-                  score > highscores.getScore(9));
+    orbitron_12.draw(
+        360, 25, stringFns::format("Last key:%i", KeyListener::lastKeyPressed),
+        al_map_rgb(255, 255, 255));
+    orbitron_12.draw(
+        360, 35,
+        stringFns::format("Has highscore:%i", score > highscores.getScore(9)),
+        al_map_rgb(255, 255, 255));
 
     // FPS
-    al_draw_textf(orbitron_18, al_map_rgb(255, 255, 255), SCREEN_W - 100, 25,
-                  ALLEGRO_ALIGN_LEFT, "FPS:%i", fps);
+    orbitron_18.draw(SCREEN_W - 100, 25, stringFns::format("FPS:%i", fps),
+                     al_map_rgb(255, 255, 255));
   }
 
   // Mountain Paralax
-  al_draw_bitmap(parallaxBack, (scroll / 3) % SCREEN_W, 0, 0);
-  al_draw_bitmap(parallaxBack, (scroll / 3) % SCREEN_W + SCREEN_W, 0, 0);
+  parallaxBack.draw((scroll / 3) % SCREEN_W, 0);
+  parallaxBack.draw((scroll / 3) % SCREEN_W + SCREEN_W, 0);
 
   // Ground
-  al_draw_bitmap(groundUnderlay, scroll % SCREEN_W, SCREEN_H - 40, 0);
-  al_draw_bitmap(groundUnderlay, scroll % SCREEN_W + SCREEN_W, SCREEN_H - 40,
-                 0);
+  groundUnderlay.draw(scroll % SCREEN_W, SCREEN_H - 40);
+  groundUnderlay.draw(scroll % SCREEN_W + SCREEN_W, SCREEN_H - 40);
 
   // Energy
-  for (unsigned int i = 0; i < energys.size(); i++)
-    energys.at(i).draw();
+  for (auto& energy : energys) {
+    energy.draw();
+  }
 
   // Powerups
-  for (unsigned int i = 0; i < powerups.size(); i++)
-    powerups.at(i).draw();
+  for (auto& powerup : powerups) {
+    powerup->draw();
+  }
 
   // Draw robot
   hectar.draw();
@@ -558,111 +512,98 @@ void game::draw() {
   // Start arrow
   if (!hectar.isKeyPressed()) {
     if (joystick_enabled)
-      al_draw_bitmap(ui_a, hectar.getX() + 15,
-                     hectar.getY() - 60 - sin(arrow_animation) * 10, 0);
+      ui_a.draw(hectar.getX() + 15,
+                hectar.getY() - 60 - sin(arrow_animation) * 10);
     else
-      al_draw_bitmap(ui_up, hectar.getX() + 15,
-                     hectar.getY() - 70 - sin(arrow_animation) * 10, 0);
+      ui_up.draw(hectar.getX() + 15,
+                 hectar.getY() - 70 - sin(arrow_animation) * 10);
   }
 
   // Debris
-  for (unsigned int i = 0; i < debries.size(); i++)
-    debries.at(i).draw();
+  for (auto& deb : debries) {
+    deb->draw();
+  }
 
   // Ground underlay
-  al_draw_bitmap(groundOverlay, scroll % SCREEN_W, SCREEN_H - 20, 0);
-  al_draw_bitmap(groundOverlay, scroll % SCREEN_W + SCREEN_W, SCREEN_H - 20, 0);
+  groundOverlay.draw(scroll % SCREEN_W, SCREEN_H - 20);
+  groundOverlay.draw(scroll % SCREEN_W + SCREEN_W, SCREEN_H - 20);
 
   // Robot above asteroids
   hectar.drawOverlay();
 
   // Lose scripts
   if (hectar.isOnGround()) {
-    al_draw_bitmap(ui_game_end, 0, 0, 0);
-    al_draw_textf(orbitron_18, al_map_rgb(0, 0, 0), 130, 125,
-                  ALLEGRO_ALIGN_LEFT, "Final Score: %i", score);
-    al_draw_textf(orbitron_18, al_map_rgb(0, 0, 0), 130, 165,
-                  ALLEGRO_ALIGN_LEFT, "Distance Flown: %i ft",
-                  stats[STAT_DISTANCE] / 10);
-    al_draw_textf(orbitron_18, al_map_rgb(0, 0, 0), 130, 205,
-                  ALLEGRO_ALIGN_LEFT, "Energy Collected: %i",
-                  stats[STAT_ENERGY]);
-    al_draw_textf(orbitron_18, al_map_rgb(0, 0, 0), 130, 245,
-                  ALLEGRO_ALIGN_LEFT, "Powerups Received: %i",
-                  stats[STAT_POWERUPS]);
-    al_draw_textf(orbitron_18, al_map_rgb(0, 0, 0), 130, 285,
-                  ALLEGRO_ALIGN_LEFT, "Debris Collided: %i",
-                  stats[STAT_DEBRIS]);
+    ui_game_end.draw(0, 0);
+    orbitron_18.draw(130, 125, stringFns::format("Final Score: %i", score));
+    orbitron_18.draw(
+        130, 165,
+        stringFns::format("Distance Flown: %i ft", stats[STAT_DISTANCE] / 10));
+    orbitron_18.draw(
+        130, 205,
+        stringFns::format("Energy Collected: %i", stats[STAT_ENERGY]));
+    orbitron_18.draw(
+        130, 245,
+        stringFns::format("Powerups Received: %i", stats[STAT_POWERUPS]));
+    orbitron_18.draw(
+        130, 285, stringFns::format("Debris Collided: %i", stats[STAT_DEBRIS]));
 
     if (score > highscores.getScore(9)) {
       // Input rectangle
-      al_draw_filled_rectangle(
-          120, 388, al_get_text_width(orbitron_24, edittext.c_str()) + 138, 432,
-          al_map_rgb(0, 0, 0));
-      al_draw_filled_rectangle(
-          122, 390, al_get_text_width(orbitron_24, edittext.c_str()) + 136, 430,
-          al_map_rgb(255, 255, 255));
+      al_draw_filled_rectangle(120, 388, orbitron_24.getWidth(edittext) + 138,
+                               432, al_map_rgb(0, 0, 0));
+      al_draw_filled_rectangle(122, 390, orbitron_24.getWidth(edittext) + 136,
+                               430, al_map_rgb(255, 255, 255));
 
       // Textbox lable
-      al_draw_textf(orbitron_18, al_map_rgb(0, 0, 0), 129, 370,
-                    ALLEGRO_ALIGN_LEFT, "Enter your name:");
+      orbitron_18.draw(129, 370, "Enter your name:");
 
       // Output the string to the screen
-      al_draw_textf(orbitron_24, al_map_rgb(0, 0, 0), 129, 400,
-                    ALLEGRO_ALIGN_LEFT, "%s", edittext.c_str());
+      orbitron_24.draw(129, 400, edittext);
 
       // Draw the caret
-      al_draw_line(al_get_text_width(
-                       orbitron_24,
-                       edittext.substr(0, std::distance(edittext.begin(), iter))
-                           .c_str()) +
+      al_draw_line(orbitron_24.getWidth(edittext.substr(
+                       0, std::distance(edittext.begin(), iter))) +
                        130,
                    392,
-                   al_get_text_width(
-                       orbitron_24,
-                       edittext.substr(0, std::distance(edittext.begin(), iter))
-                           .c_str()) +
+                   orbitron_24.getWidth(edittext.substr(
+                       0, std::distance(edittext.begin(), iter))) +
                        130,
                    428, al_map_rgb(0, 0, 0), 2);
 
       // Draw the congrats message
-      al_draw_text(orbitron_18, al_map_rgb(0, 255, 0), 150, 330,
-                   ALLEGRO_ALIGN_LEFT, "New highscore!");
-      al_draw_text(orbitron_24, al_map_rgb(0, 0, 0), 150, 450,
-                   ALLEGRO_ALIGN_LEFT, "Press Enter/   to continue");
-      al_draw_bitmap(ui_b, 370, 450, 0);
+      orbitron_18.draw(150, 330, "New highscore!", al_map_rgb(0, 255, 0));
+      orbitron_24.draw(150, 450, "Press Enter/   to continue");
+      ui_b.draw(370, 450, 0);
     } else {
-      al_draw_text(orbitron_24, al_map_rgb(0, 0, 0), 150, 395,
-                   ALLEGRO_ALIGN_LEFT, "Press Enter/   to continue");
-      al_draw_bitmap(ui_b, 370, 395, 0);
+      orbitron_24.draw(150, 395, "Press Enter/   to continue");
+      ui_b.draw(370, 395, 0);
     }
   }
 
   // Pause Menu Scripts
   if (paused) {
     // Menu
-    al_draw_bitmap(pauseMenu, 130, 140, 0);
+    pauseMenu.draw(130, 140, 0);
 
     // Stats
-    al_draw_textf(orbitron_18, al_map_rgb(255, 255, 255), 220, 250,
-                  ALLEGRO_ALIGN_LEFT, "Distance Flown: %i ft",
-                  stats[STAT_DISTANCE] / 10);
-    al_draw_textf(orbitron_18, al_map_rgb(255, 255, 255), 220, 280,
-                  ALLEGRO_ALIGN_LEFT, "Energy Collected: %i",
-                  stats[STAT_ENERGY]);
-    al_draw_textf(orbitron_18, al_map_rgb(255, 255, 255), 220, 310,
-                  ALLEGRO_ALIGN_LEFT, "Powerups Received: %i",
-                  stats[STAT_POWERUPS]);
-    al_draw_textf(orbitron_18, al_map_rgb(255, 255, 255), 220, 340,
-                  ALLEGRO_ALIGN_LEFT, "Debris Collided: %i",
-                  stats[STAT_DEBRIS]);
+    orbitron_18.draw(
+        220, 250,
+        stringFns::format("Distance Flown: %i ft", stats[STAT_DISTANCE] / 10),
+        al_map_rgb(255, 255, 255));
+    orbitron_18.draw(
+        220, 280, stringFns::format("Energy Collected: %i", stats[STAT_ENERGY]),
+        al_map_rgb(255, 255, 255));
+    orbitron_18.draw(
+        220, 310,
+        stringFns::format("Powerups Received: %i", stats[STAT_POWERUPS]),
+        al_map_rgb(255, 255, 255));
+    orbitron_18.draw(
+        220, 340, stringFns::format("Debris Collided: %i", stats[STAT_DEBRIS]),
+        al_map_rgb(255, 255, 255));
 
     // Buttons
-    al_draw_text(orbitron_18, al_map_rgb(0, 0, 0), 220, 445, ALLEGRO_ALIGN_LEFT,
-                 "Quit");
-    al_draw_text(orbitron_18, al_map_rgb(0, 0, 0), 300, 445, ALLEGRO_ALIGN_LEFT,
-                 "Main Menu");
-    al_draw_text(orbitron_18, al_map_rgb(0, 0, 0), 470, 445, ALLEGRO_ALIGN_LEFT,
-                 "Resume");
+    orbitron_18.draw(220, 445, "Quit");
+    orbitron_18.draw(300, 445, "Main Menu");
+    orbitron_18.draw(470, 445, "Resume");
   }
 }

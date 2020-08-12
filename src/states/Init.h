@@ -7,10 +7,7 @@
 #ifndef STATE_INIT_H
 #define STATE_INIT_H
 
-#include <allegro5/allegro_font.h>
-
 #include "../engine/State.h"
-#include "../helpers/tools.h"
 
 class init : public state {
  public:

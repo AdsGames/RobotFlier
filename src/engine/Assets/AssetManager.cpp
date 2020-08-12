@@ -25,11 +25,7 @@ AssetManager::~AssetManager() {
  * @param path, path to file
  */
 void AssetManager::loadImage(const std::string& key, const std::string& path) {
-  loaded_image.push_back({
-      Texture(path),
-      key,
-  });
-
+  loaded_image[key] = Texture(path);
   tools::log_message("[Asset Manager] Loading image: " + key);
 }
 
@@ -39,11 +35,7 @@ void AssetManager::loadImage(const std::string& key, const std::string& path) {
  * @param path, path to file
  */
 void AssetManager::loadAudio(const std::string& key, const std::string& path) {
-  loaded_audio.push_back({
-      Sound(path),
-      key,
-  });
-
+  loaded_audio[key] = Sound(path);
   tools::log_message("[Asset Manager] Loading audio: " + key);
 }
 
@@ -55,11 +47,7 @@ void AssetManager::loadAudio(const std::string& key, const std::string& path) {
 void AssetManager::loadFont(const std::string& key,
                             const std::string& path,
                             const int size) {
-  loaded_font.push_back({
-      Font(path, size),
-      key,
-  });
-
+  loaded_font[key] = Font(path, size);
   tools::log_message("[Asset Manager] Loading font: " + key);
 }
 
@@ -69,11 +57,7 @@ void AssetManager::loadFont(const std::string& key,
  * @param path, path to file
  */
 void AssetManager::loadStream(const std::string& key, const std::string& path) {
-  loaded_stream.push_back({
-      Stream(path),
-      key,
-  });
-
+  loaded_stream[key] = Stream(path);
   tools::log_message("[Asset Manager] Loading stream: " + key);
 }
 
@@ -82,15 +66,11 @@ void AssetManager::loadStream(const std::string& key, const std::string& path) {
  * @param key, key of asset to find
  */
 const Texture& AssetManager::getImage(const std::string& key) {
-  auto it = std::find_if(
-      loaded_image.begin(), loaded_image.end(),
-      [key](const AssetContainer<Texture>& asset) { return asset.key == key; });
-
-  if (it == loaded_image.end()) {
+  try {
+    return loaded_image.at(key);
+  } catch (...) {
     throw std::runtime_error("Could not find image asset " + key);
   }
-
-  return (*it).data;
 }
 
 /**
@@ -98,15 +78,11 @@ const Texture& AssetManager::getImage(const std::string& key) {
  * @param key, key of asset to find
  */
 const Sound& AssetManager::getAudio(const std::string& key) {
-  auto it = std::find_if(
-      loaded_audio.begin(), loaded_audio.end(),
-      [key](const AssetContainer<Sound>& asset) { return asset.key == key; });
-
-  if (it == loaded_audio.end()) {
+  try {
+    return loaded_audio.at(key);
+  } catch (...) {
     throw std::runtime_error("Could not find audio asset " + key);
   }
-
-  return (*it).data;
 }
 
 /**
@@ -114,15 +90,11 @@ const Sound& AssetManager::getAudio(const std::string& key) {
  * @param key, key of asset to find
  */
 const Font& AssetManager::getFont(const std::string& key) {
-  auto it = std::find_if(
-      loaded_font.begin(), loaded_font.end(),
-      [key](const AssetContainer<Font>& asset) { return asset.key == key; });
-
-  if (it == loaded_font.end()) {
+  try {
+    return loaded_font.at(key);
+  } catch (...) {
     throw std::runtime_error("Could not find font asset " + key);
   }
-
-  return (*it).data;
 }
 
 /**
@@ -130,13 +102,9 @@ const Font& AssetManager::getFont(const std::string& key) {
  * @param key, key of asset to find
  */
 const Stream& AssetManager::getStream(const std::string& key) {
-  auto it = std::find_if(
-      loaded_stream.begin(), loaded_stream.end(),
-      [key](const AssetContainer<Stream>& asset) { return asset.key == key; });
-
-  if (it == loaded_stream.end()) {
+  try {
+    return loaded_stream.at(key);
+  } catch (...) {
     throw std::runtime_error("Could not find stream asset " + key);
   }
-
-  return (*it).data;
 }

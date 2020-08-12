@@ -68,25 +68,6 @@ class tools {
     return false;
   }
 
-  // Convert type to string
-  template <class T>
-  static std::string toString(const T& value) {
-    std::stringstream ss;
-    ss << value;
-    return ss.str();
-  }
-
-  // Convert types to string
-  static int stringToInt(std::string str);
-  static float stringToFloat(std::string str);
-
-  // Split string
-  static std::vector<std::string> split_string(const std::string& p_pcstStr,
-                                               const char delim);
-
-  // Random number
-  static int random_int(const int min, const int max);
-
   // Debug message
   static void log_message(std::string message, bool debug = false);
 

@@ -28,12 +28,23 @@ void Font::load(const std::string& path, const int size) {
 /**
  * Return line height for given text
  */
-int Font::getLineHeight() {
+int Font::getHeight() {
   if (!font) {
     return 0;
   }
 
   return al_get_font_line_height(font);
+}
+
+/**
+ * Return width given text
+ */
+int Font::getWidth(const std::string& text) {
+  if (!font) {
+    return 0;
+  }
+
+  return al_get_text_width(font, text.c_str());
 }
 
 /**
@@ -46,12 +57,13 @@ int Font::getLineHeight() {
 void Font::draw(const int x,
                 const int y,
                 const std::string& text,
+                const ALLEGRO_COLOR colour,
                 const int flags) {
   if (!font) {
     return;
   }
 
-  al_draw_text(font, al_map_rgb(0, 0, 0), x, y, flags, text.c_str());
+  al_draw_text(font, colour, x, y, flags, text.c_str());
 }
 
 /**

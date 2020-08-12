@@ -8,13 +8,13 @@
 #define STATE_INTRO_H
 
 #include "../engine/State.h"
-#include "../helpers/tools.h"
+#include "../engine/Textures/Texture.h"
 
 class intro : public state {
  public:
   // Construct/deconstruct
   intro();
-  virtual ~intro();
+  virtual ~intro(){};
 
   // Override parent
   virtual void update() override;
@@ -22,7 +22,7 @@ class intro : public state {
 
  private:
   // Splash image
-  ALLEGRO_BITMAP* img_intro;
+  Texture img_intro;
 };
 
 #endif  // STATE_INTRO_H

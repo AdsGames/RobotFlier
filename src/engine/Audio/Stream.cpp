@@ -58,7 +58,6 @@ void Stream::stop() {
   }
 
   al_detach_audio_stream(stream);
-  al_drain_audio_stream(stream);
 }
 
 /**

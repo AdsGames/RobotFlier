@@ -8,20 +8,13 @@
 #ifndef ASSET_MANAGER_H
 #define ASSET_MANAGER_H
 
+#include <map>
 #include <string>
-#include <vector>
 
 #include "../Audio/Sound.h"
 #include "../Audio/Stream.h"
 #include "../Fonts/Font.h"
 #include "../Textures/Texture.h"
-
-template <class T>
-struct AssetContainer {
- public:
-  T data;
-  std::string key;
-};
 
 class AssetManager {
  public:
@@ -41,10 +34,10 @@ class AssetManager {
   void loadStream(const std::string& key, const std::string& path);
 
  private:
-  std::vector<AssetContainer<Sound>> loaded_audio;
-  std::vector<AssetContainer<Texture>> loaded_image;
-  std::vector<AssetContainer<Font>> loaded_font;
-  std::vector<AssetContainer<Stream>> loaded_stream;
+  std::map<std::string, Sound> loaded_audio;
+  std::map<std::string, Texture> loaded_image;
+  std::map<std::string, Font> loaded_font;
+  std::map<std::string, Stream> loaded_stream;
 };
 
 #endif  // ASSET_MANAGER_H

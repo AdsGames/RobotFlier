@@ -7,20 +7,22 @@
 #ifndef STATE_GAME_H
 #define STATE_GAME_H
 
-#include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_primitives.h>
+#include <memory>
 
+#include "../engine/Audio/Sound.h"
+#include "../engine/Audio/Stream.h"
+#include "../engine/Fonts/Font.h"
 #include "../engine/Input/JoystickListener.h"
 #include "../engine/Input/KeyListener.h"
 #include "../engine/Input/MouseListener.h"
-#include "../engine/Particles/Particle.h"
 #include "../engine/State.h"
-#include "../entities/Debris.h"
+#include "../engine/Textures/Texture.h"
 #include "../entities/Energy.h"
-#include "../entities/Powerup.h"
 #include "../entities/Robot.h"
-#include "../helpers/tools.h"
+#include "../entities/debris/Debris.h"
+#include "../entities/powerups/Powerup.h"
 #include "ScoreTable.h"
 
 // Game class
@@ -45,40 +47,35 @@ class game : public state {
   ALLEGRO_BITMAP* screenshot;
 
   // Game images
-  ALLEGRO_BITMAP* space;
-  ALLEGRO_BITMAP* parallaxBack;
-  ALLEGRO_BITMAP* groundOverlay;
-  ALLEGRO_BITMAP* groundUnderlay;
+  Texture space;
+  Texture parallaxBack;
+  Texture groundOverlay;
+  Texture groundUnderlay;
 
   // GUI Images
-  ALLEGRO_BITMAP* debug;
-  ALLEGRO_BITMAP* pauseMenu;
-  ALLEGRO_BITMAP* ui_game_end;
-  ALLEGRO_BITMAP* ui_a;
-  ALLEGRO_BITMAP* ui_b;
-  ALLEGRO_BITMAP* ui_up;
-
-  // Danger images
-  ALLEGRO_BITMAP* energyImage;
-  ALLEGRO_BITMAP* asteroidImage;
-  ALLEGRO_BITMAP* bombImage;
-  ALLEGRO_BITMAP* cometImage;
+  Texture debug;
+  Texture pauseMenu;
+  Texture ui_game_end;
+  Texture ui_a;
+  Texture ui_b;
+  Texture ui_up;
 
   // Powerup Images
-  ALLEGRO_BITMAP* powerStar;
-  ALLEGRO_BITMAP* powerMagnet[4];
+  Texture powerStar;
+  Texture powerMagnet;
 
   // Declare sounds
-  ALLEGRO_SAMPLE* sound_orb;
-  ALLEGRO_SAMPLE* sound_bomb;
-  ALLEGRO_SAMPLE* sound_asteroid;
-  ALLEGRO_SAMPLE* sound_magnet;
-  ALLEGRO_SAMPLE* sound_star;
-  ALLEGRO_SAMPLE* sound_snap;
+  Sound sound_snap;
 
   // Music
-  ALLEGRO_SAMPLE* music_ingame;
-  ALLEGRO_SAMPLE* music_death;
+  Stream music_ingame;
+  Stream music_death;
+
+  // Fonts
+  Font orbitron_12;
+  Font orbitron_18;
+  Font orbitron_24;
+  Font orbitron_30;
 
   // Our robot
   Robot hectar;
@@ -100,8 +97,8 @@ class game : public state {
 
   // Containers of objects
   std::vector<Energy> energys;
-  std::vector<Debris> debries;
-  std::vector<Powerup> powerups;
+  std::vector<std::unique_ptr<Debris>> debries;
+  std::vector<std::unique_ptr<Powerup>> powerups;
 };
 
 #endif  // STATE_GAME_H

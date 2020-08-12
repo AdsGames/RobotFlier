@@ -22,15 +22,22 @@ class Texture {
   void load(const std::string path);
   void create(const int width, const int height);
 
-  void draw(const int x, const int y, const int flags);
+  void draw(const int x, const int y, const int flags = 0) const;
+  void drawScaled(const int x,
+                  const int y,
+                  const int width,
+                  const int height,
+                  const int flags = 0) const;
 
-  int getWidth();
-  int getHeight();
+  ALLEGRO_COLOR getPixel(const int x, const int y) const;
+
+  int getWidth() const;
+  int getHeight() const;
 
  private:
   static ALLEGRO_BITMAP* loadBitmap(const std::string& file);
 
-  ALLEGRO_BITMAP* texture;
+  ALLEGRO_BITMAP* bitmap;
 };
 
 #endif  // TEXTURE_H

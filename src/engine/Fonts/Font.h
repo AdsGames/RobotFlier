@@ -24,9 +24,12 @@ class Font {
   void draw(const int x,
             const int y,
             const std::string& text,
+            const ALLEGRO_COLOR colour = al_map_rgb(0, 0, 0),
             const int flags = 0);
 
-  int getLineHeight();
+  int getHeight();
+
+  int getWidth(const std::string& text);
 
  private:
   static ALLEGRO_FONT* loadFont(const std::string& file, const int size);

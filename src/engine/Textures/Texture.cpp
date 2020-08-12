@@ -3,7 +3,7 @@
 #include "../Common/Tools.h"
 
 // Ctor
-Texture::Texture() : texture(nullptr) {}
+Texture::Texture() : bitmap(nullptr) {}
 
 Texture::Texture(const std::string path) {
   load(path);
@@ -11,7 +11,7 @@ Texture::Texture(const std::string path) {
 
 // Dtor
 Texture::~Texture() {
-  if (texture) {
+  if (bitmap) {
     // al_destroy_bitmap(texture);
   }
 }
@@ -21,7 +21,7 @@ Texture::~Texture() {
  * @param path, path to file
  */
 void Texture::load(std::string path) {
-  texture = loadBitmap(path);
+  bitmap = loadBitmap(path);
 }
 
 /**
@@ -30,29 +30,29 @@ void Texture::load(std::string path) {
  * @param height, height of texture
  */
 void Texture::create(const int width, const int height) {
-  texture = al_create_bitmap(width, height);
+  bitmap = al_create_bitmap(width, height);
 }
 
 /**
  * Return height of loaded texture
  */
-int Texture::getHeight() {
-  if (!texture) {
+int Texture::getHeight() const {
+  if (!bitmap) {
     return 0;
   }
 
-  return al_get_bitmap_height(texture);
+  return al_get_bitmap_height(bitmap);
 }
 
 /**
  * Return width of loaded texture
  */
-int Texture::getWidth() {
-  if (!texture) {
+int Texture::getWidth() const {
+  if (!bitmap) {
     return 0;
   }
 
-  return al_get_bitmap_width(texture);
+  return al_get_bitmap_width(bitmap);
 }
 
 /**
@@ -61,12 +61,37 @@ int Texture::getWidth() {
  * @param y, y position to draw to
  * @param flags, config flags passed to al_draw_bitmap
  */
-void Texture::draw(const int x, const int y, const int flags) {
-  if (!texture) {
+void Texture::draw(const int x, const int y, const int flags) const {
+  if (!bitmap) {
     return;
   }
 
-  al_draw_bitmap(texture, x, y, flags);
+  al_draw_bitmap(bitmap, x, y, flags);
+}
+
+/**
+ * Draw scaled texture to screen
+ * @param x, x position to draw to
+ * @param y, y position to draw to
+ * @param width, width to scale to
+ * @param height, height to scale to
+ * @param flags, config flags passed to al_draw_bitmap
+ */
+void Texture::drawScaled(const int x,
+                         const int y,
+                         const int width,
+                         const int height,
+                         const int flags) const {
+  if (!bitmap) {
+    return;
+  }
+
+  al_draw_scaled_bitmap(bitmap, 0, 0, getWidth(), getHeight(), x, y, width,
+                        height, flags);
+}
+
+ALLEGRO_COLOR Texture::getPixel(const int x, const int y) const {
+  return al_get_pixel(this->bitmap, x, y);
 }
 
 /**
@@ -75,13 +100,13 @@ void Texture::draw(const int x, const int y, const int flags) {
  */
 ALLEGRO_BITMAP* Texture::loadBitmap(const std::string& file) {
   // Attempt to load
-  ALLEGRO_BITMAP* temp_image = al_load_bitmap(file.c_str());
+  ALLEGRO_BITMAP* temp_bitmap = al_load_bitmap(file.c_str());
 
-  if (!temp_image) {
+  if (!temp_bitmap) {
     tools::abort_on_error(
         "There was an error loading " + file + "... \nSorry...",
         "Loading Error");
   }
 
-  return temp_image;
+  return temp_bitmap;
 }

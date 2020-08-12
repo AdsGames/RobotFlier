@@ -64,12 +64,12 @@ void Robot::logic() {
   // Death smoke
   if (Engine::settings.get<int>("particleType", 0) != 3 && !alive) {
     for (int i = 0; i < 800; i++) {
-      if (random(0, 10) == 0) {
-        int randnum = random(0, 255);
-        Particle newParticle(x + 20, y + 20,
-                             al_map_rgb(randnum, randnum, randnum),
-                             random(-4, -1), random(-5, -3), 1,
-                             Engine::settings.get<int>("particleType", 0));
+      if (Engine::random.randomInt(0, 10) == 0) {
+        int randnum = Engine::random.randomInt(0, 255);
+        Particle newParticle(
+            x + 20, y + 20, al_map_rgb(randnum, randnum, randnum),
+            Engine::random.randomInt(-4, -1), Engine::random.randomInt(-5, -3),
+            1, Engine::settings.get<int>("particleType", 0));
         smokePart.push_back(newParticle);
       }
     }
@@ -78,7 +78,7 @@ void Robot::logic() {
   for (unsigned int i = 0; i < smokePart.size(); i++) {
     smokePart.at(i).update();
 
-    if (random(0, 10) == 0) {
+    if (Engine::random.randomInt(0, 10) == 0) {
       smokePart.erase(smokePart.begin() + i);
     }
   }
@@ -86,20 +86,23 @@ void Robot::logic() {
   // Rocket particles
   if (Engine::settings.get<int>("particleType", 0) != 3 && rocket) {
     for (int i = 0; i < 800; i++) {
-      if (random(0, 10) == 0) {
-        ALLEGRO_COLOR part_color = al_map_rgb(255, random(0, 255), 0);
+      if (Engine::random.randomInt(0, 10) == 0) {
+        ALLEGRO_COLOR part_color =
+            al_map_rgb(255, Engine::random.randomInt(0, 255), 0);
 
         if (Engine::settings.get<bool>("christmas", false)) {
-          int red_or_green = random(0, 1);
+          int red_or_green = Engine::random.randomInt(0, 1);
           part_color =
               al_map_rgb(255 * red_or_green, 255 - red_or_green * 255, 0);
         }
 
-        Particle newParticle1(x + 21, y + 55, part_color, random(-2, 2),
-                              random(1, 5), 1,
+        Particle newParticle1(x + 21, y + 55, part_color,
+                              Engine::random.randomInt(-2, 2),
+                              Engine::random.randomInt(1, 5), 1,
                               Engine::settings.get<int>("particleType", 0));
-        Particle newParticle2(x + 52, y + 55, part_color, random(-2, 2),
-                              random(0, 4), 1,
+        Particle newParticle2(x + 52, y + 55, part_color,
+                              Engine::random.randomInt(-2, 2),
+                              Engine::random.randomInt(0, 4), 1,
                               Engine::settings.get<int>("particleType", 0));
         rocketPart.push_back(newParticle1);
         rocketPart.push_back(newParticle2);
@@ -110,7 +113,7 @@ void Robot::logic() {
   for (unsigned int i = 0; i < rocketPart.size(); i++) {
     rocketPart.at(i).update();
 
-    if (random(0, 2) == 0) {
+    if (Engine::random.randomInt(0, 2) == 0) {
       rocketPart.erase(rocketPart.begin() + i);
     }
   }
@@ -124,7 +127,7 @@ void Robot::logic() {
         JoystickListener::button[JOY_XBOX_BUMPER_LEFT]) {
       keyPressed = true;
 
-      if (random(0, 3) == 1) {
+      if (Engine::random.randomInt(0, 3) == 1) {
         soundFlame.play(0.05);
       }
 
@@ -180,26 +183,26 @@ void Robot::draw() {
     // Invincible
     if (invincibleTimer > 0) {
       if (!rocket || Engine::settings.get<int>("particleType", 0) != 3)
-        robotInvincible.draw(x, y, 0);
+        robotInvincible.draw(x, y);
       else if (rocket && Engine::settings.get<int>("particleType", 0) == 3)
-        robotInvincibleFire.draw(x, y, 0);
+        robotInvincibleFire.draw(x, y);
     }
     // Standard
     else {
       if (!rocket || Engine::settings.get<int>("particleType", 0) != 3)
-        mainRobot.draw(x, y, 0);
+        mainRobot.draw(x, y);
       else if (rocket && Engine::settings.get<int>("particleType", 0) == 3)
-        robotFire.draw(x, y, 0);
+        robotFire.draw(x, y);
     }
 
     // Xmas mode!
     if (Engine::settings.get<bool>("christmas", false)) {
-      christmasHat.draw(x + 20, y - 12, 0);
+      christmasHat.draw(x + 20, y - 12);
     }
   }
   // Death image
   else {
-    robotDie.draw(x, y, 0);
+    robotDie.draw(x, y);
   }
 
   // Draw particles
@@ -215,7 +218,7 @@ void Robot::draw() {
 // Draw overlay
 void Robot::drawOverlay() {
   if (alive && invincibleTimer > 0)
-    robotInvincibleTop.draw(x, y, 0);
+    robotInvincibleTop.draw(x, y);
 }
 
 // Getters

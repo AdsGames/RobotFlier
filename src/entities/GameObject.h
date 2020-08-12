@@ -5,8 +5,8 @@
  * 03/01/2017
  */
 
-#ifndef GAME_OBJECT_H
-#define GAME_OBJECT_H
+#ifndef ENTITIES_GAME_OBJECT_H
+#define ENTITIES_GAME_OBJECT_H
 
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_primitives.h>
@@ -14,19 +14,22 @@
 #include <vector>
 
 #include "../engine/Particles/Particle.h"
-#include "../helpers/tools.h"
+#include "../engine/Textures/Texture.h"
 #include "Robot.h"
 
 class GameObject {
  public:
   // Constructor
-  GameObject(ALLEGRO_BITMAP* sprite, const int x, const int y);
+  GameObject(const float x = 0.0f, const float y = 0.0f);
 
   // Destructor
   ~GameObject();
 
   // Updates asteroid logic
-  void logic(int newMotion);
+  void logic(const float motion);
+
+  // Set game object texture
+  void setTexture(const Texture& texture);
 
   // Has it been hit?
   bool dead() const;
@@ -39,7 +42,7 @@ class GameObject {
 
  protected:
   // Images
-  ALLEGRO_BITMAP* sprite;
+  Texture texture;
 
   // Position
   float x, y;
@@ -50,11 +53,11 @@ class GameObject {
   // Dead or naw
   bool isDead;
 
-  // Particles
-  std::vector<Particle> parts;
-
   // Damage
   int damage;
+
+  // Particles
+  std::vector<Particle> parts;
 };
 
-#endif  // GAME_OBJECT_H
+#endif  // ENTITIES_GAME_OBJECT_H

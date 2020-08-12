@@ -3,28 +3,29 @@
  * Gives the player health
  * A.D.S. Games
  */
-#ifndef ENERGY_H
-#define ENERGY_H
+#ifndef ENTITIES_ENERGY_H
+#define ENTITIES_ENERGY_H
 
+#include "../engine/Audio/Sound.h"
 #include "GameObject.h"
 
 class Energy : public GameObject {
  public:
   // Constructor
-  Energy(ALLEGRO_BITMAP* sprite,
-         ALLEGRO_SAMPLE* sound,
-         const int x,
-         const int y);
+  Energy(const int x, const int y);
 
   // Logic override
   void logic(const int motion, Robot* robot);
 
-  // Move towards robot
-  void move_towards(const float x, const float y, const float speed);
+  // Move towards point
+  void moveTowards(const float x, const float y, const float speed);
 
  private:
+  // Load assets
+  void loadAssets();
+
   // Sound effect
-  ALLEGRO_SAMPLE* sound;
+  Sound sound_orb;
 };
 
-#endif
+#endif  // ENTITIES_ENERGY_H

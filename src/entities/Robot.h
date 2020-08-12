@@ -4,10 +4,8 @@
  * A.D.S. Games
  * 12/01/2017
  */
-#ifndef ROBOT_H
-#define ROBOT_H
-
-#include <allegro5/allegro_audio.h>
+#ifndef ENTITIES_ROBOT_H
+#define ENTITIES_ROBOT_H
 
 #include <iostream>
 #include <vector>
@@ -20,10 +18,10 @@ class Robot {
  public:
   Robot(float x = 0.0f, float y = 0.0f);
 
-  void loadResources();
   void logic();
   void draw();
   void drawOverlay();
+  void loadResources();
 
   // Getters
   int getHealth() const;
@@ -81,4 +79,4 @@ class Robot {
   std::vector<Particle> smokePart;
 };
 
-#endif  // ROBOT_H
+#endif  // ENTITIES_ROBOT_H
