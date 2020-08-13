@@ -4,8 +4,8 @@
  * 03/01/2016
  * The menu of Robot Flier
  */
-#ifndef STATE_MENU_H
-#define STATE_MENU_H
+#ifndef STATES_MENU_H
+#define STATES_MENU_H
 
 #define MINISTATE_MENU 0
 #define MINISTATE_TUTORIAL 1
@@ -104,4 +104,4 @@ class menu : public state {
   Font orbitron_12;
 };
 
-#endif  // STATE_MENU_H
+#endif  // STATES_MENU_H

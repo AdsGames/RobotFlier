@@ -4,8 +4,8 @@
  * 03/01/2016
  * Main game state
  */
-#ifndef STATE_GAME_H
-#define STATE_GAME_H
+#ifndef STATES_GAME_H
+#define STATES_GAME_H
 
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_primitives.h>
@@ -101,4 +101,4 @@ class game : public state {
   std::vector<std::unique_ptr<Powerup>> powerups;
 };
 
-#endif  // STATE_GAME_H
+#endif  // STATES_GAME_H

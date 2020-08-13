@@ -4,8 +4,8 @@
  * 13/01/2017
  * Functions that may be needed by multiple files
  */
-#ifndef TOOLS_H
-#define TOOLS_H
+#ifndef HELPERS_TOOLS_H
+#define HELPERS_TOOLS_H
 
 #include <string>
 
@@ -21,4 +21,4 @@ extern bool collision(const float xMin1,
                       const float yMin2,
                       const float yMax2);
 
-#endif  // TOOLS_H
+#endif  // HELPERS_TOOLS_H

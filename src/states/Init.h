@@ -4,8 +4,8 @@
  * 30/12/2016
  * Program inits here
  */
-#ifndef STATE_INIT_H
-#define STATE_INIT_H
+#ifndef STATES_INIT_H
+#define STATES_INIT_H
 
 #include "../engine/State.h"
 
@@ -20,4 +20,4 @@ class init : public state {
   virtual void draw() override;
 };
 
-#endif  // STATE_INIT_H
+#endif  // STATES_INIT_H

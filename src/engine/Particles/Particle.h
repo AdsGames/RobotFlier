@@ -3,8 +3,8 @@
  * Just little blips that make things look cool
  * A.D.S. Games
  */
-#ifndef PARTICLE_H
-#define PARTICLE_H
+#ifndef ENGINE_PARTICLES_PARTICLE_H
+#define ENGINE_PARTICLES_PARTICLE_H
 
 #include <allegro5/allegro_primitives.h>
 
@@ -50,4 +50,4 @@ class Particle {
   ALLEGRO_COLOR color;
 };
 
-#endif
+#endif  // ENGINE_PARTICLES_PARTICLE_H

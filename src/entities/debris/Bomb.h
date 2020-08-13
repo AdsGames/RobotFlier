@@ -4,8 +4,8 @@
  * Collidable Bomb
  * 11/08/2020
  */
-#ifndef ENTITIES_BOMB_H
-#define ENTITIES_BOMB_H
+#ifndef ENTITIES_DEBRIS_BOMB_H
+#define ENTITIES_DEBRIS_BOMB_H
 
 #include "Debris.h"
 
@@ -22,4 +22,4 @@ class Bomb : public Debris {
   Sound destroy_sound;
 };
 
-#endif  // ENTITIES_BOMB_H
+#endif  // ENTITIES_DEBRIS_BOMB_H

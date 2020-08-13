@@ -5,8 +5,8 @@
  * 05/08/2020
  **/
 
-#ifndef ASSET_MANAGER_H
-#define ASSET_MANAGER_H
+#ifndef ENGINE_ASSET_MANAGER_H
+#define ENGINE_ASSET_MANAGER_H
 
 #include <map>
 #include <string>
@@ -40,4 +40,4 @@ class AssetManager {
   std::map<std::string, Stream> loaded_stream;
 };
 
-#endif  // ASSET_MANAGER_H
+#endif  // ENGINE_ASSET_MANAGER_H

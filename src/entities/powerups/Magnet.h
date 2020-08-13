@@ -4,8 +4,8 @@
  * Magnet type powerup
  * 11/08/2020
  */
-#ifndef ENTITIES_MAGNET_H
-#define ENTITIES_MAGNET_H
+#ifndef ENTITIES_POWERUPS_MAGNET_H
+#define ENTITIES_POWERUPS_MAGNET_H
 
 #include "Powerup.h"
 
@@ -31,4 +31,4 @@ class Magnet : public Powerup {
   Sound magnet_sound;
 };
 
-#endif  // ENTITIES_MAGNET_H
+#endif  // ENTITIES_POWERUPS_MAGNET_H

@@ -4,8 +4,8 @@
  * Collidable Asteroid
  * 11/08/2020
  */
-#ifndef ENTITIES_ASTEROID_H
-#define ENTITIES_ASTEROID_H
+#ifndef ENTITIES_DEBRIS_ASTEROID_H
+#define ENTITIES_DEBRIS_ASTEROID_H
 
 #include "Debris.h"
 
@@ -25,4 +25,4 @@ class Asteroid : public Debris {
   Sound destroy_sound;
 };
 
-#endif  // ENTITIES_ASTEROID_H
+#endif  // ENTITIES_DEBRIS_ASTEROID_H

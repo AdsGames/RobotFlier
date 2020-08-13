@@ -4,8 +4,8 @@
  * Collidable Comet
  * 11/08/2020
  */
-#ifndef ENTITIES_COMET_H
-#define ENTITIES_COMET_H
+#ifndef ENTITIES_DEBRIS_COMET_H
+#define ENTITIES_DEBRIS_COMET_H
 
 #include "Debris.h"
 
@@ -22,4 +22,4 @@ class Comet : public Debris {
   Sound destroy_sound;
 };
 
-#endif  // ENTITIES_COMET_H
+#endif  // ENTITIES_DEBRIS_COMET_H

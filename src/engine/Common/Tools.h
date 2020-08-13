@@ -5,8 +5,8 @@
  * 05/05/2017
  **/
 
-#ifndef TOOLS_H
-#define TOOLS_H
+#ifndef ENGINE_COMMON_TOOLS_H
+#define ENGINE_COMMON_TOOLS_H
 
 #include <sstream>
 #include <string>
@@ -79,4 +79,4 @@ class tools {
   static bool mouse_clicked(const int button, bool reset = true);
 };
 
-#endif  // TOOLS_H
+#endif  // ENGINE_COMMON_TOOLS_H

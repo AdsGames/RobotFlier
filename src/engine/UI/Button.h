@@ -5,8 +5,8 @@
  * 11/04/2017
  **/
 
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef ENGINE_UI_BUTTON_H
+#define ENGINE_UI_BUTTON_H
 
 #include "UIElement.h"
 
@@ -26,4 +26,4 @@ class Button : public UIElement {
   virtual bool canFocus() override;
 };
 
-#endif  // BUTTON_H
+#endif  // ENGINE_UI_BUTTON_H

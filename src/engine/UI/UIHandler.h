@@ -5,8 +5,8 @@
  * 24/09/2017
  **/
 
-#ifndef UIHANDLER_H
-#define UIHANDLER_H
+#ifndef ENGINE_UI_UIHANDLER_H
+#define ENGINE_UI_UIHANDLER_H
 
 #include <string>
 #include <vector>
@@ -47,4 +47,4 @@ class UIHandler {
   int focusedElement;
 };
 
-#endif  // UIHANDLER_H
+#endif  // ENGINE_UI_UIHANDLER_H

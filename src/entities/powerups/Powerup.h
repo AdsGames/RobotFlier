@@ -3,8 +3,8 @@
  * Various powerups do various things
  * A.D.S. Games
  */
-#ifndef ENTITIES_POWERUP_H
-#define ENTITIES_POWERUP_H
+#ifndef ENTITIES_POWERUPS_POWERUP_H
+#define ENTITIES_POWERUPS_POWERUP_H
 
 #include "../GameObject.h"
 
@@ -24,4 +24,4 @@ class Powerup : public GameObject {
   int timer_length;
 };
 
-#endif  // ENTITIES_POWERUP_H
+#endif  // ENTITIES_POWERUPS_POWERUP_H

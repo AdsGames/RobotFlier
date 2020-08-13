@@ -6,8 +6,8 @@
  * 10/08/2020
  **/
 
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#ifndef ENGINE_TEXTURES_TEXTURE_H
+#define ENGINE_TEXTURES_TEXTURE_H
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -40,4 +40,4 @@ class Texture {
   ALLEGRO_BITMAP* bitmap;
 };
 
-#endif  // TEXTURE_H
+#endif  // ENGINE_TEXTURES_TEXTURE_H

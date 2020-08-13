@@ -6,8 +6,8 @@
  * 23/01/2017
  **/
 
-#ifndef JOYSTICKLISTENER_H
-#define JOYSTICKLISTENER_H
+#ifndef ENGINE_INPUT_JOYSTICKLISTENER_H
+#define ENGINE_INPUT_JOYSTICKLISTENER_H
 
 #include <allegro5/allegro.h>
 
@@ -50,4 +50,4 @@ class JoystickListener {
   static bool lastTicksStick[JOY_MAX_STICK_BOOLEANS];
 };
 
-#endif  // JOYSTICKLISTENER_H
+#endif  // ENGINE_INPUT_JOYSTICKLISTENER_H

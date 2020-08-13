@@ -3,8 +3,8 @@
  * A collision object that can be crashed into
  * A.D.S. Games
  */
-#ifndef ENTITIES_DEBRIE_H
-#define ENTITIES_DEBRIE_H
+#ifndef ENTITIES_DEBRIS_DEBRIE_H
+#define ENTITIES_DEBRIS_DEBRIE_H
 
 #include "../GameObject.h"
 
@@ -30,4 +30,4 @@ class Debris : public GameObject {
   float acceleration;
 };
 
-#endif  // ENTITIES_DEBRIE_H
+#endif  // ENTITIES_DEBRIS_DEBRIE_H

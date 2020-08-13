@@ -5,8 +5,8 @@
  * 20/11/2018
  **/
 
-#ifndef DISPLAYMODE_H
-#define DISPLAYMODE_H
+#ifndef ENGINE_DISPLAY_DISPLAYMODE_H
+#define ENGINE_DISPLAY_DISPLAYMODE_H
 
 #include <allegro5/display.h>
 
@@ -33,8 +33,6 @@ class DisplayMode {
 
   // Getters
   static int getDisplayMode();
-  static std::string getDisplayModeString();
-  static std::string getDisplayModeString(const int mode);
 
   static int getDrawWidth();
   static int getDrawHeight();
@@ -77,4 +75,4 @@ class DisplayMode {
   static void setTranslation(const int x, const int y);
 };
 
-#endif  // DISPLAYMODE_H
+#endif  // ENGINE_DISPLAY_DISPLAYMODE_H

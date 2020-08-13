@@ -5,8 +5,8 @@
  * 16/10/2017
  **/
 
-#ifndef CHECKBOX_H
-#define CHECKBOX_H
+#ifndef ENGINE_UI_CHECKBOX_H
+#define ENGINE_UI_CHECKBOX_H
 
 #include "UIElement.h"
 
@@ -54,4 +54,4 @@ class CheckBox : public UIElement {
   bool toggled;
 };
 
-#endif  // CHECKBOX_H
+#endif  // ENGINE_UI_CHECKBOX_H

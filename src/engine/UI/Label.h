@@ -5,8 +5,8 @@
  * 25/11/2018
  **/
 
-#ifndef LABEL_H
-#define LABEL_H
+#ifndef ENGINE_UI_LABEL_H
+#define ENGINE_UI_LABEL_H
 
 #include "UIElement.h"
 
@@ -32,4 +32,4 @@ class Label : public UIElement {
   virtual void update() override;
 };
 
-#endif  // LABEL_H
+#endif  // ENGINE_UI_LABEL_H

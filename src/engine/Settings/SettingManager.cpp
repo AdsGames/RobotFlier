@@ -102,7 +102,7 @@ const Setting SettingManager::findSetting(const std::string key) const {
     return *it;
   }
 
-  throw std::string("Could not find setting");
+  throw std::runtime_error("Could not find setting " + key);
 }
 
 // Set autosave

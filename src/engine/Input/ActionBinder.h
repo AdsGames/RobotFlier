@@ -4,10 +4,10 @@
  * Abstraction layer on top of key/joy
  *   codes for keybindings
  * 05/05/2017
-**/
+ **/
 
-#ifndef ACTIONBINDER_H
-#define ACTIONBINDER_H
+#ifndef ENGINE_INPUT_ACTIONBINDER_H
+#define ENGINE_INPUT_ACTIONBINDER_H
 
 #include <vector>
 
@@ -24,57 +24,45 @@ enum actions {
   ACTION_SELECT
 };
 
-enum types {
-  TYPE_KEY,
-  TYPE_JOY_STICK,
-  TYPE_JOY_BUTTON
-};
+enum types { TYPE_KEY, TYPE_JOY_STICK, TYPE_JOY_BUTTON };
 
 class Binding {
-  public:
-    Binding(int action, int type, int code) {
-      this -> action = action;
-      this -> type = type;
-      this -> code = code;
-    }
+ public:
+  Binding(int action, int type, int code) {
+    this->action = action;
+    this->type = type;
+    this->code = code;
+  }
 
-    Binding() : Binding(BINDING_NONE, BINDING_NONE, BINDING_NONE) {}
-    virtual ~Binding() {}
+  Binding() : Binding(BINDING_NONE, BINDING_NONE, BINDING_NONE) {}
+  virtual ~Binding() {}
 
-    int getType() {
-      return type;
-    }
-    int getCode() {
-      return code;
-    }
-    int getAction() {
-      return action;
-    }
+  int getType() { return type; }
+  int getCode() { return code; }
+  int getAction() { return action; }
 
-  private:
-    int type;
-    int code;
-    int action;
+ private:
+  int type;
+  int code;
+  int action;
 };
 
 class ActionBinder {
-  public:
-    ActionBinder() {};
-    virtual ~ActionBinder() {};
+ public:
+  ActionBinder(){};
+  virtual ~ActionBinder(){};
 
-    static bool actionBegun(const int action);
-    static bool actionEnded(const int action) {
-      return false;
-    };
-    static bool actionHeld(const int action);
+  static bool actionBegun(const int action);
+  static bool actionEnded(const int action) { return false; };
+  static bool actionHeld(const int action);
 
-    static void addBinding(int action, int type, int code);
+  static void addBinding(int action, int type, int code);
 
-    static void setDefaults();
+  static void setDefaults();
 
-  private:
-    static std::vector<Binding*> bindings;
-    static std::vector<Binding*> findBindings(const int action);
+ private:
+  static std::vector<Binding*> bindings;
+  static std::vector<Binding*> findBindings(const int action);
 };
 
-#endif // ACTIONBINDER_H
+#endif  // ENGINE_INPUT_ACTIONBINDER_H

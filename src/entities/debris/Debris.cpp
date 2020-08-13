@@ -48,7 +48,7 @@ void Debris::logic(const int motion, Robot* robot) {
     stats[STAT_DEBRIS] += 1;
 
     // Make particles
-    if (Engine::settings.get<int>("particleTypes", 0) != 3) {
+    if (Engine::settings.get<int>("particleType", 0) != 3) {
       // Sample a pixel
       ALLEGRO_COLOR sample_color =
           texture.getPixel(texture.getWidth() / 2, texture.getHeight() / 2);

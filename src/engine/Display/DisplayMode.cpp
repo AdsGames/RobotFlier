@@ -1,7 +1,9 @@
 #include "DisplayMode.h"
 
+#include <allegro5/allegro.h>
+#include <exception>
+
 #include "../Common/Tools.h"
-#include "allegro5/allegro.h"
 
 // Initialize
 int DisplayMode::window_w = 800;
@@ -23,40 +25,6 @@ ALLEGRO_DISPLAY** DisplayMode::display = nullptr;
 // Returns current display mode
 int DisplayMode::getDisplayMode() {
   return DisplayMode::display_mode;
-}
-
-// Returns string version of current display mode
-std::string DisplayMode::getDisplayModeString() {
-  return getDisplayModeString(getDisplayMode());
-}
-
-std::string DisplayMode::getDisplayModeString(const int mode) {
-  // Window mode
-  switch (mode) {
-    // Fullscreen windowed stretch
-    case DisplayMode::FULLSCREEN_WINDOW_STRETCH:
-      return "Borderless Fullscreen (Stretched)";
-      break;
-
-    // Fullscreen window center
-    case DisplayMode::FULLSCREEN_WINDOW_CENTER:
-      return "Borderless Fullscreen (Centered)";
-      break;
-
-    // Fullscreen window center
-    case DisplayMode::FULLSCREEN_WINDOW_LETTERBOX:
-      return "Borderless Fullscreen (Letterbox)";
-      break;
-
-    // Windowed
-    case DisplayMode::WINDOWED:
-      return "Windowed";
-      break;
-
-    // Invalid mode
-    default:
-      return "Invalid Display Mode";
-  }
 }
 
 // Set active display
@@ -126,8 +94,7 @@ void DisplayMode::setTranslation(const int x, const int y) {
 void DisplayMode::setMode(const int mode) {
   // Display hasnt been set
   if (display == nullptr) {
-    tools::log_message("Display not set.", true);
-    return;
+    throw std::runtime_error("[Display Mode]: Can't set mode, display not set");
   }
 
   // Destroy existing display
@@ -204,8 +171,7 @@ void DisplayMode::setMode(const int mode) {
 
     // Invalid mode
     default:
-      tools::log_message("WARNING: Invalid display mode passed.");
-      return;
+      throw std::runtime_error("[Display Mode]: Invalid display mode passed.");
   }
 
   // Create display
@@ -216,7 +182,4 @@ void DisplayMode::setMode(const int mode) {
 
   if (display_cursor)
     al_show_mouse_cursor(*display);
-
-  // Debug screen mode
-  tools::log_message("Scren mode set to " + getDisplayModeString() + ".", true);
 }
