@@ -5,8 +5,9 @@
 #include "../engine/Input/JoystickListener.h"
 #include "../engine/Input/KeyListener.h"
 #include "../engine/Input/MouseListener.h"
+#include "../engine/Locator.h"
 
-// Construct state
+// Construct scene
 menu::menu() {
   // Init vars
   startMove = false;
@@ -72,25 +73,22 @@ menu::menu() {
   orbitron_18 = Engine::asset_manager.getFont("orbitron_18");
   orbitron_12 = Engine::asset_manager.getFont("orbitron_12");
 
-  // Load that menu music
-  music_mainmenu = Engine::asset_manager.getStream("mainmenu");
-
   // Init animation vars
   animation_pos = 0;
 
   // Hide mouse
-  // al_hide_mouse_cursor(display);
+  Engine::window.hideMouse();
 
   // Play music
   if (Engine::settings.get<bool>("music", false) == true) {
-    music_mainmenu.play(true);
+    Locator::getAudio()->playStream("mainmenu");
   }
 }
 
 // Destructor
 menu::~menu() {
   // Stops music
-  music_mainmenu.stop();
+  Locator::getAudio()->stopStream("mainmenu");
 }
 
 // Update loop
@@ -106,7 +104,7 @@ void menu::update() {
 
   // Start the game
   if (startClicked && animation_pos <= 0) {
-    set_next_state(STATE_GAME);
+    set_next_scene(SCENE_GAME);
   }
 
   // Open submenu or start game
@@ -192,9 +190,9 @@ void menu::update() {
       Engine::settings.set("music", !Engine::settings.get<bool>("music", true));
 
       if (Engine::settings.get<bool>("music", false)) {
-        music_mainmenu.play(true);
+        Locator::getAudio()->playStream("mainmenu");
       } else {
-        music_mainmenu.stop();
+        Locator::getAudio()->stopStream("mainmenu");
       }
 
     }
@@ -202,32 +200,16 @@ void menu::update() {
     else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
                        400, 480, MouseListener::mouse_y,
                        MouseListener::mouse_y)) {
-      Engine::settings.set(
-          "fullscreen",
-          (Engine::settings.get<bool>("fullscreen", false) + 1) % 2);
+      const bool isFullscreen = Engine::settings.get<bool>("fullscreen", false);
 
-      if (Engine::settings.get<bool>("fullscreen", false)) {
-        // Fullscreen stuff
-        // al_destroy_display(display);
-        // al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-        // display = al_create_display(SCREEN_W, SCREEN_H);
-
-        // ALLEGRO_DISPLAY_MODE disp_data;
-        // al_get_display_mode(al_get_num_display_modes() - 1, &disp_data);
-        // float sx = disp_data.width / (float)SCREEN_W;
-        // float sy = disp_data.height / (float)SCREEN_H;
-
-        // ALLEGRO_TRANSFORM trans;
-        // al_identity_transform(&trans);
-        // al_scale_transform(&trans, sx, sy);
-        // al_use_transform(&trans);
-        // al_hide_mouse_cursor(display);
+      if (isFullscreen) {
+        Engine::window.setMode(DISPLAY_MODE::WINDOWED);
+        Engine::settings.set("fullscreen", false);
       } else {
-        // al_destroy_display(display);
-        // al_set_new_display_flags(ALLEGRO_WINDOWED);
-        // display = al_create_display(SCREEN_W, SCREEN_H);
-        // al_hide_mouse_cursor(display);
+        Engine::window.setMode(DISPLAY_MODE::FULLSCREEN_WINDOW_LETTERBOX);
+        Engine::settings.set("fullscreen", true);
       }
+      Engine::window.hideMouse();
     }
     // Screen shake
     else if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x,
@@ -248,7 +230,7 @@ void menu::update() {
                        180, 260, MouseListener::mouse_y,
                        MouseListener::mouse_y)) {
       // write_settings();
-      set_next_state(STATE_EXIT);
+      set_next_scene(SCENE_EXIT);
     }
     // Exit menu
     else if (collision(540, 620, MouseListener::mouse_x, MouseListener::mouse_x,
@@ -289,7 +271,7 @@ void menu::update() {
 
   // Close game
   if (KeyListener::key[ALLEGRO_KEY_ESCAPE])
-    set_next_state(STATE_EXIT);
+    set_next_scene(SCENE_EXIT);
 
   // Check if mouse is going up
   mouse_rocket_up = (MouseListener::mouse_y < mouseMove);

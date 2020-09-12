@@ -31,6 +31,9 @@ class GameObject {
   // Set game object texture
   void setTexture(const Texture& texture);
 
+  // Is colliding with game object
+  bool colliding(const GameObject& other);
+
   // Has it been hit?
   bool dead() const;
 

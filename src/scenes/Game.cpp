@@ -5,6 +5,7 @@
 
 #include "../constants/globals.h"
 #include "../engine/Core.h"
+#include "../engine/Locator.h"
 #include "../entities/debris/Asteroid.h"
 #include "../entities/debris/Bomb.h"
 #include "../entities/debris/Comet.h"
@@ -20,13 +21,11 @@ game::game() {
   screenshake = 0;
 
   // Game related
-  scroll = 0;
   motion = 5;
   themeNumber = 0;
   screenshake_x = 0;
   screenshake_y = 0;
   arrow_animation = 0.0f;
-  paused = false;
 
   // End game menu
   edittext = "Player";
@@ -37,24 +36,13 @@ game::game() {
     stats[i] = 0;
   }
 
-  // Sounds
-  sound_snap = Engine::asset_manager.getAudio("snap");
-
-  // Music
-  music_death = Engine::asset_manager.getStream("death");
-  music_ingame = Engine::asset_manager.getStream("in_game");
-
   // Images
   // Gui
-  pauseMenu = Engine::asset_manager.getImage("pauseMenu");
   ui_game_end = Engine::asset_manager.getImage("ui_game_end");
   ui_a = Engine::asset_manager.getImage("ui_a");
   ui_b = Engine::asset_manager.getImage("ui_b");
   ui_up = Engine::asset_manager.getImage("ui_up");
   debug = Engine::asset_manager.getImage("debug");
-
-  // Background
-  space = Engine::asset_manager.getImage("space");
 
   // Fonts
   orbitron_12 = Engine::asset_manager.getFont("orbitron_12");
@@ -70,10 +58,10 @@ game::game() {
   powerMagnet = Engine::asset_manager.getImage("powerMagnet");
 
   // Sets the level to 1
-  changeTheme(0);
+  themeNumber = 0;
 
   // Mouse
-  // al_hide_mouse_cursor(display);
+  Engine::window.hideMouse();
 
   // Init hectar
   hectar = Robot(80, 300);
@@ -83,9 +71,7 @@ game::game() {
   highscores = ScoreTable("scores.dat");
 
   // Play music
-  if (Engine::settings.get<bool>("music", true) == 1) {
-    music_ingame.play(true);
-  }
+  Locator::getAudio()->playStream("in_game", true);
 }
 
 // Destructor
@@ -96,48 +82,109 @@ game::~game() {
   powerups.clear();
 
   // Stop music
-  music_ingame.stop();
-  music_death.stop();
+  Locator::getAudio()->stopStream("death");
+  Locator::getAudio()->stopStream("in_game");
 }
 
-// Themes
-void game::changeTheme(int themeNumber) {
-  std::string themeName;
+// Spawn objects
+void game::spawnObjects() {
+  // Energy ball spawning
+  if (Engine::random.randomInt(0, 50) == 0) {
+    energys.push_back(Energy(SCREEN_W, Engine::random.randomInt(30, 550)));
+  }
 
-  if (themeNumber == 0)
-    themeName = "moon";
-  else if (themeNumber == 1)
-    themeName = "mars";
-  else if (themeNumber == 2)
-    themeName = "sun";
-  else if (themeNumber == 3)
-    themeName = "dark";
+  // Asteroids spawning
+  if (score >= 100 && Engine::random.randomInt(0, 50) == 0) {
+    debries.push_back(std::make_unique<Asteroid>(
+        Asteroid(SCREEN_W, Engine::random.randomInt(30, 550), themeNumber)));
+  }
 
-  this->themeNumber = themeNumber;
+  // Bomb spawning
+  if (score >= 200 && Engine::random.randomInt(0, 80) == 0) {
+    debries.push_back(std::make_unique<Bomb>(
+        Bomb(SCREEN_W, Engine::random.randomInt(30, 550))));
+  }
 
-  // Other theme images
-  groundOverlay = Engine::asset_manager.getImage("groundOverlay_" + themeName);
-  groundUnderlay =
-      Engine::asset_manager.getImage("groundUnderlay_" + themeName);
-  parallaxBack = Engine::asset_manager.getImage("paralax_" + themeName);
+  // Comets spawning
+  if (score >= 300 && Engine::random.randomInt(0, 200) == 0) {
+    debries.push_back(std::make_unique<Comet>(
+        Comet(SCREEN_W, Engine::random.randomInt(30, 550))));
+  }
+
+  // Powerup spawning
+  if (score >= 100 && Engine::random.randomInt(0, 3000) == 0) {
+    powerups.push_back(std::make_unique<PowerStar>(
+        PowerStar(SCREEN_W, Engine::random.randomInt(30, 600))));
+  }
+
+  if (score >= 100 && Engine::random.randomInt(0, 500) == 0) {
+    powerups.push_back(std::make_unique<Magnet>(
+        Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 0)));
+  }
+
+  if (score >= 200 && Engine::random.randomInt(0, 1000) == 0) {
+    powerups.push_back(std::make_unique<Magnet>(
+        Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 1)));
+  }
+
+  if (score >= 300 && Engine::random.randomInt(0, 2000) == 0) {
+    powerups.push_back(std::make_unique<Magnet>(
+        Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 2)));
+  }
+
+  if (score >= 500 && Engine::random.randomInt(0, 3000) == 0) {
+    powerups.push_back(std::make_unique<Magnet>(
+        Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 3)));
+  }
+}
+
+// Take screenshot
+void game::takeScreenshot() {
+  // Count screenshots
+  int screenshotNumber;
+
+  // Get current number
+  std::ifstream read("screenshots/screenshot.dat");
+  read >> screenshotNumber;
+  read.close();
+
+  // State new number
+  std::ofstream write("screenshots/screenshot.dat");
+  write << screenshotNumber + 1;
+  write.close();
+
+  // Save to file
+  // al_save_bitmap((std::string("screenshots/screenshot_") +
+  //                 std::to_string(screenshotNumber).c_str() + ".png")
+  //                    .c_str(),
+  //                al_get_backbuffer(display));
+
+  // Snap sound
+  Locator::getAudio()->playSound("snap");
 }
 
 // Update logic of game
 void game::update() {
+  // Update pauseMenu
+  pauseMenu.update();
+
   // Actual game stuff
-  if (!paused) {
+  if (!pauseMenu.getPaused()) {
     // Check if hectar has died between logic();
     bool hectarHasDied = hectar.isAlive();
 
     // Update robot
     hectar.logic();
 
+    // Update background
+    worldBackground.update(motion);
+
     // If its different he died play music
     if (hectarHasDied != hectar.isAlive()) {
-      music_ingame.stop();
+      Locator::getAudio()->stopStream("in_game");
 
       if (Engine::settings.get<bool>("music", true) == 1) {
-        music_death.play(true);
+        Locator::getAudio()->playStream("death", true);
       }
     }
 
@@ -158,19 +205,14 @@ void game::update() {
     if (score < 0)
       score = 0;
 
-    // Scrolls background
-    scroll -= motion;
-
-    if (scroll / 6 + SCREEN_W <= 0)
-      scroll = 0;
-
     // Change theme
-    if (score > 199 && themeNumber == 0)
-      changeTheme(1);
-    else if (score > 399 && themeNumber == 1)
-      changeTheme(2);
-    else if (score > 600 && themeNumber == 2)
-      changeTheme(3);
+    if (score > 199 && themeNumber == 0) {
+      themeNumber = 1;
+    } else if (score > 399 && themeNumber == 1) {
+      themeNumber = 2;
+    } else if (score > 600 && themeNumber == 2) {
+      themeNumber = 3;
+    }
 
     // Energy
     for (auto& energy : energys) {
@@ -214,54 +256,7 @@ void game::update() {
 
     // Spawning
     if (hectar.isAlive() && hectar.isKeyPressed()) {
-      // Energy ball spawning
-      if (Engine::random.randomInt(0, 50) == 0) {
-        energys.push_back(Energy(SCREEN_W, Engine::random.randomInt(30, 550)));
-      }
-
-      // Asteroids spawning
-      if (score >= 100 && Engine::random.randomInt(0, 50) == 0) {
-        debries.push_back(std::make_unique<Asteroid>(Asteroid(
-            SCREEN_W, Engine::random.randomInt(30, 550), themeNumber)));
-      }
-
-      // Bomb spawning
-      if (score >= 200 && Engine::random.randomInt(0, 80) == 0) {
-        debries.push_back(std::make_unique<Bomb>(
-            Bomb(SCREEN_W, Engine::random.randomInt(30, 550))));
-      }
-
-      // Comets spawning
-      if (score >= 300 && Engine::random.randomInt(0, 200) == 0) {
-        debries.push_back(std::make_unique<Comet>(
-            Comet(SCREEN_W, Engine::random.randomInt(30, 550))));
-      }
-
-      // Powerup spawning
-      if (score >= 100 && Engine::random.randomInt(0, 3000) == 0) {
-        powerups.push_back(std::make_unique<PowerStar>(
-            PowerStar(SCREEN_W, Engine::random.randomInt(30, 600))));
-      }
-
-      if (score >= 100 && Engine::random.randomInt(0, 500) == 0) {
-        powerups.push_back(std::make_unique<Magnet>(
-            Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 0)));
-      }
-
-      if (score >= 200 && Engine::random.randomInt(0, 1000) == 0) {
-        powerups.push_back(std::make_unique<Magnet>(
-            Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 1)));
-      }
-
-      if (score >= 300 && Engine::random.randomInt(0, 2000) == 0) {
-        powerups.push_back(std::make_unique<Magnet>(
-            Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 2)));
-      }
-
-      if (score >= 500 && Engine::random.randomInt(0, 3000) == 0) {
-        powerups.push_back(std::make_unique<Magnet>(
-            Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 3)));
-      }
+      spawnObjects();
     }
 
     // Lose scripts
@@ -299,7 +294,7 @@ void game::update() {
           JoystickListener::buttonPressed[JOY_XBOX_START] ||
           JoystickListener::buttonPressed[JOY_XBOX_A]) {
         highscores.add(edittext, score);
-        set_next_state(STATE_MENU);
+        set_next_scene(SCENE_MENU);
       }
     }
   }
@@ -307,27 +302,7 @@ void game::update() {
   // Screenshot
   if (KeyListener::keyPressed[ALLEGRO_KEY_F11] ||
       JoystickListener::buttonPressed[3]) {
-    // Count screenshots
-    int screenshotNumber;
-
-    // Get current number
-    std::ifstream read("screenshots/screenshot.dat");
-    read >> screenshotNumber;
-    read.close();
-
-    // State new number
-    std::ofstream write("screenshots/screenshot.dat");
-    write << screenshotNumber + 1;
-    write.close();
-
-    // Save to file
-    // al_save_bitmap((std::string("screenshots/screenshot_") +
-    //                 std::to_string(screenshotNumber).c_str() + ".png")
-    //                    .c_str(),
-    //                al_get_backbuffer(display));
-
-    // Snap sound
-    sound_snap.play();
+    takeScreenshot();
   }
 
   // Screen shake
@@ -354,48 +329,12 @@ void game::update() {
     if (KeyListener::key[ALLEGRO_KEY_T])
       hectar.addHealth(-100);
   }
-
-  // Pause loop code
-  if (KeyListener::keyPressed[ALLEGRO_KEY_ESCAPE] ||
-      MouseListener::mouse_pressed & 2 ||
-      KeyListener::keyPressed[ALLEGRO_KEY_SPACE] ||
-      JoystickListener::buttonPressed[JOY_XBOX_START]) {
-    if (paused) {
-      paused = false;
-      // al_hide_mouse_cursor(display);
-    } else if (hectar.isAlive()) {
-      paused = true;
-      // al_show_mouse_cursor(display);
-    }
-  }
-
-  // Pause Menu Scripts
-  if (paused) {
-    // Quit game
-    if (MouseListener::mouse_pressed & 1 &&
-        collision(220, 280, MouseListener::mouse_x, MouseListener::mouse_x, 435,
-                  460, MouseListener::mouse_y, MouseListener::mouse_y))
-      set_next_state(STATE_EXIT);
-
-    // Menu
-    if (MouseListener::mouse_pressed & 1 &&
-        collision(300, 430, MouseListener::mouse_x, MouseListener::mouse_x, 435,
-                  460, MouseListener::mouse_y, MouseListener::mouse_y))
-      set_next_state(STATE_MENU);
-
-    // Resume
-    if (MouseListener::mouse_pressed & 1 &&
-        collision(470, 540, MouseListener::mouse_x, MouseListener::mouse_x, 435,
-                  460, MouseListener::mouse_y, MouseListener::mouse_y))
-      paused = false;
-  }
 }
 
 // Draw to screen
 void game::draw() {
-  // Draw backgrounds and Ground Overlay
-  space.draw(scroll / 6, 0);
-  space.draw(scroll / 6 + SCREEN_W, 0);
+  // Draw background
+  worldBackground.draw();
 
   // Draw HUD
   // Info
@@ -488,14 +427,6 @@ void game::draw() {
                      al_map_rgb(255, 255, 255));
   }
 
-  // Mountain Paralax
-  parallaxBack.draw((scroll / 3) % SCREEN_W, 0);
-  parallaxBack.draw((scroll / 3) % SCREEN_W + SCREEN_W, 0);
-
-  // Ground
-  groundUnderlay.draw(scroll % SCREEN_W, SCREEN_H - 40);
-  groundUnderlay.draw(scroll % SCREEN_W + SCREEN_W, SCREEN_H - 40);
-
   // Energy
   for (auto& energy : energys) {
     energy.draw();
@@ -523,10 +454,6 @@ void game::draw() {
   for (auto& deb : debries) {
     deb->draw();
   }
-
-  // Ground underlay
-  groundOverlay.draw(scroll % SCREEN_W, SCREEN_H - 20);
-  groundOverlay.draw(scroll % SCREEN_W + SCREEN_W, SCREEN_H - 20);
 
   // Robot above asteroids
   hectar.drawOverlay();
@@ -581,29 +508,7 @@ void game::draw() {
   }
 
   // Pause Menu Scripts
-  if (paused) {
-    // Menu
-    pauseMenu.draw(130, 140, 0);
-
-    // Stats
-    orbitron_18.draw(
-        220, 250,
-        stringFns::format("Distance Flown: %i ft", stats[STAT_DISTANCE] / 10),
-        al_map_rgb(255, 255, 255));
-    orbitron_18.draw(
-        220, 280, stringFns::format("Energy Collected: %i", stats[STAT_ENERGY]),
-        al_map_rgb(255, 255, 255));
-    orbitron_18.draw(
-        220, 310,
-        stringFns::format("Powerups Received: %i", stats[STAT_POWERUPS]),
-        al_map_rgb(255, 255, 255));
-    orbitron_18.draw(
-        220, 340, stringFns::format("Debris Collided: %i", stats[STAT_DEBRIS]),
-        al_map_rgb(255, 255, 255));
-
-    // Buttons
-    orbitron_18.draw(220, 445, "Quit");
-    orbitron_18.draw(300, 445, "Main Menu");
-    orbitron_18.draw(470, 445, "Resume");
+  if (pauseMenu.getPaused()) {
+    pauseMenu.draw();
   }
 }

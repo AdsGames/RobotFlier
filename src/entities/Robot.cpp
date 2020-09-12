@@ -128,7 +128,7 @@ void Robot::logic() {
       keyPressed = true;
 
       if (Engine::random.randomInt(0, 3) == 1) {
-        soundFlame.play(0.05);
+        soundFlame.play({gain : 0.01f});
       }
 
       if (speed < 8) {

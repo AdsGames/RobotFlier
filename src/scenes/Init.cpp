@@ -4,7 +4,7 @@
 #include "../engine/Core.h"
 #include "../helpers/tools.h"
 
-// Construct state
+// Construct scene
 init::init() {
   // Joystick detector
   joystick_enabled = bool(al_get_num_joysticks() > 0);
@@ -184,10 +184,10 @@ init::init() {
   Engine::settings.setAutosave(true);
 
   // Go to menu
-  set_next_state(STATE_MENU);
+  set_next_scene(SCENE_MENU);
 }
 
-// Destruct state
+// Destruct scene
 init::~init() {}
 
 // Draw

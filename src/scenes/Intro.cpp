@@ -3,7 +3,7 @@
 #include "../constants/globals.h"
 #include "../engine/Core.h"
 
-// Construct state
+// Construct scene
 intro::intro() {
   // Load intro image
   img_intro = Engine::asset_manager.getImage("intro");
@@ -16,5 +16,5 @@ void intro::update() {
   al_rest(1.0);
 
   // Go to menu
-  set_next_state(STATE_MENU);
+  set_next_scene(SCENE_MENU);
 }

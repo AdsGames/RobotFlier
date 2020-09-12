@@ -1,11 +1,11 @@
 /*
- * Game state
+ * Game scene
  * A.D.S. Games
  * 03/01/2016
- * Main game state
+ * Main game scene
  */
-#ifndef STATES_GAME_H
-#define STATES_GAME_H
+#ifndef SCNES_GAME_H
+#define SCNES_GAME_H
 
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_primitives.h>
@@ -17,16 +17,18 @@
 #include "../engine/Input/JoystickListener.h"
 #include "../engine/Input/KeyListener.h"
 #include "../engine/Input/MouseListener.h"
-#include "../engine/State.h"
+#include "../engine/Scene.h"
 #include "../engine/Textures/Texture.h"
+#include "../entities/Background.h"
 #include "../entities/Energy.h"
+#include "../entities/PauseMenu.h"
 #include "../entities/Robot.h"
 #include "../entities/debris/Debris.h"
 #include "../entities/powerups/Powerup.h"
 #include "ScoreTable.h"
 
 // Game class
-class game : public state {
+class game : public Scene {
  public:
   // Construct/deconstruct
   game();
@@ -37,6 +39,9 @@ class game : public state {
   virtual void draw() override;
 
  private:
+  void spawnObjects();
+  void takeScreenshot();
+
   // Score table
   ScoreTable highscores;
 
@@ -46,15 +51,8 @@ class game : public state {
   // Declare bitmaps
   ALLEGRO_BITMAP* screenshot;
 
-  // Game images
-  Texture space;
-  Texture parallaxBack;
-  Texture groundOverlay;
-  Texture groundUnderlay;
-
   // GUI Images
   Texture debug;
-  Texture pauseMenu;
   Texture ui_game_end;
   Texture ui_a;
   Texture ui_b;
@@ -64,12 +62,11 @@ class game : public state {
   Texture powerStar;
   Texture powerMagnet;
 
-  // Declare sounds
-  Sound sound_snap;
+  // Background of world
+  Background worldBackground;
 
-  // Music
-  Stream music_ingame;
-  Stream music_death;
+  // Pause menu
+  PauseMenu pauseMenu;
 
   // Fonts
   Font orbitron_12;
@@ -81,15 +78,11 @@ class game : public state {
   Robot hectar;
 
   // Declare integers
-  int scroll;
   int themeNumber;
   int screenshake_x;
   int screenshake_y;
   double arrow_animation;
   float motion;
-
-  // Declare booleans
-  bool paused;
 
   // Text input
   std::string edittext;
@@ -101,4 +94,4 @@ class game : public state {
   std::vector<std::unique_ptr<Powerup>> powerups;
 };
 
-#endif  // STATES_GAME_H
+#endif  // SCNES_GAME_H

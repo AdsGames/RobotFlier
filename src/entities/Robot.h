@@ -7,7 +7,6 @@
 #ifndef ENTITIES_ROBOT_H
 #define ENTITIES_ROBOT_H
 
-#include <iostream>
 #include <vector>
 
 #include "../engine/Audio/Sound.h"

@@ -4,8 +4,8 @@
  * 03/01/2016
  * The menu of Robot Flier
  */
-#ifndef STATES_MENU_H
-#define STATES_MENU_H
+#ifndef SCNES_MENU_H
+#define SCNES_MENU_H
 
 #define MINISTATE_MENU 0
 #define MINISTATE_TUTORIAL 1
@@ -21,12 +21,12 @@
 #include "../engine/Audio/Stream.h"
 #include "../engine/Fonts/Font.h"
 #include "../engine/Particles/Particle.h"
-#include "../engine/State.h"
+#include "../engine/Scene.h"
 #include "../engine/Textures/Texture.h"
 #include "../helpers/tools.h"
 #include "ScoreTable.h"
 
-class menu : public state {
+class menu : public Scene {
  public:
   // Construct/deconstruct
   menu();
@@ -94,9 +94,6 @@ class menu : public state {
   Texture ui_screenshot_notification;
   Texture ui_controls;
 
-  // Music
-  Stream music_mainmenu;
-
   // Fonts
   Font orbitron_36;
   Font orbitron_24;
@@ -104,4 +101,4 @@ class menu : public state {
   Font orbitron_12;
 };
 
-#endif  // STATES_MENU_H
+#endif  // SCNES_MENU_H

@@ -11,38 +11,30 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
 
-#include <time.h>
-#include <string>
-
 #include "constants/globals.h"
 #include "engine/Assets/AssetManager.h"
+#include "engine/Audio/DefaultAudioService.h"
 #include "engine/Core.h"
-#include "engine/Display/DisplayMode.h"
 #include "engine/Input/JoystickListener.h"
 #include "engine/Input/KeyListener.h"
 #include "engine/Input/MouseListener.h"
-#include "states/Game.h"
-#include "states/Init.h"
-#include "states/Intro.h"
-#include "states/Menu.h"
+#include "engine/Locator.h"
+#include "scenes/Game.h"
+#include "scenes/Init.h"
+#include "scenes/Intro.h"
+#include "scenes/Menu.h"
 
 // Events
 ALLEGRO_EVENT_QUEUE* event_queue = nullptr;
 ALLEGRO_TIMER* timer = nullptr;
-ALLEGRO_DISPLAY* display = nullptr;
-ALLEGRO_BITMAP* buffer;
 
-// Fps timer
-double old_time = 0;
-const float MAX_FPS = 60;
-int frames_array[100];
-int frame_index = 0;
+const float UPDATES_PER_SECOND = 60;
 
 // Closing or naw
 bool closing = false;
 
-// Current state object
-state* current_state = nullptr;
+// Current scene object
+Scene* current_scene = nullptr;
 
 // Input listener wrapper classes
 MouseListener m_listener;
@@ -51,51 +43,51 @@ JoystickListener j_listener;
 
 // Functions
 void clean_up();
-void change_state();
+void change_scene();
 void setup();
 void update();
 void draw();
 
 // Change game screen
-void change_state() {
-  // If the state needs to be changed
-  if (nextState != STATE_NULL) {
-    // Delete the current state
-    if (nextState != STATE_EXIT) {
-      delete current_state;
+void change_scene() {
+  // If the scene needs to be changed
+  if (nextScene != SCENE_NULL) {
+    // Delete the current scene
+    if (nextScene != SCENE_EXIT) {
+      delete current_scene;
     }
 
-    // Change the state
-    switch (nextState) {
-      case STATE_INIT:
-        current_state = new init();
+    // Change the scene
+    switch (nextScene) {
+      case SCENE_INIT:
+        current_scene = new init();
         break;
 
-      case STATE_INTRO:
-        current_state = new intro();
+      case SCENE_INTRO:
+        current_scene = new intro();
         break;
 
-      case STATE_MENU:
-        current_state = new menu();
+      case SCENE_MENU:
+        current_scene = new menu();
         break;
 
-      case STATE_GAME:
-        current_state = new game();
+      case SCENE_GAME:
+        current_scene = new game();
         break;
 
-      case STATE_EXIT:
+      case SCENE_EXIT:
         closing = true;
         break;
 
       default:
-        current_state = new menu();
+        current_scene = new menu();
     }
 
-    // Change the current state ID
-    stateID = nextState;
+    // Change the current scene ID
+    sceneID = nextScene;
 
-    // NULL the next state ID
-    nextState = STATE_NULL;
+    // NULL the next scene ID
+    nextScene = SCENE_NULL;
   }
 }
 
@@ -104,8 +96,9 @@ void setup() {
   // Init allegro 5
   al_init();
 
-  // Window title
-  al_set_window_title(display, "Loading...");
+  // Setup display
+  Engine::window.setMode(DISPLAY_MODE::WINDOWED);
+  Engine::window.setTitle("Loading");
 
   // Input
   al_install_keyboard();
@@ -125,40 +118,28 @@ void setup() {
   al_init_acodec_addon();
   al_reserve_samples(20);
 
-  // Set display mode to windowed
-  DisplayMode::setActiveDisplay(&display);
-  DisplayMode::setMode(3);
-  buffer = al_create_bitmap(DisplayMode::getDrawWidth(),
-                            DisplayMode::getDrawHeight());
-
-  // Initializing
-  timer = al_create_timer(1.0 / MAX_FPS);
-
   // Events
   event_queue = al_create_event_queue();
-  al_register_event_source(event_queue, al_get_display_event_source(display));
+
+  al_register_event_source(
+      event_queue, al_get_display_event_source(Engine::window.getDisplay()));
+  timer = al_create_timer(1.0 / UPDATES_PER_SECOND);
   al_register_event_source(event_queue, al_get_timer_event_source(timer));
   al_register_event_source(event_queue, al_get_keyboard_event_source());
   al_register_event_source(event_queue, al_get_joystick_event_source());
 
-  al_clear_to_color(al_map_rgb(0, 0, 0));
-  al_flip_display();
   al_start_timer(timer);
 
   // Window title
-  al_set_window_title(display, "Robot Flier");
+  Engine::window.setTitle("Robot Flier");
 
-  // Creates a random number generator (based on time)
-  srand(time(nullptr));
+  // Game scene
+  sceneID = SCENE_NULL;
+  nextScene = SCENE_NULL;
 
-  // Game state
-  stateID = STATE_NULL;
-  nextState = STATE_NULL;
-
-  // Clear frams array
-  for (int i = 0; i < 100; i++) {
-    frames_array[i] = 0;
-  }
+  // Setup service locator
+  Locator::initialize();
+  Locator::provideAudio(new DefaultAudioService());
 }
 
 // Universal update
@@ -169,16 +150,16 @@ void update() {
 
   // Timer
   if (ev.type == ALLEGRO_EVENT_TIMER) {
-    // Change state (if needed)
-    change_state();
+    // Change scene (if needed)
+    change_scene();
 
     // Update listeners
     m_listener.update();
     k_listener.update();
     j_listener.update();
 
-    // Update state
-    current_state->update();
+    // Update scene
+    current_scene->update();
 
     // Debug console toggle
     if (k_listener.keyPressed[ALLEGRO_KEY_F12]) {
@@ -208,35 +189,7 @@ void update() {
 
   // Queue empty? Lets draw
   if (al_is_event_queue_empty(event_queue)) {
-    // Render a frame
-    al_set_target_bitmap(buffer);
-    al_clear_to_color(al_map_rgb(0, 0, 0));
-    current_state->draw();
-
-    al_set_target_backbuffer(display);
-    al_clear_to_color(al_map_rgb(0, 0, 0));
-    al_draw_scaled_bitmap(
-        buffer, 0, 0, DisplayMode::getDrawWidth(), DisplayMode::getDrawHeight(),
-        DisplayMode::getTranslationX(), DisplayMode::getTranslationY(),
-        DisplayMode::getScaleWidth(), DisplayMode::getScaleHeight(), 0);
-
-    // Flip (OpenGL)
-    al_flip_display();
-
-    // Update fps buffer
-    for (int i = 99; i > 0; i--)
-      frames_array[i] = frames_array[i - 1];
-
-    frames_array[0] = (1.0 / (al_get_time() - old_time));
-    old_time = al_get_time();
-
-    int fps_total = 0;
-
-    for (int i = 0; i < 100; i++)
-      fps_total += frames_array[i];
-
-    // FPS = average
-    fps = fps_total / 100;
+    Engine::window.draw(current_scene);
   }
 }
 
@@ -245,11 +198,11 @@ int main() {
   // Setup game
   setup();
 
-  // Set the current state ID
-  stateID = STATE_INIT;
+  // Set the current scene ID
+  sceneID = SCENE_INIT;
 
-  // Set the current game state object
-  current_state = new init();
+  // Set the current game scene object
+  current_scene = new init();
 
   // Loop
   while (!closing) {

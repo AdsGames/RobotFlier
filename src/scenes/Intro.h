@@ -4,13 +4,13 @@
  * 30/12/2016
  * A pretty nice splash screen
  */
-#ifndef STATES_INTRO_H
-#define STATES_INTRO_H
+#ifndef SCNES_INTRO_H
+#define SCNES_INTRO_H
 
-#include "../engine/State.h"
+#include "../engine/Scene.h"
 #include "../engine/Textures/Texture.h"
 
-class intro : public state {
+class intro : public Scene {
  public:
   // Construct/deconstruct
   intro();
@@ -25,4 +25,4 @@ class intro : public state {
   Texture img_intro;
 };
 
-#endif  // STATES_INTRO_H
+#endif  // SCNES_INTRO_H

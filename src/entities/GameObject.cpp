@@ -27,6 +27,11 @@ void GameObject::setTexture(const Texture& texture) {
   this->height = texture.getHeight();
 }
 
+// Is colliding with game object
+bool GameObject::colliding(const GameObject& other) {
+  return x < other.x + other.width && y < other.y + other.width &&
+         other.x < x + width && other.y < y + width;
+}
 // Has it been hit?
 bool GameObject::dead() const {
   return isDead;

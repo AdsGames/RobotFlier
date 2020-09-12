@@ -7,6 +7,7 @@
 // Constructor
 Magnet::Magnet(const int x, const int y, const int type) : Powerup(x, y) {
   loadAssets(type);
+  setTimer(type);
 }
 
 // Load assets from manager

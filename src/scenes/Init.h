@@ -1,15 +1,15 @@
 /*
- * Init state
+ * Init scene
  * Allan Legemaate
  * 30/12/2016
  * Program inits here
  */
-#ifndef STATES_INIT_H
-#define STATES_INIT_H
+#ifndef SCNES_INIT_H
+#define SCNES_INIT_H
 
-#include "../engine/State.h"
+#include "../engine/Scene.h"
 
-class init : public state {
+class init : public Scene {
  public:
   // Construct/deconstruct
   init();
@@ -20,4 +20,4 @@ class init : public state {
   virtual void draw() override;
 };
 
-#endif  // STATES_INIT_H
+#endif  // SCNES_INIT_H

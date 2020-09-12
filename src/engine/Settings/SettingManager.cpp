@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <exception>
 #include <fstream>
-#include <iostream>
 
 #include "../../helpers/stringFns.h"
 

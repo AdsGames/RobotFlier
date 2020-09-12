@@ -34,17 +34,16 @@ void Sound::load(const std::string& path) {
  * @param speed, playback speed/frequency
  * @param loop, loop status
  */
-void Sound::play(const float gain,
-                 const float pan,
-                 const float speed,
-                 const bool loop) {
+void Sound::play(const PlaySoundConfig& config) {
   if (!sample) {
     return;
   }
 
   ALLEGRO_PLAYMODE playMode =
-      loop ? ALLEGRO_PLAYMODE_LOOP : ALLEGRO_PLAYMODE_ONCE;
-  al_play_sample(sample, gain, pan, speed, playMode, nullptr);
+      config.loop ? ALLEGRO_PLAYMODE_LOOP : ALLEGRO_PLAYMODE_ONCE;
+
+  al_play_sample(sample, config.gain, config.pan, config.speed, playMode,
+                 nullptr);
 }
 
 /**

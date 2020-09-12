@@ -12,6 +12,15 @@
 #include <allegro5/allegro_audio.h>
 #include <string>
 
+struct PlaySoundConfig {
+  const float gain = 1.0f;
+  const float pan = 0.0f;
+  const float speed = 1.0f;
+  const bool loop = false;
+};
+
+const PlaySoundConfig defaultConfig;
+
 class Sound {
  public:
   Sound();
@@ -19,10 +28,7 @@ class Sound {
 
   virtual ~Sound();
 
-  void play(const float gain = 1.0f,
-            const float pan = 0.0f,
-            const float speed = 1.0f,
-            const bool loop = false);
+  void play(const PlaySoundConfig& config = defaultConfig);
 
   void load(const std::string& path);
 

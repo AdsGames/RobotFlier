@@ -2,7 +2,7 @@
 
 #include <allegro5/allegro.h>
 
-#include "../Display/DisplayMode.h"
+#include "../Core.h"
 
 int MouseListener::mouse_x = 0;
 int MouseListener::mouse_y = 0;
@@ -22,9 +22,9 @@ void MouseListener::update() {
 
   // Position
   mouse_x =
-      (state.x - DisplayMode::getTranslationX()) / DisplayMode::getScaleX();
+      (state.x - Engine::window.getTranslationX()) / Engine::window.getScaleX();
   mouse_y =
-      (state.y - DisplayMode::getTranslationY()) / DisplayMode::getScaleY();
+      (state.y - Engine::window.getTranslationY()) / Engine::window.getScaleY();
 
   mouse_moved = false;
 

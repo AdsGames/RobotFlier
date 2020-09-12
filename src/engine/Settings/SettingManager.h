@@ -21,7 +21,7 @@ class SettingManager {
     try {
       auto pair = this->findSetting(key);
       return std::get<T>(pair.second);
-    } catch (const std::bad_variant_access&) {
+    } catch (...) {
       return fallback;
     }
   }
