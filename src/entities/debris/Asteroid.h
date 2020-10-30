@@ -12,10 +12,10 @@
 class Asteroid : public Debris {
  public:
   // Constructor
-  Asteroid(const int x, const int y, const int theme);
+  Asteroid(Scene* scene, const int x, const int y, const int theme);
 
   // Logic override
-  virtual void onDestroy(Robot* robot) override;
+  virtual void onDestroy() override;
 
  private:
   // Load assets

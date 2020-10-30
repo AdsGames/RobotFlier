@@ -3,7 +3,7 @@
 #include <fstream>
 
 // Default CTOR
-ScoreTable::ScoreTable() : ScoreTable("scores.dat") {}
+ScoreTable::ScoreTable() : ScoreTable("data/scores.dat") {}
 
 // Pass file to CTOR
 ScoreTable::ScoreTable(const std::string& path)

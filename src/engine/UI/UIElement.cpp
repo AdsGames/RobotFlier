@@ -3,10 +3,10 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 
-#include "../Common/Tools.h"
-#include "../Input/ActionBinder.h"
-#include "../Input/KeyListener.h"
-#include "../Input/MouseListener.h"
+#include "../common/Tools.h"
+#include "../input/ActionBinder.h"
+#include "../input/KeyListener.h"
+#include "../input/MouseListener.h"
 
 // Defaults
 UIElement::UIElement() {

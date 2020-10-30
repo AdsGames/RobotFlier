@@ -31,6 +31,8 @@ class Font {
 
   int getWidth(const std::string& text);
 
+  int getSize();
+
  private:
   static ALLEGRO_FONT* loadFont(const std::string& file, const int size);
 

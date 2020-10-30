@@ -1,8 +1,8 @@
 #include "UIHandler.h"
 
-#include "../Common/Tools.h"
-#include "../Input/ActionBinder.h"
-#include "../Input/MouseListener.h"
+#include "../common/Tools.h"
+#include "../input/ActionBinder.h"
+#include "../input/MouseListener.h"
 #include "Button.h"
 #include "Label.h"
 

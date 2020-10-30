@@ -1,8 +1,8 @@
 #ifndef ENGINE_LOCATOR_H
 #define ENGINE_LOCATOR_H
 
-#include "Audio/AudioService.h"
-#include "Audio/NullAudioService.h"
+#include "audio/AudioService.h"
+#include "audio/NullAudioService.h"
 
 class Locator {
  public:

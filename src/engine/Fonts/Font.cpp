@@ -1,12 +1,12 @@
 #include "Font.h"
 
-#include "../Common/Tools.h"
+#include "../common/Tools.h"
 
 // Ctor
 Font::Font() : font(nullptr), font_size(0) {}
 
 Font::Font(const std::string path, const int size)
-    : font(nullptr), font_size(0) {
+    : font(nullptr), font_size(size) {
   load(path, size);
 }
 
@@ -34,6 +34,13 @@ int Font::getHeight() {
   }
 
   return al_get_font_line_height(font);
+}
+
+/**
+ * Get Size of font
+ */
+int Font::getSize() {
+  return font_size;
 }
 
 /**

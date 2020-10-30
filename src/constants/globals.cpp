@@ -1,8 +1,9 @@
 #include "globals.h"
 
 // Global variables
-int score;
-int screenshake;
+int score = 0;
+int screenshake = 0;
+float motion = 0;
 
 int fps = 0;
 int SCREEN_W = 800;

@@ -12,10 +12,12 @@
 class Comet : public Debris {
  public:
   // Constructor
-  Comet(const int x, const int y);
+  Comet(Scene* scene, const int x, const int y);
 
   // Logic override
-  virtual void onDestroy(Robot* robot) override;
+  virtual void onDestroy() override;
+
+  void onCollide(const GameObject& other) override;
 
  private:
   // Sound

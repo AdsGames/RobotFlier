@@ -10,16 +10,17 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
+#include <iostream>
 
 #include "constants/globals.h"
-#include "engine/Assets/AssetManager.h"
-#include "engine/Audio/DefaultAudioService.h"
-#include "engine/Audio/NullAudioService.h"
 #include "engine/Core.h"
-#include "engine/Input/JoystickListener.h"
-#include "engine/Input/KeyListener.h"
-#include "engine/Input/MouseListener.h"
 #include "engine/Locator.h"
+#include "engine/assets/AssetManager.h"
+#include "engine/audio/DefaultAudioService.h"
+#include "engine/audio/NullAudioService.h"
+#include "engine/input/JoystickListener.h"
+#include "engine/input/KeyListener.h"
+#include "engine/input/MouseListener.h"
 #include "scenes/Game.h"
 #include "scenes/Init.h"
 #include "scenes/Intro.h"
@@ -73,7 +74,7 @@ void change_scene() {
         break;
 
       case SCENE_GAME:
-        current_scene = new game();
+        current_scene = new Game();
         break;
 
       case SCENE_EXIT:
@@ -172,6 +173,17 @@ void update() {
   else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
     closing = true;
   }
+  // Scaling
+  else if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE) {
+    std::cout << "before: " << Engine::window.getScaleWidth() << ","
+              << Engine::window.getDrawWidth() << " and "
+              << Engine::window.getScaleX() << std::endl;
+
+    Engine::window.resize(ev.display.width, ev.display.height);
+    std::cout << "after: " << Engine::window.getScaleWidth() << ","
+              << Engine::window.getDrawWidth() << " and "
+              << Engine::window.getScaleX() << std::endl;
+  }
   // Keyboard
   else if (ev.type == ALLEGRO_EVENT_KEY_DOWN ||
            ev.type == ALLEGRO_EVENT_KEY_UP) {
@@ -196,6 +208,9 @@ void update() {
 
 // main function of program
 int main(int argc, char** argv) {
+  (void)(argc);
+  (void)(argv);
+
   // Setup game
   setup();
 

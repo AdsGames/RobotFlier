@@ -17,8 +17,6 @@ class AudioService {
   virtual void stopStream(const std::string& key) = 0;
 
  private:
-  int volume;
-  int detune;
 };
 
 #endif  // ENGINE_AUDIO_AUDIO_SERVICE_H

@@ -3,40 +3,47 @@
 #include "../constants/globals.h"
 #include "../engine/Core.h"
 #include "../helpers/tools.h"
+#include "Robot.h"
 
 // Constructor
-Energy::Energy(const int x, const int y) : GameObject(x, y) {
+Energy::Energy(Scene* scene, const int x, const int y)
+    : GameObject(scene, x, y) {
   loadAssets();
 }
 
 void Energy::loadAssets() {
   if (Engine::settings.get<bool>("christmas", false)) {
-    setTexture(Engine::asset_manager.getImage("energy_christmas"));
+    setTexture("energy_christmas");
   } else {
-    setTexture(Engine::asset_manager.getImage("energy"));
+    setTexture("energy");
   }
 
   sound_orb = Engine::asset_manager.getAudio("orb");
 }
 
-// Game logic
-void Energy::logic(const int motion, Robot* robot) {
-  x -= motion;
+void Energy::onCollide(const GameObject& other) {
+  try {
+    auto robot = dynamic_cast<const Robot&>(other);
+    robot.addHealth(1);
 
-  if (!isDead && collision(x, x + width, robot->getX(),
-                           robot->getX() + robot->getWidth(), y, y + height,
-                           robot->getY(), robot->getY() + robot->getHeight())) {
     score += 5;
     stats[STAT_ENERGY] += 1;
 
-    if (robot->getHealth() < 100) {
-      robot->addHealth(1);
+    if (robot.getHealth() < 100) {
+      robot.addHealth(1);
     }
 
     sound_orb.play();
 
     isDead = true;
+  } catch (...) {
+    // Nope!
   }
+}
+
+// Game logic
+void Energy::update() {
+  x -= motion;
 }
 
 // Move towards robot

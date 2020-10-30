@@ -12,10 +12,12 @@
 class Magnet : public Powerup {
  public:
   // Constructor
-  Magnet(const int x, const int y, const int type);
+  Magnet(Scene* scene, const int x, const int y, const int type);
 
   // Logic override
-  virtual void logic(const int motion, Robot* robot) override;
+  virtual void update() override;
+
+  void onCollide(const GameObject& other) override;
 
  private:
   // Load assets
@@ -23,9 +25,6 @@ class Magnet : public Powerup {
 
   // Set timer
   void setTimer(const int type);
-
-  // Type of magnet
-  int magnetType;
 
   // Sound
   Sound magnet_sound;

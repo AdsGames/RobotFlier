@@ -11,7 +11,8 @@
 class Debris : public GameObject {
  public:
   // Constructor
-  Debris(const int x,
+  Debris(Scene* scene,
+         const int x,
          const int y,
          const int damage,
          const float motionMultiplier,
@@ -19,15 +20,20 @@ class Debris : public GameObject {
          const int size = -1);
 
   // On destroy
-  virtual void onDestroy(Robot* robot) = 0;
+  virtual void onDestroy() = 0;
 
   // Logic override
-  void logic(const int motion, Robot* robot);
+  virtual void update() override;
+
+  void destroy();
 
  private:
   // Motion multiplier
   float motionMultiplier;
   float acceleration;
+
+  // Particles
+  std::vector<Particle> parts;
 };
 
 #endif  // ENTITIES_DEBRIS_DEBRIE_H

@@ -6,16 +6,16 @@
 #include "../constants/globals.h"
 #include "../engine/Core.h"
 #include "../engine/Locator.h"
+#include "../engine/helpers/stringFns.h"
 #include "../entities/debris/Asteroid.h"
 #include "../entities/debris/Bomb.h"
 #include "../entities/debris/Comet.h"
 #include "../entities/powerups/Magnet.h"
 #include "../entities/powerups/PowerStar.h"
-#include "../engine/helpers/stringFns.h"
 #include "../helpers/tools.h"
 
 // Constructor
-game::game() {
+Game::Game() {
   // From globals
   score = 0;
   screenshake = 0;
@@ -68,14 +68,19 @@ game::game() {
   hectar.loadResources();
 
   // Load scores
-  highscores = ScoreTable("scores.dat");
+  highscores = ScoreTable("data/scores.dat");
+
+  // Create game hud
+  hud = GameHud();
 
   // Play music
   Locator::getAudio()->playStream("in_game", true);
+
+  // this->add(Background(this));
 }
 
 // Destructor
-game::~game() {
+Game::~Game() {
   // Clear objects
   energys.clear();
   debries.clear();
@@ -87,59 +92,60 @@ game::~game() {
 }
 
 // Spawn objects
-void game::spawnObjects() {
+void Game::spawnObjects() {
   // Energy ball spawning
   if (Engine::random.randomInt(0, 50) == 0) {
-    energys.push_back(Energy(SCREEN_W, Engine::random.randomInt(30, 550)));
+    energys.push_back(
+        Energy(this, SCREEN_W, Engine::random.randomInt(30, 550)));
   }
 
   // Asteroids spawning
   if (score >= 100 && Engine::random.randomInt(0, 50) == 0) {
-    debries.push_back(std::make_unique<Asteroid>(
-        Asteroid(SCREEN_W, Engine::random.randomInt(30, 550), themeNumber)));
+    debries.push_back(std::make_unique<Asteroid>(Asteroid(
+        this, SCREEN_W, Engine::random.randomInt(30, 550), themeNumber)));
   }
 
   // Bomb spawning
   if (score >= 200 && Engine::random.randomInt(0, 80) == 0) {
     debries.push_back(std::make_unique<Bomb>(
-        Bomb(SCREEN_W, Engine::random.randomInt(30, 550))));
+        Bomb(this, SCREEN_W, Engine::random.randomInt(30, 550))));
   }
 
   // Comets spawning
   if (score >= 300 && Engine::random.randomInt(0, 200) == 0) {
     debries.push_back(std::make_unique<Comet>(
-        Comet(SCREEN_W, Engine::random.randomInt(30, 550))));
+        Comet(this, SCREEN_W, Engine::random.randomInt(30, 550))));
   }
 
   // Powerup spawning
   if (score >= 100 && Engine::random.randomInt(0, 3000) == 0) {
     powerups.push_back(std::make_unique<PowerStar>(
-        PowerStar(SCREEN_W, Engine::random.randomInt(30, 600))));
+        PowerStar(this, SCREEN_W, Engine::random.randomInt(30, 600))));
   }
 
   if (score >= 100 && Engine::random.randomInt(0, 500) == 0) {
     powerups.push_back(std::make_unique<Magnet>(
-        Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 0)));
+        Magnet(this, SCREEN_W, Engine::random.randomInt(30, 600), 0)));
   }
 
   if (score >= 200 && Engine::random.randomInt(0, 1000) == 0) {
     powerups.push_back(std::make_unique<Magnet>(
-        Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 1)));
+        Magnet(this, SCREEN_W, Engine::random.randomInt(30, 600), 1)));
   }
 
   if (score >= 300 && Engine::random.randomInt(0, 2000) == 0) {
     powerups.push_back(std::make_unique<Magnet>(
-        Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 2)));
+        Magnet(this, SCREEN_W, Engine::random.randomInt(30, 600), 2)));
   }
 
   if (score >= 500 && Engine::random.randomInt(0, 3000) == 0) {
     powerups.push_back(std::make_unique<Magnet>(
-        Magnet(SCREEN_W, Engine::random.randomInt(30, 600), 3)));
+        Magnet(this, SCREEN_W, Engine::random.randomInt(30, 600), 3)));
   }
 }
 
 // Take screenshot
-void game::takeScreenshot() {
+void Game::takeScreenshot() {
   // Count screenshots
   int screenshotNumber;
 
@@ -164,20 +170,23 @@ void game::takeScreenshot() {
 }
 
 // Update logic of game
-void game::update() {
+void Game::update() {
+  // Update pool objects
+  Scene::update();
+
   // Update pauseMenu
   pauseMenu.update();
 
   // Actual game stuff
   if (!pauseMenu.getPaused()) {
-    // Check if hectar has died between logic();
+    // Check if hectar has died between update();
     bool hectarHasDied = hectar.isAlive();
 
     // Update robot
-    hectar.logic();
+    hectar.update();
 
     // Update background
-    worldBackground.update(motion);
+    // worldBackground.update(motion);
 
     // If its different he died play music
     if (hectarHasDied != hectar.isAlive()) {
@@ -216,7 +225,7 @@ void game::update() {
 
     // Energy
     for (auto& energy : energys) {
-      energy.logic(motion, &hectar);
+      energy.update();
 
       // Magnet
       if (hectar.isMagnetic()) {
@@ -234,7 +243,7 @@ void game::update() {
 
     // Debries
     for (auto& deb : debries) {
-      deb->logic(motion, &hectar);
+      deb->update();
     }
 
     debries.erase(
@@ -244,7 +253,7 @@ void game::update() {
 
     // Powerups
     for (auto& powerup : powerups) {
-      powerup->logic(motion, &hectar);
+      powerup->update();
     }
 
     powerups.erase(std::remove_if(powerups.begin(), powerups.end(),
@@ -315,8 +324,9 @@ void game::update() {
     screenshake--;
   }
 
-  if (screenshake <= 0 || !hectar.isAlive())
+  if (screenshake <= 0 || !hectar.isAlive()) {
     screenshake_x = screenshake_y = 0;
+  }
 
   // Random test stuff for devs
   if (Engine::settings.get<bool>("debug", false)) {
@@ -332,100 +342,13 @@ void game::update() {
 }
 
 // Draw to screen
-void game::draw() {
-  // Draw background
-  worldBackground.draw();
+void Game::draw() {
+  // Draw parent stuff
+  Scene::draw();
 
   // Draw HUD
-  // Info
-  orbitron_30.draw(10, 10, stringFns::format("Score:%i", score),
-                   al_map_rgb(255, 255, 255));
-  orbitron_30.draw(10, 38, stringFns::format("Health:%i", hectar.getHealth()),
-                   al_map_rgb(255, 255, 255));
-  al_draw_filled_rectangle(10, 68, 10 + (hectar.getHealth() * 1.7), 78,
-                           al_map_rgb(255 - hectar.getHealth() * 2.5,
-                                      0 + hectar.getHealth() * 2.5, 0));
-
-  // Power up timers
-  if (hectar.isInvincible()) {
-    al_draw_filled_circle(45, 105, 20, al_map_rgb(255, 255, 255));
-    powerStar.draw(20, 80);
-    orbitron_24.draw(44, 94, std::to_string(hectar.getInvincibleTimer() / 5),
-                     al_map_rgb(255, 255, 255), ALLEGRO_ALIGN_CENTER);
-    orbitron_24.draw(45, 96, std::to_string(hectar.getInvincibleTimer() / 5),
-                     al_map_rgb(255, 0, 0), ALLEGRO_ALIGN_CENTER);
-  }
-
-  if (hectar.isMagnetic()) {
-    al_draw_filled_circle(175, 105, 20, al_map_rgb(255, 255, 255));
-    powerMagnet.draw(175, 150, 80);
-    orbitron_24.draw(174, 94, std::to_string(hectar.getMagneticTimer() / 5),
-                     al_map_rgb(255, 255, 255), ALLEGRO_ALIGN_CENTER);
-    orbitron_24.draw(175, 96, std::to_string(hectar.getMagneticTimer() / 5),
-                     al_map_rgb(255, 0, 0), ALLEGRO_ALIGN_CENTER);
-  }
-
-  // Draw the debug window
-  if (Engine::settings.get<bool>("debug", false)) {
-    debug.draw(0, 0, 0);
-
-    // Column 1
-    orbitron_12.draw(5, 25, stringFns::format("Motion:%4.2f", motion),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(5, 35, stringFns::format("Robot X:%4.2f", hectar.getX()),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(5, 45, stringFns::format("Robot Y:%4.2f", hectar.getY()),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(5, 55, stringFns::format("Motion:%4.2f", motion),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(
-        5, 65, stringFns::format("Invincible:%i", hectar.getInvincibleTimer()),
-        al_map_rgb(255, 255, 255));
-
-    // Column 2
-    orbitron_12.draw(120, 25, stringFns::format("Score:%i", score),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(
-        120, 35, stringFns::format("Magnetic:%i", hectar.getMagneticTimer()),
-        al_map_rgb(255, 255, 255));
-    orbitron_12.draw(120, 45,
-                     stringFns::format("Mouse X:%i", MouseListener::mouse_x),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(120, 55,
-                     stringFns::format("Mouse Y:%i", MouseListener::mouse_y),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(
-        120, 65,
-        stringFns::format("Particles On:%i",
-                          Engine::settings.get<int>("particleType", 0)),
-        al_map_rgb(255, 255, 255));
-
-    // Column 3
-    orbitron_12.draw(245, 25,
-                     stringFns::format("LowScore:%i", highscores.getScore(9)),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(245, 35, stringFns::format("Theme:%i", themeNumber),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(245, 45, stringFns::format("Energys:%i", energys.size()),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(245, 55, stringFns::format("Debris:%i", debries.size()),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(245, 65, stringFns::format("Powerups:%i", powerups.size()),
-                     al_map_rgb(255, 255, 255));
-
-    // Column 4
-    orbitron_12.draw(
-        360, 25, stringFns::format("Last key:%i", KeyListener::lastKeyPressed),
-        al_map_rgb(255, 255, 255));
-    orbitron_12.draw(
-        360, 35,
-        stringFns::format("Has highscore:%i", score > highscores.getScore(9)),
-        al_map_rgb(255, 255, 255));
-
-    // FPS
-    orbitron_18.draw(SCREEN_W - 100, 25, stringFns::format("FPS:%i", fps),
-                     al_map_rgb(255, 255, 255));
-  }
+  hud.draw(hectar, highscores, energys.size(), powerups.size(), debries.size(),
+           themeNumber);
 
   // Energy
   for (auto& energy : energys) {

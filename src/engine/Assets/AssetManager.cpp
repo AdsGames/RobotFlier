@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "../Common/Tools.h"
+#include "../common/Tools.h"
 
 /**
  * Load assets from file

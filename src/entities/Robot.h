@@ -9,15 +9,15 @@
 
 #include <vector>
 
-#include "../engine/Audio/Sound.h"
-#include "../engine/Particles/Particle.h"
-#include "../engine/Textures/Texture.h"
+#include "../engine/audio/Sound.h"
+#include "../engine/particles/Particle.h"
+#include "../engine/textures/Texture.h"
 
 class Robot {
  public:
   Robot(float x = 0.0f, float y = 0.0f);
 
-  void logic();
+  void update();
   void draw();
   void drawOverlay();
   void loadResources();

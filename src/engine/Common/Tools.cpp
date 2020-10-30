@@ -7,7 +7,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "../Input/MouseListener.h"
+#include "../input/MouseListener.h"
 
 // A function to streamline error reporting in file loading
 void tools::abort_on_error(std::string message, std::string title) {

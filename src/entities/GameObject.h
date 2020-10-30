@@ -13,26 +13,33 @@
 
 #include <vector>
 
-#include "../engine/Particles/Particle.h"
-#include "../engine/Textures/Texture.h"
+#include "../engine/particles/Particle.h"
+#include "../engine/scene/Scene.h"
+#include "../engine/textures/Texture.h"
 #include "Robot.h"
 
 class GameObject {
  public:
   // Constructor
-  GameObject(const float x = 0.0f, const float y = 0.0f);
+  GameObject(Scene* scene,
+             const float x = 0.0f,
+             const float y = 0.0f,
+             const int z = 0);
 
   // Destructor
-  ~GameObject();
+  virtual ~GameObject();
 
-  // Updates asteroid logic
-  void logic(const float motion);
+  // Updates game object
+  virtual void update();
 
   // Set game object texture
-  void setTexture(const Texture& texture);
+  void setTexture(const std::string& texture);
 
   // Is colliding with game object
   bool colliding(const GameObject& other);
+
+  // On collide
+  virtual void onCollide(const GameObject& other);
 
   // Has it been hit?
   bool dead() const;
@@ -41,14 +48,21 @@ class GameObject {
   bool offScreen() const;
 
   // Draws the object to screen
-  void draw();
+  virtual void draw();
+
+  // Get z index
+  int getZ();
 
  protected:
+  // Current scene
+  Scene* scene;
+
   // Images
   Texture texture;
 
   // Position
   float x, y;
+  int z;
 
   // Size
   int height, width;

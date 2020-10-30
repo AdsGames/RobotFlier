@@ -1,6 +1,6 @@
 #include "Stream.h"
 
-#include "../Common/Tools.h"
+#include "../common/Tools.h"
 
 // Init global gain
 bool Stream::globalGain = 1.0f;

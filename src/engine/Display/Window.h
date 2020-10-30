@@ -11,7 +11,7 @@
 #include <allegro5/display.h>
 #include <string>
 
-#include "../Scene.h"
+#include "../scene/Scene.h"
 
 // Possible screen modes
 enum DISPLAY_MODE {
@@ -49,6 +49,8 @@ class Window {
   void hideMouse();
   void showMouse();
 
+  void resize(const int window_w, const int window_h);
+
   void draw(Scene* current_scene);
 
   ALLEGRO_DISPLAY* getDisplay() { return display; }
@@ -82,7 +84,6 @@ class Window {
   // Fps timer
   double old_time = 0;
   int frames_array[100];
-  int frame_index = 0;
   int fps = 0;
 
   // Private setters to reduce copy code

@@ -11,10 +11,7 @@
 class Powerup : public GameObject {
  public:
   // Constructor
-  Powerup(const int x, const int y);
-
-  // Logic override
-  virtual void logic(const int motion, Robot* robot) = 0;
+  Powerup(Scene* scene, const int x, const int y);
 
   void setTimerLength(const int length);
   int getTimerLength();

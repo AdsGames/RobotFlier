@@ -3,9 +3,11 @@
 #include "../../constants/globals.h"
 #include "../../engine/Core.h"
 #include "../../helpers/tools.h"
+#include "../Robot.h"
 
 // Constructor
-Magnet::Magnet(const int x, const int y, const int type) : Powerup(x, y) {
+Magnet::Magnet(Scene* scene, const int x, const int y, const int type)
+    : Powerup(scene, x, y) {
   loadAssets(type);
   setTimer(type);
 }
@@ -18,16 +20,16 @@ void Magnet::loadAssets(const int type) {
   // Load image
   switch (type) {
     case 0:
-      setTexture(Engine::asset_manager.getImage("powerMagnet"));
+      setTexture("powerMagnet");
       return;
     case 1:
-      setTexture(Engine::asset_manager.getImage("powerMagnetTwo"));
+      setTexture("powerMagnetTwo");
       return;
     case 2:
-      setTexture(Engine::asset_manager.getImage("powerMagnetThree"));
+      setTexture("powerMagnetThree");
       return;
     case 3:
-      setTexture(Engine::asset_manager.getImage("powerMagnetFour"));
+      setTexture("powerMagnetFour");
       return;
     default:
       return;
@@ -54,19 +56,19 @@ void Magnet::setTimer(const int type) {
   }
 }
 
-// Logic loop!
-void Magnet::logic(const int motion, Robot* robot) {
-  x -= motion;
-
-  if (!isDead && collision(x, x + width, robot->getX(),
-                           robot->getX() + robot->getWidth(), y, y + height,
-                           robot->getY(), robot->getY() + robot->getHeight())) {
+void Magnet::onCollide(const GameObject& other) {
+  try {
+    auto robot = dynamic_cast<const Robot&>(other);
+    robot.setMagneticTimer(getTimerLength());
     stats[STAT_POWERUPS] += 1;
-
-    robot->setMagneticTimer(getTimerLength());
-
     magnet_sound.play();
-
     isDead = true;
+  } catch (...) {
+    // Nope!
   }
+}
+
+// Logic loop!
+void Magnet::update() {
+  x -= motion;
 }

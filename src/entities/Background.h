@@ -7,19 +7,20 @@
 #ifndef ENTITIES_BACKGROUND_H
 #define ENTITIES_BACKGROUND_H
 
-#include "../engine/Audio/Sound.h"
+#include "../engine/audio/Sound.h"
+#include "../engine/scene/Scene.h"
 #include "GameObject.h"
 
 class Background : public GameObject {
  public:
   // Constructor
-  Background();
+  Background(Scene* scene);
 
   // Logic override
-  void update(const int motion);
+  virtual void update() override;
 
-  // Move towards point
-  void draw();
+  // Draw
+  virtual void draw() override;
 
  private:
   // Change theme

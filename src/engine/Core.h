@@ -1,7 +1,7 @@
-#include "Assets/AssetManager.h"
-#include "Display/Window.h"
-#include "Random/RandomGenerator.h"
-#include "Settings/SettingManager.h"
+#include "assets/AssetManager.h"
+#include "display/Window.h"
+#include "random/RandomGenerator.h"
+#include "settings/SettingManager.h"
 
 namespace Engine {
 

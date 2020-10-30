@@ -2,9 +2,9 @@
 
 #include "../constants/globals.h"
 #include "../engine/Core.h"
-#include "../engine/Input/JoystickListener.h"
-#include "../engine/Input/KeyListener.h"
-#include "../engine/Input/MouseListener.h"
+#include "../engine/input/JoystickListener.h"
+#include "../engine/input/KeyListener.h"
+#include "../engine/input/MouseListener.h"
 #include "../helpers/tools.h"
 
 // Constructor
@@ -43,7 +43,7 @@ void Robot::loadResources() {
 }
 
 // Update
-void Robot::logic() {
+void Robot::update() {
   // Check if you are dead!
   if (health < 1) {
     alive = false;
@@ -128,7 +128,7 @@ void Robot::logic() {
       keyPressed = true;
 
       if (Engine::random.randomInt(0, 3) == 1) {
-        soundFlame.play({gain : 0.01f});
+        soundFlame.play({.gain = 0.01f});
       }
 
       if (speed < 8) {

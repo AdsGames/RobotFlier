@@ -1,13 +1,15 @@
 #include "Background.h"
+#include <iostream>
 
 #include "../constants/globals.h"
 #include "../engine/Core.h"
 
-Background::Background() : scroll(0) {
+Background::Background(Scene* scene)
+    : GameObject(scene, 0.0f, 0.0f, -1), scroll(0) {
   changeTheme(0);
 }
 
-void Background::update(const int motion) {
+void Background::update() {
   scroll -= motion;
 
   if (scroll / 6 + SCREEN_W <= 0) {
@@ -44,6 +46,7 @@ void Background::changeTheme(const int theme) {
 }
 
 void Background::draw() {
+  std::cout << "drawing me!" << this << std::endl;
   // Draw backgrounds and Ground Overlay
   space.draw(scroll / 6, 0);
   space.draw(scroll / 6 + SCREEN_W, 0);

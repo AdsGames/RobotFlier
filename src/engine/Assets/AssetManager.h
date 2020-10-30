@@ -11,10 +11,10 @@
 #include <map>
 #include <string>
 
-#include "../Audio/Sound.h"
-#include "../Audio/Stream.h"
-#include "../Fonts/Font.h"
-#include "../Textures/Texture.h"
+#include "../audio/Sound.h"
+#include "../audio/Stream.h"
+#include "../fonts/Font.h"
+#include "../textures/Texture.h"
 
 class AssetManager {
  public:

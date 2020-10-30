@@ -12,10 +12,10 @@
 class Bomb : public Debris {
  public:
   // Constructor
-  Bomb(const int x, const int y);
+  Bomb(Scene* scene, const int x, const int y);
 
   // Logic override
-  virtual void onDestroy(Robot* robot) override;
+  virtual void onDestroy() override;
 
  private:
   // Sound

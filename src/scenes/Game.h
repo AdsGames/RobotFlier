@@ -4,23 +4,24 @@
  * 03/01/2016
  * Main game scene
  */
-#ifndef SCNES_GAME_H
-#define SCNES_GAME_H
+#ifndef SCENES_GAME_H
+#define SCENES_GAME_H
 
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_primitives.h>
 #include <memory>
 
-#include "../engine/Audio/Sound.h"
-#include "../engine/Audio/Stream.h"
-#include "../engine/Fonts/Font.h"
-#include "../engine/Input/JoystickListener.h"
-#include "../engine/Input/KeyListener.h"
-#include "../engine/Input/MouseListener.h"
-#include "../engine/Scene.h"
-#include "../engine/Textures/Texture.h"
+#include "../engine/audio/Sound.h"
+#include "../engine/audio/Stream.h"
+#include "../engine/fonts/Font.h"
+#include "../engine/input/JoystickListener.h"
+#include "../engine/input/KeyListener.h"
+#include "../engine/input/MouseListener.h"
+#include "../engine/scene/Scene.h"
+#include "../engine/textures/Texture.h"
 #include "../entities/Background.h"
 #include "../entities/Energy.h"
+#include "../entities/GameHud.h"
 #include "../entities/PauseMenu.h"
 #include "../entities/Robot.h"
 #include "../entities/debris/Debris.h"
@@ -28,11 +29,11 @@
 #include "ScoreTable.h"
 
 // Game class
-class game : public Scene {
+class Game : public Scene {
  public:
   // Construct/deconstruct
-  game();
-  virtual ~game();
+  Game();
+  virtual ~Game();
 
   // Override parent
   virtual void update() override;
@@ -62,8 +63,8 @@ class game : public Scene {
   Texture powerStar;
   Texture powerMagnet;
 
-  // Background of world
-  Background worldBackground;
+  // Gamehud
+  GameHud hud;
 
   // Pause menu
   PauseMenu pauseMenu;
@@ -82,7 +83,6 @@ class game : public Scene {
   int screenshake_x;
   int screenshake_y;
   double arrow_animation;
-  float motion;
 
   // Text input
   std::string edittext;
@@ -94,4 +94,4 @@ class game : public Scene {
   std::vector<std::unique_ptr<Powerup>> powerups;
 };
 
-#endif  // SCNES_GAME_H
+#endif  // SCENES_GAME_H

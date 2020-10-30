@@ -4,8 +4,8 @@
  * 03/01/2016
  * The menu of Robot Flier
  */
-#ifndef SCNES_MENU_H
-#define SCNES_MENU_H
+#ifndef SCENES_MENU_H
+#define SCENES_MENU_H
 
 #define MINISTATE_MENU 0
 #define MINISTATE_TUTORIAL 1
@@ -18,11 +18,11 @@
 
 #include <vector>
 
-#include "../engine/Audio/Stream.h"
-#include "../engine/Fonts/Font.h"
-#include "../engine/Particles/Particle.h"
-#include "../engine/Scene.h"
-#include "../engine/Textures/Texture.h"
+#include "../engine/audio/Stream.h"
+#include "../engine/fonts/Font.h"
+#include "../engine/particles/Particle.h"
+#include "../engine/scene/Scene.h"
+#include "../engine/textures/Texture.h"
 #include "../helpers/tools.h"
 #include "ScoreTable.h"
 
@@ -101,4 +101,4 @@ class menu : public Scene {
   Font orbitron_12;
 };
 
-#endif  // SCNES_MENU_H
+#endif  // SCENES_MENU_H

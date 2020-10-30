@@ -2,10 +2,10 @@
 
 #include "../constants/globals.h"
 #include "../engine/Core.h"
-#include "../engine/Input/JoystickListener.h"
-#include "../engine/Input/KeyListener.h"
-#include "../engine/Input/MouseListener.h"
 #include "../engine/Locator.h"
+#include "../engine/input/JoystickListener.h"
+#include "../engine/input/KeyListener.h"
+#include "../engine/input/MouseListener.h"
 
 // Construct scene
 menu::menu() {
@@ -320,7 +320,7 @@ void menu::draw() {
 
     // Read the top 10 scores
     for (int i = 0; i < 10; i++) {
-      orbitron_24.draw(225, (i * 40) + 130,
+      orbitron_24.draw(250, (i * 40) + 130,
                        std::to_string(highscores.getScore(i)),
                        al_map_rgb(0, 0, 0), ALLEGRO_ALIGN_CENTRE);
       orbitron_18.draw(575, (i * 40) + 132, highscores.getName(i),

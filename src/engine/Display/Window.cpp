@@ -3,11 +3,11 @@
 #include <allegro5/allegro.h>
 #include <exception>
 
-#include "../Common/Tools.h"
+#include "../common/Tools.h"
 
 Window::Window() {
-  window_w = 800;
-  window_h = 600;
+  window_w = 1600;
+  window_h = 1200;
 
   draw_w = 800;
   draw_h = 600;
@@ -83,51 +83,14 @@ void Window::showMouse() {
   al_show_mouse_cursor(display);
 }
 
-// Set window size
-void Window::setWindowSize(const int width, const int height) {
-  window_w = width;
-  window_h = height;
-}
-
-// Set scale
-void Window::setScale(const float width, const float height) {
-  scale_x = width;
-  scale_y = height;
-}
-
-// Set translation
-void Window::setTranslation(const int x, const int y) {
-  translation_x = x;
-  translation_y = y;
-}
-
-// Set window
-void Window::setTitle(const std::string& title) {
-  al_set_window_title(display, title.c_str());
-}
-
-// Change display mode
-void Window::setMode(const DISPLAY_MODE mode) {
-  // Destroy existing display
-  if (display) {
-    al_destroy_display(display);
-    display = nullptr;
-  }
-
-  // Create buffer
-  if (!buffer) {
-    buffer = al_create_bitmap(getDrawWidth(), getDrawHeight());
-  }
-
-  // Set mode
-  display_mode = mode;
-
+// Resize window
+void Window::resize(const int window_w, const int window_h) {
   // Get monitor width
   ALLEGRO_MONITOR_INFO info;
   al_get_monitor_info(0, &info);
 
   // Window mode
-  switch (mode) {
+  switch (display_mode) {
     // Fullscreen windowed stretch
     case DISPLAY_MODE::FULLSCREEN_WINDOW_STRETCH:
       // Set flags
@@ -170,11 +133,11 @@ void Window::setMode(const DISPLAY_MODE mode) {
     // Windowed
     case DISPLAY_MODE::WINDOWED:
       // Set flags
-      al_set_new_display_flags(ALLEGRO_WINDOWED);
+      al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
 
       // Set up screen size and positions
-      setWindowSize(draw_w, draw_h);
-      setScale(1.0f, 1.0f);
+      setWindowSize(window_w, window_h);
+      setScale((float)window_w / draw_w, (float)window_h / draw_h);
       setTranslation(0.0f, 0.0f);
 
       break;
@@ -183,6 +146,49 @@ void Window::setMode(const DISPLAY_MODE mode) {
     default:
       throw std::runtime_error("[Display Mode]: Invalid display mode passed.");
   }
+}
+
+// Set window size
+void Window::setWindowSize(const int width, const int height) {
+  window_w = width;
+  window_h = height;
+}
+
+// Set scale
+void Window::setScale(const float width, const float height) {
+  scale_x = width;
+  scale_y = height;
+}
+
+// Set translation
+void Window::setTranslation(const int x, const int y) {
+  translation_x = x;
+  translation_y = y;
+}
+
+// Set window
+void Window::setTitle(const std::string& title) {
+  al_set_window_title(display, title.c_str());
+}
+
+// Change display mode
+void Window::setMode(const DISPLAY_MODE mode) {
+  // Destroy existing display
+  if (display) {
+    al_destroy_display(display);
+    display = nullptr;
+  }
+
+  // Create buffer
+  if (!buffer) {
+    buffer = al_create_bitmap(getDrawWidth(), getDrawHeight());
+  }
+
+  // Set mode
+  display_mode = mode;
+
+  // Resize window
+  resize(window_w, window_h);
 
   // Create display
   display = al_create_display(window_w, window_h);

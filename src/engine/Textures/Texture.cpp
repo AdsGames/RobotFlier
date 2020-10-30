@@ -1,6 +1,6 @@
 #include "Texture.h"
 
-#include "../Common/Tools.h"
+#include "../common/Tools.h"
 
 // Ctor
 Texture::Texture() : bitmap(nullptr) {}

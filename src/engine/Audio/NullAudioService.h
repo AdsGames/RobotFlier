@@ -10,11 +10,11 @@
 
 class NullAudioService : public AudioService {
  public:
-  void playSound(const std::string& key, const PlaySoundConfig& config){};
-  void stopSound(const std::string& key){};
+  void playSound(const std::string& key, const PlaySoundConfig& config);
+  void stopSound(const std::string& key);
 
-  void playStream(const std::string key, const bool loop = false){};
-  void stopStream(const std::string& key){};
+  void playStream(const std::string key, const bool loop = false);
+  void stopStream(const std::string& key);
 };
 
 #endif  // ENGINE_AUDIO_NULL_AUDIO_SERVICE_H

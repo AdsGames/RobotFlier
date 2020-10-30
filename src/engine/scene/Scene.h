@@ -4,8 +4,11 @@
  * 30/12/2016
  * Compartmentalize program
  */
-#ifndef ENGINE_SCENE_H
-#define ENGINE_SCENE_H
+#ifndef ENGINE_SCENE_SCENE_H
+#define ENGINE_SCENE_SCENE_H
+
+// #include <memory>
+// #include <vector>
 
 // Scene variables
 extern int sceneID;
@@ -31,10 +34,21 @@ class Scene {
   virtual ~Scene(){};
 
   // Draw to screen
-  virtual void draw() = 0;
+  virtual void draw(){};
 
   // Update logic
-  virtual void update() = 0;
+  virtual void update(){};
+
+  // Add game object to scene pool
+  // void add(const GameObject& obj);
+
+ private:
+  // Sort objects
+  // void sortGameObjects();
+
+  // Holds game objects
+  // std::vector<GameObject> draw_pool;
+  // std::vector<GameObject> update_pool;
 };
 
-#endif  // ENGINE_SCENE_H
+#endif  // ENGINE_SCENE_SCENE_H

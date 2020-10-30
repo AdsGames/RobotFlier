@@ -8,8 +8,8 @@
 #ifndef ENTITIES_PAUSE_MENU_H
 #define ENTITIES_PAUSE_MENU_H
 
-#include "../engine/Fonts/Font.h"
-#include "../engine/Textures/Texture.h"
+#include "../engine/fonts/Font.h"
+#include "../engine/textures/Texture.h"
 
 class PauseMenu {
  public:

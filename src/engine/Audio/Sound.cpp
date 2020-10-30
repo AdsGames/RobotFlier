@@ -1,6 +1,6 @@
 #include "Sound.h"
 
-#include "../Common/Tools.h"
+#include "../common/Tools.h"
 
 // Init global gain
 bool Sound::globalGain = 1.0f;

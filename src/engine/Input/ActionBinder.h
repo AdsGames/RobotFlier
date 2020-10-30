@@ -53,7 +53,10 @@ class ActionBinder {
   virtual ~ActionBinder(){};
 
   static bool actionBegun(const int action);
-  static bool actionEnded(const int action) { return false; };
+  static bool actionEnded(const int action) {
+    (void)(action);
+    return false;
+  };
   static bool actionHeld(const int action);
 
   static void addBinding(int action, int type, int code);

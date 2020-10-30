@@ -2,8 +2,8 @@
 
 #include <allegro5/keycodes.h>
 
-#include "../Input/JoystickListener.h"
-#include "../Input/KeyListener.h"
+#include "../input/JoystickListener.h"
+#include "../input/KeyListener.h"
 
 std::vector<Binding*> ActionBinder::bindings;
 

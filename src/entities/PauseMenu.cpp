@@ -1,12 +1,12 @@
 #include "PauseMenu.h"
 
-#include "../constants/Globals.h"
+#include "../constants/globals.h"
 #include "../engine/Core.h"
-#include "../engine/Input/JoystickListener.h"
-#include "../engine/Input/KeyListener.h"
-#include "../engine/Input/MouseListener.h"
-#include "../engine/Scene.h"
 #include "../engine/helpers/stringFns.h"
+#include "../engine/input/JoystickListener.h"
+#include "../engine/input/KeyListener.h"
+#include "../engine/input/MouseListener.h"
+#include "../engine/scene/Scene.h"
 #include "../helpers/tools.h"
 
 PauseMenu::PauseMenu() : paused(false) {

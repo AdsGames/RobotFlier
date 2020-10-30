@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "../engine/Settings/SettingManager.h"
+#include "../engine/settings/SettingManager.h"
 #include "catch2/catch.hpp"
 
 SettingManager settingsTest = SettingManager();

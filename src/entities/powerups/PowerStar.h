@@ -12,10 +12,12 @@
 class PowerStar : public Powerup {
  public:
   // Constructor
-  PowerStar(const int x, const int y);
+  PowerStar(Scene* scene, const int x, const int y);
 
   // Logic override
-  virtual void logic(const int motion, Robot* robot) override;
+  virtual void update() override;
+
+  void onCollide(const GameObject& other) override;
 
  private:
   // Load assets
