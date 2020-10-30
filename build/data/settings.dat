@@ -4,6 +4,6 @@ debug=false
 fullscreen=true
 mega=false
 music=true
-particleType=2
+particleType=0
 screenshake=3
 sound=true
