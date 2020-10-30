@@ -11,7 +11,7 @@
 #include "../entities/debris/Comet.h"
 #include "../entities/powerups/Magnet.h"
 #include "../entities/powerups/PowerStar.h"
-#include "../helpers/stringFns.h"
+#include "../engine/helpers/stringFns.h"
 #include "../helpers/tools.h"
 
 // Constructor

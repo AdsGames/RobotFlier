@@ -5,9 +5,10 @@
 #include "../engine/Settings/SettingManager.h"
 #include "catch2/catch.hpp"
 
-SettingManager settingsTest = SettingManager("./data/settings.dat");
+SettingManager settingsTest = SettingManager();
 
 TEST_CASE("Load booleans", "[single-file]") {
+  settingsTest.load("./data/settings.dat");
   REQUIRE(settingsTest.get<bool>("bool1", false) == true);
   REQUIRE(settingsTest.get<bool>("bool2", true) == false);
 }

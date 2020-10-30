@@ -14,6 +14,7 @@
 #include "constants/globals.h"
 #include "engine/Assets/AssetManager.h"
 #include "engine/Audio/DefaultAudioService.h"
+#include "engine/Audio/NullAudioService.h"
 #include "engine/Core.h"
 #include "engine/Input/JoystickListener.h"
 #include "engine/Input/KeyListener.h"
@@ -139,7 +140,7 @@ void setup() {
 
   // Setup service locator
   Locator::initialize();
-  Locator::provideAudio(new DefaultAudioService());
+  Locator::provideAudio(new NullAudioService());
 }
 
 // Universal update
@@ -194,7 +195,7 @@ void update() {
 }
 
 // main function of program
-int main() {
+int main(int argc, char** argv) {
   // Setup game
   setup();
 

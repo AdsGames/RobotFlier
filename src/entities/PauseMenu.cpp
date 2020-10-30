@@ -6,7 +6,7 @@
 #include "../engine/Input/KeyListener.h"
 #include "../engine/Input/MouseListener.h"
 #include "../engine/Scene.h"
-#include "../helpers/stringFns.h"
+#include "../engine/helpers/stringFns.h"
 #include "../helpers/tools.h"
 
 PauseMenu::PauseMenu() : paused(false) {

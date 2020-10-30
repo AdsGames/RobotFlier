@@ -4,7 +4,7 @@
 #include <exception>
 #include <fstream>
 
-#include "../../helpers/stringFns.h"
+#include "../helpers/stringFns.h"
 
 struct FileIOException : public std::exception {
   const char* what() const throw() { return "File I/O Exception"; }
