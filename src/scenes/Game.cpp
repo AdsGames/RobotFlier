@@ -76,7 +76,7 @@ Game::Game() {
   // Play music
   Locator::getAudio()->playStream("in_game", true);
 
-  // this->add(Background(this));
+  this->add(Background(*this));
 }
 
 // Destructor
@@ -95,52 +95,52 @@ Game::~Game() {
 void Game::spawnObjects() {
   // Energy ball spawning
   if (Engine::random.randomInt(0, 50) == 0) {
-    energys.push_back(
-        Energy(this, SCREEN_W, Engine::random.randomInt(30, 550)));
+    energys.push_back(std::make_unique<Energy>(
+        Energy(*this, SCREEN_W, Engine::random.randomInt(30, 550))));
   }
 
   // Asteroids spawning
   if (score >= 100 && Engine::random.randomInt(0, 50) == 0) {
     debries.push_back(std::make_unique<Asteroid>(Asteroid(
-        this, SCREEN_W, Engine::random.randomInt(30, 550), themeNumber)));
+        *this, SCREEN_W, Engine::random.randomInt(30, 550), themeNumber)));
   }
 
   // Bomb spawning
   if (score >= 200 && Engine::random.randomInt(0, 80) == 0) {
     debries.push_back(std::make_unique<Bomb>(
-        Bomb(this, SCREEN_W, Engine::random.randomInt(30, 550))));
+        Bomb(*this, SCREEN_W, Engine::random.randomInt(30, 550))));
   }
 
   // Comets spawning
   if (score >= 300 && Engine::random.randomInt(0, 200) == 0) {
     debries.push_back(std::make_unique<Comet>(
-        Comet(this, SCREEN_W, Engine::random.randomInt(30, 550))));
+        Comet(*this, SCREEN_W, Engine::random.randomInt(30, 550))));
   }
 
   // Powerup spawning
   if (score >= 100 && Engine::random.randomInt(0, 3000) == 0) {
     powerups.push_back(std::make_unique<PowerStar>(
-        PowerStar(this, SCREEN_W, Engine::random.randomInt(30, 600))));
+        PowerStar(*this, SCREEN_W, Engine::random.randomInt(30, 600))));
   }
 
   if (score >= 100 && Engine::random.randomInt(0, 500) == 0) {
     powerups.push_back(std::make_unique<Magnet>(
-        Magnet(this, SCREEN_W, Engine::random.randomInt(30, 600), 0)));
+        Magnet(*this, SCREEN_W, Engine::random.randomInt(30, 600), 0)));
   }
 
   if (score >= 200 && Engine::random.randomInt(0, 1000) == 0) {
     powerups.push_back(std::make_unique<Magnet>(
-        Magnet(this, SCREEN_W, Engine::random.randomInt(30, 600), 1)));
+        Magnet(*this, SCREEN_W, Engine::random.randomInt(30, 600), 1)));
   }
 
   if (score >= 300 && Engine::random.randomInt(0, 2000) == 0) {
     powerups.push_back(std::make_unique<Magnet>(
-        Magnet(this, SCREEN_W, Engine::random.randomInt(30, 600), 2)));
+        Magnet(*this, SCREEN_W, Engine::random.randomInt(30, 600), 2)));
   }
 
   if (score >= 500 && Engine::random.randomInt(0, 3000) == 0) {
     powerups.push_back(std::make_unique<Magnet>(
-        Magnet(this, SCREEN_W, Engine::random.randomInt(30, 600), 3)));
+        Magnet(*this, SCREEN_W, Engine::random.randomInt(30, 600), 3)));
   }
 }
 
@@ -225,19 +225,19 @@ void Game::update() {
 
     // Energy
     for (auto& energy : energys) {
-      energy.update();
+      energy->update();
 
       // Magnet
       if (hectar.isMagnetic()) {
-        energy.moveTowards(hectar.getX() + hectar.getWidth() / 2,
-                           hectar.getY() + hectar.getHeight() / 2,
-                           (float)hectar.getMagneticTimer());
+        energy->moveTowards(hectar.getX() + hectar.getWidth() / 2,
+                            hectar.getY() + hectar.getHeight() / 2,
+                            (float)hectar.getMagneticTimer());
       }
     }
 
     energys.erase(std::remove_if(energys.begin(), energys.end(),
                                  [](auto& energy) -> bool {
-                                   return energy.offScreen() || energy.dead();
+                                   return energy->offScreen() || energy->dead();
                                  }),
                   energys.end());
 
@@ -352,7 +352,7 @@ void Game::draw() {
 
   // Energy
   for (auto& energy : energys) {
-    energy.draw();
+    energy->draw();
   }
 
   // Powerups

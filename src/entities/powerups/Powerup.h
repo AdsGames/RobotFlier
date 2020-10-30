@@ -6,12 +6,12 @@
 #ifndef ENTITIES_POWERUPS_POWERUP_H
 #define ENTITIES_POWERUPS_POWERUP_H
 
-#include "../GameObject.h"
+#include "../../engine/entities/GameObject.h"
 
 class Powerup : public GameObject {
  public:
   // Constructor
-  Powerup(Scene* scene, const int x, const int y);
+  Powerup(const Scene& scene, const int x, const int y);
 
   void setTimerLength(const int length);
   int getTimerLength();

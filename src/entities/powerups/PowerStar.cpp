@@ -3,9 +3,10 @@
 #include "../../constants/globals.h"
 #include "../../engine/Core.h"
 #include "../../helpers/tools.h"
+#include "../Robot.h"
 
 // Constructor
-PowerStar::PowerStar(Scene* scene, const int x, const int y)
+PowerStar::PowerStar(const Scene& scene, const int x, const int y)
     : Powerup(scene, x, y) {
   loadAssets();
   setTimerLength(500);

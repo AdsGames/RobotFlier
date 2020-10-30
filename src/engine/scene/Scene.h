@@ -7,8 +7,11 @@
 #ifndef ENGINE_SCENE_SCENE_H
 #define ENGINE_SCENE_SCENE_H
 
-// #include <memory>
-// #include <vector>
+#include <memory>
+#include <vector>
+
+// Foreward declare
+class GameObject;
 
 // Scene variables
 extern int sceneID;
@@ -34,21 +37,21 @@ class Scene {
   virtual ~Scene(){};
 
   // Draw to screen
-  virtual void draw(){};
+  virtual void draw();
 
   // Update logic
-  virtual void update(){};
+  virtual void update();
 
   // Add game object to scene pool
-  // void add(const GameObject& obj);
+  void add(const GameObject& obj);
 
  private:
   // Sort objects
-  // void sortGameObjects();
+  void sortGameObjects();
 
   // Holds game objects
-  // std::vector<GameObject> draw_pool;
-  // std::vector<GameObject> update_pool;
+  std::vector<std::shared_ptr<GameObject>> draw_pool;
+  std::vector<std::shared_ptr<GameObject>> update_pool;
 };
 
 #endif  // ENGINE_SCENE_SCENE_H

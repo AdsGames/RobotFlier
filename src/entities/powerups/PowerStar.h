@@ -9,10 +9,12 @@
 
 #include "Powerup.h"
 
+#include "../../engine/audio/Sound.h"
+
 class PowerStar : public Powerup {
  public:
   // Constructor
-  PowerStar(Scene* scene, const int x, const int y);
+  PowerStar(const Scene& scene, const int x, const int y);
 
   // Logic override
   virtual void update() override;

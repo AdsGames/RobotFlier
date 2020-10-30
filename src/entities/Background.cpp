@@ -4,7 +4,7 @@
 #include "../constants/globals.h"
 #include "../engine/Core.h"
 
-Background::Background(Scene* scene)
+Background::Background(const Scene& scene)
     : GameObject(scene, 0.0f, 0.0f, -1), scroll(0) {
   changeTheme(0);
 }

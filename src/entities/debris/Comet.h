@@ -9,10 +9,12 @@
 
 #include "Debris.h"
 
+#include "../../engine/audio/Sound.h"
+
 class Comet : public Debris {
  public:
   // Constructor
-  Comet(Scene* scene, const int x, const int y);
+  Comet(const Scene& scene, const int x, const int y);
 
   // Logic override
   virtual void onDestroy() override;

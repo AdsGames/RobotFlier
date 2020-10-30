@@ -9,10 +9,12 @@
 
 #include "Powerup.h"
 
+#include "../../engine/audio/Sound.h"
+
 class Magnet : public Powerup {
  public:
   // Constructor
-  Magnet(Scene* scene, const int x, const int y, const int type);
+  Magnet(const Scene& scene, const int x, const int y, const int type);
 
   // Logic override
   virtual void update() override;

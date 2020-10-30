@@ -7,12 +7,12 @@
 #define ENTITIES_ENERGY_H
 
 #include "../engine/audio/Sound.h"
-#include "GameObject.h"
+#include "../engine/entities/GameObject.h"
 
 class Energy : public GameObject {
  public:
   // Constructor
-  Energy(Scene* scene, const int x, const int y);
+  Energy(const Scene& scene, const int x, const int y);
 
   // Logic override
   virtual void update() override;

@@ -89,7 +89,7 @@ class Game : public Scene {
   std::string::iterator iter;
 
   // Containers of objects
-  std::vector<Energy> energys;
+  std::vector<std::unique_ptr<Energy>> energys;
   std::vector<std::unique_ptr<Debris>> debries;
   std::vector<std::unique_ptr<Powerup>> powerups;
 };

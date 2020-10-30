@@ -4,7 +4,10 @@
 #include "../../helpers/tools.h"
 
 // Constructor
-Asteroid::Asteroid(Scene* scene, const int x, const int y, const int theme)
+Asteroid::Asteroid(const Scene& scene,
+                   const int x,
+                   const int y,
+                   const int theme)
     : Debris(scene, x, y, 5, 1.0f, 0.0f, Engine::random.randomInt(4, 20)) {
   loadAssets(theme);
 }

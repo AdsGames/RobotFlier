@@ -5,7 +5,7 @@
 #include "../../helpers/tools.h"
 
 // Constructor
-Debris::Debris(Scene* scene,
+Debris::Debris(const Scene& scene,
                const int x,
                const int y,
                const int damage,

@@ -8,13 +8,13 @@
 #define ENTITIES_BACKGROUND_H
 
 #include "../engine/audio/Sound.h"
+#include "../engine/entities/GameObject.h"
 #include "../engine/scene/Scene.h"
-#include "GameObject.h"
 
 class Background : public GameObject {
  public:
   // Constructor
-  Background(Scene* scene);
+  Background(const Scene& scene);
 
   // Logic override
   virtual void update() override;

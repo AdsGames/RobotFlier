@@ -13,15 +13,14 @@
 
 #include <vector>
 
-#include "../engine/particles/Particle.h"
-#include "../engine/scene/Scene.h"
-#include "../engine/textures/Texture.h"
-#include "Robot.h"
+#include "../particles/Particle.h"
+#include "../scene/Scene.h"
+#include "../textures/Texture.h"
 
 class GameObject {
  public:
   // Constructor
-  GameObject(Scene* scene,
+  GameObject(const Scene& scene,
              const float x = 0.0f,
              const float y = 0.0f,
              const int z = 0);
@@ -55,7 +54,7 @@ class GameObject {
 
  protected:
   // Current scene
-  Scene* scene;
+  const Scene& scene;
 
   // Images
   Texture texture;

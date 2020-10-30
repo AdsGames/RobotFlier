@@ -6,12 +6,12 @@
 #ifndef ENTITIES_DEBRIS_DEBRIE_H
 #define ENTITIES_DEBRIS_DEBRIE_H
 
-#include "../GameObject.h"
+#include "../../engine/entities/GameObject.h"
 
 class Debris : public GameObject {
  public:
   // Constructor
-  Debris(Scene* scene,
+  Debris(const Scene& scene,
          const int x,
          const int y,
          const int damage,

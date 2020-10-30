@@ -1,10 +1,13 @@
 #include "GameObject.h"
 
-#include "../constants/globals.h"
-#include "../engine/Core.h"
+#include "../../constants/globals.h"
+#include "../Core.h"
 
 // Constructor
-GameObject::GameObject(Scene* scene, const float x, const float y, const int z)
+GameObject::GameObject(const Scene& scene,
+                       const float x,
+                       const float y,
+                       const int z)
     : scene(scene),
       x(x),
       y(y),

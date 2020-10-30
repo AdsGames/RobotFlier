@@ -6,7 +6,7 @@
 #include "../Robot.h"
 
 // Constructor
-Magnet::Magnet(Scene* scene, const int x, const int y, const int type)
+Magnet::Magnet(const Scene& scene, const int x, const int y, const int type)
     : Powerup(scene, x, y) {
   loadAssets(type);
   setTimer(type);
