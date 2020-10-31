@@ -42,14 +42,14 @@ void PauseMenu::update() {
     if (MouseListener::mouse_pressed & 1 &&
         collision(220, 280, MouseListener::mouse_x, MouseListener::mouse_x, 435,
                   460, MouseListener::mouse_y, MouseListener::mouse_y)) {
-      set_next_scene(SCENE_EXIT);
+      Scene::setNextScene(SCENE_EXIT);
     }
 
     // Menu
     if (MouseListener::mouse_pressed & 1 &&
         collision(300, 430, MouseListener::mouse_x, MouseListener::mouse_x, 435,
                   460, MouseListener::mouse_y, MouseListener::mouse_y)) {
-      set_next_scene(SCENE_MENU);
+      Scene::setNextScene(SCENE_MENU);
     }
 
     // Resume

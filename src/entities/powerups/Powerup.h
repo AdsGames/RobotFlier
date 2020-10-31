@@ -6,9 +6,9 @@
 #ifndef ENTITIES_POWERUPS_POWERUP_H
 #define ENTITIES_POWERUPS_POWERUP_H
 
-#include "../../engine/entities/GameObject.h"
+#include "../../engine/entities/Sprite.h"
 
-class Powerup : public GameObject {
+class Powerup : public Sprite {
  public:
   // Constructor
   Powerup(const Scene& scene, const int x, const int y);

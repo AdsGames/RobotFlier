@@ -7,9 +7,9 @@
 #ifndef ENTITIES_BACKGROUND_H
 #define ENTITIES_BACKGROUND_H
 
-#include "../engine/audio/Sound.h"
 #include "../engine/entities/GameObject.h"
 #include "../engine/scene/Scene.h"
+#include "../engine/textures/Texture.h"
 
 class Background : public GameObject {
  public:
@@ -26,7 +26,7 @@ class Background : public GameObject {
   // Change theme
   void changeTheme(const int theme);
 
-  // Images
+  // Textures
   Texture space;
   Texture parallaxBack;
   Texture groundOverlay;

@@ -12,7 +12,7 @@ Debris::Debris(const Scene& scene,
                const float motionMultiplier,
                const float acceleration,
                const int size)
-    : GameObject(scene, x, y) {
+    : Sprite(scene, x, y) {
   if (size != -1) {
     height = size * 8;
     width = size * 10;

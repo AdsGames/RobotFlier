@@ -36,4 +36,8 @@ void PowerStar::onCollide(const GameObject& other) {
 // Logic loop!
 void PowerStar::update() {
   x -= motion;
+
+  if (offScreen()) {
+    isDead = true;
+  }
 }

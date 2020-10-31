@@ -6,9 +6,9 @@
 #ifndef ENTITIES_DEBRIS_DEBRIE_H
 #define ENTITIES_DEBRIS_DEBRIE_H
 
-#include "../../engine/entities/GameObject.h"
+#include "../../engine/entities/Sprite.h"
 
-class Debris : public GameObject {
+class Debris : public Sprite {
  public:
   // Constructor
   Debris(const Scene& scene,
@@ -34,6 +34,8 @@ class Debris : public GameObject {
 
   // Particles
   std::vector<Particle> parts;
+
+  int damage;
 };
 
 #endif  // ENTITIES_DEBRIS_DEBRIE_H

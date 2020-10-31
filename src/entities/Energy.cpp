@@ -7,7 +7,7 @@
 
 // Constructor
 Energy::Energy(const Scene& scene, const int x, const int y)
-    : GameObject(scene, x, y) {
+    : Sprite(scene, x, y) {
   loadAssets();
 }
 
@@ -44,6 +44,16 @@ void Energy::onCollide(const GameObject& other) {
 // Game logic
 void Energy::update() {
   x -= motion;
+
+  if (offScreen()) {
+    isDead = true;
+  }
+
+  // if (hectar.isMagnetic()) {
+  //       energy->moveTowards(hectar.getX() + hectar.getWidth() / 2,
+  //                           hectar.getY() + hectar.getHeight() / 2,
+  //                           (float)hectar.getMagneticTimer());
+  //     }
 }
 
 // Move towards robot

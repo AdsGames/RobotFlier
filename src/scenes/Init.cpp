@@ -184,7 +184,7 @@ init::init() {
   Engine::settings.setAutosave(true);
 
   // Go to menu
-  set_next_scene(SCENE_MENU);
+  Scene::setNextScene(SCENE_MENU);
 }
 
 // Destruct scene

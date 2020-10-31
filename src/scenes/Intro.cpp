@@ -16,5 +16,5 @@ void intro::update() {
   al_rest(1.0);
 
   // Go to menu
-  set_next_scene(SCENE_MENU);
+  Scene::setNextScene(SCENE_MENU);
 }

@@ -4,24 +4,17 @@
  * 30/12/2016
  * Compartmentalize program
  */
+
 #ifndef ENGINE_SCENE_SCENE_H
 #define ENGINE_SCENE_SCENE_H
 
 #include <memory>
 #include <vector>
 
-// Foreward declare
-class GameObject;
-
-// Scene variables
-extern int sceneID;
-extern int nextScene;
-
-// Set next scene
-extern void set_next_scene(int sceneId);
+#include "../entities/GameObject.h"
 
 // Game scenes
-enum programScenes {
+enum ProgramScene {
   SCENE_NULL,
   SCENE_INIT,
   SCENE_INTRO,
@@ -43,15 +36,21 @@ class Scene {
   virtual void update();
 
   // Add game object to scene pool
-  void add(const GameObject& obj);
+  void add(std::unique_ptr<GameObject> obj);
+
+  // Set next scene
+  static void setNextScene(const ProgramScene sceneId);
+
+  // Current scene
+  static ProgramScene sceneId;
+  static ProgramScene nextScene;
 
  private:
   // Sort objects
   void sortGameObjects();
 
   // Holds game objects
-  std::vector<std::shared_ptr<GameObject>> draw_pool;
-  std::vector<std::shared_ptr<GameObject>> update_pool;
+  std::vector<std::unique_ptr<GameObject>> update_pool;
 };
 
 #endif  // ENGINE_SCENE_SCENE_H

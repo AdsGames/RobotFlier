@@ -71,4 +71,8 @@ void Magnet::onCollide(const GameObject& other) {
 // Logic loop!
 void Magnet::update() {
   x -= motion;
+
+  if (offScreen()) {
+    isDead = true;
+  }
 }

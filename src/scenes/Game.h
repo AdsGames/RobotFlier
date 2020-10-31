@@ -28,6 +28,8 @@
 #include "../entities/powerups/Powerup.h"
 #include "ScoreTable.h"
 
+
+
 // Game class
 class Game : public Scene {
  public:
@@ -70,10 +72,8 @@ class Game : public Scene {
   PauseMenu pauseMenu;
 
   // Fonts
-  Font orbitron_12;
   Font orbitron_18;
   Font orbitron_24;
-  Font orbitron_30;
 
   // Our robot
   Robot hectar;
@@ -87,11 +87,6 @@ class Game : public Scene {
   // Text input
   std::string edittext;
   std::string::iterator iter;
-
-  // Containers of objects
-  std::vector<std::unique_ptr<Energy>> energys;
-  std::vector<std::unique_ptr<Debris>> debries;
-  std::vector<std::unique_ptr<Powerup>> powerups;
 };
 
 #endif  // SCENES_GAME_H

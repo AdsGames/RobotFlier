@@ -1,50 +1,67 @@
 #include "Scene.h"
+
 #include <algorithm>
+#include <iostream>
 
 #include "../entities/GameObject.h"
 
-// Resdiv
-int resDiv;
+// Static
+ProgramScene Scene::sceneId = SCENE_NULL;
+ProgramScene Scene::nextScene = SCENE_NULL;
 
-// Scene variables
-int sceneID;
-int nextScene;
-
-// Set next scene
-void set_next_scene(int sceneId) {
-  // If the user doesn't want to exit
-  if (nextScene != SCENE_EXIT) {
-    // Set the next scene
-    nextScene = sceneId;
-  }
-}
-
+/**
+ * Draw
+ * Draw all objects hooked into scene
+ */
 void Scene::draw() {
-  for (auto& obj : draw_pool) {
-    if (!obj->dead()) {
-      obj->draw();
-    }
-  }
-}
-
-void Scene::update() {
+  // Draw
   for (auto& obj : update_pool) {
-    if (!obj->dead()) {
-      obj->update();
-    }
+    obj->draw();
   }
 }
 
-void Scene::add(const GameObject& obj) {
-  draw_pool.push_back(std::make_shared<GameObject>(obj));
-  update_pool.push_back(std::make_shared<GameObject>(obj));
+/**
+ * Update
+ * Update all objects hooked into scene
+ */
+void Scene::update() {
+  // Erase dead objects
+  update_pool.erase(
+      std::remove_if(update_pool.begin(), update_pool.end(),
+                     [](auto& obj) -> bool { return obj->dead(); }),
+      update_pool.end());
 
+  // Update all
+  for (auto& obj : update_pool) {
+    obj->update();
+  }
+}
+
+/**
+ * Add
+ * Add gameobject to scene hook
+ */
+void Scene::add(std::unique_ptr<GameObject> obj) {
+  update_pool.push_back(std::move(obj));
   sortGameObjects();
 }
 
+/**
+ * Sort
+ * Sort gameobjects by z index
+ */
 void Scene::sortGameObjects() {
-  std::sort(draw_pool.begin(), draw_pool.end(),
-            [](auto& obj1, auto& obj2) -> int {
-              return obj1->getZ() - obj2->getZ();
-            });
+  std::sort(update_pool.begin(), update_pool.end());
+}
+
+/**
+ * SetNextScene
+ * Sets up next scene
+ */
+void Scene::setNextScene(const ProgramScene sceneId) {
+  // If the user doesn't want to exit
+  if (Scene::nextScene != SCENE_EXIT) {
+    // Set the next scene
+    Scene::nextScene = sceneId;
+  }
 }

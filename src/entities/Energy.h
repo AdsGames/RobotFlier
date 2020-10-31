@@ -7,9 +7,9 @@
 #define ENTITIES_ENERGY_H
 
 #include "../engine/audio/Sound.h"
-#include "../engine/entities/GameObject.h"
+#include "../engine/entities/Sprite.h"
 
-class Energy : public GameObject {
+class Energy : public Sprite {
  public:
   // Constructor
   Energy(const Scene& scene, const int x, const int y);

@@ -53,14 +53,14 @@ void draw();
 // Change game screen
 void change_scene() {
   // If the scene needs to be changed
-  if (nextScene != SCENE_NULL) {
+  if (Scene::nextScene != SCENE_NULL) {
     // Delete the current scene
-    if (nextScene != SCENE_EXIT) {
+    if (Scene::nextScene != SCENE_EXIT) {
       delete current_scene;
     }
 
     // Change the scene
-    switch (nextScene) {
+    switch (Scene::nextScene) {
       case SCENE_INIT:
         current_scene = new init();
         break;
@@ -86,10 +86,10 @@ void change_scene() {
     }
 
     // Change the current scene ID
-    sceneID = nextScene;
+    Scene::sceneId = Scene::nextScene;
 
     // NULL the next scene ID
-    nextScene = SCENE_NULL;
+    Scene::nextScene = SCENE_NULL;
   }
 }
 
@@ -135,10 +135,6 @@ void setup() {
   // Window title
   Engine::window.setTitle("Robot Flier");
 
-  // Game scene
-  sceneID = SCENE_NULL;
-  nextScene = SCENE_NULL;
-
   // Setup service locator
   Locator::initialize();
   Locator::provideAudio(new NullAudioService());
@@ -175,14 +171,7 @@ void update() {
   }
   // Scaling
   else if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE) {
-    std::cout << "before: " << Engine::window.getScaleWidth() << ","
-              << Engine::window.getDrawWidth() << " and "
-              << Engine::window.getScaleX() << std::endl;
-
     Engine::window.resize(ev.display.width, ev.display.height);
-    std::cout << "after: " << Engine::window.getScaleWidth() << ","
-              << Engine::window.getDrawWidth() << " and "
-              << Engine::window.getScaleX() << std::endl;
   }
   // Keyboard
   else if (ev.type == ALLEGRO_EVENT_KEY_DOWN ||
@@ -215,7 +204,7 @@ int main(int argc, char** argv) {
   setup();
 
   // Set the current scene ID
-  sceneID = SCENE_INIT;
+  Scene::sceneId = SCENE_INIT;
 
   // Set the current game scene object
   current_scene = new init();

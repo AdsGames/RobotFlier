@@ -104,7 +104,7 @@ void menu::update() {
 
   // Start the game
   if (startClicked && animation_pos <= 0) {
-    set_next_scene(SCENE_GAME);
+    Scene::setNextScene(SCENE_GAME);
   }
 
   // Open submenu or start game
@@ -230,7 +230,7 @@ void menu::update() {
                        180, 260, MouseListener::mouse_y,
                        MouseListener::mouse_y)) {
       // write_settings();
-      set_next_scene(SCENE_EXIT);
+      Scene::setNextScene(SCENE_EXIT);
     }
     // Exit menu
     else if (collision(540, 620, MouseListener::mouse_x, MouseListener::mouse_x,
@@ -271,7 +271,7 @@ void menu::update() {
 
   // Close game
   if (KeyListener::key[ALLEGRO_KEY_ESCAPE])
-    set_next_scene(SCENE_EXIT);
+    Scene::setNextScene(SCENE_EXIT);
 
   // Check if mouse is going up
   mouse_rocket_up = (MouseListener::mouse_y < mouseMove);

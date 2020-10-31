@@ -41,12 +41,10 @@ void Background::changeTheme(const int theme) {
   groundUnderlay =
       Engine::asset_manager.getImage("groundUnderlay_" + themeName);
   parallaxBack = Engine::asset_manager.getImage("paralax_" + themeName);
-
   space = Engine::asset_manager.getImage("space");
 }
 
 void Background::draw() {
-  std::cout << "drawing me!" << this << std::endl;
   // Draw backgrounds and Ground Overlay
   space.draw(scroll / 6, 0);
   space.draw(scroll / 6 + SCREEN_W, 0);

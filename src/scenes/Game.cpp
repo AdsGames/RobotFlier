@@ -45,10 +45,8 @@ Game::Game() {
   debug = Engine::asset_manager.getImage("debug");
 
   // Fonts
-  orbitron_12 = Engine::asset_manager.getFont("orbitron_12");
   orbitron_18 = Engine::asset_manager.getFont("orbitron_18");
   orbitron_24 = Engine::asset_manager.getFont("orbitron_24");
-  orbitron_30 = Engine::asset_manager.getFont("orbitron_30");
 
   // Nullfiy bitmaps not loaded yet
   screenshot = nullptr;
@@ -76,16 +74,11 @@ Game::Game() {
   // Play music
   Locator::getAudio()->playStream("in_game", true);
 
-  this->add(Background(*this));
+  this->add(std::make_unique<Background>(Background(*this)));
 }
 
 // Destructor
 Game::~Game() {
-  // Clear objects
-  energys.clear();
-  debries.clear();
-  powerups.clear();
-
   // Stop music
   Locator::getAudio()->stopStream("death");
   Locator::getAudio()->stopStream("in_game");
@@ -95,51 +88,51 @@ Game::~Game() {
 void Game::spawnObjects() {
   // Energy ball spawning
   if (Engine::random.randomInt(0, 50) == 0) {
-    energys.push_back(std::make_unique<Energy>(
+    this->add(std::make_unique<Energy>(
         Energy(*this, SCREEN_W, Engine::random.randomInt(30, 550))));
   }
 
   // Asteroids spawning
   if (score >= 100 && Engine::random.randomInt(0, 50) == 0) {
-    debries.push_back(std::make_unique<Asteroid>(Asteroid(
+    this->add(std::make_unique<Asteroid>(Asteroid(
         *this, SCREEN_W, Engine::random.randomInt(30, 550), themeNumber)));
   }
 
   // Bomb spawning
   if (score >= 200 && Engine::random.randomInt(0, 80) == 0) {
-    debries.push_back(std::make_unique<Bomb>(
+    this->add(std::make_unique<Bomb>(
         Bomb(*this, SCREEN_W, Engine::random.randomInt(30, 550))));
   }
 
   // Comets spawning
   if (score >= 300 && Engine::random.randomInt(0, 200) == 0) {
-    debries.push_back(std::make_unique<Comet>(
+    this->add(std::make_unique<Comet>(
         Comet(*this, SCREEN_W, Engine::random.randomInt(30, 550))));
   }
 
   // Powerup spawning
   if (score >= 100 && Engine::random.randomInt(0, 3000) == 0) {
-    powerups.push_back(std::make_unique<PowerStar>(
+    this->add(std::make_unique<PowerStar>(
         PowerStar(*this, SCREEN_W, Engine::random.randomInt(30, 600))));
   }
 
   if (score >= 100 && Engine::random.randomInt(0, 500) == 0) {
-    powerups.push_back(std::make_unique<Magnet>(
+    this->add(std::make_unique<Magnet>(
         Magnet(*this, SCREEN_W, Engine::random.randomInt(30, 600), 0)));
   }
 
   if (score >= 200 && Engine::random.randomInt(0, 1000) == 0) {
-    powerups.push_back(std::make_unique<Magnet>(
+    this->add(std::make_unique<Magnet>(
         Magnet(*this, SCREEN_W, Engine::random.randomInt(30, 600), 1)));
   }
 
   if (score >= 300 && Engine::random.randomInt(0, 2000) == 0) {
-    powerups.push_back(std::make_unique<Magnet>(
+    this->add(std::make_unique<Magnet>(
         Magnet(*this, SCREEN_W, Engine::random.randomInt(30, 600), 2)));
   }
 
   if (score >= 500 && Engine::random.randomInt(0, 3000) == 0) {
-    powerups.push_back(std::make_unique<Magnet>(
+    this->add(std::make_unique<Magnet>(
         Magnet(*this, SCREEN_W, Engine::random.randomInt(30, 600), 3)));
   }
 }
@@ -223,46 +216,6 @@ void Game::update() {
       themeNumber = 3;
     }
 
-    // Energy
-    for (auto& energy : energys) {
-      energy->update();
-
-      // Magnet
-      if (hectar.isMagnetic()) {
-        energy->moveTowards(hectar.getX() + hectar.getWidth() / 2,
-                            hectar.getY() + hectar.getHeight() / 2,
-                            (float)hectar.getMagneticTimer());
-      }
-    }
-
-    energys.erase(std::remove_if(energys.begin(), energys.end(),
-                                 [](auto& energy) -> bool {
-                                   return energy->offScreen() || energy->dead();
-                                 }),
-                  energys.end());
-
-    // Debries
-    for (auto& deb : debries) {
-      deb->update();
-    }
-
-    debries.erase(
-        std::remove_if(debries.begin(), debries.end(),
-                       [](auto& deb) -> bool { return deb->offScreen(); }),
-        debries.end());
-
-    // Powerups
-    for (auto& powerup : powerups) {
-      powerup->update();
-    }
-
-    powerups.erase(std::remove_if(powerups.begin(), powerups.end(),
-                                  [](auto& powerup) -> bool {
-                                    return powerup->offScreen() ||
-                                           powerup->dead();
-                                  }),
-                   powerups.end());
-
     // Spawning
     if (hectar.isAlive() && hectar.isKeyPressed()) {
       spawnObjects();
@@ -303,9 +256,11 @@ void Game::update() {
           JoystickListener::buttonPressed[JOY_XBOX_START] ||
           JoystickListener::buttonPressed[JOY_XBOX_A]) {
         highscores.add(edittext, score);
-        set_next_scene(SCENE_MENU);
+        Scene::setNextScene(SCENE_MENU);
       }
     }
+  } else {
+    motion = 0;
   }
 
   // Screenshot
@@ -347,18 +302,7 @@ void Game::draw() {
   Scene::draw();
 
   // Draw HUD
-  hud.draw(hectar, highscores, energys.size(), powerups.size(), debries.size(),
-           themeNumber);
-
-  // Energy
-  for (auto& energy : energys) {
-    energy->draw();
-  }
-
-  // Powerups
-  for (auto& powerup : powerups) {
-    powerup->draw();
-  }
+  hud.draw(hectar, highscores, 0, 0, 0, themeNumber);
 
   // Draw robot
   hectar.draw();
@@ -371,11 +315,6 @@ void Game::draw() {
     else
       ui_up.draw(hectar.getX() + 15,
                  hectar.getY() - 70 - sin(arrow_animation) * 10);
-  }
-
-  // Debris
-  for (auto& deb : debries) {
-    deb->draw();
   }
 
   // Robot above asteroids
