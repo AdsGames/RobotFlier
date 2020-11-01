@@ -1,12 +1,11 @@
 #include "Intro.h"
 
 #include "../constants/globals.h"
-#include "../engine/Core.h"
 
 // Construct scene
 intro::intro() {
   // Load intro image
-  img_intro = Engine::asset_manager.getImage("intro");
+  img_intro = this->getAsset().getImage("intro");
 }
 
 // Update (goto menu!)

@@ -5,7 +5,6 @@
 
 #include "../constants/globals.h"
 #include "../engine/Core.h"
-#include "../engine/Locator.h"
 #include "../engine/helpers/stringFns.h"
 #include "../engine/input/KeyListener.h"
 #include "../engine/input/MouseListener.h"
@@ -17,23 +16,23 @@ GameHud::GameHud(Scene& scene, const unsigned int robotId)
     : GameObject(scene), robot_id(robotId) {
   // Images
   // Gui
-  debug = Engine::asset_manager.getImage("debug");
+  debug = scene.getAsset().getImage("debug");
 
   // Fonts
-  orbitron_12 = Engine::asset_manager.getFont("orbitron_12");
-  orbitron_18 = Engine::asset_manager.getFont("orbitron_18");
-  orbitron_24 = Engine::asset_manager.getFont("orbitron_24");
-  orbitron_30 = Engine::asset_manager.getFont("orbitron_30");
+  orbitron_12 = scene.getAsset().getFont("orbitron_12");
+  orbitron_18 = scene.getAsset().getFont("orbitron_18");
+  orbitron_24 = scene.getAsset().getFont("orbitron_24");
+  orbitron_30 = scene.getAsset().getFont("orbitron_30");
 
   // Objects
-  powerStar = Engine::asset_manager.getImage("powerStar");
-  powerMagnet = Engine::asset_manager.getImage("powerMagnet");
+  powerStar = scene.getAsset().getImage("powerStar");
+  powerMagnet = scene.getAsset().getImage("powerMagnet");
 }
 
 // Draw to screen
 void GameHud::draw() {
   // Get Robot
-  Robot robot = scene.get<Robot>(robot_id);
+  Robot& robot = scene.get<Robot>(robot_id);
 
   // Draw HUD
   // Info

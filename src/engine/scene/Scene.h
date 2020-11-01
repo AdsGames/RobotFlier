@@ -10,8 +10,10 @@
 
 #include <map>
 #include <memory>
+#include <string>
 #include <vector>
 
+#include "../Locator.h"
 #include "../entities/GameObject.h"
 
 // Game scenes
@@ -59,8 +61,13 @@ class Scene {
   // Get game object
   template <class T>
   T& get(const unsigned int id) {
-    unsigned int index = lookup_map[id];
-    return dynamic_cast<T&>(*update_pool.at(index));
+    try {
+      unsigned int index = lookup_map[id];
+      return dynamic_cast<T&>(*update_pool.at(index));
+    } catch (...) {
+      throw std::runtime_error("Could not find entity by id " +
+                               std::to_string(id));
+    }
   }
 
   // Add collider
@@ -72,6 +79,10 @@ class Scene {
   // Current scene
   static ProgramScene sceneId;
   static ProgramScene nextScene;
+
+  // Locator
+  static AudioService& getAudio();
+  static AssetManager& getAsset();
 
  private:
   // Sort objects

@@ -2,76 +2,57 @@
 
 #include "../constants/globals.h"
 #include "../engine/Core.h"
-#include "../engine/Locator.h"
+#include "../engine/entities/Sprite.h"
 #include "../engine/input/JoystickListener.h"
 #include "../engine/input/KeyListener.h"
 #include "../engine/input/MouseListener.h"
+#include "../entities/menu/MouseRocket.h"
+#include "../entities/menu/SettingsMenu.h"
 
 // Construct scene
 menu::menu() {
   // Init vars
   startMove = false;
   startClicked = false;
-  mouse_rocket_up = false;
-  mouseMove = MouseListener::mouse_y;
 
   // Screen on
   mini_screen = MINISTATE_MENU;
 
   // Load intro image
   // Random menu
-  img_menu = Engine::asset_manager.getImage(
-      "background_" + std::to_string(Engine::random.randomInt(0, 3)));
-  start = Engine::asset_manager.getImage("start");
-  highscores_button = Engine::asset_manager.getImage("highscores");
-  mouse = Engine::asset_manager.getImage("mouse");
-  mouse_rocket = Engine::asset_manager.getImage("mouse_rocket");
-  title = Engine::asset_manager.getImage("title");
-  options = Engine::asset_manager.getImage("options");
+  std::string background_image =
+      "background_" + std::to_string(Engine::random.randomInt(0, 3));
+  this->add<Sprite>(*this, background_image, 0.0f, 0.0f, 0);
 
-  ui_sound[1] = Engine::asset_manager.getImage("ui_sound_on");
-  ui_sound[0] = Engine::asset_manager.getImage("ui_sound_off");
+  // Add mouse
+  this->add<MouseRocket>(*this);
 
-  ui_music[1] = Engine::asset_manager.getImage("ui_music_on");
-  ui_music[0] = Engine::asset_manager.getImage("ui_music_off");
+  // Add settings screen component
+  settings_screen = this->add<SettingsMenu>(*this);
 
-  ui_window[1] = Engine::asset_manager.getImage("ui_window_windowed");
-  ui_window[0] = Engine::asset_manager.getImage("ui_window_fullscreen");
+  start = this->getAsset().getImage("start");
+  highscores_button = this->getAsset().getImage("highscores");
+  title = this->getAsset().getImage("title");
 
-  ui_particle[0] = Engine::asset_manager.getImage("ui_particle_pixel");
-  ui_particle[1] = Engine::asset_manager.getImage("ui_particle_square");
-  ui_particle[2] = Engine::asset_manager.getImage("ui_particle_circle");
-  ui_particle[3] = Engine::asset_manager.getImage("ui_particle_off");
-
-  ui_control[0] = Engine::asset_manager.getImage("ui_control_xbox");
-  ui_control[1] = Engine::asset_manager.getImage("ui_control_keyboard");
-  ui_control[2] = Engine::asset_manager.getImage("ui_control_auto");
-
-  ui_screenshake[0] = Engine::asset_manager.getImage("ui_screenshake_none");
-  ui_screenshake[1] = Engine::asset_manager.getImage("ui_screenshake_low");
-  ui_screenshake[2] = Engine::asset_manager.getImage("ui_screenshake_medium");
-  ui_screenshake[3] = Engine::asset_manager.getImage("ui_screenshake_high");
-
-  ui_options = Engine::asset_manager.getImage("ui_options");
-  ui_options_small = Engine::asset_manager.getImage("ui_options_small");
-  ui_back = Engine::asset_manager.getImage("ui_back");
-  credits = Engine::asset_manager.getImage("credits");
-  ui_credits = Engine::asset_manager.getImage("ui_credits");
-  highscores_table = Engine::asset_manager.getImage("highscores_table");
-  ui_help = Engine::asset_manager.getImage("ui_help");
-  helpScreen = Engine::asset_manager.getImage("helpScreen");
-  ui_exit = Engine::asset_manager.getImage("ui_exit");
-  xbox_start = Engine::asset_manager.getImage("xbox_start");
+  credits = this->getAsset().getImage("credits");
+  ui_credits = this->getAsset().getImage("ui_credits");
+  highscores_table = this->getAsset().getImage("highscores_table");
+  ui_help = this->getAsset().getImage("ui_help");
+  helpScreen = this->getAsset().getImage("helpScreen");
+  xbox_start = this->getAsset().getImage("xbox_start");
   ui_screenshot_notification =
-      Engine::asset_manager.getImage("ui_screenshot_notification");
-  ui_controls = Engine::asset_manager.getImage("ui_controls");
-  controls = Engine::asset_manager.getImage("controls");
+      this->getAsset().getImage("ui_screenshot_notification");
+  ui_controls = this->getAsset().getImage("ui_controls");
+  controls = this->getAsset().getImage("controls");
+
+  ui_options = this->getAsset().getImage("ui_options");
+  ui_options_small = this->getAsset().getImage("ui_options_small");
 
   // Load fonts
-  orbitron_36 = Engine::asset_manager.getFont("orbitron_36");
-  orbitron_24 = Engine::asset_manager.getFont("orbitron_24");
-  orbitron_18 = Engine::asset_manager.getFont("orbitron_18");
-  orbitron_12 = Engine::asset_manager.getFont("orbitron_12");
+  orbitron_36 = this->getAsset().getFont("orbitron_36");
+  orbitron_24 = this->getAsset().getFont("orbitron_24");
+  orbitron_18 = this->getAsset().getFont("orbitron_18");
+  orbitron_12 = this->getAsset().getFont("orbitron_12");
 
   // Init animation vars
   animation_pos = 0;
@@ -81,14 +62,14 @@ menu::menu() {
 
   // Play music
   if (Engine::settings.get<bool>("music", false) == true) {
-    Locator::getAudio()->playStream("mainmenu");
+    this->getAudio().playStream("mainmenu");
   }
 }
 
 // Destructor
 menu::~menu() {
   // Stops music
-  Locator::getAudio()->stopStream("mainmenu");
+  this->getAudio().stopStream("mainmenu");
 }
 
 // Update loop
@@ -153,6 +134,8 @@ void menu::update() {
                          800, MouseListener::mouse_y, MouseListener::mouse_y,
                          548, 600)) {
         mini_screen = MINISTATE_OPTIONS;
+        SettingsMenu& settings = this->get<SettingsMenu>(settings_screen);
+        settings.setOpen(true);
       }
     }
   }
@@ -167,115 +150,10 @@ void menu::update() {
       draw();
     }
   }
-  // Options
-  else if (mini_screen == MINISTATE_OPTIONS &&
-           MouseListener::mouse_pressed & 1) {
-    // Particles toggle
-    if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x, 400,
-                  480, MouseListener::mouse_y, MouseListener::mouse_y)) {
-      Engine::settings.set(
-          "particleType",
-          (Engine::settings.get<int>("particleType", 0) + 1) % 4);
-    }
-    // Sound button toggle
-    else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
-                       180, 260, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
-      Engine::settings.set("sound", !Engine::settings.get<bool>("sound", true));
-    }
-    // Music button toggle
-    else if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x,
-                       180, 260, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
-      Engine::settings.set("music", !Engine::settings.get<bool>("music", true));
-
-      if (Engine::settings.get<bool>("music", false)) {
-        Locator::getAudio()->playStream("mainmenu");
-      } else {
-        Locator::getAudio()->stopStream("mainmenu");
-      }
-
-    }
-    // Fullscreen toggle
-    else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
-                       400, 480, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
-      const bool isFullscreen = Engine::settings.get<bool>("fullscreen", false);
-
-      if (isFullscreen) {
-        Engine::window.setMode(DISPLAY_MODE::WINDOWED);
-        Engine::settings.set("fullscreen", false);
-      } else {
-        Engine::window.setMode(DISPLAY_MODE::FULLSCREEN_WINDOW_LETTERBOX);
-        Engine::settings.set("fullscreen", true);
-      }
-      Engine::window.hideMouse();
-    }
-    // Screen shake
-    else if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x,
-                       290, 370, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
-      Engine::settings.set(
-          "screenshake", (Engine::settings.get<int>("screenshake", 0) + 1) % 4);
-    }
-    // Control Toggle
-    else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
-                       290, 370, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
-      Engine::settings.set(
-          "controlMode", (Engine::settings.get<int>("controlMode", 0) + 1) % 3);
-    }
-    // Power off
-    else if (collision(540, 620, MouseListener::mouse_x, MouseListener::mouse_x,
-                       180, 260, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
-      // write_settings();
-      Scene::setNextScene(SCENE_EXIT);
-    }
-    // Exit menu
-    else if (collision(540, 620, MouseListener::mouse_x, MouseListener::mouse_x,
-                       407, 487, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
-      mini_screen = MINISTATE_MENU;
-      // write_settings();
-    }
-  }
-
-  // Update mouse particles
-  if (Engine::settings.get<int>("particleType", 0) != 3 && mouse_rocket_up) {
-    for (int i = 0; i < 500; i++) {
-      if (Engine::random.randomInt(1, 10) == 1) {
-        ALLEGRO_COLOR part_color =
-            al_map_rgb(255, Engine::random.randomInt(0, 255), 0);
-
-        if (Engine::settings.get<bool>("christmas", false)) {
-          int red_or_green = Engine::random.randomInt(0, 1) * 255;
-          part_color = al_map_rgb(red_or_green, 255 - red_or_green, 0);
-        }
-
-        Particle newParticle(
-            MouseListener::mouse_x, MouseListener::mouse_y + 16, part_color,
-            Engine::random.randomInt(-2, 2), Engine::random.randomInt(8, 20), 1,
-            Engine::settings.get<int>("particleType", 0));
-        mousePart.push_back(newParticle);
-      }
-    }
-  }
-
-  for (unsigned int i = 0; i < mousePart.size(); i++) {
-    mousePart.at(i).update();
-
-    if (Engine::random.randomInt(0, 10) == 0)
-      mousePart.erase(mousePart.begin() + i);
-  }
 
   // Close game
   if (KeyListener::key[ALLEGRO_KEY_ESCAPE])
     Scene::setNextScene(SCENE_EXIT);
-
-  // Check if mouse is going up
-  mouse_rocket_up = (MouseListener::mouse_y < mouseMove);
-  mouseMove = MouseListener::mouse_y;
 }
 
 // Draw to screen
@@ -339,31 +217,6 @@ void menu::draw() {
   else if (mini_screen == MINISTATE_CONTROLS) {
     controls.draw(0, 0);
   }
-  // Option Menu drawing(page and ingame)
-  else if (mini_screen == MINISTATE_OPTIONS) {
-    // Background
-    options.draw(0, 0);
-
-    // Buttons
-    ui_particle[Engine::settings.get<int>("particleType", 0)].draw(280, 407);
-    ui_sound[Engine::settings.get<bool>("sound", true)].draw(120, 180);
-    ui_music[Engine::settings.get<bool>("music", true)].draw(280, 180);
-    ui_window[Engine::settings.get<bool>("fullscreen", false)].draw(120, 407);
-    ui_screenshake[Engine::settings.get<int>("screenshake", 0)].draw(280, 295,
-                                                                     0);
-    ui_control[Engine::settings.get<int>("controlMode", 0)].draw(120, 295);
-
-    // Button Text
-    orbitron_24.draw(110, 154,
-                     "Sounds         Music                            Exit");
-    orbitron_24.draw(126, 268, "Input      Screen Shake");
-    orbitron_24.draw(108, 382,
-                     "Window       Particles                        Back");
-
-    // Exit and back
-    ui_exit.draw(540, 180);
-    ui_back.draw(540, 407);
-  }
 
   // Debug
   if (Engine::settings.get<bool>("debug", false)) {
@@ -379,16 +232,4 @@ void menu::draw() {
     // FPS
     orbitron_12.draw(SCREEN_W - 100, 20, "FPS:" + std::to_string(fps));
   }
-
-  // Draw rocket if no particles
-  if (Engine::settings.get<int>("particleType", 0) == 3 && mouse_rocket_up) {
-    mouse_rocket.draw(MouseListener::mouse_x - 10, MouseListener::mouse_y);
-  }
-
-  // Draw mouse particles
-  for (unsigned int i = 0; i < mousePart.size(); i++) {
-    mousePart.at(i).draw();
-  }
-
-  mouse.draw(MouseListener::mouse_x - 10, MouseListener::mouse_y, 0);
 }

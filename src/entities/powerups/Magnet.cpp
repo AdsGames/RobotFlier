@@ -1,7 +1,7 @@
 #include "Magnet.h"
 
 #include "../../constants/globals.h"
-#include "../../engine/Core.h"
+#include "../../engine/scene/Scene.h"
 #include "../../helpers/tools.h"
 #include "../Robot.h"
 
@@ -15,7 +15,7 @@ Magnet::Magnet(Scene& scene, const float x, const float y, const int type)
 // Load assets from manager
 void Magnet::loadAssets(const int type) {
   // Load sound
-  magnet_sound = Engine::asset_manager.getAudio("magnet");
+  magnet_sound = scene.getAsset().getAudio("magnet");
 
   // Load image
   switch (type) {

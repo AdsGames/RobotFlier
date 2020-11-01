@@ -2,11 +2,9 @@
 
 #include <algorithm>
 #include <fstream>
-#include <iostream>
 
 #include "../constants/globals.h"
 #include "../engine/Core.h"
-#include "../engine/Locator.h"
 #include "../engine/helpers/stringFns.h"
 #include "../engine/input/JoystickListener.h"
 #include "../engine/input/KeyListener.h"
@@ -42,22 +40,22 @@ Game::Game() {
 
   // Images
   // Gui
-  ui_game_end = Engine::asset_manager.getImage("ui_game_end");
-  ui_a = Engine::asset_manager.getImage("ui_a");
-  ui_b = Engine::asset_manager.getImage("ui_b");
-  ui_up = Engine::asset_manager.getImage("ui_up");
-  debug = Engine::asset_manager.getImage("debug");
+  ui_game_end = this->getAsset().getImage("ui_game_end");
+  ui_a = this->getAsset().getImage("ui_a");
+  ui_b = this->getAsset().getImage("ui_b");
+  ui_up = this->getAsset().getImage("ui_up");
+  debug = this->getAsset().getImage("debug");
 
   // Fonts
-  orbitron_18 = Engine::asset_manager.getFont("orbitron_18");
-  orbitron_24 = Engine::asset_manager.getFont("orbitron_24");
+  orbitron_18 = this->getAsset().getFont("orbitron_18");
+  orbitron_24 = this->getAsset().getFont("orbitron_24");
 
   // Nullfiy bitmaps not loaded yet
   screenshot = nullptr;
 
   // Objects
-  powerStar = Engine::asset_manager.getImage("powerStar");
-  powerMagnet = Engine::asset_manager.getImage("powerMagnet");
+  powerStar = this->getAsset().getImage("powerStar");
+  powerMagnet = this->getAsset().getImage("powerMagnet");
 
   // Sets the level to 1
   themeNumber = 0;
@@ -81,7 +79,7 @@ Game::Game() {
   this->add<EntitySpawner>(*this, hectar_id, pause_menu_id);
 
   // Play music
-  Locator::getAudio()->playStream("in_game", true);
+  this->getAudio().playStream("in_game", true);
 
   // Scrolling background
   this->add<Background>(*this);
@@ -90,8 +88,8 @@ Game::Game() {
 // Destructor
 Game::~Game() {
   // Stop music
-  Locator::getAudio()->stopStream("death");
-  Locator::getAudio()->stopStream("in_game");
+  this->getAudio().stopStream("death");
+  this->getAudio().stopStream("in_game");
 }
 
 // Take screenshot
@@ -116,16 +114,16 @@ void Game::takeScreenshot() {
   //                al_get_backbuffer(display));
 
   // Snap sound
-  Locator::getAudio()->playSound("snap");
+  this->getAudio().playSound("snap");
 }
 
 // Update logic of game
 void Game::update() {
   // Get hectar
-  Robot hectar = this->get<Robot>(hectar_id);
+  Robot& hectar = this->get<Robot>(hectar_id);
 
   // Get pause menu
-  PauseMenu pauseMenu = this->get<PauseMenu>(pause_menu_id);
+  PauseMenu& pauseMenu = this->get<PauseMenu>(pause_menu_id);
 
   // Actual game stuff
   if (!pauseMenu.getPaused()) {
@@ -137,10 +135,10 @@ void Game::update() {
 
     // If its different he died play music
     if (hectarHasDied != hectar.isAlive()) {
-      Locator::getAudio()->stopStream("in_game");
+      this->getAudio().stopStream("in_game");
 
       if (Engine::settings.get<bool>("music", true) == 1) {
-        Locator::getAudio()->playStream("death", true);
+        this->getAudio().playStream("death", true);
       }
     }
 
@@ -248,7 +246,7 @@ void Game::update() {
 // Draw to screen
 void Game::draw() {
   // Get hectar
-  Robot hectar = this->get<Robot>(hectar_id);
+  Robot& hectar = this->get<Robot>(hectar_id);
 
   // Start arrow
   if (!hectar.isKeyPressed()) {

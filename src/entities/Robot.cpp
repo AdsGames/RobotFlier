@@ -1,5 +1,5 @@
 #include "Robot.h"
-#include <iostream>
+
 #include "../constants/globals.h"
 #include "../engine/Core.h"
 #include "../engine/input/JoystickListener.h"
@@ -28,17 +28,17 @@ Robot::Robot(Scene& scene, const float x, float y)
   keyPressed = false;
 
   // Images
-  mainRobot = Engine::asset_manager.getImage("robot");
-  robotFire = Engine::asset_manager.getImage("robotfire");
-  robotInvincible = Engine::asset_manager.getImage("robotInvincible");
-  robotInvincibleFire = Engine::asset_manager.getImage("robotInvincibleFire");
-  robotInvincibleTop = Engine::asset_manager.getImage("robotInvincibleTop");
-  robotDie = Engine::asset_manager.getImage("robotDie");
-  christmasHat = Engine::asset_manager.getImage("christmas_hat");
+  mainRobot = scene.getAsset().getImage("robot");
+  robotFire = scene.getAsset().getImage("robotfire");
+  robotInvincible = scene.getAsset().getImage("robotInvincible");
+  robotInvincibleFire = scene.getAsset().getImage("robotInvincibleFire");
+  robotInvincibleTop = scene.getAsset().getImage("robotInvincibleTop");
+  robotDie = scene.getAsset().getImage("robotDie");
+  christmasHat = scene.getAsset().getImage("christmas_hat");
 
   // Sounds
-  soundFlame = Engine::asset_manager.getAudio("flame");
-  soundHitground = Engine::asset_manager.getAudio("hitground");
+  soundFlame = scene.getAsset().getAudio("flame");
+  soundHitground = scene.getAsset().getAudio("hitground");
 }
 
 // Update

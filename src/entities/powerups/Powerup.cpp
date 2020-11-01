@@ -1,7 +1,6 @@
 #include "Powerup.h"
 
 #include "../../constants/globals.h"
-#include "../../engine/Core.h"
 
 // Constructor
 Powerup::Powerup(Scene& scene, const float x, const float y)

@@ -5,7 +5,7 @@
 // Constructor
 Bomb::Bomb(Scene& scene, const float x, const float y)
     : Debris(scene, x, y, 10, 1.0f, 0.01f) {
-  destroy_sound = Engine::asset_manager.getAudio("bomb");
+  destroy_sound = scene.getAsset().getAudio("bomb");
 
   if (Engine::settings.get<bool>("christmas", false)) {
     setTexture("bomb_christmas");

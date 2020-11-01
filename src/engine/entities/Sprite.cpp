@@ -1,12 +1,16 @@
 #include "Sprite.h"
 
+#include <allegro5/allegro_color.h>
+#include <allegro5/allegro_primitives.h>
+
 #include "../../constants/globals.h"
 #include "../Core.h"
+#include "../Locator.h"
 #include "../scene/Scene.h"
 
 // Constructor
 Sprite::Sprite(Scene& scene, const float x, const float y, const int z)
-    : GameObject(scene, x, y, z) {}
+    : GameObject(scene, x, y, z), visible(true) {}
 
 // Constructor
 Sprite::Sprite(Scene& scene,
@@ -14,21 +18,30 @@ Sprite::Sprite(Scene& scene,
                const float x,
                const float y,
                const int z)
-    : GameObject(scene, x, y, z) {
+    : Sprite(scene, x, y, z) {
   setTexture(texture);
 }
 
 // Destructor
 Sprite::~Sprite() {}
 
+void Sprite::setVisible(const bool visible) {
+  this->visible = visible;
+}
+
 void Sprite::setTexture(const std::string& texture) {
-  this->texture = Engine::asset_manager.getImage(texture);
+  this->texture = Locator::getAsset().getImage(texture);
   this->width = this->texture.getWidth();
   this->height = this->texture.getHeight();
 }
 
 // Draw
 void Sprite::draw() {
+  // Don't show if not visible
+  if (!visible) {
+    return;
+  }
+
   // Draw image
   texture.drawScaled(x, y, width, height);
 

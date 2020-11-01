@@ -1,7 +1,6 @@
 #include "Scene.h"
 
 #include <algorithm>
-#include <iostream>
 
 #include "../entities/GameObject.h"
 
@@ -55,7 +54,7 @@ void Scene::updateInternal() {
  * @description Remove gameobject from scene hook
  */
 void Scene::remove(const unsigned int id) {
-  const unsigned int index = lookup_map[id];
+  const unsigned int index = lookup_map.at(id);
   update_pool.erase(update_pool.begin() + index);
   sortGameObjects();
 }
@@ -67,16 +66,16 @@ void Scene::remove(const unsigned int id) {
 void Scene::addCollider(const unsigned int id1, const unsigned int id2) {
   // Add collider 1
   if (collider_map.count(id1) > 0) {
-    collider_map[id1].push_back(id2);
+    collider_map.at(id1).push_back(id2);
   } else {
-    collider_map[id1] = std::vector<unsigned>(id2);
+    collider_map.at(id1) = std::vector<unsigned>(id2);
   }
 
   // Add collider 2
   if (collider_map.count(id2) > 0) {
-    collider_map[id2].push_back(id1);
+    collider_map.at(id2).push_back(id1);
   } else {
-    collider_map[id2] = std::vector<unsigned int>(id1);
+    collider_map.at(id2) = std::vector<unsigned int>(id1);
   }
 }
 
@@ -109,4 +108,20 @@ void Scene::setNextScene(const ProgramScene sceneId) {
     // Set the next scene
     Scene::nextScene = sceneId;
   }
+}
+
+/**
+ * Get Audio
+ * @description Get provided audio service
+ */
+AudioService& Scene::getAudio() {
+  return Locator::getAudio();
+}
+
+/**
+ * Get Asset manager
+ * @description Get provided asset manager
+ */
+AssetManager& Scene::getAsset() {
+  return Locator::getAsset();
 }

@@ -8,8 +8,6 @@
 #ifndef ENGINE_ENTITIES_SPRITE_H
 #define ENGINE_ENTITIES_SPRITE_H
 
-#include <allegro5/allegro_color.h>
-#include <allegro5/allegro_primitives.h>
 #include <vector>
 
 #include "../particles/Particle.h"
@@ -37,12 +35,18 @@ class Sprite : public GameObject {
   // Draws the object to screen
   virtual void draw() override;
 
+  // Set visiblity
+  void setVisible(const bool visible);
+
   // Set game object texture
   void setTexture(const std::string& texture);
 
  protected:
   // Images
   Texture texture;
+
+  // Visibility
+  bool visible;
 
   // Particles
   std::vector<Particle> parts;

@@ -14,8 +14,6 @@
 #define MINISTATE_CONTROLS 4
 #define MINISTATE_SCORES 5
 
-#include <time.h>
-
 #include <vector>
 
 #include "../engine/audio/Stream.h"
@@ -46,20 +44,12 @@ class menu : public Scene {
 
   // Vars
   int animation_pos;
-
-  int mouseMove;
   int mini_screen;
   bool startMove;
   bool startClicked;
-  bool mouse_rocket_up;
-
-  // Particles
-  std::vector<Particle> mousePart;
-  std::vector<Particle> menuPart;
 
   // Screens
   Texture img_menu;
-  Texture options;
   Texture helpScreen;
   Texture controls;
   Texture credits;
@@ -70,29 +60,17 @@ class menu : public Scene {
   Texture title;
   Texture highscores_button;
 
-  // Mouse
-  Texture mouse;
-  Texture mouse_rocket;
-
   // Start button for xbox control
   Texture xbox_start;
 
-  // Options menu
-  Texture ui_sound[2];
-  Texture ui_music[2];
-  Texture ui_screenshake[4];
-  Texture ui_window[2];
-  Texture ui_particle[4];
-  Texture ui_control[3];
-
-  Texture ui_options;
-  Texture ui_options_small;
-  Texture ui_back;
   Texture ui_credits;
-  Texture ui_exit;
   Texture ui_help;
   Texture ui_screenshot_notification;
   Texture ui_controls;
+  Texture ui_options;
+  Texture ui_options_small;
+
+  unsigned int settings_screen;
 
   // Fonts
   Font orbitron_36;

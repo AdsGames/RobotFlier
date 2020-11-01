@@ -1,8 +1,6 @@
 #include "Background.h"
-#include <iostream>
 
 #include "../constants/globals.h"
-#include "../engine/Core.h"
 
 Background::Background(Scene& scene)
     : GameObject(scene, 0.0f, 0.0f, -1), scroll(0) {
@@ -37,11 +35,10 @@ void Background::changeTheme(const int theme) {
   }
 
   // Choose theme images
-  groundOverlay = Engine::asset_manager.getImage("groundOverlay_" + themeName);
-  groundUnderlay =
-      Engine::asset_manager.getImage("groundUnderlay_" + themeName);
-  parallaxBack = Engine::asset_manager.getImage("paralax_" + themeName);
-  space = Engine::asset_manager.getImage("space");
+  groundOverlay = scene.getAsset().getImage("groundOverlay_" + themeName);
+  groundUnderlay = scene.getAsset().getImage("groundUnderlay_" + themeName);
+  parallaxBack = scene.getAsset().getImage("paralax_" + themeName);
+  space = scene.getAsset().getImage("space");
 }
 
 void Background::draw() {

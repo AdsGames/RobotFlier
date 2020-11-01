@@ -33,7 +33,7 @@ void Asteroid::loadAssets(const int theme) {
     }
   }
 
-  destroy_sound = Engine::asset_manager.getAudio("asteroid");
+  destroy_sound = scene.getAsset().getAudio("asteroid");
 }
 
 void Asteroid::onDestroy() {

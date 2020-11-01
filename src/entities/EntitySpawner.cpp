@@ -11,8 +11,6 @@
 #include "../entities/powerups/Magnet.h"
 #include "../entities/powerups/PowerStar.h"
 
-#include <iostream>
-
 EntitySpawner::EntitySpawner(Scene& scene,
                              const unsigned int robotId,
                              const unsigned int pauseMenuId)
@@ -20,10 +18,10 @@ EntitySpawner::EntitySpawner(Scene& scene,
 
 void EntitySpawner::update() {
   // Get hectar
-  Robot hectar = scene.get<Robot>(robot_id);
+  Robot& hectar = scene.get<Robot>(robot_id);
 
   // Get pause menu
-  PauseMenu pauseMenu = scene.get<PauseMenu>(pause_menu_id);
+  PauseMenu& pauseMenu = scene.get<PauseMenu>(pause_menu_id);
 
   const int y = Engine::random.randomInt(30, 550);
 

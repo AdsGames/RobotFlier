@@ -15,18 +15,20 @@
 
 class AudioService {
  public:
+  virtual ~AudioService(){};
+
   // Play sound
   virtual void playSound(const std::string& key,
-                         const PlaySoundConfig& config = PlaySoundConfig()) = 0;
+                         const PlaySoundConfig& config = PlaySoundConfig());
 
   // Stop sound
-  virtual void stopSound(const std::string& key) = 0;
+  virtual void stopSound(const std::string& key);
 
   // Play stream
-  virtual void playStream(const std::string key, const bool loop = false) = 0;
+  virtual void playStream(const std::string key, const bool loop = false);
 
   // Stop stream
-  virtual void stopStream(const std::string& key) = 0;
+  virtual void stopStream(const std::string& key);
 };
 
 #endif  // ENGINE_AUDIO_AUDIO_SERVICE_H

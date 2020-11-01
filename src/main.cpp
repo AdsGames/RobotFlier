@@ -10,14 +10,12 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
-#include <iostream>
 
 #include "constants/globals.h"
 #include "engine/Core.h"
 #include "engine/Locator.h"
 #include "engine/assets/AssetManager.h"
 #include "engine/audio/DefaultAudioService.h"
-#include "engine/audio/NullAudioService.h"
 #include "engine/input/JoystickListener.h"
 #include "engine/input/KeyListener.h"
 #include "engine/input/MouseListener.h"
@@ -136,8 +134,10 @@ void setup() {
   Engine::window.setTitle("Robot Flier");
 
   // Setup service locator
-  Locator::initialize();
-  Locator::provideAudio(new NullAudioService());
+  Locator::provideAudio<DefaultAudioService>();
+
+  // Setup asset manager
+  Locator::provideAssetManager<AssetManager>();
 }
 
 // Universal update

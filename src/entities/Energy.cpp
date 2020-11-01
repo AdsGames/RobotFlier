@@ -18,7 +18,7 @@ void Energy::loadAssets() {
     setTexture("energy");
   }
 
-  sound_orb = Engine::asset_manager.getAudio("orb");
+  sound_orb = scene.getAsset().getAudio("orb");
 }
 
 void Energy::onCollide(const GameObject& other) {

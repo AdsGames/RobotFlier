@@ -5,7 +5,6 @@
 
 namespace Engine {
 
-extern AssetManager asset_manager;
 extern SettingManager settings;
 extern RandomGenerator random;
 extern Window window;

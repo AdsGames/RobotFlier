@@ -1,7 +1,7 @@
 #include "PowerStar.h"
 
 #include "../../constants/globals.h"
-#include "../../engine/Core.h"
+#include "../../engine/scene/Scene.h"
 #include "../../helpers/tools.h"
 #include "../Robot.h"
 
@@ -15,7 +15,7 @@ PowerStar::PowerStar(Scene& scene, const float x, const float y)
 // Load assets from manager
 void PowerStar::loadAssets() {
   // Load sound
-  power_star_sound = Engine::asset_manager.getAudio("star");
+  power_star_sound = scene.getAsset().getAudio("star");
 
   // Load image
   setTexture("powerStar");

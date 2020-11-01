@@ -10,8 +10,8 @@
 #include "../helpers/tools.h"
 
 PauseMenu::PauseMenu(Scene& scene) : GameObject(scene), paused(false) {
-  background = Engine::asset_manager.getImage("pauseMenu");
-  orbitron_18 = Engine::asset_manager.getFont("orbitron_18");
+  background = scene.getAsset().getImage("pauseMenu");
+  orbitron_18 = scene.getAsset().getFont("orbitron_18");
 }
 
 bool PauseMenu::getPaused() {
