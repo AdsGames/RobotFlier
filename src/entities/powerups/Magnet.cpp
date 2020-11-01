@@ -62,7 +62,7 @@ void Magnet::onCollide(const GameObject& other) {
     robot.setMagneticTimer(getTimerLength());
     stats[STAT_POWERUPS] += 1;
     magnet_sound.play();
-    isDead = true;
+    scene.remove(getId());
   } catch (...) {
     // Nope!
   }
@@ -72,7 +72,7 @@ void Magnet::onCollide(const GameObject& other) {
 void Magnet::update() {
   x -= motion;
 
-  if (offScreen()) {
-    isDead = true;
+  if (x + width <= 0) {
+    scene.remove(getId());
   }
 }

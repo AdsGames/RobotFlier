@@ -51,17 +51,6 @@ void Scene::updateInternal() {
 }
 
 /**
- * Add
- * @description Add gameobject to scene hook
- */
-unsigned int Scene::add(std::unique_ptr<GameObject> obj) {
-  const int id = obj->getId();
-  update_pool.push_back(std::move(obj));
-  sortGameObjects();
-  return id;
-}
-
-/**
  * Remove
  * @description Remove gameobject from scene hook
  */

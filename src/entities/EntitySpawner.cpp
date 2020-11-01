@@ -33,42 +33,42 @@ void EntitySpawner::update() {
 
   // Energy ball spawning
   if (Engine::random.randomInt(0, 50) == 0) {
-    scene.add(std::make_unique<Energy>(Energy(scene, SCREEN_W, y)));
+    scene.add<Energy>(scene, SCREEN_W, y);
   }
 
   // Asteroids spawning
   if (score >= 100 && Engine::random.randomInt(0, 50) == 0) {
-    scene.add(std::make_unique<Asteroid>(Asteroid(scene, SCREEN_W, y, 0)));
+    scene.add<Asteroid>(scene, SCREEN_W, y, 0);
   }
 
   // Bomb spawning
   if (score >= 200 && Engine::random.randomInt(0, 80) == 0) {
-    scene.add(std::make_unique<Bomb>(Bomb(scene, SCREEN_W, y)));
+    scene.add<Bomb>(scene, SCREEN_W, y);
   }
 
   // Comets spawning
   if (score >= 300 && Engine::random.randomInt(0, 200) == 0) {
-    scene.add(std::make_unique<Comet>(Comet(scene, SCREEN_W, y)));
+    scene.add<Comet>(scene, SCREEN_W, y);
   }
 
   // Powerup spawning
   if (score >= 100 && Engine::random.randomInt(0, 3000) == 0) {
-    scene.add(std::make_unique<PowerStar>(PowerStar(scene, SCREEN_W, y)));
+    scene.add<PowerStar>(scene, SCREEN_W, y);
   }
 
   if (score >= 100 && Engine::random.randomInt(0, 500) == 0) {
-    scene.add(std::make_unique<Magnet>(Magnet(scene, SCREEN_W, y, 0)));
+    scene.add<Magnet>(scene, SCREEN_W, y, 0);
   }
 
   if (score >= 200 && Engine::random.randomInt(0, 1000) == 0) {
-    scene.add(std::make_unique<Magnet>(Magnet(scene, SCREEN_W, y, 1)));
+    scene.add<Magnet>(scene, SCREEN_W, y, 1);
   }
 
   if (score >= 300 && Engine::random.randomInt(0, 2000) == 0) {
-    scene.add(std::make_unique<Magnet>(Magnet(scene, SCREEN_W, y, 2)));
+    scene.add<Magnet>(scene, SCREEN_W, y, 2);
   }
 
   if (score >= 500 && Engine::random.randomInt(0, 3000) == 0) {
-    scene.add(std::make_unique<Magnet>(Magnet(scene, SCREEN_W, y, 3)));
+    scene.add<Magnet>(scene, SCREEN_W, y, 3);
   }
 }

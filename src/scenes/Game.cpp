@@ -66,25 +66,25 @@ Game::Game() {
   Engine::window.hideMouse();
 
   // Init hectar
-  hectar_id = this->add(std::make_unique<Robot>(Robot(*this, 80, 300)));
+  hectar_id = this->add<Robot>(*this, 80, 300);
 
   // Load scores
   highscores = ScoreTable("data/scores.dat");
 
   // Create game hud
-  this->add(std::make_unique<GameHud>(GameHud(*this, hectar_id)));
+  this->add<GameHud>(*this, hectar_id);
 
   // Create game hud
-  pause_menu_id = this->add(std::make_unique<PauseMenu>(PauseMenu(*this)));
+  pause_menu_id = this->add<PauseMenu>(*this);
 
   // Add entity spawner
-  this->add(std::make_unique<EntitySpawner>(
-      EntitySpawner(*this, hectar_id, pause_menu_id)));
+  this->add<EntitySpawner>(*this, hectar_id, pause_menu_id);
 
   // Play music
   Locator::getAudio()->playStream("in_game", true);
 
-  this->add(std::make_unique<Background>(Background(*this)));
+  // Scrolling background
+  this->add<Background>(*this);
 }
 
 // Destructor

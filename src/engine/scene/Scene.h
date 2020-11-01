@@ -43,7 +43,15 @@ class Scene {
   void updateInternal();
 
   // Add game object to scene pool
-  unsigned int add(std::unique_ptr<GameObject> obj);
+  template <typename T, typename... Args>
+  unsigned int add(Args&&... args) {
+    std::unique_ptr<GameObject> obj =
+        std::make_unique<T>(T(std::forward<Args>(args)...));
+    const int id = obj->getId();
+    update_pool.push_back(std::move(obj));
+    sortGameObjects();
+    return id;
+  }
 
   // Remove game object
   void remove(const unsigned int id);

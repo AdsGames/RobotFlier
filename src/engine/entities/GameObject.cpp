@@ -10,7 +10,7 @@ unsigned int GameObject::index = 0;
 
 // Constructor
 GameObject::GameObject(Scene& scene, const float x, const float y, const int z)
-    : scene(scene), x(x), y(y), z(z), height(0), width(0), isDead(false) {
+    : scene(scene), x(x), y(y), z(z), height(0), width(0) {
   this->id = GameObject::index;
   GameObject::index += 1;
 }
@@ -33,16 +33,6 @@ bool GameObject::colliding(const GameObject& other) {
 // On collide can be overriden
 void GameObject::onCollide(const GameObject& other) {
   (void)(other);
-}
-
-// Has it been hit?
-bool GameObject::dead() const {
-  return isDead;
-}
-
-// Is the object off screen?
-bool GameObject::offScreen() const {
-  return x + width <= 0;
 }
 
 // Get z index

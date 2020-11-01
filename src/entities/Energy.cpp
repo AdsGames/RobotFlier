@@ -35,7 +35,7 @@ void Energy::onCollide(const GameObject& other) {
 
     sound_orb.play();
 
-    isDead = true;
+    scene.remove(getId());
   } catch (...) {
     // Nope!
   }
@@ -45,8 +45,8 @@ void Energy::onCollide(const GameObject& other) {
 void Energy::update() {
   x -= motion;
 
-  if (offScreen()) {
-    isDead = true;
+  if (x + width <= 0) {
+    scene.remove(getId());
   }
 
   // if (hectar.isMagnetic()) {

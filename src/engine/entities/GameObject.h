@@ -34,12 +34,6 @@ class GameObject {
   // On collide
   virtual void onCollide(const GameObject& other);
 
-  // Has it been hit?
-  bool dead() const;
-
-  // Has it passed the screen bounds?
-  bool offScreen() const;
-
   // Get size
   int getWidth() const;
   int getHeight() const;
@@ -65,9 +59,6 @@ class GameObject {
 
   // Size
   int height, width;
-
-  // Dead or naw
-  bool isDead;
 
  private:
   // Id

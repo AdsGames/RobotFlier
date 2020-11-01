@@ -27,7 +27,7 @@ void PowerStar::onCollide(const GameObject& other) {
     stats[STAT_POWERUPS] += 1;
     robot.setInvincibleTimer(getTimerLength());
     power_star_sound.play();
-    isDead = true;
+    scene.remove(getId());
   } catch (...) {
     // Nope!
   }
@@ -37,7 +37,7 @@ void PowerStar::onCollide(const GameObject& other) {
 void PowerStar::update() {
   x -= motion;
 
-  if (offScreen()) {
-    isDead = true;
+  if (x + width <= 0) {
+    scene.remove(getId());
   }
 }

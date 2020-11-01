@@ -43,7 +43,7 @@ void Debris::destroy() {
   screenshake += damage * 4;
 
   // Get hit
-  isDead = true;
+  scene.remove(getId());
   stats[STAT_DEBRIS] += 1;
 
   // Make particles
