@@ -11,7 +11,7 @@
 class Powerup : public Sprite {
  public:
   // Constructor
-  Powerup(const Scene& scene, const int x, const int y);
+  Powerup(Scene& scene, const float x, const float y);
 
   void setTimerLength(const int length);
   int getTimerLength();

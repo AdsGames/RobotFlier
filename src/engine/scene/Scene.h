@@ -8,6 +8,7 @@
 #ifndef ENGINE_SCENE_SCENE_H
 #define ENGINE_SCENE_SCENE_H
 
+#include <map>
 #include <memory>
 #include <vector>
 
@@ -30,13 +31,32 @@ class Scene {
   virtual ~Scene(){};
 
   // Draw to screen
-  virtual void draw();
+  virtual void draw() = 0;
 
   // Update logic
-  virtual void update();
+  virtual void update() = 0;
+
+  // System draw
+  void drawInternal();
+
+  // System update
+  void updateInternal();
 
   // Add game object to scene pool
-  void add(std::unique_ptr<GameObject> obj);
+  unsigned int add(std::unique_ptr<GameObject> obj);
+
+  // Remove game object
+  void remove(const unsigned int id);
+
+  // Get game object
+  template <class T>
+  T& get(const unsigned int id) {
+    unsigned int index = lookup_map[id];
+    return dynamic_cast<T&>(*update_pool.at(index));
+  }
+
+  // Add collider
+  void addCollider(const unsigned int obj1, const unsigned int obj2);
 
   // Set next scene
   static void setNextScene(const ProgramScene sceneId);
@@ -51,6 +71,12 @@ class Scene {
 
   // Holds game objects
   std::vector<std::unique_ptr<GameObject>> update_pool;
+
+  // Quick gameobject lookup
+  std::map<unsigned int, unsigned int> lookup_map;
+
+  // Quick collider lookup
+  std::map<unsigned int, std::vector<unsigned int>> collider_map;
 };
 
 #endif  // ENGINE_SCENE_SCENE_H

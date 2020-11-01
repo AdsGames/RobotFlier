@@ -11,24 +11,10 @@
 #include <allegro5/allegro_primitives.h>
 #include <memory>
 
-#include "../engine/audio/Sound.h"
-#include "../engine/audio/Stream.h"
 #include "../engine/fonts/Font.h"
-#include "../engine/input/JoystickListener.h"
-#include "../engine/input/KeyListener.h"
-#include "../engine/input/MouseListener.h"
 #include "../engine/scene/Scene.h"
 #include "../engine/textures/Texture.h"
-#include "../entities/Background.h"
-#include "../entities/Energy.h"
-#include "../entities/GameHud.h"
-#include "../entities/PauseMenu.h"
-#include "../entities/Robot.h"
-#include "../entities/debris/Debris.h"
-#include "../entities/powerups/Powerup.h"
 #include "ScoreTable.h"
-
-
 
 // Game class
 class Game : public Scene {
@@ -65,18 +51,15 @@ class Game : public Scene {
   Texture powerStar;
   Texture powerMagnet;
 
-  // Gamehud
-  GameHud hud;
-
-  // Pause menu
-  PauseMenu pauseMenu;
-
   // Fonts
   Font orbitron_18;
   Font orbitron_24;
 
   // Our robot
-  Robot hectar;
+  unsigned int hectar_id;
+
+  // Pause menu
+  unsigned int pause_menu_id;
 
   // Declare integers
   int themeNumber;

@@ -11,9 +11,9 @@ ProgramScene Scene::nextScene = SCENE_NULL;
 
 /**
  * Draw
- * Draw all objects hooked into scene
+ * @description Draw all objects hooked into scene
  */
-void Scene::draw() {
+void Scene::drawInternal() {
   // Draw
   for (auto& obj : update_pool) {
     obj->draw();
@@ -22,41 +22,97 @@ void Scene::draw() {
 
 /**
  * Update
- * Update all objects hooked into scene
+ * @description Update all objects hooked into scene
  */
-void Scene::update() {
-  // Erase dead objects
-  update_pool.erase(
-      std::remove_if(update_pool.begin(), update_pool.end(),
-                     [](auto& obj) -> bool { return obj->dead(); }),
-      update_pool.end());
-
+void Scene::updateInternal() {
   // Update all
-  for (auto& obj : update_pool) {
-    obj->update();
+  for (unsigned int i = 0; i < update_pool.size(); i++) {
+    GameObject& obj = *update_pool.at(i);
+
+    // Update
+    obj.update();
+
+    // Get id
+    const int id = obj.getId();
+
+    // Collisions
+    if (collider_map.count(id) > 0) {
+      // Go through each id
+      for (const int otherId : collider_map[id]) {
+        // Get other
+        GameObject& other = *update_pool.at(lookup_map[otherId]);
+        if (update_pool.at(i)->colliding(other)) {
+          obj.onCollide(other);
+          other.onCollide(obj);
+        }
+      }
+    }
   }
 }
 
 /**
  * Add
- * Add gameobject to scene hook
+ * @description Add gameobject to scene hook
  */
-void Scene::add(std::unique_ptr<GameObject> obj) {
+unsigned int Scene::add(std::unique_ptr<GameObject> obj) {
+  const int id = obj->getId();
   update_pool.push_back(std::move(obj));
+  sortGameObjects();
+  return id;
+}
+
+/**
+ * Remove
+ * @description Remove gameobject from scene hook
+ */
+void Scene::remove(const unsigned int id) {
+  const unsigned int index = lookup_map[id];
+  update_pool.erase(update_pool.begin() + index);
   sortGameObjects();
 }
 
 /**
+ * Add Collider
+ * @description Add collider
+ */
+void Scene::addCollider(const unsigned int id1, const unsigned int id2) {
+  // Add collider 1
+  if (collider_map.count(id1) > 0) {
+    collider_map[id1].push_back(id2);
+  } else {
+    collider_map[id1] = std::vector<unsigned>(id2);
+  }
+
+  // Add collider 2
+  if (collider_map.count(id2) > 0) {
+    collider_map[id2].push_back(id1);
+  } else {
+    collider_map[id2] = std::vector<unsigned int>(id1);
+  }
+}
+
+/**
  * Sort
- * Sort gameobjects by z index
+ * @description Sort gameobjects by z index
  */
 void Scene::sortGameObjects() {
-  std::sort(update_pool.begin(), update_pool.end());
+  // Z sort, use defined < operator
+  std::sort(update_pool.begin(), update_pool.end(),
+            [](auto& obj1, auto& obj2) -> bool { return *obj1 < *obj2; });
+
+  // Erase map
+  lookup_map.clear();
+
+  // Update lookup map
+  for (unsigned int i = 0; i < update_pool.size(); i++) {
+    const int id = update_pool.at(i)->getId();
+    lookup_map[id] = i;
+  }
 }
 
 /**
  * SetNextScene
- * Sets up next scene
+ * @description Sets up next scene
  */
 void Scene::setNextScene(const ProgramScene sceneId) {
   // If the user doesn't want to exit

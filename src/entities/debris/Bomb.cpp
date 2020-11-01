@@ -3,7 +3,7 @@
 #include "../../engine/Core.h"
 
 // Constructor
-Bomb::Bomb(const Scene& scene, const int x, const int y)
+Bomb::Bomb(Scene& scene, const float x, const float y)
     : Debris(scene, x, y, 10, 1.0f, 0.01f) {
   destroy_sound = Engine::asset_manager.getAudio("bomb");
 

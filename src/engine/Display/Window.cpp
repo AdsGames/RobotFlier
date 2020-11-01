@@ -202,6 +202,7 @@ void Window::draw(Scene* current_scene) {
   // Render a frame
   al_set_target_bitmap(buffer);
   al_clear_to_color(al_map_rgb(0, 0, 0));
+  current_scene->drawInternal();
   current_scene->draw();
 
   al_set_target_backbuffer(display);

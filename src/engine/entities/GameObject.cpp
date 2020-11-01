@@ -5,12 +5,15 @@
 #include "../Core.h"
 #include "../scene/Scene.h"
 
+// Set incrementing index count
+unsigned int GameObject::index = 0;
+
 // Constructor
-GameObject::GameObject(const Scene& scene,
-                       const float x,
-                       const float y,
-                       const int z)
-    : scene(scene), x(x), y(y), z(z), height(0), width(0), isDead(false) {}
+GameObject::GameObject(Scene& scene, const float x, const float y, const int z)
+    : scene(scene), x(x), y(y), z(z), height(0), width(0), isDead(false) {
+  this->id = GameObject::index;
+  GameObject::index += 1;
+}
 
 // Destructor
 GameObject::~GameObject() {}
@@ -43,6 +46,31 @@ bool GameObject::offScreen() const {
 }
 
 // Get z index
+int GameObject::getWidth() const {
+  return width;
+}
+
+// Get z index
+int GameObject::getHeight() const {
+  return height;
+}
+
+// Get z index
+float GameObject::getX() const {
+  return x;
+}
+
+// Get z index
+float GameObject::getY() const {
+  return y;
+}
+
+// Get z index
 int GameObject::getZ() const {
   return z;
+}
+
+// Get unique id
+unsigned int GameObject::getId() const {
+  return id;
 }

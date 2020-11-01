@@ -2,16 +2,20 @@
 
 #include <algorithm>
 #include <fstream>
+#include <iostream>
 
 #include "../constants/globals.h"
 #include "../engine/Core.h"
 #include "../engine/Locator.h"
 #include "../engine/helpers/stringFns.h"
-#include "../entities/debris/Asteroid.h"
-#include "../entities/debris/Bomb.h"
-#include "../entities/debris/Comet.h"
-#include "../entities/powerups/Magnet.h"
-#include "../entities/powerups/PowerStar.h"
+#include "../engine/input/JoystickListener.h"
+#include "../engine/input/KeyListener.h"
+#include "../engine/input/MouseListener.h"
+#include "../entities/Background.h"
+#include "../entities/EntitySpawner.h"
+#include "../entities/GameHud.h"
+#include "../entities/PauseMenu.h"
+#include "../entities/Robot.h"
 #include "../helpers/tools.h"
 
 // Constructor
@@ -62,14 +66,20 @@ Game::Game() {
   Engine::window.hideMouse();
 
   // Init hectar
-  hectar = Robot(80, 300);
-  hectar.loadResources();
+  hectar_id = this->add(std::make_unique<Robot>(Robot(*this, 80, 300)));
 
   // Load scores
   highscores = ScoreTable("data/scores.dat");
 
   // Create game hud
-  hud = GameHud();
+  this->add(std::make_unique<GameHud>(GameHud(*this, hectar_id)));
+
+  // Create game hud
+  pause_menu_id = this->add(std::make_unique<PauseMenu>(PauseMenu(*this)));
+
+  // Add entity spawner
+  this->add(std::make_unique<EntitySpawner>(
+      EntitySpawner(*this, hectar_id, pause_menu_id)));
 
   // Play music
   Locator::getAudio()->playStream("in_game", true);
@@ -82,59 +92,6 @@ Game::~Game() {
   // Stop music
   Locator::getAudio()->stopStream("death");
   Locator::getAudio()->stopStream("in_game");
-}
-
-// Spawn objects
-void Game::spawnObjects() {
-  // Energy ball spawning
-  if (Engine::random.randomInt(0, 50) == 0) {
-    this->add(std::make_unique<Energy>(
-        Energy(*this, SCREEN_W, Engine::random.randomInt(30, 550))));
-  }
-
-  // Asteroids spawning
-  if (score >= 100 && Engine::random.randomInt(0, 50) == 0) {
-    this->add(std::make_unique<Asteroid>(Asteroid(
-        *this, SCREEN_W, Engine::random.randomInt(30, 550), themeNumber)));
-  }
-
-  // Bomb spawning
-  if (score >= 200 && Engine::random.randomInt(0, 80) == 0) {
-    this->add(std::make_unique<Bomb>(
-        Bomb(*this, SCREEN_W, Engine::random.randomInt(30, 550))));
-  }
-
-  // Comets spawning
-  if (score >= 300 && Engine::random.randomInt(0, 200) == 0) {
-    this->add(std::make_unique<Comet>(
-        Comet(*this, SCREEN_W, Engine::random.randomInt(30, 550))));
-  }
-
-  // Powerup spawning
-  if (score >= 100 && Engine::random.randomInt(0, 3000) == 0) {
-    this->add(std::make_unique<PowerStar>(
-        PowerStar(*this, SCREEN_W, Engine::random.randomInt(30, 600))));
-  }
-
-  if (score >= 100 && Engine::random.randomInt(0, 500) == 0) {
-    this->add(std::make_unique<Magnet>(
-        Magnet(*this, SCREEN_W, Engine::random.randomInt(30, 600), 0)));
-  }
-
-  if (score >= 200 && Engine::random.randomInt(0, 1000) == 0) {
-    this->add(std::make_unique<Magnet>(
-        Magnet(*this, SCREEN_W, Engine::random.randomInt(30, 600), 1)));
-  }
-
-  if (score >= 300 && Engine::random.randomInt(0, 2000) == 0) {
-    this->add(std::make_unique<Magnet>(
-        Magnet(*this, SCREEN_W, Engine::random.randomInt(30, 600), 2)));
-  }
-
-  if (score >= 500 && Engine::random.randomInt(0, 3000) == 0) {
-    this->add(std::make_unique<Magnet>(
-        Magnet(*this, SCREEN_W, Engine::random.randomInt(30, 600), 3)));
-  }
 }
 
 // Take screenshot
@@ -164,11 +121,11 @@ void Game::takeScreenshot() {
 
 // Update logic of game
 void Game::update() {
-  // Update pool objects
-  Scene::update();
+  // Get hectar
+  Robot hectar = this->get<Robot>(hectar_id);
 
-  // Update pauseMenu
-  pauseMenu.update();
+  // Get pause menu
+  PauseMenu pauseMenu = this->get<PauseMenu>(pause_menu_id);
 
   // Actual game stuff
   if (!pauseMenu.getPaused()) {
@@ -177,9 +134,6 @@ void Game::update() {
 
     // Update robot
     hectar.update();
-
-    // Update background
-    // worldBackground.update(motion);
 
     // If its different he died play music
     if (hectarHasDied != hectar.isAlive()) {
@@ -214,11 +168,6 @@ void Game::update() {
       themeNumber = 2;
     } else if (score > 600 && themeNumber == 2) {
       themeNumber = 3;
-    }
-
-    // Spawning
-    if (hectar.isAlive() && hectar.isKeyPressed()) {
-      spawnObjects();
     }
 
     // Lose scripts
@@ -298,14 +247,8 @@ void Game::update() {
 
 // Draw to screen
 void Game::draw() {
-  // Draw parent stuff
-  Scene::draw();
-
-  // Draw HUD
-  hud.draw(hectar, highscores, 0, 0, 0, themeNumber);
-
-  // Draw robot
-  hectar.draw();
+  // Get hectar
+  Robot hectar = this->get<Robot>(hectar_id);
 
   // Start arrow
   if (!hectar.isKeyPressed()) {
@@ -316,9 +259,6 @@ void Game::draw() {
       ui_up.draw(hectar.getX() + 15,
                  hectar.getY() - 70 - sin(arrow_animation) * 10);
   }
-
-  // Robot above asteroids
-  hectar.drawOverlay();
 
   // Lose scripts
   if (hectar.isOnGround()) {
@@ -367,10 +307,5 @@ void Game::draw() {
       orbitron_24.draw(150, 395, "Press Enter/   to continue");
       ui_b.draw(370, 395, 0);
     }
-  }
-
-  // Pause Menu Scripts
-  if (pauseMenu.getPaused()) {
-    pauseMenu.draw();
   }
 }

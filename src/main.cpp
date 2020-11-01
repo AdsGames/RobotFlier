@@ -158,6 +158,7 @@ void update() {
 
     // Update scene
     current_scene->update();
+    current_scene->updateInternal();
 
     // Debug console toggle
     if (k_listener.keyPressed[ALLEGRO_KEY_F12]) {

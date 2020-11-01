@@ -14,7 +14,7 @@
 class Background : public GameObject {
  public:
   // Constructor
-  Background(const Scene& scene);
+  Background(Scene& scene);
 
   // Logic override
   virtual void update() override;

@@ -14,7 +14,7 @@
 class Magnet : public Powerup {
  public:
   // Constructor
-  Magnet(const Scene& scene, const int x, const int y, const int type);
+  Magnet(Scene& scene, const float x, const float y, const int type);
 
   // Logic override
   virtual void update() override;

@@ -10,27 +10,20 @@
 #include <vector>
 
 #include "../engine/audio/Sound.h"
+#include "../engine/entities/GameObject.h"
 #include "../engine/particles/Particle.h"
 #include "../engine/textures/Texture.h"
 
-class Robot {
+class Robot : public GameObject {
  public:
-  Robot(float x = 0.0f, float y = 0.0f);
+  Robot(Scene& scene, float x = 0.0f, float y = 0.0f);
 
-  void update();
-  void draw();
-  void drawOverlay();
-  void loadResources();
+  virtual void update() override;
+  virtual void draw() override;
 
   // Getters
   int getHealth() const;
   void addHealth(int amount);
-
-  float getX() const;
-  float getY() const;
-
-  float getWidth() const;
-  float getHeight() const;
 
   bool isOnGround() const;
   bool isAlive() const;
@@ -48,14 +41,12 @@ class Robot {
 
  private:
   // Robot specific
-  float gravity, speed;
+  float speed;
   bool alive;
   int invincibleTimer, magneticTimer;
   bool rocket;
   bool onGround;
-  float x, y;
   int health;
-  int width, height;
 
   // Wait for keypress
   bool keyPressed;

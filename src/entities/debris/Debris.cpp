@@ -5,9 +5,9 @@
 #include "../../helpers/tools.h"
 
 // Constructor
-Debris::Debris(const Scene& scene,
-               const int x,
-               const int y,
+Debris::Debris(Scene& scene,
+               const float x,
+               const float y,
                const int damage,
                const float motionMultiplier,
                const float acceleration,

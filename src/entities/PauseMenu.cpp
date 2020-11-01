@@ -9,11 +9,7 @@
 #include "../engine/scene/Scene.h"
 #include "../helpers/tools.h"
 
-PauseMenu::PauseMenu() : paused(false) {
-  loadAssets();
-}
-
-void PauseMenu::loadAssets() {
+PauseMenu::PauseMenu(Scene& scene) : GameObject(scene), paused(false) {
   background = Engine::asset_manager.getImage("pauseMenu");
   orbitron_18 = Engine::asset_manager.getFont("orbitron_18");
 }
@@ -62,6 +58,11 @@ void PauseMenu::update() {
 }
 
 void PauseMenu::draw() {
+  // Dont draw unless paused
+  if (!paused) {
+    return;
+  }
+
   // Menu
   background.draw(130, 140, 0);
 

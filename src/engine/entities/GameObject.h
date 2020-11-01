@@ -14,7 +14,7 @@ class Scene;
 class GameObject {
  public:
   // Constructor
-  GameObject(const Scene& scene,
+  GameObject(Scene& scene,
              const float x = 0.0f,
              const float y = 0.0f,
              const int z = 0);
@@ -40,15 +40,24 @@ class GameObject {
   // Has it passed the screen bounds?
   bool offScreen() const;
 
-  // Get z index
+  // Get size
+  int getWidth() const;
+  int getHeight() const;
+
+  // Get position
+  float getX() const;
+  float getY() const;
   int getZ() const;
 
   // Sort operator
   bool operator<(const GameObject& obj) const { return (z < obj.getZ()); }
 
+  // Get unique id
+  unsigned int getId() const;
+
  protected:
   // Current scene
-  const Scene& scene;
+  Scene& scene;
 
   // Position
   float x, y;
@@ -59,6 +68,13 @@ class GameObject {
 
   // Dead or naw
   bool isDead;
+
+ private:
+  // Id
+  unsigned int id;
+
+  // Id counter
+  static unsigned int index;
 };
 
 #endif  // ENGINE_ENTITIES_GAME_OBJECT_H

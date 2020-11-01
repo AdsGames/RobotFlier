@@ -14,7 +14,7 @@
 class Comet : public Debris {
  public:
   // Constructor
-  Comet(const Scene& scene, const int x, const int y);
+  Comet(Scene& scene, const float x, const float y);
 
   // Logic override
   virtual void onDestroy() override;

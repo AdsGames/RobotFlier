@@ -14,7 +14,7 @@
 class Asteroid : public Debris {
  public:
   // Constructor
-  Asteroid(const Scene& scene, const int x, const int y, const int theme);
+  Asteroid(Scene& scene, const float x, const float y, const int theme);
 
   // Logic override
   virtual void onDestroy() override;

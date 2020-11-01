@@ -6,7 +6,7 @@
 #include "Robot.h"
 
 // Constructor
-Energy::Energy(const Scene& scene, const int x, const int y)
+Energy::Energy(Scene& scene, const float x, const float y)
     : Sprite(scene, x, y) {
   loadAssets();
 }

@@ -6,7 +6,7 @@
 const int COMET_DAMAGE = -5;
 
 // Constructor
-Comet::Comet(const Scene& scene, const int x, const int y)
+Comet::Comet(Scene& scene, const float x, const float y)
     : Debris(scene, x, y, 5, 1.4f, 0.01f) {
   setTexture("comet");
   destroy_sound = Engine::asset_manager.getAudio("asteroid");

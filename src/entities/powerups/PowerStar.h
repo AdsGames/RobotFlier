@@ -14,7 +14,7 @@
 class PowerStar : public Powerup {
  public:
   // Constructor
-  PowerStar(const Scene& scene, const int x, const int y);
+  PowerStar(Scene& scene, const float x, const float y);
 
   // Logic override
   virtual void update() override;

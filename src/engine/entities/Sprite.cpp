@@ -5,8 +5,18 @@
 #include "../scene/Scene.h"
 
 // Constructor
-Sprite::Sprite(const Scene& scene, const float x, const float y, const int z)
+Sprite::Sprite(Scene& scene, const float x, const float y, const int z)
     : GameObject(scene, x, y, z) {}
+
+// Constructor
+Sprite::Sprite(Scene& scene,
+               const std::string texture,
+               const float x,
+               const float y,
+               const int z)
+    : GameObject(scene, x, y, z) {
+  setTexture(texture);
+}
 
 // Destructor
 Sprite::~Sprite() {}

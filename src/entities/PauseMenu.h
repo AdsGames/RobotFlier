@@ -8,27 +8,26 @@
 #ifndef ENTITIES_PAUSE_MENU_H
 #define ENTITIES_PAUSE_MENU_H
 
+#include "../engine/entities/GameObject.h"
 #include "../engine/fonts/Font.h"
+#include "../engine/scene/Scene.h"
 #include "../engine/textures/Texture.h"
 
-class PauseMenu {
+class PauseMenu : public GameObject {
  public:
   // Constructor
-  PauseMenu();
+  PauseMenu(Scene& scene);
 
   // Update pause menu
-  void update();
+  virtual void update() override;
 
   // Draws pause menu
-  void draw();
+  virtual void draw() override;
 
   // Get paused state
   bool getPaused();
 
  private:
-  // Load assets
-  void loadAssets();
-
   // Paused state
   bool paused;
 

@@ -9,10 +9,12 @@
 #include "../engine/helpers/stringFns.h"
 #include "../engine/input/KeyListener.h"
 #include "../engine/input/MouseListener.h"
+#include "../entities/Robot.h"
 #include "../helpers/tools.h"
 
 // Constructor
-GameHud::GameHud() {
+GameHud::GameHud(Scene& scene, const unsigned int robotId)
+    : GameObject(scene), robot_id(robotId) {
   // Images
   // Gui
   debug = Engine::asset_manager.getImage("debug");
@@ -29,12 +31,10 @@ GameHud::GameHud() {
 }
 
 // Draw to screen
-void GameHud::draw(const Robot& robot,
-                   const ScoreTable& highscores,
-                   const int num_energy,
-                   const int num_powerup,
-                   const int num_debris,
-                   const int themenumber) {
+void GameHud::draw() {
+  // Get Robot
+  Robot robot = scene.get<Robot>(robot_id);
+
   // Draw HUD
   // Info
   orbitron_30.draw(10, 10, stringFns::format("Score:%i", score),
@@ -100,26 +100,26 @@ void GameHud::draw(const Robot& robot,
         al_map_rgb(255, 255, 255));
 
     // Column 3
-    orbitron_12.draw(245, 25,
-                     stringFns::format("LowScore:%i", highscores.getScore(9)),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(245, 35, stringFns::format("Theme:%i", themenumber),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(245, 45, stringFns::format("Energys:%i", num_energy),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(245, 55, stringFns::format("Debris:%i", num_debris),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(245, 65, stringFns::format("Powerups:%i", num_powerup),
-                     al_map_rgb(255, 255, 255));
+    // orbitron_12.draw(245, 25,
+    //                  stringFns::format("LowScore:%i",
+    //                  highscores.getScore(9)), al_map_rgb(255, 255, 255));
+    // orbitron_12.draw(245, 35, stringFns::format("Theme:%i", themenumber),
+    //                  al_map_rgb(255, 255, 255));
+    // orbitron_12.draw(245, 45, stringFns::format("Energys:%i", num_energy),
+    //                  al_map_rgb(255, 255, 255));
+    // orbitron_12.draw(245, 55, stringFns::format("Debris:%i", num_debris),
+    //                  al_map_rgb(255, 255, 255));
+    // orbitron_12.draw(245, 65, stringFns::format("Powerups:%i", num_powerup),
+    //                  al_map_rgb(255, 255, 255));
 
     // Column 4
     orbitron_12.draw(
         360, 25, stringFns::format("Last key:%i", KeyListener::lastKeyPressed),
         al_map_rgb(255, 255, 255));
-    orbitron_12.draw(
-        360, 35,
-        stringFns::format("Has highscore:%i", score > highscores.getScore(9)),
-        al_map_rgb(255, 255, 255));
+    // orbitron_12.draw(
+    //     360, 35,
+    //     stringFns::format("Has highscore:%i", score >
+    //     highscores.getScore(9)), al_map_rgb(255, 255, 255));
 
     // FPS
     orbitron_18.draw(SCREEN_W - 100, 25, stringFns::format("FPS:%i", fps),

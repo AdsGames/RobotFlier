@@ -6,7 +6,7 @@
 #include "../Robot.h"
 
 // Constructor
-PowerStar::PowerStar(const Scene& scene, const int x, const int y)
+PowerStar::PowerStar(Scene& scene, const float x, const float y)
     : Powerup(scene, x, y) {
   loadAssets();
   setTimerLength(500);

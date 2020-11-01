@@ -12,7 +12,7 @@
 class Energy : public Sprite {
  public:
   // Constructor
-  Energy(const Scene& scene, const int x, const int y);
+  Energy(Scene& scene, const float x, const float y);
 
   // Logic override
   virtual void update() override;

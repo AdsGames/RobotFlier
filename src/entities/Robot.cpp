@@ -1,5 +1,5 @@
 #include "Robot.h"
-
+#include <iostream>
 #include "../constants/globals.h"
 #include "../engine/Core.h"
 #include "../engine/input/JoystickListener.h"
@@ -7,11 +7,13 @@
 #include "../engine/input/MouseListener.h"
 #include "../helpers/tools.h"
 
-// Constructor
-Robot::Robot(float x, float y) : x(x), y(y) {
-  // Init vars
-  gravity = 1.6;
+// Gravity const
+const float GRAVITY = 1.6f;
 
+// Constructor
+Robot::Robot(Scene& scene, const float x, float y)
+    : GameObject(scene, x, y, 1) {
+  // Init vars
   speed = 0;
   width = 70;
   height = 70;
@@ -24,10 +26,7 @@ Robot::Robot(float x, float y) : x(x), y(y) {
   onGround = false;
   alive = true;
   keyPressed = false;
-}
 
-// Load images
-void Robot::loadResources() {
   // Images
   mainRobot = Engine::asset_manager.getImage("robot");
   robotFire = Engine::asset_manager.getImage("robotfire");
@@ -59,7 +58,7 @@ void Robot::update() {
 
   // Update robots y position
   if (keyPressed)
-    y += gravity - speed;
+    y += GRAVITY - speed;
 
   // Death smoke
   if (Engine::settings.get<int>("particleType", 0) != 3 && !alive) {
@@ -213,10 +212,7 @@ void Robot::draw() {
   for (auto& part : smokePart) {
     part.draw();
   }
-}
 
-// Draw overlay
-void Robot::drawOverlay() {
   if (alive && invincibleTimer > 0)
     robotInvincibleTop.draw(x, y);
 }
@@ -225,30 +221,19 @@ void Robot::drawOverlay() {
 int Robot::getHealth() const {
   return health;
 }
+
 void Robot::addHealth(int amount) {
   health += amount;
-}
-
-float Robot::getX() const {
-  return x;
-}
-float Robot::getY() const {
-  return y;
-}
-
-float Robot::getWidth() const {
-  return width;
-}
-float Robot::getHeight() const {
-  return height;
 }
 
 bool Robot::isOnGround() const {
   return onGround;
 }
+
 bool Robot::isAlive() const {
   return alive;
 }
+
 bool Robot::isKeyPressed() const {
   return keyPressed;
 }
@@ -257,9 +242,11 @@ bool Robot::isKeyPressed() const {
 bool Robot::isInvincible() const {
   return invincibleTimer > 0;
 }
+
 int Robot::getInvincibleTimer() const {
   return invincibleTimer;
 }
+
 void Robot::setInvincibleTimer(int time) {
   invincibleTimer += time;
 }
@@ -268,9 +255,11 @@ void Robot::setInvincibleTimer(int time) {
 bool Robot::isMagnetic() const {
   return magneticTimer > 0;
 }
+
 int Robot::getMagneticTimer() const {
   return magneticTimer;
 }
+
 void Robot::setMagneticTimer(int time) {
   magneticTimer += time;
 }

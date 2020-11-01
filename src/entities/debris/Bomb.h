@@ -14,7 +14,7 @@
 class Bomb : public Debris {
  public:
   // Constructor
-  Bomb(const Scene& scene, const int x, const int y);
+  Bomb(Scene& scene, const float x, const float y);
 
   // Logic override
   virtual void onDestroy() override;
