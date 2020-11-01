@@ -7,14 +7,16 @@
 #ifndef SCENES_INTRO_H
 #define SCENES_INTRO_H
 
+#include <chrono>
+
 #include "../engine/scene/Scene.h"
 #include "../engine/textures/Texture.h"
 
-class intro : public Scene {
+class Intro : public Scene {
  public:
   // Construct/deconstruct
-  intro();
-  virtual ~intro(){};
+  Intro();
+  virtual ~Intro(){};
 
   // Override parent
   virtual void update() override;
@@ -23,6 +25,9 @@ class intro : public Scene {
  private:
   // Splash image
   Texture img_intro;
+
+  // Start time
+  std::chrono::high_resolution_clock::time_point start_time;
 };
 
 #endif  // SCENES_INTRO_H

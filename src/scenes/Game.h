@@ -7,14 +7,10 @@
 #ifndef SCENES_GAME_H
 #define SCENES_GAME_H
 
-#include <allegro5/allegro_color.h>
-#include <allegro5/allegro_primitives.h>
-#include <memory>
-
 #include "../engine/fonts/Font.h"
 #include "../engine/scene/Scene.h"
 #include "../engine/textures/Texture.h"
-#include "ScoreTable.h"
+#include "../entities/menu/ScoreTable.h"
 
 // Game class
 class Game : public Scene {

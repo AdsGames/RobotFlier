@@ -5,11 +5,8 @@
  * Robots in space!
  */
 #include <allegro5/allegro_acodec.h>
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_color.h>
-#include <allegro5/allegro_image.h>
-#include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
+#include <memory>
 
 #include "constants/globals.h"
 #include "engine/Locator.h"
@@ -41,15 +38,8 @@ MouseListener m_listener;
 KeyListener k_listener;
 JoystickListener j_listener;
 
-// Functions
-void clean_up();
-void change_scene();
-void setup();
-void update();
-void draw();
-
 // Change game screen
-void change_scene() {
+void changeScene() {
   // If the scene needs to be changed
   if (Scene::nextScene != SCENE_NULL) {
     // Delete the current scene
@@ -60,15 +50,15 @@ void change_scene() {
     // Change the scene
     switch (Scene::nextScene) {
       case SCENE_INIT:
-        current_scene = new init();
+        current_scene = new Init();
         break;
 
       case SCENE_INTRO:
-        current_scene = new intro();
+        current_scene = new Intro();
         break;
 
       case SCENE_MENU:
-        current_scene = new menu();
+        current_scene = new Menu();
         break;
 
       case SCENE_GAME:
@@ -76,11 +66,9 @@ void change_scene() {
         break;
 
       case SCENE_EXIT:
+      default:
         closing = true;
         break;
-
-      default:
-        current_scene = new menu();
     }
 
     // Change the current scene ID
@@ -153,7 +141,7 @@ void update() {
   // Timer
   if (ev.type == ALLEGRO_EVENT_TIMER) {
     // Change scene (if needed)
-    change_scene();
+    changeScene();
 
     // Update listeners
     m_listener.update();
@@ -210,9 +198,7 @@ int main(int argc, char** argv) {
 
   // Set the current scene ID
   Scene::sceneId = SCENE_INIT;
-
-  // Set the current game scene object
-  current_scene = new init();
+  current_scene = new Init();
 
   // Loop
   while (!closing) {

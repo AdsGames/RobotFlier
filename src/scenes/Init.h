@@ -9,11 +9,11 @@
 
 #include "../engine/scene/Scene.h"
 
-class init : public Scene {
+class Init : public Scene {
  public:
   // Construct/deconstruct
-  init();
-  virtual ~init();
+  Init();
+  virtual ~Init();
 
   // Override parent
   virtual void update() override{};

@@ -21,14 +21,14 @@
 #include "../engine/particles/Particle.h"
 #include "../engine/scene/Scene.h"
 #include "../engine/textures/Texture.h"
+#include "../entities/menu/ScoreTable.h"
 #include "../helpers/tools.h"
-#include "ScoreTable.h"
 
-class menu : public Scene {
+class Menu : public Scene {
  public:
   // Construct/deconstruct
-  menu();
-  virtual ~menu();
+  Menu();
+  virtual ~Menu();
 
   // Override parent
   virtual void update() override;

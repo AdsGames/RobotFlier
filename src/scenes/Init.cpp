@@ -1,10 +1,9 @@
 #include "Init.h"
 
 #include "../constants/globals.h"
-#include "../helpers/tools.h"
 
 // Construct scene
-init::init() {
+Init::Init() {
   // Joystick detector
   joystick_enabled = bool(al_get_num_joysticks() > 0);
 
@@ -172,11 +171,11 @@ init::init() {
   this->getSettings().setAutosave(true);
 
   // Go to menu
-  Scene::setNextScene(SCENE_MENU);
+  Scene::setNextScene(SCENE_INTRO);
 }
 
 // Destruct scene
-init::~init() {}
+Init::~Init() {}
 
 // Draw
-void init::draw() {}
+void Init::draw() {}

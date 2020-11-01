@@ -1,19 +1,23 @@
 #include "Intro.h"
 
-#include "../constants/globals.h"
+#include "../engine/entities/Sprite.h"
+#include "../engine/input/KeyListener.h"
 
 // Construct scene
-intro::intro() {
+Intro::Intro() {
   // Load intro image
-  img_intro = this->getAsset().getImage("intro");
+  this->add<Sprite>(*this, "intro");
+
+  // Set start time
+  start_time = std::chrono::high_resolution_clock::now();
 }
 
 // Update (goto menu!)
-void intro::update() {
-  // Intro screen
-  img_intro.draw(0, 0);
-  al_rest(1.0);
-
-  // Go to menu
-  Scene::setNextScene(SCENE_MENU);
+void Intro::update() {
+  auto current_time = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double, std::milli> elapsed = current_time - start_time;
+  if (elapsed.count() > 3000 || KeyListener::anyKeyPressed) {
+    // Go to menu
+    Scene::setNextScene(SCENE_MENU);
+  }
 }

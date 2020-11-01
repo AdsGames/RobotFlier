@@ -10,7 +10,7 @@
 #include "../entities/menu/SettingsMenu.h"
 
 // Construct scene
-menu::menu() {
+Menu::Menu() {
   // Init vars
   startMove = false;
   startClicked = false;
@@ -67,13 +67,13 @@ menu::menu() {
 }
 
 // Destructor
-menu::~menu() {
+Menu::~Menu() {
   // Stops music
   this->getAudio().stopStream("mainmenu");
 }
 
 // Update loop
-void menu::update() {
+void Menu::update() {
   // Menu animations
   if (animation_pos < 100 && !startClicked) {
     animation_pos += 4;
@@ -157,7 +157,7 @@ void menu::update() {
 }
 
 // Draw to screen
-void menu::draw() {
+void Menu::draw() {
   // Menu Background
   img_menu.draw(0, 0, 0);
 
