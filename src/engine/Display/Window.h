@@ -11,7 +11,7 @@
 #include <allegro5/display.h>
 #include <string>
 
-#include "../scene/Scene.h"
+class Scene;
 
 // Possible screen modes
 enum DISPLAY_MODE {

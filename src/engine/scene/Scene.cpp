@@ -125,3 +125,19 @@ AudioService& Scene::getAudio() {
 AssetManager& Scene::getAsset() {
   return Locator::getAsset();
 }
+
+/**
+ * Get Window
+ * @description Get provided window
+ */
+Window& Scene::getWindow() {
+  return Locator::getWindow();
+}
+
+/**
+ * Get Settings
+ * @description Get provided settings manager
+ */
+SettingManager& Scene::getSettings() {
+  return Locator::getSettings();
+}

@@ -1,7 +1,7 @@
 #include "Energy.h"
 
 #include "../constants/globals.h"
-#include "../engine/Core.h"
+#include "../engine/scene/Scene.h"
 #include "../helpers/tools.h"
 #include "Robot.h"
 
@@ -12,7 +12,7 @@ Energy::Energy(Scene& scene, const float x, const float y)
 }
 
 void Energy::loadAssets() {
-  if (Engine::settings.get<bool>("christmas", false)) {
+  if (scene.getSettings().get<bool>("christmas", false)) {
     setTexture("energy_christmas");
   } else {
     setTexture("energy");

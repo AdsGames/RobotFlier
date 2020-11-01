@@ -1,7 +1,8 @@
 #include "Debris.h"
 
 #include "../../constants/globals.h"
-#include "../../engine/Core.h"
+#include "../../engine/random/RandomGenerator.h"
+#include "../../engine/scene/Scene.h"
 #include "../../helpers/tools.h"
 
 // Constructor
@@ -26,7 +27,7 @@ Debris::Debris(Scene& scene,
 // Logic
 void Debris::update() {
   // Update particles
-  if (Engine::settings.get<int>("particleType", 0) != 3) {
+  if (scene.getSettings().get<int>("particleType", 0) != 3) {
     for (unsigned int i = 0; i < parts.size(); i++) {
       parts.at(i).update();
       parts.at(i).scroll(motion, 0.0f);
@@ -47,7 +48,7 @@ void Debris::destroy() {
   stats[STAT_DEBRIS] += 1;
 
   // Make particles
-  if (Engine::settings.get<int>("particleType", 0) != 3) {
+  if (scene.getSettings().get<int>("particleType", 0) != 3) {
     // Sample a pixel
     ALLEGRO_COLOR sample_color =
         texture.getPixel(texture.getWidth() / 2, texture.getHeight() / 2);
@@ -58,9 +59,9 @@ void Debris::destroy() {
     for (int i = 0; i < (width - sampling_size); i += sampling_size) {
       for (int t = 0; t < (height - sampling_size); t += sampling_size) {
         Particle newParticle(i + x, t + y, sample_color,
-                             Engine::random.randomInt(-8, 8),
-                             Engine::random.randomInt(-8, 8), 1,
-                             Engine::settings.get<int>("particleType", 0));
+                             RandomGenerator::randomInt(-8, 8),
+                             RandomGenerator::randomInt(-8, 8), 1,
+                             scene.getSettings().get<int>("particleType", 0));
         parts.push_back(newParticle);
       }
     }

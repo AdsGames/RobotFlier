@@ -83,6 +83,8 @@ class Scene {
   // Locator
   static AudioService& getAudio();
   static AssetManager& getAsset();
+  static Window& getWindow();
+  static SettingManager& getSettings();
 
  private:
   // Sort objects

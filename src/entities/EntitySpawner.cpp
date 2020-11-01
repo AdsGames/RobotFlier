@@ -1,7 +1,7 @@
 #include "EntitySpawner.h"
 
 #include "../constants/globals.h"
-#include "../engine/Core.h"
+#include "../engine/random/RandomGenerator.h"
 #include "../entities/Energy.h"
 #include "../entities/PauseMenu.h"
 #include "../entities/Robot.h"
@@ -23,50 +23,50 @@ void EntitySpawner::update() {
   // Get pause menu
   PauseMenu& pauseMenu = scene.get<PauseMenu>(pause_menu_id);
 
-  const int y = Engine::random.randomInt(30, 550);
+  const int y = RandomGenerator::randomInt(30, 550);
 
   if (pauseMenu.getPaused() || !hectar.isAlive() || hectar.isOnGround()) {
     return;
   }
 
   // Energy ball spawning
-  if (Engine::random.randomInt(0, 50) == 0) {
+  if (RandomGenerator::randomInt(0, 50) == 0) {
     scene.add<Energy>(scene, SCREEN_W, y);
   }
 
   // Asteroids spawning
-  if (score >= 100 && Engine::random.randomInt(0, 50) == 0) {
+  if (score >= 100 && RandomGenerator::randomInt(0, 50) == 0) {
     scene.add<Asteroid>(scene, SCREEN_W, y, 0);
   }
 
   // Bomb spawning
-  if (score >= 200 && Engine::random.randomInt(0, 80) == 0) {
+  if (score >= 200 && RandomGenerator::randomInt(0, 80) == 0) {
     scene.add<Bomb>(scene, SCREEN_W, y);
   }
 
   // Comets spawning
-  if (score >= 300 && Engine::random.randomInt(0, 200) == 0) {
+  if (score >= 300 && RandomGenerator::randomInt(0, 200) == 0) {
     scene.add<Comet>(scene, SCREEN_W, y);
   }
 
   // Powerup spawning
-  if (score >= 100 && Engine::random.randomInt(0, 3000) == 0) {
+  if (score >= 100 && RandomGenerator::randomInt(0, 3000) == 0) {
     scene.add<PowerStar>(scene, SCREEN_W, y);
   }
 
-  if (score >= 100 && Engine::random.randomInt(0, 500) == 0) {
+  if (score >= 100 && RandomGenerator::randomInt(0, 500) == 0) {
     scene.add<Magnet>(scene, SCREEN_W, y, 0);
   }
 
-  if (score >= 200 && Engine::random.randomInt(0, 1000) == 0) {
+  if (score >= 200 && RandomGenerator::randomInt(0, 1000) == 0) {
     scene.add<Magnet>(scene, SCREEN_W, y, 1);
   }
 
-  if (score >= 300 && Engine::random.randomInt(0, 2000) == 0) {
+  if (score >= 300 && RandomGenerator::randomInt(0, 2000) == 0) {
     scene.add<Magnet>(scene, SCREEN_W, y, 2);
   }
 
-  if (score >= 500 && Engine::random.randomInt(0, 3000) == 0) {
+  if (score >= 500 && RandomGenerator::randomInt(0, 3000) == 0) {
     scene.add<Magnet>(scene, SCREEN_W, y, 3);
   }
 }

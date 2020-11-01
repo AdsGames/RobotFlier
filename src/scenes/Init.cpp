@@ -1,7 +1,6 @@
 #include "Init.h"
 
 #include "../constants/globals.h"
-#include "../engine/Core.h"
 #include "../helpers/tools.h"
 
 // Construct scene
@@ -169,8 +168,8 @@ init::init() {
   this->getAsset().loadFont("orbitron_36", "fonts/orbitron_ttf.ttf", 36);
 
   // Load settings
-  Engine::settings.load("data/settings.dat");
-  Engine::settings.setAutosave(true);
+  this->getSettings().load("data/settings.dat");
+  this->getSettings().setAutosave(true);
 
   // Go to menu
   Scene::setNextScene(SCENE_MENU);

@@ -1,18 +1,19 @@
 #include "Asteroid.h"
 
-#include "../../engine/Core.h"
+#include "../../engine/random/RandomGenerator.h"
+#include "../../engine/scene/Scene.h"
 #include "../../helpers/tools.h"
 
 // Constructor
 Asteroid::Asteroid(Scene& scene, const float x, const float y, const int theme)
-    : Debris(scene, x, y, 5, 1.0f, 0.0f, Engine::random.randomInt(4, 20)) {
+    : Debris(scene, x, y, 5, 1.0f, 0.0f, RandomGenerator::randomInt(4, 20)) {
   loadAssets(theme);
 }
 
 void Asteroid::loadAssets(const int theme) {
   setTexture("asteroid_dark");
 
-  if (Engine::settings.get<bool>("christmas", false)) {
+  if (scene.getSettings().get<bool>("christmas", false)) {
     setTexture("asteroid_christmas");
   } else {
     switch (theme) {

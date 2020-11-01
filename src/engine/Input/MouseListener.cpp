@@ -2,7 +2,7 @@
 
 #include <allegro5/allegro.h>
 
-#include "../Core.h"
+#include "../Locator.h"
 
 int MouseListener::mouse_x = 0;
 int MouseListener::mouse_y = 0;
@@ -21,10 +21,10 @@ void MouseListener::update() {
   al_get_mouse_state(&state);
 
   // Position
-  mouse_x =
-      (state.x - Engine::window.getTranslationX()) / Engine::window.getScaleX();
-  mouse_y =
-      (state.y - Engine::window.getTranslationY()) / Engine::window.getScaleY();
+  mouse_x = (state.x - Locator::getWindow().getTranslationX()) /
+            Locator::getWindow().getScaleX();
+  mouse_y = (state.y - Locator::getWindow().getTranslationY()) /
+            Locator::getWindow().getScaleY();
 
   mouse_moved = false;
 

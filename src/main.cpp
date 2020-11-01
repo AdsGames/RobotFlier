@@ -12,13 +12,13 @@
 #include <allegro5/allegro_ttf.h>
 
 #include "constants/globals.h"
-#include "engine/Core.h"
 #include "engine/Locator.h"
 #include "engine/assets/AssetManager.h"
 #include "engine/audio/DefaultAudioService.h"
 #include "engine/input/JoystickListener.h"
 #include "engine/input/KeyListener.h"
 #include "engine/input/MouseListener.h"
+#include "engine/settings/SettingManager.h"
 #include "scenes/Game.h"
 #include "scenes/Init.h"
 #include "scenes/Intro.h"
@@ -96,9 +96,10 @@ void setup() {
   // Init allegro 5
   al_init();
 
-  // Setup display
-  Engine::window.setMode(DISPLAY_MODE::WINDOWED);
-  Engine::window.setTitle("Loading");
+  // Setup window
+  Locator::provideWindow<Window>();
+  Locator::getWindow().setMode(DISPLAY_MODE::WINDOWED);
+  Locator::getWindow().setTitle("Loading");
 
   // Input
   al_install_keyboard();
@@ -121,8 +122,8 @@ void setup() {
   // Events
   event_queue = al_create_event_queue();
 
-  al_register_event_source(
-      event_queue, al_get_display_event_source(Engine::window.getDisplay()));
+  al_register_event_source(event_queue, al_get_display_event_source(
+                                            Locator::getWindow().getDisplay()));
   timer = al_create_timer(1.0 / UPDATES_PER_SECOND);
   al_register_event_source(event_queue, al_get_timer_event_source(timer));
   al_register_event_source(event_queue, al_get_keyboard_event_source());
@@ -131,13 +132,16 @@ void setup() {
   al_start_timer(timer);
 
   // Window title
-  Engine::window.setTitle("Robot Flier");
+  Locator::getWindow().setTitle("Robot Flier");
 
   // Setup service locator
   Locator::provideAudio<DefaultAudioService>();
 
   // Setup asset manager
   Locator::provideAssetManager<AssetManager>();
+
+  // Setup setting manager
+  Locator::provideSettings<SettingManager>();
 }
 
 // Universal update
@@ -162,8 +166,8 @@ void update() {
 
     // Debug console toggle
     if (k_listener.keyPressed[ALLEGRO_KEY_F12]) {
-      Engine::settings.set("debug",
-                           !Engine::settings.get<bool>("debug", false));
+      Locator::getSettings().set(
+          "debug", !Locator::getSettings().get<bool>("debug", false));
     }
   }
   // Exit
@@ -172,7 +176,7 @@ void update() {
   }
   // Scaling
   else if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE) {
-    Engine::window.resize(ev.display.width, ev.display.height);
+    Locator::getWindow().resize(ev.display.width, ev.display.height);
   }
   // Keyboard
   else if (ev.type == ALLEGRO_EVENT_KEY_DOWN ||
@@ -192,7 +196,7 @@ void update() {
 
   // Queue empty? Lets draw
   if (al_is_event_queue_empty(event_queue)) {
-    Engine::window.draw(current_scene);
+    Locator::getWindow().draw(current_scene);
   }
 }
 

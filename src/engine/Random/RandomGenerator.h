@@ -11,13 +11,11 @@
 
 class RandomGenerator {
  public:
-  RandomGenerator();
-
-  float randomFloat(const float min, const float max);
-  int randomInt(const int min, const int max);
+  static float randomFloat(const float min, const float max);
+  static int randomInt(const int min, const int max);
 
  private:
-  std::mt19937 rng;
+  static std::mt19937 rng;
 };
 
 #endif  // ENGINE_RANDOM_RANDOM_GENERATOR_H

@@ -1,11 +1,11 @@
 #include "Menu.h"
 
 #include "../constants/globals.h"
-#include "../engine/Core.h"
 #include "../engine/entities/Sprite.h"
 #include "../engine/input/JoystickListener.h"
 #include "../engine/input/KeyListener.h"
 #include "../engine/input/MouseListener.h"
+#include "../engine/random/RandomGenerator.h"
 #include "../entities/menu/MouseRocket.h"
 #include "../entities/menu/SettingsMenu.h"
 
@@ -21,7 +21,7 @@ menu::menu() {
   // Load intro image
   // Random menu
   std::string background_image =
-      "background_" + std::to_string(Engine::random.randomInt(0, 3));
+      "background_" + std::to_string(RandomGenerator::randomInt(0, 3));
   this->add<Sprite>(*this, background_image, 0.0f, 0.0f, 0);
 
   // Add mouse
@@ -58,10 +58,10 @@ menu::menu() {
   animation_pos = 0;
 
   // Hide mouse
-  Engine::window.hideMouse();
+  this->getWindow().hideMouse();
 
   // Play music
-  if (Engine::settings.get<bool>("music", false) == true) {
+  if (this->getSettings().get<bool>("music", false) == true) {
     this->getAudio().playStream("mainmenu");
   }
 }
@@ -168,7 +168,7 @@ void menu::draw() {
   highscores_button.draw(SCREEN_W - (animation_pos * 1.4), 30, 0);
 
   // Joystick Mode
-  if (Engine::settings.get<int>("controlMode", 0) != 1 && joystick_enabled) {
+  if (this->getSettings().get<int>("controlMode", 0) != 1 && joystick_enabled) {
     xbox_start.draw((animation_pos * 3.2) - start.getWidth() + 220, 430, 0);
   }
 
@@ -219,7 +219,7 @@ void menu::draw() {
   }
 
   // Debug
-  if (Engine::settings.get<bool>("debug", false)) {
+  if (this->getSettings().get<bool>("debug", false)) {
     // Joystick testing
     if (joystick_enabled) {
       for (int i = 0; i < JoystickListener::JOY_MAX_BUTTONS; i++) {

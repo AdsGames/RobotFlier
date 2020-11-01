@@ -4,11 +4,11 @@
 #include <fstream>
 
 #include "../constants/globals.h"
-#include "../engine/Core.h"
 #include "../engine/helpers/stringFns.h"
 #include "../engine/input/JoystickListener.h"
 #include "../engine/input/KeyListener.h"
 #include "../engine/input/MouseListener.h"
+#include "../engine/random/RandomGenerator.h"
 #include "../entities/Background.h"
 #include "../entities/EntitySpawner.h"
 #include "../entities/GameHud.h"
@@ -61,7 +61,7 @@ Game::Game() {
   themeNumber = 0;
 
   // Mouse
-  Engine::window.hideMouse();
+  this->getWindow().hideMouse();
 
   // Init hectar
   hectar_id = this->add<Robot>(*this, 80, 300);
@@ -137,7 +137,7 @@ void Game::update() {
     if (hectarHasDied != hectar.isAlive()) {
       this->getAudio().stopStream("in_game");
 
-      if (Engine::settings.get<bool>("music", true) == 1) {
+      if (this->getSettings().get<bool>("music", true) == 1) {
         this->getAudio().playStream("death", true);
       }
     }
@@ -217,12 +217,12 @@ void Game::update() {
   }
 
   // Screen shake
-  if (screenshake > 0 && Engine::settings.get<int>("screenshake", 0) != 0) {
-    screenshake_x = screenshake_y = Engine::random.randomInt(
-        -(screenshake * Engine::settings.get<int>("screenshake", 0) +
-          100 * Engine::settings.get<bool>("supershake", false)),
-        screenshake * Engine::settings.get<int>("screenshake", 0) +
-            100 * Engine::settings.get<bool>("supershake", false));
+  if (screenshake > 0 && this->getSettings().get<int>("screenshake", 0) != 0) {
+    screenshake_x = screenshake_y = RandomGenerator::randomInt(
+        -(screenshake * this->getSettings().get<int>("screenshake", 0) +
+          100 * this->getSettings().get<bool>("supershake", false)),
+        screenshake * this->getSettings().get<int>("screenshake", 0) +
+            100 * this->getSettings().get<bool>("supershake", false));
     screenshake--;
   }
 
@@ -231,7 +231,7 @@ void Game::update() {
   }
 
   // Random test stuff for devs
-  if (Engine::settings.get<bool>("debug", false)) {
+  if (this->getSettings().get<bool>("debug", false)) {
     if (KeyListener::key[ALLEGRO_KEY_R])
       score += 10;
 

@@ -4,6 +4,7 @@
 #include <exception>
 
 #include "../common/Tools.h"
+#include "../scene/Scene.h"
 
 Window::Window() {
   window_w = 1600;

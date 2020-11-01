@@ -4,7 +4,6 @@
 #include <fstream>
 
 #include "../constants/globals.h"
-#include "../engine/Core.h"
 #include "../engine/helpers/stringFns.h"
 #include "../engine/input/KeyListener.h"
 #include "../engine/input/MouseListener.h"
@@ -64,7 +63,7 @@ void GameHud::draw() {
   }
 
   // Draw the debug window
-  if (Engine::settings.get<bool>("debug", false)) {
+  if (scene.getSettings().get<bool>("debug", false)) {
     debug.draw(0, 0, 0);
 
     // Column 1
@@ -95,7 +94,7 @@ void GameHud::draw() {
     orbitron_12.draw(
         120, 65,
         stringFns::format("Particles On:%i",
-                          Engine::settings.get<int>("particleType", 0)),
+                          scene.getSettings().get<int>("particleType", 0)),
         al_map_rgb(255, 255, 255));
 
     // Column 3

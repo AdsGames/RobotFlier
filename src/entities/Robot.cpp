@@ -1,10 +1,11 @@
 #include "Robot.h"
 
 #include "../constants/globals.h"
-#include "../engine/Core.h"
 #include "../engine/input/JoystickListener.h"
 #include "../engine/input/KeyListener.h"
 #include "../engine/input/MouseListener.h"
+#include "../engine/random/RandomGenerator.h"
+#include "../engine/scene/Scene.h"
 #include "../helpers/tools.h"
 
 // Gravity const
@@ -61,14 +62,15 @@ void Robot::update() {
     y += GRAVITY - speed;
 
   // Death smoke
-  if (Engine::settings.get<int>("particleType", 0) != 3 && !alive) {
+  if (scene.getSettings().get<int>("particleType", 0) != 3 && !alive) {
     for (int i = 0; i < 800; i++) {
-      if (Engine::random.randomInt(0, 10) == 0) {
-        int randnum = Engine::random.randomInt(0, 255);
-        Particle newParticle(
-            x + 20, y + 20, al_map_rgb(randnum, randnum, randnum),
-            Engine::random.randomInt(-4, -1), Engine::random.randomInt(-5, -3),
-            1, Engine::settings.get<int>("particleType", 0));
+      if (RandomGenerator::randomInt(0, 10) == 0) {
+        int randnum = RandomGenerator::randomInt(0, 255);
+        Particle newParticle(x + 20, y + 20,
+                             al_map_rgb(randnum, randnum, randnum),
+                             RandomGenerator::randomInt(-4, -1),
+                             RandomGenerator::randomInt(-5, -3), 1,
+                             scene.getSettings().get<int>("particleType", 0));
         smokePart.push_back(newParticle);
       }
     }
@@ -77,32 +79,32 @@ void Robot::update() {
   for (unsigned int i = 0; i < smokePart.size(); i++) {
     smokePart.at(i).update();
 
-    if (Engine::random.randomInt(0, 10) == 0) {
+    if (RandomGenerator::randomInt(0, 10) == 0) {
       smokePart.erase(smokePart.begin() + i);
     }
   }
 
   // Rocket particles
-  if (Engine::settings.get<int>("particleType", 0) != 3 && rocket) {
+  if (scene.getSettings().get<int>("particleType", 0) != 3 && rocket) {
     for (int i = 0; i < 800; i++) {
-      if (Engine::random.randomInt(0, 10) == 0) {
+      if (RandomGenerator::randomInt(0, 10) == 0) {
         ALLEGRO_COLOR part_color =
-            al_map_rgb(255, Engine::random.randomInt(0, 255), 0);
+            al_map_rgb(255, RandomGenerator::randomInt(0, 255), 0);
 
-        if (Engine::settings.get<bool>("christmas", false)) {
-          int red_or_green = Engine::random.randomInt(0, 1);
+        if (scene.getSettings().get<bool>("christmas", false)) {
+          int red_or_green = RandomGenerator::randomInt(0, 1);
           part_color =
               al_map_rgb(255 * red_or_green, 255 - red_or_green * 255, 0);
         }
 
         Particle newParticle1(x + 21, y + 55, part_color,
-                              Engine::random.randomInt(-2, 2),
-                              Engine::random.randomInt(1, 5), 1,
-                              Engine::settings.get<int>("particleType", 0));
+                              RandomGenerator::randomInt(-2, 2),
+                              RandomGenerator::randomInt(1, 5), 1,
+                              scene.getSettings().get<int>("particleType", 0));
         Particle newParticle2(x + 52, y + 55, part_color,
-                              Engine::random.randomInt(-2, 2),
-                              Engine::random.randomInt(0, 4), 1,
-                              Engine::settings.get<int>("particleType", 0));
+                              RandomGenerator::randomInt(-2, 2),
+                              RandomGenerator::randomInt(0, 4), 1,
+                              scene.getSettings().get<int>("particleType", 0));
         rocketPart.push_back(newParticle1);
         rocketPart.push_back(newParticle2);
       }
@@ -112,7 +114,7 @@ void Robot::update() {
   for (unsigned int i = 0; i < rocketPart.size(); i++) {
     rocketPart.at(i).update();
 
-    if (Engine::random.randomInt(0, 2) == 0) {
+    if (RandomGenerator::randomInt(0, 2) == 0) {
       rocketPart.erase(rocketPart.begin() + i);
     }
   }
@@ -126,7 +128,7 @@ void Robot::update() {
         JoystickListener::button[JOY_XBOX_BUMPER_LEFT]) {
       keyPressed = true;
 
-      if (Engine::random.randomInt(0, 3) == 1) {
+      if (RandomGenerator::randomInt(0, 3) == 1) {
         soundFlame.play({.gain = 0.01f});
       }
 
@@ -181,21 +183,21 @@ void Robot::draw() {
   if (alive) {
     // Invincible
     if (invincibleTimer > 0) {
-      if (!rocket || Engine::settings.get<int>("particleType", 0) != 3)
+      if (!rocket || scene.getSettings().get<int>("particleType", 0) != 3)
         robotInvincible.draw(x, y);
-      else if (rocket && Engine::settings.get<int>("particleType", 0) == 3)
+      else if (rocket && scene.getSettings().get<int>("particleType", 0) == 3)
         robotInvincibleFire.draw(x, y);
     }
     // Standard
     else {
-      if (!rocket || Engine::settings.get<int>("particleType", 0) != 3)
+      if (!rocket || scene.getSettings().get<int>("particleType", 0) != 3)
         mainRobot.draw(x, y);
-      else if (rocket && Engine::settings.get<int>("particleType", 0) == 3)
+      else if (rocket && scene.getSettings().get<int>("particleType", 0) == 3)
         robotFire.draw(x, y);
     }
 
     // Xmas mode!
-    if (Engine::settings.get<bool>("christmas", false)) {
+    if (scene.getSettings().get<bool>("christmas", false)) {
       christmasHat.draw(x + 20, y - 12);
     }
   }

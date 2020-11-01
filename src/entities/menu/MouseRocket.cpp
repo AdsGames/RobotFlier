@@ -1,7 +1,7 @@
 #include "MouseRocket.h"
 
-#include "../../engine/Core.h"
 #include "../../engine/input/MouseListener.h"
+#include "../../engine/random/RandomGenerator.h"
 #include "../../helpers/tools.h"
 
 MouseRocket::MouseRocket(Scene& scene) : Sprite(scene, "mouse", 0, 0, 20) {
@@ -15,21 +15,21 @@ void MouseRocket::update() {
   y = MouseListener::mouse_y;
 
   // Add mouse particles
-  if (Engine::settings.get<int>("particleType", 0) != 3 && mouse_rocket_up) {
+  if (scene.getSettings().get<int>("particleType", 0) != 3 && mouse_rocket_up) {
     for (int i = 0; i < 50; i++) {
       ALLEGRO_COLOR part_color =
-          al_map_rgb(255, Engine::random.randomInt(0, 255), 0);
+          al_map_rgb(255, RandomGenerator::randomInt(0, 255), 0);
 
       // Christmas colours
-      if (Engine::settings.get<bool>("christmas", false)) {
-        int red_or_green = Engine::random.randomInt(0, 1) * 255;
+      if (scene.getSettings().get<bool>("christmas", false)) {
+        int red_or_green = RandomGenerator::randomInt(0, 1) * 255;
         part_color = al_map_rgb(red_or_green, 255 - red_or_green, 0);
       }
 
       Particle newParticle(x + width / 2, y + 16, part_color,
-                           Engine::random.randomInt(-2, 2),
-                           Engine::random.randomInt(8, 20), 1,
-                           Engine::settings.get<int>("particleType", 0));
+                           RandomGenerator::randomInt(-2, 2),
+                           RandomGenerator::randomInt(8, 20), 1,
+                           scene.getSettings().get<int>("particleType", 0));
       parts.push_back(newParticle);
     }
   }
@@ -37,7 +37,7 @@ void MouseRocket::update() {
   // Update particles
   for (unsigned int i = 0; i < parts.size(); i++) {
     parts.at(i).update();
-    if (Engine::random.randomInt(0, 10) == 0) {
+    if (RandomGenerator::randomInt(0, 10) == 0) {
       parts.erase(parts.begin() + i);
     }
   }

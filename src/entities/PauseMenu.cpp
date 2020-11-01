@@ -1,7 +1,6 @@
 #include "PauseMenu.h"
 
 #include "../constants/globals.h"
-#include "../engine/Core.h"
 #include "../engine/helpers/stringFns.h"
 #include "../engine/input/JoystickListener.h"
 #include "../engine/input/KeyListener.h"
@@ -25,9 +24,9 @@ void PauseMenu::update() {
       KeyListener::keyPressed[ALLEGRO_KEY_SPACE] ||
       JoystickListener::buttonPressed[JOY_XBOX_START]) {
     if (paused) {
-      Engine::window.hideMouse();
+      scene.getWindow().hideMouse();
     } else {
-      Engine::window.showMouse();
+      scene.getWindow().showMouse();
     }
     paused = !paused;
   }

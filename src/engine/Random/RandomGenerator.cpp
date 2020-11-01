@@ -2,10 +2,8 @@
 
 #include <chrono>
 
-// Ctor
-RandomGenerator::RandomGenerator() {
-  rng = std::mt19937(std::random_device{}());
-}
+// Init generator
+std::mt19937 RandomGenerator::rng = std::mt19937(std::random_device{}());
 
 // Random Float
 float RandomGenerator::randomFloat(const float min, const float max) {

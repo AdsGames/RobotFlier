@@ -1,7 +1,6 @@
 #include "SettingsMenu.h"
 
 #include "../../constants/globals.h"
-#include "../../engine/Core.h"
 #include "../../engine/input/MouseListener.h"
 #include "../../helpers/tools.h"
 
@@ -41,23 +40,25 @@ void SettingsMenu::update() {
     // Particles toggle
     if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x, 400,
                   480, MouseListener::mouse_y, MouseListener::mouse_y)) {
-      Engine::settings.set(
+      scene.getSettings().set(
           "particleType",
-          (Engine::settings.get<int>("particleType", 0) + 1) % 4);
+          (scene.getSettings().get<int>("particleType", 0) + 1) % 4);
     }
     // Sound button toggle
     else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
                        180, 260, MouseListener::mouse_y,
                        MouseListener::mouse_y)) {
-      Engine::settings.set("sound", !Engine::settings.get<bool>("sound", true));
+      scene.getSettings().set("sound",
+                              !scene.getSettings().get<bool>("sound", true));
     }
     // Music button toggle
     else if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x,
                        180, 260, MouseListener::mouse_y,
                        MouseListener::mouse_y)) {
-      Engine::settings.set("music", !Engine::settings.get<bool>("music", true));
+      scene.getSettings().set("music",
+                              !scene.getSettings().get<bool>("music", true));
 
-      if (Engine::settings.get<bool>("music", false)) {
+      if (scene.getSettings().get<bool>("music", false)) {
         scene.getAudio().playStream("mainmenu");
       } else {
         scene.getAudio().stopStream("mainmenu");
@@ -68,30 +69,33 @@ void SettingsMenu::update() {
     else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
                        400, 480, MouseListener::mouse_y,
                        MouseListener::mouse_y)) {
-      const bool isFullscreen = Engine::settings.get<bool>("fullscreen", false);
+      const bool isFullscreen =
+          scene.getSettings().get<bool>("fullscreen", false);
 
       if (isFullscreen) {
-        Engine::window.setMode(DISPLAY_MODE::WINDOWED);
-        Engine::settings.set("fullscreen", false);
+        scene.getWindow().setMode(DISPLAY_MODE::WINDOWED);
+        scene.getSettings().set("fullscreen", false);
       } else {
-        Engine::window.setMode(DISPLAY_MODE::FULLSCREEN_WINDOW_LETTERBOX);
-        Engine::settings.set("fullscreen", true);
+        scene.getWindow().setMode(DISPLAY_MODE::FULLSCREEN_WINDOW_LETTERBOX);
+        scene.getSettings().set("fullscreen", true);
       }
-      Engine::window.hideMouse();
+      scene.getWindow().hideMouse();
     }
     // Screen shake
     else if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x,
                        290, 370, MouseListener::mouse_y,
                        MouseListener::mouse_y)) {
-      Engine::settings.set(
-          "screenshake", (Engine::settings.get<int>("screenshake", 0) + 1) % 4);
+      scene.getSettings().set(
+          "screenshake",
+          (scene.getSettings().get<int>("screenshake", 0) + 1) % 4);
     }
     // Control Toggle
     else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
                        290, 370, MouseListener::mouse_y,
                        MouseListener::mouse_y)) {
-      Engine::settings.set(
-          "controlMode", (Engine::settings.get<int>("controlMode", 0) + 1) % 3);
+      scene.getSettings().set(
+          "controlMode",
+          (scene.getSettings().get<int>("controlMode", 0) + 1) % 3);
     }
     // Power off
     else if (collision(540, 620, MouseListener::mouse_x, MouseListener::mouse_x,
@@ -117,12 +121,13 @@ void SettingsMenu::draw() {
   options.draw(0, 0);
 
   // Buttons
-  ui_particle[Engine::settings.get<int>("particleType", 0)].draw(280, 407);
-  ui_sound[Engine::settings.get<bool>("sound", true)].draw(120, 180);
-  ui_music[Engine::settings.get<bool>("music", true)].draw(280, 180);
-  ui_window[Engine::settings.get<bool>("fullscreen", false)].draw(120, 407);
-  ui_screenshake[Engine::settings.get<int>("screenshake", 0)].draw(280, 295, 0);
-  ui_control[Engine::settings.get<int>("controlMode", 0)].draw(120, 295);
+  ui_particle[scene.getSettings().get<int>("particleType", 0)].draw(280, 407);
+  ui_sound[scene.getSettings().get<bool>("sound", true)].draw(120, 180);
+  ui_music[scene.getSettings().get<bool>("music", true)].draw(280, 180);
+  ui_window[scene.getSettings().get<bool>("fullscreen", false)].draw(120, 407);
+  ui_screenshake[scene.getSettings().get<int>("screenshake", 0)].draw(280, 295,
+                                                                      0);
+  ui_control[scene.getSettings().get<int>("controlMode", 0)].draw(120, 295);
 
   // Button Text
   orbitron_24.draw(110, 154,
