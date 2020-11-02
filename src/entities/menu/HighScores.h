@@ -1,0 +1,45 @@
+/*
+ * Mouse Rocket
+ * Allan Legemaate
+ * Renders game settings menu
+ * 01/11/2020
+ */
+#ifndef ENTITIES_MENU_HIGH_SCORES_H
+#define ENTITIES_MENU_HIGH_SCORES_H
+
+#include "../../engine/entities/GameObject.h"
+#include "../../engine/scene/Scene.h"
+#include "../../engine/textures/Texture.h"
+#include "ScoreTable.h"
+
+class HighScores : public GameObject {
+ public:
+  // Constructor
+  HighScores(Scene& scene);
+
+  // Logic override
+  virtual void update() override;
+
+  // Draw override
+  virtual void draw() override;
+
+  // Close
+  void setOpen(const bool open);
+
+ private:
+  // Openstate
+  bool open;
+
+  // Score table
+  ScoreTable highscores;
+
+  // Textures
+  Texture highscores_table;
+
+  // Fonts
+  Font orbitron_36;
+  Font orbitron_24;
+  Font orbitron_18;
+};
+
+#endif  // ENTITIES_MENU_HIGH_SCORES_H

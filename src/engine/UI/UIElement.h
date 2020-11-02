@@ -1,225 +1,56 @@
-/**
- * UI Element
- * Danny Van Stemp and Allan Legemaate
- * Top level UI element
- * 24/09/2017
- **/
+/*
+ * Ui Element
+ * Parent class for other ui elements
+ * Allan Legemaate
+ * 01/11/2020
+ */
 
-#ifndef ENGINE_UI_UIELEMENT_H
-#define ENGINE_UI_UIELEMENT_H
+#ifndef ENGINE_UI_UIELEMENT
+#define ENGINE_UI_UIELEMENT
 
-#include <allegro5/allegro_font.h>
-
+#include <functional>
 #include <string>
 
-class UIElement {
+#include "../entities/GameObject.h"
+#include "../fonts/Font.h"
+
+class UIElement : public GameObject {
  public:
   // Constructor
-  UIElement();
-  UIElement(const int x,
-            const int y,
-            std::string text,
-            std::string id,
-            ALLEGRO_FONT* font);
+  UIElement(Scene& scene,
+            const float x,
+            const float y,
+            const int z,
+            const std::string& text,
+            const std::string& font);
 
-  // Dtor
-  virtual ~UIElement();
+  // Draws the object to screen
+  virtual void draw() override;
 
-  // Get X
-  int getX();
-
-  // Get y
-  int getY();
-
-  // Get text of element
-  std::string getText();
-
-  // Get element ID
-  std::string getId();
-
-  // Hide element
-  void hide();
-
-  // Show element
-  void show();
-
-  // Is visible or not
-  bool isVisible();
-
-  // Set visibility
-  void setVisibility(bool visible);
-
-  // Disable element
-  void disable();
-
-  // Enable element
-  void enable();
-
-  // Is enabled or not
-  bool isEnabled();
-
-  // Set transparency level
-  void setTransparency(const float alpha);
-
-  // Set image rotation
-  void setBitmapRotationAngle(const float rotation);
-
-  // Set x
-  void setX(const int x);
-
-  // Set y
-  void setY(const int y);
-
-  // Set text colour
-  void setTextColour(ALLEGRO_COLOR colour);
-
-  // Set background colour
-  void setBackgroundColour(ALLEGRO_COLOR colour);
-
-  // Set cell fill
-  void setCellFillTransparent(const bool n);
-
-  // Set text justification
-  void setTextJustification(const int justification);
-
-  // Element width
-  int getWidth();
-
-  // Element height
-  int getHeight();
-
-  // Set padding
-  void setPadding(const int x, const int y);
-
-  // Set position
-  void setPosition(const int x, const int y);
-
-  // Set element size
-  void setSize(const int width, const int height);
-
-  // Set text
-  void setText(std::string text);
-
-  // Set id
-  void setId(std::string id);
-
-  // Set image
-  void setImage(ALLEGRO_BITMAP* image);
+  // Set visiblity
+  void setVisible(const bool visible);
 
   // Set font
-  void setFont(ALLEGRO_FONT* font);
+  void setFont(const std::string& font);
 
-  // Set background visibility
-  void setVisibleBackground(const bool b);
+  // Set text
+  void setText(const std::string& text);
 
-  // Set width
-  void setWidth(const int width);
-
-  // Set height
-  void setHeight(const int height);
-
-  // Can focus
-  virtual bool canFocus();
-
-  // Focus
-  void focus();
-
-  // Unfocus
-  void unfocus();
-
-  // Set border thickness
-  void setBorderThickness(const int thickness);
-
-  // Disable hover effect
-  void disableHoverEffect();
-
-  // Disable hover effect
-  void enableHoverEffect();
-
-  // Mouse over
-  bool hover();
-
-  // Clicked
-  bool clicked();
-
-  // Update element
-  virtual void update() = 0;
-
-  // Draw element
-  virtual void draw() = 0;
-
-  // Set callbacks
-  void setOnClick(void* func);
-  void setOnHover(void* func);
-  void setOnFocus(void* func);
+  // Set on click
+  void setOnClick(std::function<void(void)> func);
 
  protected:
-  // Position
-  int x, y;
-
-  // Dimensions of element
-  int width, height;
-
-  // Padding
-  int padding_x, padding_y;
-
-  // Text colour
-  ALLEGRO_COLOR text_colour;
-
-  // Background colour
-  ALLEGRO_COLOR background_colour;
-
-  // Fill with transparency
-  bool transparent_cell_fill;
-
-  // Primitive alpha
-  float alpha;
-
-  // Background visibility
-  bool visible_background;
-
-  // Thickness of border
-  int border_thickness;
-
-  // Visibility status
+  // Visibility
   bool visible;
 
-  // Disabled status
-  bool disabled;
-
-  // Hover effect enabled
-  bool hover_effect;
-
-  // Image rotation
-  float bitmap_rotation_angle;
-
-  // Optional image
-  ALLEGRO_BITMAP* image;
-
   // Font
-  ALLEGRO_FONT* UIElement_font;
+  Font font;
 
-  // Text of element
+  // Text
   std::string text;
 
-  // Justification of text
-  int justification;
-
-  // Unique id of element
-  std::string id;
-
-  // Focused
-  bool focused;
-
-  // Function pointers
-  // On hover
-  void* onHover;
-
-  // On focus
-  void* onFocus;
-
-  // On click
-  void* onClick;
+  // On Click
+  std::function<void(void)> onClick;
 };
 
-#endif  // ENGINE_UI_UIELEMENT_H
+#endif  // ENGINE_UI_UIELEMENT

@@ -1,22 +1,15 @@
 #include "Label.h"
 
-// Constructor
-Label::Label() : UIElement() {}
-
 // Detailed constructor
-Label::Label(const int x,
+Label::Label(Scene& scene,
+             const int x,
              const int y,
-             std::string text,
-             std::string id,
-             ALLEGRO_FONT* font)
-    : UIElement(x, y, text, id, font) {
-  if (font != nullptr) {
-    this->width = al_get_text_width(font, text.c_str()) + padding_x;
-    this->height = al_get_font_line_height(font);
-  } else {
-    this->width = 10;
-    this->height = 10;
-  }
+             const int z,
+             const std::string& text,
+             const std::string& font)
+    : UIElement(scene, x, y, z, text, font) {
+  this->height = this->font.getHeight();
+  this->width = this->font.getWidth(text);
 }
 
 // Draw label
@@ -25,12 +18,6 @@ void Label::draw() {
   if (!visible)
     return;
 
-  // Draw text
-  if (UIElement_font != nullptr && getText() != "") {
-    al_draw_text(UIElement_font, text_colour, x + padding_x + padding_x,
-                 y + padding_y, 0, text.c_str());
-  }
+  // Text
+  font.draw(x, y, text, al_map_rgb(0, 0, 0));
 }
-
-// Update label
-void Label::update() {}

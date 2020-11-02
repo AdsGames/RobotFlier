@@ -1,11 +1,15 @@
 #include "Menu.h"
 
+#include <iostream>
+
 #include "../constants/globals.h"
 #include "../engine/entities/Sprite.h"
 #include "../engine/input/JoystickListener.h"
 #include "../engine/input/KeyListener.h"
 #include "../engine/input/MouseListener.h"
 #include "../engine/random/RandomGenerator.h"
+#include "../engine/ui/Button.h"
+#include "../entities/menu/HighScores.h"
 #include "../entities/menu/MouseRocket.h"
 #include "../entities/menu/SettingsMenu.h"
 
@@ -25,34 +29,41 @@ Menu::Menu() {
   this->add<Sprite>(*this, background_image, 0.0f, 0.0f, 0);
 
   // Add mouse
-  this->add<MouseRocket>(*this);
+  mouse_rocket = this->add<MouseRocket>(*this);
+
+  // Add random button
+  int button_id =
+      this->add<Button>(*this, 10, 10, 2, "hello world", "orbitron_24");
+  this->get<Button>(button_id).setOnClick(
+      []() -> void { std::cout << "hia" << std::endl; });
 
   // Add settings screen component
   settings_screen = this->add<SettingsMenu>(*this);
+
+  // Add highscores component
+  scores_screen = this->add<HighScores>(*this);
+
+  // Add help sprite
+  help_sprite = this->add<Sprite>(*this, "helpScreen", 0, 0, 10);
+  this->get<Sprite>(help_sprite).setVisible(false);
+
+  // Add credits sprite
+  credits_sprite = this->add<Sprite>(*this, "credits", 0, 0, 10);
+  this->get<Sprite>(credits_sprite).setVisible(false);
+
+  // Add controls sprite
+  controls_sprite = this->add<Sprite>(*this, "controls", 0, 0, 10);
+  this->get<Sprite>(controls_sprite).setVisible(false);
 
   start = this->getAsset().getImage("start");
   highscores_button = this->getAsset().getImage("highscores");
   title = this->getAsset().getImage("title");
 
-  credits = this->getAsset().getImage("credits");
   ui_credits = this->getAsset().getImage("ui_credits");
-  highscores_table = this->getAsset().getImage("highscores_table");
   ui_help = this->getAsset().getImage("ui_help");
-  helpScreen = this->getAsset().getImage("helpScreen");
   xbox_start = this->getAsset().getImage("xbox_start");
-  ui_screenshot_notification =
-      this->getAsset().getImage("ui_screenshot_notification");
   ui_controls = this->getAsset().getImage("ui_controls");
-  controls = this->getAsset().getImage("controls");
-
   ui_options = this->getAsset().getImage("ui_options");
-  ui_options_small = this->getAsset().getImage("ui_options_small");
-
-  // Load fonts
-  orbitron_36 = this->getAsset().getFont("orbitron_36");
-  orbitron_24 = this->getAsset().getFont("orbitron_24");
-  orbitron_18 = this->getAsset().getFont("orbitron_18");
-  orbitron_12 = this->getAsset().getFont("orbitron_12");
 
   // Init animation vars
   animation_pos = 0;
@@ -88,79 +99,61 @@ void Menu::update() {
     Scene::setNextScene(SCENE_GAME);
   }
 
-  // Open submenu or start game
-  if (mini_screen == MINISTATE_MENU) {
-    // Start game with controller
-    if (JoystickListener::buttonPressed[JOY_XBOX_START] ||
-        JoystickListener::buttonPressed[JOY_XBOX_A]) {
+  // Start game with controller
+  if (JoystickListener::buttonPressed[JOY_XBOX_START] ||
+      JoystickListener::buttonPressed[JOY_XBOX_A]) {
+    startClicked = true;
+  }
+
+  // Buttons
+  if (MouseListener::mouse_pressed & 1) {
+    // Start game
+    if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 40,
+                  40 + start.getWidth(), MouseListener::mouse_y,
+                  MouseListener::mouse_y, 410, 410 + start.getHeight())) {
       startClicked = true;
     }
-
-    // Buttons
-    if (MouseListener::mouse_pressed & 1) {
-      // Start game
-      if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 40,
-                    40 + start.getWidth(), MouseListener::mouse_y,
-                    MouseListener::mouse_y, 410, 410 + start.getHeight())) {
-        startClicked = true;
-      }
-      // Scores
-      else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 660,
-                         660 + highscores_button.getWidth(),
-                         MouseListener::mouse_y, MouseListener::mouse_y, 30,
-                         30 + highscores_button.getHeight())) {
-        mini_screen = MINISTATE_SCORES;
-      }
-      // Credits menu
-      else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 542,
-                         644, MouseListener::mouse_y, MouseListener::mouse_y,
-                         548, 600)) {
-        mini_screen = MINISTATE_CREDITS;
-      }
-      // Controls menu
-      else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 644,
-                         696, MouseListener::mouse_y, MouseListener::mouse_y,
-                         548, 600)) {
-        mini_screen = MINISTATE_CONTROLS;
-      }
-      // Help screen
-      else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 696,
-                         749, MouseListener::mouse_y, MouseListener::mouse_y,
-                         548, 600)) {
-        mini_screen = MINISTATE_TUTORIAL;
-      }
-      // Options menu
-      else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 749,
-                         800, MouseListener::mouse_y, MouseListener::mouse_y,
-                         548, 600)) {
-        mini_screen = MINISTATE_OPTIONS;
-        SettingsMenu& settings = this->get<SettingsMenu>(settings_screen);
-        settings.setOpen(true);
-      }
+    // Scores
+    else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 660,
+                       660 + highscores_button.getWidth(),
+                       MouseListener::mouse_y, MouseListener::mouse_y, 30,
+                       30 + highscores_button.getHeight())) {
+      this->get<HighScores>(scores_screen).setOpen(true);
     }
-  }
-  // Exit menus
-  else if (mini_screen == MINISTATE_TUTORIAL ||
-           mini_screen == MINISTATE_CREDITS ||
-           mini_screen == MINISTATE_CONTROLS ||
-           mini_screen == MINISTATE_SCORES) {
-    if (KeyListener::lastKeyPressed != -1 || MouseListener::mouse_pressed & 1 ||
-        JoystickListener::lastButtonPressed != -1) {
-      mini_screen = MINISTATE_MENU;
-      draw();
+    // Credits menu
+    else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 542, 644,
+                       MouseListener::mouse_y, MouseListener::mouse_y, 548,
+                       600)) {
+      this->get<Sprite>(credits_sprite).setVisible(true);
+    }
+    // Controls menu
+    else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 644, 696,
+                       MouseListener::mouse_y, MouseListener::mouse_y, 548,
+                       600)) {
+      this->get<Sprite>(controls_sprite).setVisible(false);
+    }
+    // Help screen
+    else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 696, 749,
+                       MouseListener::mouse_y, MouseListener::mouse_y, 548,
+                       600)) {
+      this->get<Sprite>(help_sprite).setVisible(false);
+    }
+    // Options menu
+    else if (collision(MouseListener::mouse_x, MouseListener::mouse_x, 749, 800,
+                       MouseListener::mouse_y, MouseListener::mouse_y, 548,
+                       600)) {
+      this->get<SettingsMenu>(settings_screen).setOpen(true);
     }
   }
 
   // Close game
-  if (KeyListener::key[ALLEGRO_KEY_ESCAPE])
+  if (KeyListener::key[ALLEGRO_KEY_ESCAPE]) {
     Scene::setNextScene(SCENE_EXIT);
+  }
 }
 
 // Draw to screen
 void Menu::draw() {
-  // Menu Background
-  img_menu.draw(0, 0, 0);
-
   // Start button
   start.draw((animation_pos * 3.2) - start.getWidth(), 400, 0);
 
@@ -186,50 +179,4 @@ void Menu::draw() {
 
   ui_options.draw(749,
                   SCREEN_H - (animation_pos * ui_options.getHeight()) / 100);
-
-  // Draw scores
-  if (mini_screen == MINISTATE_SCORES) {
-    // Highscore background
-    highscores_table.draw(200, 50);
-
-    // Title
-    orbitron_36.draw(400, 75, "Highscores", al_map_rgb(0, 0, 0),
-                     ALLEGRO_ALIGN_CENTRE);
-
-    // Read the top 10 scores
-    for (int i = 0; i < 10; i++) {
-      orbitron_24.draw(250, (i * 40) + 130,
-                       std::to_string(highscores.getScore(i)),
-                       al_map_rgb(0, 0, 0), ALLEGRO_ALIGN_CENTRE);
-      orbitron_18.draw(575, (i * 40) + 132, highscores.getName(i),
-                       al_map_rgb(0, 0, 0), ALLEGRO_ALIGN_RIGHT);
-    }
-  }
-  // Tutorial screen
-  else if (mini_screen == MINISTATE_TUTORIAL) {
-    helpScreen.draw(0, 0);
-  }
-  // Credits screen
-  else if (mini_screen == MINISTATE_CREDITS) {
-    credits.draw(0, 0);
-  }
-  // Credits screen
-  else if (mini_screen == MINISTATE_CONTROLS) {
-    controls.draw(0, 0);
-  }
-
-  // Debug
-  if (this->getSettings().get<bool>("debug", false)) {
-    // Joystick testing
-    if (joystick_enabled) {
-      for (int i = 0; i < JoystickListener::JOY_MAX_BUTTONS; i++) {
-        orbitron_12.draw(20, 10 * i + 20,
-                         "Joystick B " + std::to_string(i) + " : " +
-                             std::to_string(JoystickListener::button[i]));
-      }
-    }
-
-    // FPS
-    orbitron_12.draw(SCREEN_W - 100, 20, "FPS:" + std::to_string(fps));
-  }
 }

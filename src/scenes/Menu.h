@@ -21,7 +21,6 @@
 #include "../engine/particles/Particle.h"
 #include "../engine/scene/Scene.h"
 #include "../engine/textures/Texture.h"
-#include "../entities/menu/ScoreTable.h"
 #include "../helpers/tools.h"
 
 class Menu : public Scene {
@@ -39,9 +38,6 @@ class Menu : public Scene {
   static void readSettings();
   static void writeSettings();
 
-  // Score table
-  ScoreTable highscores;
-
   // Vars
   int animation_pos;
   int mini_screen;
@@ -53,7 +49,6 @@ class Menu : public Scene {
   Texture helpScreen;
   Texture controls;
   Texture credits;
-  Texture highscores_table;
 
   // Buttons
   Texture start;
@@ -65,18 +60,15 @@ class Menu : public Scene {
 
   Texture ui_credits;
   Texture ui_help;
-  Texture ui_screenshot_notification;
   Texture ui_controls;
   Texture ui_options;
-  Texture ui_options_small;
 
   unsigned int settings_screen;
-
-  // Fonts
-  Font orbitron_36;
-  Font orbitron_24;
-  Font orbitron_18;
-  Font orbitron_12;
+  unsigned int scores_screen;
+  unsigned int help_sprite;
+  unsigned int credits_sprite;
+  unsigned int controls_sprite;
+  unsigned int mouse_rocket;
 };
 
 #endif  // SCENES_MENU_H

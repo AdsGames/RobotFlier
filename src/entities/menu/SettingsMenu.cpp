@@ -33,6 +33,8 @@ SettingsMenu::SettingsMenu(Scene& scene)
 
   ui_back = scene.getAsset().getImage("ui_back");
   ui_exit = scene.getAsset().getImage("ui_exit");
+
+  orbitron_24 = scene.getAsset().getFont("orbitron_24");
 }
 
 void SettingsMenu::update() {

@@ -13,17 +13,14 @@
 class Button : public UIElement {
  public:
   Button();
-  Button(const int x,
+  Button(Scene& scene,
+         const int x,
          const int y,
+         const int z,
          std::string text,
-         std::string id,
-         ALLEGRO_FONT* font);
-  inline virtual ~Button(){};
+         std::string font);
 
   virtual void draw() override;
-  virtual void update() override;
-
-  virtual bool canFocus() override;
 };
 
 #endif  // ENGINE_UI_BUTTON_H

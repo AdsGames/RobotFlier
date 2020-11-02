@@ -12,24 +12,16 @@
 
 class Label : public UIElement {
  public:
-  // Constructor
-  Label();
-
   // Detailed constructor
-  Label(const int x,
+  Label(Scene& scene,
+        const int x,
         const int y,
-        std::string text,
-        std::string id,
-        ALLEGRO_FONT* font);
-
-  // Dtor
-  inline virtual ~Label(){};
+        const int z,
+        const std::string& text,
+        const std::string& font);
 
   // Draw
   virtual void draw() override;
-
-  // Update
-  virtual void update() override;
 };
 
 #endif  // ENGINE_UI_LABEL_H
