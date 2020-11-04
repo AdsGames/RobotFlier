@@ -11,7 +11,7 @@
 #include "../helpers/tools.h"
 
 // Constructor
-GameHud::GameHud(Scene& scene, const unsigned int robotId)
+GameHud::GameHud(Scene& scene, const ObjId robotId)
     : GameObject(scene), robot_id(robotId) {
   // Images
   // Gui

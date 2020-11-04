@@ -34,6 +34,8 @@ class Texture {
   int getWidth() const;
   int getHeight() const;
 
+  bool exists() const;
+
  private:
   static ALLEGRO_BITMAP* loadBitmap(const std::string& file);
 

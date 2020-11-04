@@ -8,6 +8,9 @@
 #ifndef ENGINE_ENTITIES_GAME_OBJECT_H
 #define ENGINE_ENTITIES_GAME_OBJECT_H
 
+// ID type
+using ObjId = unsigned int;
+
 // Foreward declare
 class Scene;
 
@@ -47,7 +50,7 @@ class GameObject {
   bool operator<(const GameObject& obj) const { return (z < obj.getZ()); }
 
   // Get unique id
-  unsigned int getId() const;
+  ObjId getId() const;
 
  protected:
   // Current scene
@@ -62,10 +65,10 @@ class GameObject {
 
  private:
   // Id
-  unsigned int id;
+  ObjId id;
 
   // Id counter
-  static unsigned int index;
+  static ObjId index;
 };
 
 #endif  // ENGINE_ENTITIES_GAME_OBJECT_H

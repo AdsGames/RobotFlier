@@ -53,7 +53,7 @@ void Scene::updateInternal() {
  * Remove
  * @description Remove gameobject from scene hook
  */
-void Scene::remove(const unsigned int id) {
+void Scene::remove(const ObjId id) {
   const unsigned int index = lookup_map.at(id);
   update_pool.erase(update_pool.begin() + index);
   sortGameObjects();
@@ -63,19 +63,19 @@ void Scene::remove(const unsigned int id) {
  * Add Collider
  * @description Add collider
  */
-void Scene::addCollider(const unsigned int id1, const unsigned int id2) {
+void Scene::addCollider(const ObjId id1, const ObjId id2) {
   // Add collider 1
   if (collider_map.count(id1) > 0) {
     collider_map.at(id1).push_back(id2);
   } else {
-    collider_map.at(id1) = std::vector<unsigned>(id2);
+    collider_map.at(id1) = std::vector<ObjId>(id2);
   }
 
   // Add collider 2
   if (collider_map.count(id2) > 0) {
     collider_map.at(id2).push_back(id1);
   } else {
-    collider_map.at(id2) = std::vector<unsigned int>(id1);
+    collider_map.at(id2) = std::vector<ObjId>(id1);
   }
 }
 

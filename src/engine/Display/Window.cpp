@@ -1,14 +1,14 @@
 #include "Window.h"
 
 #include <allegro5/allegro.h>
-#include <exception>
+#include <stdexcept>
 
 #include "../common/Tools.h"
 #include "../scene/Scene.h"
 
 Window::Window() {
-  window_w = 1600;
-  window_h = 1200;
+  window_w = 800;
+  window_h = 600;
 
   draw_w = 800;
   draw_h = 600;
@@ -22,6 +22,7 @@ Window::Window() {
   display_mode = DISPLAY_MODE::WINDOWED;
 
   display = nullptr;
+  buffer = nullptr;
 
   // Clear frams array
   for (int i = 0; i < 100; i++) {
@@ -145,7 +146,7 @@ void Window::resize(const int window_w, const int window_h) {
 
     // Invalid mode
     default:
-      throw std::runtime_error("[Display Mode]: Invalid display mode passed.");
+      throw std::runtime_error("[Window]: Invalid display mode passed");
   }
 }
 
@@ -197,12 +198,13 @@ void Window::setMode(const DISPLAY_MODE mode) {
 
 void Window::draw(Scene* current_scene) {
   if (!display || !buffer) {
-    return;
+    throw std::runtime_error("[Window]: Display not initialized");
   }
 
   // Render a frame
   al_set_target_bitmap(buffer);
   al_clear_to_color(al_map_rgb(0, 0, 0));
+
   current_scene->drawInternal();
   current_scene->draw();
 

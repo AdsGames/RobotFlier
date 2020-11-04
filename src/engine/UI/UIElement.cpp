@@ -1,5 +1,8 @@
 #include "UIElement.h"
 
+#include <iostream>
+#include "../common/Tools.h"
+#include "../input/MouseListener.h"
 #include "../scene/Scene.h"
 
 // Constructor
@@ -18,7 +21,9 @@ void UIElement::setVisible(const bool visible) {
 }
 
 void UIElement::setFont(const std::string& text) {
-  this->font = scene.getAsset().getFont(text);
+  if (text != "") {
+    this->font = scene.getAsset().getFont(text);
+  }
 }
 
 void UIElement::setText(const std::string& text) {
@@ -27,6 +32,20 @@ void UIElement::setText(const std::string& text) {
 
 // Draw
 void UIElement::draw() {}
+
+// Update
+void UIElement::update() {
+  if (onClick && MouseListener::mouse_pressed & 1) {
+    bool is_colliding =
+        tools::collision<int>(MouseListener::mouse_x, MouseListener::mouse_x, x,
+                              x + this->getWidth(), MouseListener::mouse_y,
+                              MouseListener::mouse_y, y, y + this->getHeight());
+
+    if (is_colliding) {
+      onClick();
+    }
+  }
+}
 
 // On click
 void UIElement::setOnClick(std::function<void(void)> func) {

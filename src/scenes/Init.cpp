@@ -171,7 +171,7 @@ Init::Init() {
   this->getSettings().setAutosave(true);
 
   // Go to menu
-  Scene::setNextScene(SCENE_INTRO);
+  Scene::setNextScene(SCENE_MENU);
 }
 
 // Destruct scene

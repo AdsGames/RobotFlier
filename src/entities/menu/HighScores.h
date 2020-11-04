@@ -17,13 +17,10 @@ class HighScores : public GameObject {
   // Constructor
   HighScores(Scene& scene);
 
-  // Logic override
-  virtual void update() override;
-
   // Draw override
   virtual void draw() override;
 
-  // Close
+  // Open and close
   void setOpen(const bool open);
 
  private:

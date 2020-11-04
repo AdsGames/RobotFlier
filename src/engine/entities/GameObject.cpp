@@ -4,7 +4,7 @@
 #include "../scene/Scene.h"
 
 // Set incrementing index count
-unsigned int GameObject::index = 0;
+ObjId GameObject::index = 0;
 
 // Constructor
 GameObject::GameObject(Scene& scene, const float x, const float y, const int z)
@@ -59,6 +59,6 @@ int GameObject::getZ() const {
 }
 
 // Get unique id
-unsigned int GameObject::getId() const {
+ObjId GameObject::getId() const {
   return id;
 }

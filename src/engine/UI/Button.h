@@ -10,6 +10,8 @@
 
 #include "UIElement.h"
 
+#include "../textures/Texture.h"
+
 class Button : public UIElement {
  public:
   Button();
@@ -20,7 +22,16 @@ class Button : public UIElement {
          std::string text,
          std::string font);
 
+  Button(Scene& scene,
+         const int x,
+         const int y,
+         const int z,
+         std::string imageId);
+
   virtual void draw() override;
+
+ private:
+  Texture image;
 };
 
 #endif  // ENGINE_UI_BUTTON_H

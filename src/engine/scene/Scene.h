@@ -10,6 +10,7 @@
 
 #include <map>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -46,7 +47,7 @@ class Scene {
 
   // Add game object to scene pool
   template <typename T, typename... Args>
-  unsigned int add(Args&&... args) {
+  ObjId add(Args&&... args) {
     std::unique_ptr<GameObject> obj =
         std::make_unique<T>(T(std::forward<Args>(args)...));
     const int id = obj->getId();
@@ -55,12 +56,23 @@ class Scene {
     return id;
   }
 
+  // Add game object to scene pool
+  template <typename T, typename... Args>
+  T& addObj(Args&&... args) {
+    std::unique_ptr<GameObject> obj =
+        std::make_unique<T>(T(std::forward<Args>(args)...));
+    const int id = obj->getId();
+    update_pool.push_back(std::move(obj));
+    sortGameObjects();
+    return get<T>(id);
+  }
+
   // Remove game object
-  void remove(const unsigned int id);
+  void remove(const ObjId id);
 
   // Get game object
   template <class T>
-  T& get(const unsigned int id) {
+  T& get(const ObjId id) {
     try {
       unsigned int index = lookup_map[id];
       return dynamic_cast<T&>(*update_pool.at(index));
@@ -71,7 +83,7 @@ class Scene {
   }
 
   // Add collider
-  void addCollider(const unsigned int obj1, const unsigned int obj2);
+  void addCollider(const ObjId obj1, const ObjId obj2);
 
   // Set next scene
   static void setNextScene(const ProgramScene sceneId);
@@ -94,10 +106,10 @@ class Scene {
   std::vector<std::unique_ptr<GameObject>> update_pool;
 
   // Quick gameobject lookup
-  std::map<unsigned int, unsigned int> lookup_map;
+  std::map<ObjId, unsigned int> lookup_map;
 
   // Quick collider lookup
-  std::map<unsigned int, std::vector<unsigned int>> collider_map;
+  std::map<ObjId, std::vector<ObjId>> collider_map;
 };
 
 #endif  // ENGINE_SCENE_SCENE_H

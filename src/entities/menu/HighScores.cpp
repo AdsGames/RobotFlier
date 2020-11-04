@@ -4,19 +4,13 @@
 #include "../../engine/input/KeyListener.h"
 #include "../../engine/input/MouseListener.h"
 
-HighScores::HighScores(Scene& scene)
-    : GameObject(scene, 0, 0, 20), open(false) {
+#include <iostream>
+
+HighScores::HighScores(Scene& scene) : GameObject(scene, 0, 0, 3), open(false) {
   highscores_table = scene.getAsset().getImage("highscores_table");
   orbitron_36 = scene.getAsset().getFont("orbitron_36");
   orbitron_24 = scene.getAsset().getFont("orbitron_24");
   orbitron_18 = scene.getAsset().getFont("orbitron_18");
-}
-
-void HighScores::update() {
-  if (KeyListener::lastKeyPressed != -1 || MouseListener::mouse_pressed & 1 ||
-      JoystickListener::lastButtonPressed != -1) {
-    setOpen(false);
-  }
 }
 
 void HighScores::draw() {

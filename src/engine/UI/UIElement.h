@@ -27,6 +27,9 @@ class UIElement : public GameObject {
   // Draws the object to screen
   virtual void draw() override;
 
+  // Runs updates
+  virtual void update() override;
+
   // Set visiblity
   void setVisible(const bool visible);
 

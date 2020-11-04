@@ -18,7 +18,7 @@
 // Game class
 class GameHud : public GameObject {
  public:
-  GameHud(Scene& scene, const unsigned int robotId);
+  GameHud(Scene& scene, const ObjId robotId);
 
   virtual ~GameHud(){};
 
@@ -39,7 +39,7 @@ class GameHud : public GameObject {
   Font orbitron_30;
 
   // Robot id
-  unsigned int robot_id;
+  ObjId robot_id;
 };
 
 #endif  // ENTITIES_GAMEHUD_H

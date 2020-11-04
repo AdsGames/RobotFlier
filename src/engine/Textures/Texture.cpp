@@ -45,6 +45,13 @@ int Texture::getHeight() const {
 }
 
 /**
+ * Return if it exists
+ */
+bool Texture::exists() const {
+  return bitmap != nullptr;
+}
+
+/**
  * Return width of loaded texture
  */
 int Texture::getWidth() const {

@@ -13,16 +13,14 @@
 class EntitySpawner : public GameObject {
  public:
   // Constructor
-  EntitySpawner(Scene& scene,
-                const unsigned int robotId,
-                const unsigned int pauseMenuId);
+  EntitySpawner(Scene& scene, const ObjId robotId, const ObjId pauseMenuId);
 
   // Logic override
   virtual void update() override;
 
  private:
-  unsigned int robot_id;
-  unsigned int pause_menu_id;
+  ObjId robot_id;
+  ObjId pause_menu_id;
 };
 
 #endif  // ENTITIES_ENTITY_SPAWNER_H

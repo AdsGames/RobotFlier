@@ -52,10 +52,10 @@ class Game : public Scene {
   Font orbitron_24;
 
   // Our robot
-  unsigned int hectar_id;
+  ObjId hectar_id;
 
   // Pause menu
-  unsigned int pause_menu_id;
+  ObjId pause_menu_id;
 
   // Declare integers
   int themeNumber;

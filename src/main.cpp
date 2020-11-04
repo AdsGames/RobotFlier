@@ -5,8 +5,9 @@
  * Robots in space!
  */
 #include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
-#include <memory>
+#include <stdexcept>
 
 #include "constants/globals.h"
 #include "engine/Locator.h"
@@ -82,7 +83,9 @@ void changeScene() {
 // Sets up game
 void setup() {
   // Init allegro 5
-  al_init();
+  if (!al_init()) {
+    throw std::runtime_error("Could not allegro");
+  }
 
   // Setup window
   Locator::provideWindow<Window>();
@@ -90,21 +93,39 @@ void setup() {
   Locator::getWindow().setTitle("Loading");
 
   // Input
-  al_install_keyboard();
-  al_install_mouse();
-  al_install_joystick();
+  if (!al_install_keyboard()) {
+    throw std::runtime_error("Could not init keyboard");
+  }
+  if (!al_install_mouse()) {
+    throw std::runtime_error("Could not init mouse");
+  }
+  if (!al_install_joystick()) {
+    throw std::runtime_error("Could not init joystick");
+  }
 
   // Fonts
-  al_init_font_addon();
-  al_init_ttf_addon();
+  if (!al_init_font_addon()) {
+    throw std::runtime_error("Could not init font addon");
+  }
+  if (!al_init_ttf_addon()) {
+    throw std::runtime_error("Could not init ttf addon");
+  }
 
   // Graphics
-  al_init_image_addon();
-  al_init_primitives_addon();
+  if (!al_init_image_addon()) {
+    throw std::runtime_error("Could not init image addon");
+  }
+  if (!al_init_primitives_addon()) {
+    throw std::runtime_error("Could not init primitives addon");
+  }
 
   // Audio
-  al_install_audio();
-  al_init_acodec_addon();
+  if (!al_install_audio()) {
+    throw std::runtime_error("Could not init audio addon");
+  }
+  if (!al_init_acodec_addon()) {
+    throw std::runtime_error("Could not init acodec addon");
+  }
   al_reserve_samples(20);
 
   // Events
