@@ -16,7 +16,7 @@
 class Font {
  public:
   Font();
-  Font(const std::string path, const int size);
+  Font(const std::string& path, const int size);
   virtual ~Font();
 
   void load(const std::string& path, const int size);

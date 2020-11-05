@@ -15,7 +15,7 @@
 class Stream {
  public:
   Stream();
-  Stream(const std::string& path);
+  explicit Stream(const std::string& path);
 
   virtual ~Stream();
 

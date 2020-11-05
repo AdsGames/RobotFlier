@@ -15,7 +15,7 @@
 class SettingsMenu : public GameObject {
  public:
   // Constructor
-  SettingsMenu(Scene& scene);
+  explicit SettingsMenu(Scene& scene);
 
   // Logic override
   virtual void update() override;

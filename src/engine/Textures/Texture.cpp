@@ -5,7 +5,7 @@
 // Ctor
 Texture::Texture() : bitmap(nullptr) {}
 
-Texture::Texture(const std::string path) {
+Texture::Texture(const std::string& path) {
   load(path);
 }
 
@@ -20,7 +20,7 @@ Texture::~Texture() {
  * Load texture from file
  * @param path, path to file
  */
-void Texture::load(std::string path) {
+void Texture::load(const std::string& path) {
   bitmap = loadBitmap(path);
 }
 

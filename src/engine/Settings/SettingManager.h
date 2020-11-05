@@ -10,14 +10,17 @@ typedef std::pair<std::string, SettingType> Setting;
 
 class SettingManager {
  public:
+  // Ctor
+  SettingManager();
+
   // File IO
-  void load(const std::string file);
+  void load(const std::string& file);
   void save();
-  void save(const std::string file);
+  void save(const std::string& file);
 
   // Getters
   template <class T>
-  T get(const std::string key, T fallback) const {
+  T get(const std::string& key, T fallback) const {
     try {
       auto pair = this->findSetting(key);
       return std::get<T>(pair.second);
@@ -26,7 +29,7 @@ class SettingManager {
     }
   }
 
-  std::string getString(const std::string key) const {
+  std::string getString(const std::string& key) const {
     auto pair = this->findSetting(key);
 
     switch (pair.second.index()) {
@@ -44,14 +47,13 @@ class SettingManager {
   }
 
   // Setters
-  void set(const std::string key, SettingType value);
+  void set(const std::string& key, SettingType value);
   void set(const Setting pair);
 
   void setAutosave(const bool autosave);
 
  private:
-  const Setting findSetting(const std::string key) const;
-  bool settingExists(const std::string key) const;
+  const Setting findSetting(const std::string& key) const;
 
   std::string file_name;
   bool autosave;

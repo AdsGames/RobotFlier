@@ -24,7 +24,7 @@ class DefaultAudioService : public AudioService {
   virtual void stopSound(const std::string& key) override;
 
   // Play stream
-  virtual void playStream(const std::string key,
+  virtual void playStream(const std::string& key,
                           const bool loop = false) override;
 
   // Stop stream

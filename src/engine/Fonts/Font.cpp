@@ -5,7 +5,7 @@
 // Ctor
 Font::Font() : font(nullptr), font_size(0) {}
 
-Font::Font(const std::string path, const int size)
+Font::Font(const std::string& path, const int size)
     : font(nullptr), font_size(size) {
   load(path, size);
 }

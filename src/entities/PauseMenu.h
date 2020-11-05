@@ -16,7 +16,7 @@
 class PauseMenu : public GameObject {
  public:
   // Constructor
-  PauseMenu(Scene& scene);
+  explicit PauseMenu(Scene& scene);
 
   // Update pause menu
   virtual void update() override;
@@ -25,7 +25,7 @@ class PauseMenu : public GameObject {
   virtual void draw() override;
 
   // Get paused state
-  bool getPaused();
+  bool getPaused() const;
 
  private:
   // Paused state

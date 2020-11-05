@@ -13,7 +13,7 @@ PauseMenu::PauseMenu(Scene& scene) : GameObject(scene), paused(false) {
   orbitron_18 = scene.getAsset().getFont("orbitron_18");
 }
 
-bool PauseMenu::getPaused() {
+bool PauseMenu::getPaused() const {
   return paused;
 }
 

@@ -16,7 +16,7 @@
 
 class Robot : public GameObject {
  public:
-  Robot(Scene& scene, float x = 0.0f, float y = 0.0f);
+  explicit Robot(Scene& scene, float x = 0.0f, float y = 0.0f);
 
   virtual void update() override;
   virtual void draw() override;

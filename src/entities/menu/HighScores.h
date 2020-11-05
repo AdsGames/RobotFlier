@@ -15,7 +15,7 @@
 class HighScores : public GameObject {
  public:
   // Constructor
-  HighScores(Scene& scene);
+  explicit HighScores(Scene& scene);
 
   // Draw override
   virtual void draw() override;

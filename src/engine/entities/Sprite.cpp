@@ -12,7 +12,7 @@ Sprite::Sprite(Scene& scene, const float x, const float y, const int z)
 
 // Constructor
 Sprite::Sprite(Scene& scene,
-               const std::string texture,
+               const std::string& texture,
                const float x,
                const float y,
                const int z)

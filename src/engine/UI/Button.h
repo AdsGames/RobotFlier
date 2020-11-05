@@ -19,14 +19,14 @@ class Button : public UIElement {
          const int x,
          const int y,
          const int z,
-         std::string text,
-         std::string font);
+         const std::string& text,
+         const std::string& font);
 
   Button(Scene& scene,
          const int x,
          const int y,
          const int z,
-         std::string imageId);
+         const std::string& imageId);
 
   virtual void draw() override;
 

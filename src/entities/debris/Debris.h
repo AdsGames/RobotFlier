@@ -32,9 +32,6 @@ class Debris : public Sprite {
   float motionMultiplier;
   float acceleration;
 
-  // Particles
-  std::vector<Particle> parts;
-
   int damage;
 };
 

@@ -4,12 +4,9 @@
 #include "../engine/input/KeyListener.h"
 
 // Construct scene
-Intro::Intro() {
+Intro::Intro() : start_time(std::chrono::high_resolution_clock::now()) {
   // Load intro image
   this->add<Sprite>(*this, "intro");
-
-  // Set start time
-  start_time = std::chrono::high_resolution_clock::now();
 }
 
 // Update (goto menu!)

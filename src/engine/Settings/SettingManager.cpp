@@ -10,8 +10,11 @@ struct FileIOException : public std::exception {
   const char* what() const throw() { return "File I/O Exception"; }
 };
 
+// Constructor
+SettingManager::SettingManager() : autosave(false) {}
+
 // Load file
-void SettingManager::load(const std::string file) {
+void SettingManager::load(const std::string& file) {
   std::string line;
   std::ifstream fileStream(file);
 
@@ -53,9 +56,8 @@ void SettingManager::save() {
   save(file_name);
 }
 
-void SettingManager::save(const std::string file) {
+void SettingManager::save(const std::string& file) {
   std::ofstream fileStream(file);
-  std::string line = "";
 
   if (!fileStream.is_open()) {
     throw FileIOException();
@@ -71,7 +73,7 @@ void SettingManager::save(const std::string file) {
 }
 
 // Setters
-void SettingManager::set(const std::string key, SettingType value) {
+void SettingManager::set(const std::string& key, SettingType value) {
   set({key, value});
 }
 
@@ -83,16 +85,8 @@ void SettingManager::set(const Setting pair) {
   }
 }
 
-// Setting exists
-bool SettingManager::settingExists(const std::string key) const {
-  auto it = std::find_if(
-      settings.begin(), settings.end(),
-      [key](const Setting& setting) { return setting.first == key; });
-  return it != settings.end();
-}
-
 // Find
-const Setting SettingManager::findSetting(const std::string key) const {
+const Setting SettingManager::findSetting(const std::string& key) const {
   auto it = std::find_if(
       settings.begin(), settings.end(),
       [key](const Setting& setting) { return setting.first == key; });

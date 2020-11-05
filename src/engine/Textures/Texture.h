@@ -16,10 +16,10 @@
 class Texture {
  public:
   Texture();
-  Texture(const std::string path);
+  explicit Texture(const std::string& path);
   virtual ~Texture();
 
-  void load(const std::string path);
+  void load(const std::string& path);
   void create(const int width, const int height);
 
   void draw(const int x, const int y, const int flags = 0) const;

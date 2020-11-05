@@ -18,10 +18,10 @@ EntitySpawner::EntitySpawner(Scene& scene,
 
 void EntitySpawner::update() {
   // Get hectar
-  Robot& hectar = scene.get<Robot>(robot_id);
+  const Robot& hectar = scene.get<Robot>(robot_id);
 
   // Get pause menu
-  PauseMenu& pauseMenu = scene.get<PauseMenu>(pause_menu_id);
+  const PauseMenu& pauseMenu = scene.get<PauseMenu>(pause_menu_id);
 
   const int y = RandomGenerator::randomInt(30, 550);
 

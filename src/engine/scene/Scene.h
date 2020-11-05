@@ -50,7 +50,7 @@ class Scene {
   ObjId add(Args&&... args) {
     std::unique_ptr<GameObject> obj =
         std::make_unique<T>(T(std::forward<Args>(args)...));
-    const int id = obj->getId();
+    const int id = obj.get()->getId();
     update_pool.push_back(std::move(obj));
     sortGameObjects();
     return id;
@@ -61,7 +61,7 @@ class Scene {
   T& addObj(Args&&... args) {
     std::unique_ptr<GameObject> obj =
         std::make_unique<T>(T(std::forward<Args>(args)...));
-    const int id = obj->getId();
+    const int id = obj.get()->getId();
     update_pool.push_back(std::move(obj));
     sortGameObjects();
     return get<T>(id);

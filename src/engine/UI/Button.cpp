@@ -10,8 +10,8 @@ Button::Button(Scene& scene,
                const int x,
                const int y,
                const int z,
-               std::string text,
-               std::string font)
+               const std::string& text,
+               const std::string& font)
     : UIElement(scene, x, y, z, text, font) {
   this->height = this->font.getHeight();
   this->width = this->font.getWidth(text);
@@ -21,7 +21,7 @@ Button::Button(Scene& scene,
                const int x,
                const int y,
                const int z,
-               std::string textureId)
+               const std::string& textureId)
     : UIElement(scene, x, y, z, "", "") {
   this->image = this->scene.getAsset().getImage(textureId);
   this->height = this->image.getHeight();

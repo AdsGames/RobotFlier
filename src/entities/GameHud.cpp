@@ -31,7 +31,7 @@ GameHud::GameHud(Scene& scene, const ObjId robotId)
 // Draw to screen
 void GameHud::draw() {
   // Get Robot
-  Robot& robot = scene.get<Robot>(robot_id);
+  const Robot& robot = scene.get<Robot>(robot_id);
 
   // Draw HUD
   // Info

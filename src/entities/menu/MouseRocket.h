@@ -13,7 +13,7 @@
 class MouseRocket : public Sprite {
  public:
   // Constructor
-  MouseRocket(Scene& scene);
+  explicit MouseRocket(Scene& scene);
 
   // Logic override
   virtual void update() override;

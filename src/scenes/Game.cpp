@@ -17,7 +17,7 @@
 #include "../helpers/tools.h"
 
 // Constructor
-Game::Game() {
+Game::Game() : edittext("Player") {
   // From globals
   score = 0;
   screenshake = 0;
@@ -30,7 +30,6 @@ Game::Game() {
   arrow_animation = 0.0f;
 
   // End game menu
-  edittext = "Player";
   iter = edittext.end();
 
   // Reset stats
@@ -123,7 +122,7 @@ void Game::update() {
   Robot& hectar = this->get<Robot>(hectar_id);
 
   // Get pause menu
-  PauseMenu& pauseMenu = this->get<PauseMenu>(pause_menu_id);
+  const PauseMenu& pauseMenu = this->get<PauseMenu>(pause_menu_id);
 
   // Actual game stuff
   if (!pauseMenu.getPaused()) {
@@ -246,7 +245,7 @@ void Game::update() {
 // Draw to screen
 void Game::draw() {
   // Get hectar
-  Robot& hectar = this->get<Robot>(hectar_id);
+  const Robot& hectar = this->get<Robot>(hectar_id);
 
   // Start arrow
   if (!hectar.isKeyPressed()) {

@@ -18,14 +18,10 @@
 class tools {
  public:
   // Convert char to float
-  static void abort_on_error(std::string message, std::string title);
+  static void abort_on_error(const std::string& message,
+                             const std::string& title);
 
-  static bool file_exists(std::string filePath);
-
-  static int get_text_offset_x(ALLEGRO_FONT* newFont, std::string newText);
-  static int get_text_offset_y(ALLEGRO_FONT* newFont, std::string newText);
-  static int get_text_width(ALLEGRO_FONT* newFont, std::string newText);
-  static int get_text_height(ALLEGRO_FONT* newFont, std::string newText);
+  static bool file_exists(const std::string& filePath);
 
   // Clamp values
   template <class T>
@@ -65,14 +61,7 @@ class tools {
   }
 
   // Debug message
-  static void log_message(std::string message, bool debug = false);
-
-  // Mouse over
-  static bool mouse_over(const int x,
-                         const int y,
-                         const int width,
-                         const int height);
-  static bool mouse_clicked(const int button, bool reset = true);
+  static void log_message(const std::string& message, const bool debug = false);
 };
 
 #endif  // ENGINE_COMMON_TOOLS_H

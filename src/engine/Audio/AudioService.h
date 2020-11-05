@@ -25,7 +25,7 @@ class AudioService {
   virtual void stopSound(const std::string& key);
 
   // Play stream
-  virtual void playStream(const std::string key, const bool loop = false);
+  virtual void playStream(const std::string& key, const bool loop = false);
 
   // Stop stream
   virtual void stopStream(const std::string& key);

@@ -17,14 +17,14 @@
 class Sprite : public GameObject {
  public:
   // Constructor
-  Sprite(Scene& scene,
-         const float x = 0.0f,
-         const float y = 0.0f,
-         const int z = 0);
+  explicit Sprite(Scene& scene,
+                  const float x = 0.0f,
+                  const float y = 0.0f,
+                  const int z = 0);
 
   // Constructor
   Sprite(Scene& scene,
-         const std::string texture,
+         const std::string& texture,
          const float x = 0.0f,
          const float y = 0.0f,
          const int z = 0);

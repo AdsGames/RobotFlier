@@ -24,7 +24,7 @@ const PlaySoundConfig defaultConfig;
 class Sound {
  public:
   Sound();
-  Sound(const std::string& path);
+  explicit Sound(const std::string& path);
 
   virtual ~Sound();
 
