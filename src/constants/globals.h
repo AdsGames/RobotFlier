@@ -22,7 +22,4 @@ extern int SCREEN_H;
 // Data
 extern int stats[4];
 
-// Is the joystick enabled?
-extern bool joystick_enabled;
-
 #endif  // CONSTANTS_GLOBALS_H

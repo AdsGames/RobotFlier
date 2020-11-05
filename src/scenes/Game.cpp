@@ -250,7 +250,7 @@ void Game::draw() {
 
   // Start arrow
   if (!hectar.isKeyPressed()) {
-    if (joystick_enabled)
+    if (JoystickListener::joystickEnabled)
       ui_a.draw(hectar.getX() + 15,
                 hectar.getY() - 60 - sin(arrow_animation) * 10);
     else

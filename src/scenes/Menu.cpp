@@ -1,5 +1,6 @@
 #include "Menu.h"
 
+#include <functional>
 #include <iostream>
 
 #include "../constants/globals.h"
@@ -46,33 +47,34 @@ Menu::Menu() : current_menu(MENU::NONE) {
   this->get<Sprite>(controls_sprite).setVisible(false);
 
   // Xbox start button
-  if (this->getSettings().get<int>("controlMode", 0) != 1 && joystick_enabled) {
+  if (this->getSettings().get<int>("controlMode", 0) != 1 &&
+      JoystickListener::joystickEnabled) {
     this->add<Sprite>(*this, "xbox_start", 240, 480, 3);
   }
 
   // Add credits button
   this->addObj<Button>(*this, 540, 548, 2, "ui_credits")
-      .setOnClick(std::bind(handleClickCredits, this));
+      .setOnClick(std::bind(&Menu::handleClickCredits, this));
 
   // Add help button
   this->addObj<Button>(*this, 696, 548, 2, "ui_help")
-      .setOnClick(std::bind(handleClickHelp, this));
+      .setOnClick(std::bind(&Menu::handleClickHelp, this));
 
   // Add settings button
   this->addObj<Button>(*this, 748, 548, 2, "ui_options")
-      .setOnClick(std::bind(handleClickSettings, this));
+      .setOnClick(std::bind(&Menu::handleClickSettings, this));
 
   // Add controls button
   this->addObj<Button>(*this, 644, 548, 2, "ui_controls")
-      .setOnClick(std::bind(handleClickControls, this));
+      .setOnClick(std::bind(&Menu::handleClickControls, this));
 
   // Add highscores button
   this->addObj<Button>(*this, 660, 20, 2, "highscores")
-      .setOnClick(std::bind(handleClickScores, this));
+      .setOnClick(std::bind(&Menu::handleClickScores, this));
 
   // Add start button
   this->addObj<Button>(*this, 20, 440, 2, "start")
-      .setOnClick(std::bind(handleClickStart, this));
+      .setOnClick(std::bind(&Menu::handleClickStart, this));
 
   // Hide mouse
   this->getWindow().hideMouse();

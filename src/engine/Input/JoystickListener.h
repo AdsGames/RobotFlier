@@ -43,6 +43,8 @@ class JoystickListener {
   static bool stickMoved[JOY_MAX_STICK_BOOLEANS];
   static bool stickReleased[JOY_MAX_STICK_BOOLEANS];
 
+  static bool joystickEnabled;
+
  protected:
  private:
   static bool lastTicksButton[JOY_MAX_BUTTONS];

@@ -1,11 +1,12 @@
 #include "Init.h"
 
 #include "../constants/globals.h"
+#include "../engine/input/JoystickListener.h"
 
 // Construct scene
 Init::Init() {
   // Joystick detector
-  joystick_enabled = bool(al_get_num_joysticks() > 0);
+  JoystickListener::joystickEnabled = bool(al_get_num_joysticks() > 0);
 
   // Backgrounds
   this->getAsset().loadImage("background_0",

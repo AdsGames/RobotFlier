@@ -31,6 +31,9 @@ class Window {
   // Setters
   void setMode(DISPLAY_MODE mode);
 
+  void setBufferSize(const int width, const int height);
+  void setWindowSize(const int width, const int height);
+
   // Getters
   int getDisplayMode();
 
@@ -87,7 +90,6 @@ class Window {
   int fps = 0;
 
   // Private setters to reduce copy code
-  void setWindowSize(const int width, const int height);
   void setScale(const float x, const float y);
   void setTranslation(const int x, const int y);
 };

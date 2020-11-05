@@ -89,6 +89,8 @@ void setup() {
 
   // Setup window
   Locator::provideWindow<Window>();
+  Locator::getWindow().setWindowSize(1600, 1200);
+  Locator::getWindow().setBufferSize(800, 600);
   Locator::getWindow().setMode(DISPLAY_MODE::WINDOWED);
   Locator::getWindow().setTitle("Loading");
 
@@ -200,7 +202,7 @@ void update() {
   // Joystick plugged or unplugged
   else if (ev.type == ALLEGRO_EVENT_JOYSTICK_CONFIGURATION) {
     al_reconfigure_joysticks();
-    joystick_enabled = (al_get_num_joysticks() > 0);
+    JoystickListener::joystickEnabled = (al_get_num_joysticks() > 0);
   }
 
   // Queue empty? Lets draw

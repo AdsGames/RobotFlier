@@ -12,6 +12,7 @@ bool JoystickListener::stick[JOY_MAX_STICK_BOOLEANS] = {false};
 bool JoystickListener::stickMoved[JOY_MAX_STICK_BOOLEANS] = {false};
 bool JoystickListener::stickReleased[JOY_MAX_STICK_BOOLEANS] = {false};
 bool JoystickListener::lastTicksStick[JOY_MAX_STICK_BOOLEANS] = {false};
+bool JoystickListener::joystickEnabled = false;
 
 // For allegro 5, we use events
 void JoystickListener::on_event(ALLEGRO_EVENT_TYPE event_type,

@@ -7,14 +7,14 @@
 #include "../scene/Scene.h"
 
 Window::Window() {
-  window_w = 800;
-  window_h = 600;
+  window_w = 0;
+  window_h = 0;
 
-  draw_w = 800;
-  draw_h = 600;
+  draw_w = 0;
+  draw_h = 0;
 
-  scale_x = 0;
-  scale_y = 0;
+  scale_x = 1;
+  scale_y = 1;
 
   translation_x = 0;
   translation_y = 0;
@@ -154,6 +154,12 @@ void Window::resize(const int window_w, const int window_h) {
 void Window::setWindowSize(const int width, const int height) {
   window_w = width;
   window_h = height;
+}
+
+// Set buffer size
+void Window::setBufferSize(const int width, const int height) {
+  draw_w = width;
+  draw_h = height;
 }
 
 // Set scale
