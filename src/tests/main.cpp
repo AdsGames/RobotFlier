@@ -8,7 +8,7 @@
 SettingManager settingsTest = SettingManager();
 
 TEST_CASE("Load booleans", "[single-file]") {
-  settingsTest.load("./data/settings.dat");
+  settingsTest.load("../src/tests/data/settings.dat");
   REQUIRE(settingsTest.get<bool>("bool1", false) == true);
   REQUIRE(settingsTest.get<bool>("bool2", true) == false);
 }
