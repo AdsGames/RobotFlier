@@ -60,6 +60,8 @@ class Window {
 
   void setTitle(const std::string& title);
 
+  void setIcon(const std::string& path);
+
  private:
   // Size of drawing buffer
   int draw_w;

@@ -179,6 +179,15 @@ void Window::setTitle(const std::string& title) {
   al_set_window_title(display, title.c_str());
 }
 
+// Set display icon
+void Window::setIcon(const std::string& path) {
+  ALLEGRO_BITMAP* icon = al_load_bitmap(path.c_str());
+  if (!icon) {
+    throw std::runtime_error("[Window]: Could not load icon " + path);
+  }
+  al_set_display_icon(display, icon);
+}
+
 // Change display mode
 void Window::setMode(const DISPLAY_MODE mode) {
   // Destroy existing display

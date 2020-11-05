@@ -144,6 +144,7 @@ void setup() {
 
   // Window title
   Locator::getWindow().setTitle("Robot Flier");
+  Locator::getWindow().setIcon("images/icon.png");
 
   // Setup service locator
   Locator::provideAudio<DefaultAudioService>();
