@@ -14,9 +14,9 @@ struct FileIOException : public std::exception {
 SettingManager::SettingManager() : autosave(false) {}
 
 // Load file
-void SettingManager::load(const std::string& file) {
+void SettingManager::load(const std::string& path) {
   std::string line;
-  std::ifstream fileStream(file);
+  std::ifstream fileStream(path);
 
   if (!fileStream.is_open()) {
     throw FileIOException();
@@ -48,7 +48,7 @@ void SettingManager::load(const std::string& file) {
   fileStream.close();
 
   // Set internal file name
-  file_name = file;
+  file_name = path;
 }
 
 // Save file
@@ -56,8 +56,8 @@ void SettingManager::save() {
   save(file_name);
 }
 
-void SettingManager::save(const std::string& file) {
-  std::ofstream fileStream(file);
+void SettingManager::save(const std::string& path) {
+  std::ofstream fileStream(path);
 
   if (!fileStream.is_open()) {
     throw FileIOException();

@@ -5,106 +5,90 @@
 
 #include "../common/Tools.h"
 
-/**
- * Load assets from file
- */
-AssetManager::AssetManager() {
-  // Todo
-}
+// Constructor
+AssetManager::AssetManager() {}
 
-/**
- * Unload assets
- */
-AssetManager::~AssetManager() {
-  // Todo
-}
+// Destructor
+AssetManager::~AssetManager() {}
 
-/**
- * Load image from disk and assign key
- * @param key, unique id to assign to image
- * @param path, path to file
- */
+// Load image from disk and assign key
 void AssetManager::loadImage(const std::string& key, const std::string& path) {
-  loaded_image[key] = Texture(path);
   tools::log_message("[Asset Manager] Loading image: " + key);
+
+  try {
+    loaded_image[key] = Texture(path);
+  } catch (std::runtime_error) {
+    throw std::runtime_error("Could not load asset " + key);
+  }
 }
 
-/**
- * Load audio from disk and assign key
- * @param key, unique id to assign to sound
- * @param path, path to file
- */
+// Load audio from disk and assign key
 void AssetManager::loadAudio(const std::string& key, const std::string& path) {
-  loaded_audio[key] = Sound(path);
   tools::log_message("[Asset Manager] Loading audio: " + key);
+
+  try {
+    loaded_audio[key] = Sound(path);
+  } catch (std::runtime_error) {
+    throw std::runtime_error("Could not load asset " + key);
+  }
 }
 
-/**
- * Load font from disk and assign key
- * @param key, unique id to assign to font
- * @param path, path to file
- */
+// Load font from disk and assign key
 void AssetManager::loadFont(const std::string& key,
                             const std::string& path,
                             const int size) {
-  loaded_font[key] = Font(path, size);
   tools::log_message("[Asset Manager] Loading font: " + key);
+
+  try {
+    loaded_font[key] = Font(path, size);
+  } catch (std::runtime_error) {
+    throw std::runtime_error("Could not load asset " + key);
+  }
 }
 
-/**
- * Load stream from disk and assign key
- * @param key, unique id to assign to istreammage
- * @param path, path to file
- */
+// Load stream from disk and assign key
 void AssetManager::loadStream(const std::string& key, const std::string& path) {
-  loaded_stream[key] = Stream(path);
   tools::log_message("[Asset Manager] Loading stream: " + key);
+
+  try {
+    loaded_stream[key] = Stream(path);
+  } catch (std::runtime_error) {
+    throw std::runtime_error("Could not load asset " + key);
+  }
 }
 
-/**
- * Get image reference
- * @param key, key of asset to find
- */
+// Get image reference
 const Texture& AssetManager::getImage(const std::string& key) {
   try {
     return loaded_image.at(key);
-  } catch (...) {
+  } catch (std::out_of_range) {
     throw std::runtime_error("Could not find image asset " + key);
   }
 }
 
-/**
- * Get audio reference
- * @param key, key of asset to find
- */
+// Get audio reference
 const Sound& AssetManager::getAudio(const std::string& key) {
   try {
     return loaded_audio.at(key);
-  } catch (...) {
+  } catch (std::out_of_range) {
     throw std::runtime_error("Could not find audio asset " + key);
   }
 }
 
-/**
- * Get font reference
- * @param key, key of asset to find
- */
+// Get font reference
 const Font& AssetManager::getFont(const std::string& key) {
   try {
     return loaded_font.at(key);
-  } catch (...) {
+  } catch (std::out_of_range) {
     throw std::runtime_error("Could not find font asset " + key);
   }
 }
 
-/**
- * Get stream reference
- * @param key, key of asset to find
- */
+// Get stream reference
 const Stream& AssetManager::getStream(const std::string& key) {
   try {
     return loaded_stream.at(key);
-  } catch (...) {
+  } catch (std::out_of_range) {
     throw std::runtime_error("Could not find stream asset " + key);
   }
 }

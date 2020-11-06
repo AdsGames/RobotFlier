@@ -31,47 +31,47 @@ Window::Window() {
 }
 
 // Returns current display mode
-int Window::getDisplayMode() {
+int Window::getDisplayMode() const {
   return display_mode;
 }
 
 // Gets draw width
-int Window::getDrawWidth() {
+int Window::getDrawWidth() const {
   return draw_w;
 }
 
 // Gets draw height
-int Window::getDrawHeight() {
+int Window::getDrawHeight() const {
   return draw_h;
 }
 
 // Gets translation x
-int Window::getTranslationX() {
+int Window::getTranslationX() const {
   return translation_x;
 }
 
 // Gets translation y
-int Window::getTranslationY() {
+int Window::getTranslationY() const {
   return translation_y;
 }
 
 // Gets scale width
-int Window::getScaleWidth() {
-  return scale_x * draw_w;
+int Window::getWindowWidth() const {
+  return window_w;
 }
 
 // Gets scale height
-int Window::getScaleHeight() {
-  return scale_y * draw_h;
+int Window::getWindowHeight() const {
+  return window_h;
 }
 
 // Gets scale x
-float Window::getScaleX() {
+float Window::getScaleX() const {
   return scale_x;
 }
 
 // Gets scale y
-float Window::getScaleY() {
+float Window::getScaleY() const {
   return scale_y;
 }
 
@@ -83,6 +83,11 @@ void Window::hideMouse() {
 // Show mouse on display
 void Window::showMouse() {
   al_show_mouse_cursor(display);
+}
+
+// Register display with event queue
+void Window::registerEventSource(ALLEGRO_EVENT_QUEUE* queue) {
+  al_register_event_source(queue, al_get_display_event_source(display));
 }
 
 // Resize window
@@ -225,9 +230,8 @@ void Window::draw(Scene* current_scene) {
 
   al_set_target_backbuffer(display);
   al_clear_to_color(al_map_rgb(0, 0, 0));
-  al_draw_scaled_bitmap(buffer, 0, 0, getDrawWidth(), getDrawHeight(),
-                        getTranslationX(), getTranslationY(), getScaleWidth(),
-                        getScaleHeight(), 0);
+  al_draw_scaled_bitmap(buffer, 0, 0, draw_w, draw_h, translation_x,
+                        translation_y, window_w, window_h, 0);
 
   // Flip (OpenGL)
   al_flip_display();

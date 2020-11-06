@@ -1,39 +1,21 @@
 #include "Sound.h"
 
-#include "../common/Tools.h"
+#include <exception>
 
-// Init global gain
-bool Sound::globalGain = 1.0f;
-
-// Ctor
+// Default constructor
 Sound::Sound() : sample(nullptr) {}
 
+// Constructor with path
 Sound::Sound(const std::string& path) : Sound() {
   load(path);
 }
 
-// Dtor
-Sound::~Sound() {
-  if (sample) {
-    // al_destroy_sample(sample);
-  }
-}
-
-/**
- * Load and assign audio file to given path
- * @param path, path to audio file
- */
+// Load sound from file
 void Sound::load(const std::string& path) {
   sample = loadSample(path);
 }
 
-/**
- * Play sound if it exists
- * @param gain, floating point gain
- * @param pan, left right balance
- * @param speed, playback speed/frequency
- * @param loop, loop status
- */
+// Play this file with config
 void Sound::play(const PlaySoundConfig& config) {
   if (!sample) {
     return;
@@ -46,25 +28,14 @@ void Sound::play(const PlaySoundConfig& config) {
                  nullptr);
 }
 
-/**
- * Set global gain of sound effects
- * @param gain, global gain
- */
-void Sound::setGlobalGain(const float gain) {
-  Sound::globalGain = gain;
-}
-
-/**
- * Load sample from file
- * @param file, path to audio file
- */
+// Load sample from file
 ALLEGRO_SAMPLE* Sound::loadSample(const std::string& file) {
   // Attempt to load
   ALLEGRO_SAMPLE* temp_sample = al_load_sample(file.c_str());
 
+  // Throw exception if file is not loaded
   if (!temp_sample) {
-    tools::abort_on_error("There was an error loading " + file + "\nOh no :(",
-                          "Loading Error");
+    throw std::runtime_error("There was an error loading sound " + file);
   }
 
   return temp_sample;

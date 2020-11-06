@@ -1,40 +1,21 @@
 #include "Stream.h"
 
-#include "../common/Tools.h"
+#include <exception>
 
-// Init global gain
-bool Stream::globalGain = 1.0f;
-
-// Ctor
+// Constructor
 Stream::Stream() : stream(nullptr) {}
 
+// Constructor with path
 Stream::Stream(const std::string& path) : Stream() {
   load(path);
 }
 
-// Dtor
-Stream::~Stream() {
-  if (stream) {
-    // al_drain_audio_stream(stream);
-    // al_destroy_audio_stream(stream);
-  }
-}
-
-/**
- * Load and assign audio file to given path
- * @param path, path to audio file
- */
+// Load stream from file
 void Stream::load(const std::string& path) {
   stream = loadStream(path);
 }
 
-/**
- * Play Stream if it exists
- * @param gain, floating point gain
- * @param pan, left right balance
- * @param speed, playback speed/frequency
- * @param loop, loop status
- */
+// Play stream
 void Stream::play(const bool loop) {
   if (!stream) {
     return;
@@ -49,9 +30,7 @@ void Stream::play(const bool loop) {
   al_attach_audio_stream_to_mixer(stream, al_get_default_mixer());
 }
 
-/**
- * Stop stream
- */
+// Stop stream
 void Stream::stop() {
   if (!stream) {
     return;
@@ -60,33 +39,20 @@ void Stream::stop() {
   al_detach_audio_stream(stream);
 }
 
-/**
- * Return sample play status
- */
-bool Stream::isPlaying() {
+// Return if the audio is playing
+bool Stream::isPlaying() const {
   return al_get_audio_stream_playing(stream);
 }
 
-/**
- * Set global gain of Stream effects
- * @param gain, global gain
- */
-void Stream::setGlobalGain(const float gain) {
-  Stream::globalGain = gain;
-}
-
-/**
- * Load sample from file
- * @param file, path to audio file
- */
+// Load allegro sample from file
 ALLEGRO_AUDIO_STREAM* Stream::loadStream(const std::string& file) {
   // Attempt to load
   ALLEGRO_AUDIO_STREAM* temp_stream =
       al_load_audio_stream(file.c_str(), 4, 2048);
 
+  // Throw exception if file is not loaded
   if (!temp_stream) {
-    tools::abort_on_error("There was an error loading " + file + "\nOh no :(",
-                          "Loading Error");
+    throw std::runtime_error("There was an error loading stream " + file);
   }
 
   return temp_stream;

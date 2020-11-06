@@ -8,10 +8,7 @@
 ProgramScene Scene::sceneId = SCENE_NULL;
 ProgramScene Scene::nextScene = SCENE_NULL;
 
-/**
- * Draw
- * @description Draw all objects hooked into scene
- */
+// Draw internal method
 void Scene::drawInternal() {
   // Draw
   for (auto& obj : update_pool) {
@@ -19,10 +16,7 @@ void Scene::drawInternal() {
   }
 }
 
-/**
- * Update
- * @description Update all objects hooked into scene
- */
+// Internal update method
 void Scene::updateInternal() {
   // Update all
   for (unsigned int i = 0; i < update_pool.size(); i++) {
@@ -49,20 +43,14 @@ void Scene::updateInternal() {
   }
 }
 
-/**
- * Remove
- * @description Remove gameobject from scene hook
- */
+// Remove game object from scene
 void Scene::remove(const ObjId id) {
   const unsigned int index = lookup_map.at(id);
   update_pool.erase(update_pool.begin() + index);
   sortGameObjects();
 }
 
-/**
- * Add Collider
- * @description Add collider
- */
+// Add collider between two game objects
 void Scene::addCollider(const ObjId id1, const ObjId id2) {
   // Add collider 1
   if (collider_map.count(id1) > 0) {
@@ -79,10 +67,7 @@ void Scene::addCollider(const ObjId id1, const ObjId id2) {
   }
 }
 
-/**
- * Sort
- * @description Sort gameobjects by z index
- */
+// Sort game objects by Z
 void Scene::sortGameObjects() {
   // Z sort, use defined < operator
   std::sort(update_pool.begin(), update_pool.end(),
@@ -98,10 +83,7 @@ void Scene::sortGameObjects() {
   }
 }
 
-/**
- * SetNextScene
- * @description Sets up next scene
- */
+// Set next scene to load
 void Scene::setNextScene(const ProgramScene sceneId) {
   // If the user doesn't want to exit
   if (Scene::nextScene != SCENE_EXIT) {
@@ -110,34 +92,22 @@ void Scene::setNextScene(const ProgramScene sceneId) {
   }
 }
 
-/**
- * Get Audio
- * @description Get provided audio service
- */
+// Get provided audio service
 AudioService& Scene::getAudio() {
   return Locator::getAudio();
 }
 
-/**
- * Get Asset manager
- * @description Get provided asset manager
- */
+// Get provided asset manager
 AssetManager& Scene::getAsset() {
   return Locator::getAsset();
 }
 
-/**
- * Get Window
- * @description Get provided window
- */
+// Get provided window
 Window& Scene::getWindow() {
   return Locator::getWindow();
 }
 
-/**
- * Get Settings
- * @description Get provided settings manager
- */
+// Get provided settings manager
 SettingManager& Scene::getSettings() {
   return Locator::getSettings();
 }
