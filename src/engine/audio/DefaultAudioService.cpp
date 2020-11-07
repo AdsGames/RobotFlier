@@ -8,10 +8,6 @@ void DefaultAudioService::playSound(const std::string& key,
   sound.play(config);
 }
 
-void DefaultAudioService::stopSound(const std::string& key) {
-  Sound sound = Locator::getAsset().getAudio(key);
-}
-
 void DefaultAudioService::playStream(const std::string& key, const bool loop) {
   Stream stream = Locator::getAsset().getStream(key);
   stream.play(loop);

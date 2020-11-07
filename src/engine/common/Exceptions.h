@@ -8,7 +8,7 @@
  * @brief Exception raised when a file is not found
  *
  */
-class FileIOException : std::runtime_error {
+class FileIOException : public std::runtime_error {
  public:
   explicit FileIOException(const std::string& msg) : std::runtime_error(msg) {}
 };
@@ -17,7 +17,7 @@ class FileIOException : std::runtime_error {
  * @brief Exception raised when a core feature can not load
  *
  */
-class InitException : std::runtime_error {
+class InitException : public std::runtime_error {
  public:
   explicit InitException(const std::string& msg) : std::runtime_error(msg) {}
 };

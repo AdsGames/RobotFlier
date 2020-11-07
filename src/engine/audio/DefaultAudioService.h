@@ -24,13 +24,6 @@ class DefaultAudioService : public AudioService {
                          const PlaySoundConfig& config) override;
 
   /**
-   * @brief Implementation of stopSound
-   *
-   * @override
-   */
-  virtual void stopSound(const std::string& key) override;
-
-  /**
    * @brief Implementation of playStream
    *
    * @override

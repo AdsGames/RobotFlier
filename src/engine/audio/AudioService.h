@@ -27,13 +27,6 @@ class AudioService {
                          const PlaySoundConfig& config = PlaySoundConfig());
 
   /**
-   * @brief Stop sound by id. Stops all instances of given sound.
-   *
-   * @param key Id of sound to stop.
-   */
-  virtual void stopSound(const std::string& key);
-
-  /**
    * @brief Play audio stream by id
    *
    * @param key Id of stream to play
