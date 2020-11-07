@@ -1,7 +1,7 @@
 #ifndef ENGINE_COMMON_EXCEPTIONS_H
 #define ENGINE_COMMON_EXCEPTIONS_H
 
-#include <exception>
+#include <stdexcept>
 #include <string>
 
 /**
