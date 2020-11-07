@@ -16,7 +16,7 @@ class Init : public Scene {
   virtual ~Init();
 
   // Override parent
-  virtual void update() override{};
+  virtual void update() override;
   virtual void draw() override;
 };
 

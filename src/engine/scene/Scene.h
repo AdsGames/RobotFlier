@@ -3,11 +3,11 @@
 
 #include <map>
 #include <memory>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
 #include "../Locator.h"
+#include "../common/Exceptions.h"
 #include "../entities/GameObject.h"
 
 /**
@@ -112,7 +112,7 @@ class Scene {
    * @tparam T Type of game object
    * @param id Id of game object to look up
    * @return Reference to game object if found
-   * @throws std::runtime_error if game object could not be found
+   * @throws KeyLookupException if game object could not be found
    */
   template <class T>
   T& get(const ObjId id) {
@@ -120,7 +120,7 @@ class Scene {
       unsigned int index = lookup_map[id];
       return dynamic_cast<T&>(*update_pool.at(index));
     } catch (...) {
-      throw std::runtime_error("Could not find entity by id " +
+      throw KeyLookupException("Could not find entity by id " +
                                std::to_string(id));
     }
   }

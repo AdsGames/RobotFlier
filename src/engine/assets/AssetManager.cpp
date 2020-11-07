@@ -1,9 +1,9 @@
 #include "AssetManager.h"
 
 #include <algorithm>
-#include <stdexcept>
 
 #include "../Locator.h"
+#include "../common/Exceptions.h"
 
 // Constructor
 AssetManager::AssetManager() {}
@@ -17,8 +17,8 @@ void AssetManager::loadImage(const std::string& key, const std::string& path) {
 
   try {
     loaded_image[key] = Texture(path);
-  } catch (std::runtime_error) {
-    throw std::runtime_error("Could not load asset " + key);
+  } catch (...) {
+    throw FileIOException("Could not load image " + key);
   }
 }
 
@@ -28,8 +28,8 @@ void AssetManager::loadAudio(const std::string& key, const std::string& path) {
 
   try {
     loaded_audio[key] = Sound(path);
-  } catch (std::runtime_error) {
-    throw std::runtime_error("Could not load asset " + key);
+  } catch (...) {
+    throw FileIOException("Could not load sound " + key);
   }
 }
 
@@ -41,8 +41,8 @@ void AssetManager::loadFont(const std::string& key,
 
   try {
     loaded_font[key] = Font(path, size);
-  } catch (std::runtime_error) {
-    throw std::runtime_error("Could not load asset " + key);
+  } catch (...) {
+    throw FileIOException("Could not load font " + key);
   }
 }
 
@@ -52,8 +52,8 @@ void AssetManager::loadStream(const std::string& key, const std::string& path) {
 
   try {
     loaded_stream[key] = Stream(path);
-  } catch (std::runtime_error) {
-    throw std::runtime_error("Could not load asset " + key);
+  } catch (...) {
+    throw FileIOException("Could not load stream " + key);
   }
 }
 
@@ -62,7 +62,7 @@ const Texture& AssetManager::getImage(const std::string& key) {
   try {
     return loaded_image.at(key);
   } catch (std::out_of_range) {
-    throw std::runtime_error("Could not find image asset " + key);
+    throw KeyLookupException("Could not find image " + key);
   }
 }
 
@@ -71,7 +71,7 @@ const Sound& AssetManager::getAudio(const std::string& key) {
   try {
     return loaded_audio.at(key);
   } catch (std::out_of_range) {
-    throw std::runtime_error("Could not find audio asset " + key);
+    throw KeyLookupException("Could not find sound " + key);
   }
 }
 
@@ -80,7 +80,7 @@ const Font& AssetManager::getFont(const std::string& key) {
   try {
     return loaded_font.at(key);
   } catch (std::out_of_range) {
-    throw std::runtime_error("Could not find font asset " + key);
+    throw KeyLookupException("Could not find font " + key);
   }
 }
 
@@ -89,6 +89,6 @@ const Stream& AssetManager::getStream(const std::string& key) {
   try {
     return loaded_stream.at(key);
   } catch (std::out_of_range) {
-    throw std::runtime_error("Could not find stream asset " + key);
+    throw KeyLookupException("Could not find stream " + key);
   }
 }

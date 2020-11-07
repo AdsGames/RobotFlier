@@ -24,7 +24,7 @@ class Font {
    *
    * @param path Path to font file
    * @param size Size of font to load
-   * @throws std::runtime_error If font can not be found at path
+   * @throws FileIOException If font can not be found at path
    */
   Font(const std::string& path, const int size);
 
@@ -33,7 +33,7 @@ class Font {
    *
    * @param path Location of font file
    * @param size Size of font to load
-   * @throws std::runtime_error If font can not be found at path
+   * @throws FileIOException If font can not be found at path
    */
   void load(const std::string& path, const int size);
 
@@ -80,7 +80,7 @@ class Font {
    *
    * @param file Path to file
    * @return ALLEGRO_FONT* File that has been loaded
-   * @throws std::runtime_error If font can not be found at path
+   * @throws FileIOException If font can not be found at path
    */
   static ALLEGRO_FONT* loadFont(const std::string& file, const int size);
 

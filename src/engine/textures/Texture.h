@@ -23,7 +23,7 @@ class Texture {
    * @brief Construct a new Texture object
    *
    * @param path Path to image file
-   * @throws std::runtime_error If image can not be found at path
+   * @throws FileIOException If image can not be found at path
    */
   explicit Texture(const std::string& path);
 
@@ -31,7 +31,7 @@ class Texture {
    * @brief Load and assign image file from a given path
    *
    * @param path Location of image file
-   * @throws std::runtime_error If image can not be found at path
+   * @throws FileIOException If image can not be found at path
    */
   void load(const std::string& path);
 
@@ -104,7 +104,7 @@ class Texture {
    *
    * @param file Path to file
    * @return ALLEGRO_BITMAP* File that has been loaded
-   * @throws std::runtime_error If texture can not be found at path
+   * @throws FileIOException If texture can not be found at path
    */
   static ALLEGRO_BITMAP* loadBitmap(const std::string& file);
 

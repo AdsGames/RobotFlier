@@ -122,7 +122,7 @@ class SettingManager {
    *
    * @param key Key of setting to lookup
    * @return Setting if found
-   * @throws std::runtime_error is thrown if setting is not found
+   * @throws KeyLookupException is thrown if setting is not found
    */
   const Setting findSetting(const std::string& key) const;
 

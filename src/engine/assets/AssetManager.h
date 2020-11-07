@@ -39,7 +39,7 @@ class AssetManager {
    *
    * @param key unique id of asset to find
    * @return Reference to sound if found at key
-   * @throws std::out_of_range Thrown if no object can be found for `key`
+   * @throws KeyLookupException Thrown if no object can be found for `key`
    * @see loadAudio
    */
   const Sound& getAudio(const std::string& key);
@@ -49,7 +49,7 @@ class AssetManager {
    *
    * @param key unique id of asset to find
    * @return Reference to image if found at key
-   * @throws std::out_of_range Thrown if no object can be found for `key`
+   * @throws KeyLookupException Thrown if no object can be found for `key`
    * @see loadImage
    */
   const Texture& getImage(const std::string& key);
@@ -59,7 +59,7 @@ class AssetManager {
    *
    * @param key unique id of asset to find
    * @return Reference to font if found at key
-   * @throws std::out_of_range Thrown if no object can be found for `key`
+   * @throws KeyLookupException Thrown if no object can be found for `key`
    * @see loadFont
    */
   const Font& getFont(const std::string& key);
@@ -69,7 +69,7 @@ class AssetManager {
    *
    * @param key unique id of asset to find
    * @return Reference to stream if found at key
-   * @throws std::out_of_range Thrown if no object can be found for `key`
+   * @throws KeyLookupException Thrown if no object can be found for `key`
    * @see loadStream
    */
   const Stream& getStream(const std::string& key);
@@ -80,6 +80,7 @@ class AssetManager {
    *
    * @param key unique id to assign to image
    * @param path path to asset
+   * @throws FileIOException Thrown if file can not be loaded
    * @see getImage
    */
   void loadImage(const std::string& key, const std::string& path);
@@ -90,6 +91,7 @@ class AssetManager {
    *
    * @param key unique id to assign to audio file
    * @param path path to asset
+   * @throws FileIOException Thrown if file can not be loaded
    * @see getAudio
    */
   void loadAudio(const std::string& key, const std::string& path);
@@ -101,6 +103,7 @@ class AssetManager {
    * @param key unique id to assign to font file
    * @param path path to asset
    * @param size size of font to load in
+   * @throws FileIOException Thrown if file can not be loaded
    * @see getFont
    */
   void loadFont(const std::string& key,
@@ -113,6 +116,7 @@ class AssetManager {
    *
    * @param key unique id to assign to audio stream file
    * @param path path to asset
+   * @throws FileIOException Thrown if file can not be loaded
    * @see getStream
    */
   void loadStream(const std::string& key, const std::string& path);

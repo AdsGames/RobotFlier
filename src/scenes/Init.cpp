@@ -5,9 +5,6 @@
 
 // Construct scene
 Init::Init() {
-  // Joystick detector
-  JoystickListener::joystickEnabled = bool(al_get_num_joysticks() > 0);
-
   // Backgrounds
   this->getAsset().loadImage("background_0",
                              "images/backgrounds/background_0.png");
@@ -170,9 +167,6 @@ Init::Init() {
   // Load settings
   this->getSettings().load("data/settings.dat");
   this->getSettings().setAutosave(true);
-
-  // Go to menu
-  Scene::setNextScene(SCENE_MENU);
 }
 
 // Destruct scene
@@ -180,3 +174,9 @@ Init::~Init() {}
 
 // Draw
 void Init::draw() {}
+
+// Update
+void Init::update() {
+  // Go to menu
+  Scene::setNextScene(SCENE_MENU);
+}

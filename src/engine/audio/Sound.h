@@ -39,7 +39,7 @@ class Sound {
    * @brief Construct a new Sound object
    *
    * @param path Path to audio file
-   * @throws std::runtime_error If sound can not be found at path
+   * @throws FileIOException If sound can not be found at path
    */
   explicit Sound(const std::string& path);
 
@@ -47,7 +47,7 @@ class Sound {
    * @brief Load and assign audio file from a given path
    *
    * @param path Location of sound file
-   * @throws std::runtime_error If sound can not be found at path
+   * @throws FileIOException If sound can not be found at path
    */
   void load(const std::string& path);
 
@@ -64,7 +64,7 @@ class Sound {
    *
    * @param file Path to file
    * @return ALLEGRO_SAMPLE* File that has been loaded
-   * @throws std::runtime_error If sound can not be found at path
+   * @throws FileIOException If sound can not be found at path
    */
   static ALLEGRO_SAMPLE* loadSample(const std::string& file);
 

@@ -1,6 +1,10 @@
+#ifndef ENGINE_COMMON_STRING_FNS_H
+#define ENGINE_COMMON_STRING_FNS_H
+
 #include <memory>
-#include <stdexcept>
 #include <string>
+
+#include "Exceptions.h"
 
 namespace stringFns {
 
@@ -69,13 +73,13 @@ extern float toFloat(std::string str);
  * @param format String to format
  * @param args Arguments to format against
  * @return Formatted string
- * @throws std::runtime_error thrown if the string could not be formatted
+ * @throws InvalidParameterException thrown if the string could not be formatted
  */
 template <typename... Args>
 std::string format(const std::string& format, Args... args) {
   int size = snprintf(nullptr, 0, format.c_str(), args...) + 1;
   if (size <= 0) {
-    throw std::runtime_error("Error during formatting.");
+    throw InvalidParameterException("Error during formatting.");
   }
   std::unique_ptr<char[]> buf(new char[size]);
   snprintf(buf.get(), size, format.c_str(), args...);
@@ -83,3 +87,5 @@ std::string format(const std::string& format, Args... args) {
 }
 
 }  // namespace stringFns
+
+#endif  // ENGINE_COMMON_STRING_FNS_H

@@ -1,15 +1,18 @@
 #include "Engine.h"
 
+// Allegro includes
 #include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
 
-#include "../constants/globals.h"
+// Scenes
 #include "../scenes/Game.h"
 #include "../scenes/Init.h"
 #include "../scenes/Intro.h"
 #include "../scenes/Menu.h"
 
+// Locator provisions
 #include "Locator.h"
 #include "assets/AssetManager.h"
 #include "audio/DefaultAudioService.h"
@@ -20,6 +23,13 @@
 // Update ticks per second
 const float UPDATES_PER_SECOND = 60;
 
+// Exit helper
+void showDialog(const std::string& title, const std::string& message = "") {
+  al_show_native_message_box(nullptr, title.c_str(), title.c_str(),
+                             message.c_str(), nullptr,
+                             ALLEGRO_MESSAGEBOX_ERROR);
+}
+
 // Setup engine
 Engine::Engine()
     : event_queue(nullptr),
@@ -29,58 +39,67 @@ Engine::Engine()
 
 // Start your engine!
 void Engine::start(const ProgramScene scene_id) {
-  // Setup game
-  setup();
+  try {
+    // Set the current scene ID
+    Scene::nextScene = scene_id;
 
-  // Set the current scene ID
-  Scene::sceneId = scene_id;
-  current_scene = new Init();
+    // Setup game
+    setup();
 
-  // Loop
-  while (!closing) {
-    update();
+    // Loop
+    while (!closing) {
+      update();
+    }
+  } catch (FileIOException& e) {
+    showDialog("File Error", e.what());
+  } catch (std::runtime_error& e) {
+    showDialog("Runtime Error", e.what());
+  } catch (...) {
+    showDialog("Unknown Error", "An unknown error has occured :(");
   }
 }
 
 // Change game screen
 void Engine::changeScene() {
-  // If the scene needs to be changed
-  if (Scene::nextScene != SCENE_NULL) {
-    // Delete the current scene
-    if (Scene::nextScene != SCENE_EXIT) {
-      delete current_scene;
-    }
-
-    // Change the scene
-    switch (Scene::nextScene) {
-      case SCENE_INIT:
-        current_scene = new Init();
-        break;
-
-      case SCENE_INTRO:
-        current_scene = new Intro();
-        break;
-
-      case SCENE_MENU:
-        current_scene = new Menu();
-        break;
-
-      case SCENE_GAME:
-        current_scene = new Game();
-        break;
-
-      case SCENE_EXIT:
-      default:
-        closing = true;
-        break;
-    }
-
-    // Change the current scene ID
-    Scene::sceneId = Scene::nextScene;
-
-    // NULL the next scene ID
-    Scene::nextScene = SCENE_NULL;
+  // If the scene needs not to be changed
+  if (Scene::nextScene == SCENE_NULL) {
+    return;
   }
+
+  // Delete the current scene
+  if (Scene::nextScene != SCENE_EXIT) {
+    delete current_scene;
+  }
+
+  // Change the scene
+  switch (Scene::nextScene) {
+    case SCENE_INIT:
+      current_scene = new Init();
+      break;
+
+    case SCENE_INTRO:
+      current_scene = new Intro();
+      break;
+
+    case SCENE_MENU:
+      current_scene = new Menu();
+      break;
+
+    case SCENE_GAME:
+      current_scene = new Game();
+      break;
+
+    case SCENE_EXIT:
+    default:
+      closing = true;
+      break;
+  }
+
+  // Change the current scene ID
+  Scene::sceneId = Scene::nextScene;
+
+  // NULL the next scene ID
+  Scene::nextScene = SCENE_NULL;
 }
 
 // Sets up game
@@ -159,6 +178,9 @@ void Engine::setup() {
 
   // Setup logger
   Locator::provideLogger<DebugLogger>();
+
+  // Setup joystick global
+  JoystickListener::joystickEnabled = al_get_num_joysticks() > 0;
 }
 
 // Universal update
@@ -178,8 +200,10 @@ void Engine::update() {
     j_listener.update();
 
     // Update scene
-    current_scene->update();
-    current_scene->updateInternal();
+    if (current_scene) {
+      current_scene->update();
+      current_scene->updateInternal();
+    }
 
     // Debug console toggle
     if (k_listener.keyPressed[ALLEGRO_KEY_F12]) {
@@ -208,11 +232,13 @@ void Engine::update() {
   // Joystick plugged or unplugged
   else if (ev.type == ALLEGRO_EVENT_JOYSTICK_CONFIGURATION) {
     al_reconfigure_joysticks();
-    JoystickListener::joystickEnabled = (al_get_num_joysticks() > 0);
+    JoystickListener::joystickEnabled = al_get_num_joysticks() > 0;
   }
 
   // Queue empty? Lets draw
   if (al_is_event_queue_empty(event_queue)) {
-    Locator::getWindow().draw(current_scene);
+    if (current_scene) {
+      Locator::getWindow().draw(current_scene);
+    }
   }
 }

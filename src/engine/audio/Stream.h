@@ -23,7 +23,7 @@ class Stream {
    * @brief Construct a new Stream object from asset path
    *
    * @param path Path to audio file
-   * @throws std::runtime_error If stream can not be found at path
+   * @throws FileIOException If stream can not be found at path
    */
   explicit Stream(const std::string& path);
 
@@ -44,7 +44,7 @@ class Stream {
    * @breif Load and assign audio file to given path
    *
    * @param path Location of the audio stream to load
-   * @throws std::runtime_error If stream can not be found at path
+   * @throws FileIOException If stream can not be found at path
    */
   void load(const std::string& path);
 
@@ -61,7 +61,7 @@ class Stream {
    *
    * @param file Path to stream
    * @return ALLEGRO_AUDIO_STREAM* Loaded allegro audio stream
-   * @throws std::runtime_error If stream can not be found at path
+   * @throws FileIOException If stream can not be found at path
    */
   static ALLEGRO_AUDIO_STREAM* loadStream(const std::string& file);
 
