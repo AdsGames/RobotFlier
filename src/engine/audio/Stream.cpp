@@ -1,6 +1,12 @@
 #include "Stream.h"
 
-#include <exception>
+#include "../common/Exceptions.h"
+
+// Buffer count
+const size_t BUFFER_COUNT = 4;
+
+// Samples
+const size_t SAMPLES = 2048;
 
 // Constructor
 Stream::Stream() : stream(nullptr) {}
@@ -45,14 +51,14 @@ bool Stream::isPlaying() const {
 }
 
 // Load allegro sample from file
-ALLEGRO_AUDIO_STREAM* Stream::loadStream(const std::string& file) {
+ALLEGRO_AUDIO_STREAM* Stream::loadStream(const std::string& path) {
   // Attempt to load
   ALLEGRO_AUDIO_STREAM* temp_stream =
-      al_load_audio_stream(file.c_str(), 4, 2048);
+      al_load_audio_stream(path.c_str(), BUFFER_COUNT, SAMPLES);
 
   // Throw exception if file is not loaded
   if (!temp_stream) {
-    throw std::runtime_error("There was an error loading stream " + file);
+    throw FileIOException("There was an error loading stream " + path);
   }
 
   return temp_stream;

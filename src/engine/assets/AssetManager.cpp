@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "../common/Tools.h"
+#include "../Locator.h"
 
 // Constructor
 AssetManager::AssetManager() {}
@@ -13,7 +13,7 @@ AssetManager::~AssetManager() {}
 
 // Load image from disk and assign key
 void AssetManager::loadImage(const std::string& key, const std::string& path) {
-  tools::log_message("[Asset Manager] Loading image: " + key);
+  Locator::getLogger().log("[Asset Manager] Loading image: " + key);
 
   try {
     loaded_image[key] = Texture(path);
@@ -24,7 +24,7 @@ void AssetManager::loadImage(const std::string& key, const std::string& path) {
 
 // Load audio from disk and assign key
 void AssetManager::loadAudio(const std::string& key, const std::string& path) {
-  tools::log_message("[Asset Manager] Loading audio: " + key);
+  Locator::getLogger().log("[Asset Manager] Loading audio: " + key);
 
   try {
     loaded_audio[key] = Sound(path);
@@ -37,7 +37,7 @@ void AssetManager::loadAudio(const std::string& key, const std::string& path) {
 void AssetManager::loadFont(const std::string& key,
                             const std::string& path,
                             const int size) {
-  tools::log_message("[Asset Manager] Loading font: " + key);
+  Locator::getLogger().log("[Asset Manager] Loading font: " + key);
 
   try {
     loaded_font[key] = Font(path, size);
@@ -48,7 +48,7 @@ void AssetManager::loadFont(const std::string& key,
 
 // Load stream from disk and assign key
 void AssetManager::loadStream(const std::string& key, const std::string& path) {
-  tools::log_message("[Asset Manager] Loading stream: " + key);
+  Locator::getLogger().log("[Asset Manager] Loading stream: " + key);
 
   try {
     loaded_stream[key] = Stream(path);

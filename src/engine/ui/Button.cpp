@@ -2,7 +2,6 @@
 
 #include <allegro5/allegro_primitives.h>
 
-#include "../common/Tools.h"
 #include "../scene/Scene.h"
 
 // Ctor

@@ -29,3 +29,10 @@ SettingManager& Locator::getSettings() {
   }
   return *setting_service;
 }
+
+Logger& Locator::getLogger() {
+  if (!logger_service.get()) {
+    throw std::runtime_error("Logger service not found");
+  }
+  return *logger_service;
+}

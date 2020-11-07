@@ -1,6 +1,6 @@
 #include "Texture.h"
 
-#include <exception>
+#include "../common/Exceptions.h"
 
 // Constructor
 Texture::Texture() : bitmap(nullptr) {}
@@ -77,7 +77,7 @@ ALLEGRO_BITMAP* Texture::loadBitmap(const std::string& file) {
   ALLEGRO_BITMAP* temp_bitmap = al_load_bitmap(file.c_str());
 
   if (!temp_bitmap) {
-    throw std::runtime_error("There was an error loading texture " + file);
+    throw FileIOException("There was an error loading texture " + file);
   }
 
   return temp_bitmap;

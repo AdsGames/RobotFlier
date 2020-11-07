@@ -2,7 +2,6 @@
 
 #include "../constants/globals.h"
 #include "../engine/scene/Scene.h"
-#include "../helpers/tools.h"
 #include "Robot.h"
 
 // Constructor

@@ -1,6 +1,6 @@
 #include "Font.h"
 
-#include <exception>
+#include "../common/Exceptions.h"
 
 // Constructor
 Font::Font() : font(nullptr), font_size(0) {}
@@ -58,7 +58,7 @@ ALLEGRO_FONT* Font::loadFont(const std::string& file, const int size) {
   ALLEGRO_FONT* temp_font = al_load_font(file.c_str(), size, 0);
 
   if (!temp_font) {
-    throw std::runtime_error("There was an error loading font " + file);
+    throw FileIOException("There was an error loading font " + file);
   }
 
   return temp_font;

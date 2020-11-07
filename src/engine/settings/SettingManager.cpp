@@ -1,14 +1,11 @@
 #include "SettingManager.h"
 
 #include <algorithm>
-#include <exception>
 #include <fstream>
 
-#include "../helpers/stringFns.h"
-
-struct FileIOException : public std::exception {
-  const char* what() const throw() { return "File I/O Exception"; }
-};
+#include "../Locator.h"
+#include "../common/Exceptions.h"
+#include "../common/stringFns.h"
 
 // Constructor
 SettingManager::SettingManager() : autosave(false) {}
@@ -19,7 +16,7 @@ void SettingManager::load(const std::string& path) {
   std::ifstream fileStream(path);
 
   if (!fileStream.is_open()) {
-    throw FileIOException();
+    throw FileIOException("Could not open file from " + path);
   }
 
   while (getline(fileStream, line)) {
@@ -47,6 +44,10 @@ void SettingManager::load(const std::string& path) {
 
   fileStream.close();
 
+  // Log
+  Locator::getLogger().log("[Setting Manager] Loaded settings from file " +
+                           path);
+
   // Set internal file name
   file_name = path;
 }
@@ -60,7 +61,7 @@ void SettingManager::save(const std::string& path) {
   std::ofstream fileStream(path);
 
   if (!fileStream.is_open()) {
-    throw FileIOException();
+    throw FileIOException("Could not open file from path " + path);
   }
 
   for (auto const& [key, value] : this->settings) {

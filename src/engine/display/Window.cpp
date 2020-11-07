@@ -3,7 +3,6 @@
 #include <allegro5/allegro.h>
 #include <stdexcept>
 
-#include "../common/Tools.h"
 #include "../scene/Scene.h"
 
 Window::Window() {

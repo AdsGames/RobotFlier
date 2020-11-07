@@ -1,6 +1,6 @@
 #include "Sound.h"
 
-#include <exception>
+#include "../common/Exceptions.h"
 
 // Default constructor
 Sound::Sound() : sample(nullptr) {}
@@ -29,13 +29,13 @@ void Sound::play(const PlaySoundConfig& config) {
 }
 
 // Load sample from file
-ALLEGRO_SAMPLE* Sound::loadSample(const std::string& file) {
+ALLEGRO_SAMPLE* Sound::loadSample(const std::string& path) {
   // Attempt to load
-  ALLEGRO_SAMPLE* temp_sample = al_load_sample(file.c_str());
+  ALLEGRO_SAMPLE* temp_sample = al_load_sample(path.c_str());
 
   // Throw exception if file is not loaded
   if (!temp_sample) {
-    throw std::runtime_error("There was an error loading sound " + file);
+    throw FileIOException("There was an error loading sound " + path);
   }
 
   return temp_sample;

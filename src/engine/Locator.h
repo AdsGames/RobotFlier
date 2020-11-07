@@ -6,6 +6,7 @@
 #include "assets/AssetManager.h"
 #include "audio/AudioService.h"
 #include "display/Window.h"
+#include "logging/Logger.h"
 #include "settings/SettingManager.h"
 
 class Locator {
@@ -69,6 +70,20 @@ class Locator {
   }
 
   /**
+   * @brief Provide instance of logger
+   *
+   * @tparam T Type of logger to provide, must be of type Logger
+   * @tparam Args Ctor arguments for T
+   * @param args Argument values to be forwarded to constructor of T
+   */
+  template <class T, class... Args>
+  static void provideLogger(Args&&... args) {
+    std::unique_ptr<Logger> service =
+        std::make_unique<T>(T(std::forward<Args>(args)...));
+    logger_service = std::move(service);
+  }
+
+  /**
    * @brief Get the AudioService object
    *
    * @return AudioService& Reference to current audio service
@@ -96,6 +111,13 @@ class Locator {
    */
   static SettingManager& getSettings();
 
+  /**
+   * @brief Get the Logger object
+   *
+   * @return Logger& Reference to current setting manager
+   */
+  static Logger& getLogger();
+
  private:
   /// Internal pointer to current AudioService instance
   static inline std::unique_ptr<AudioService> audio_service;
@@ -108,6 +130,9 @@ class Locator {
 
   /// Internal pointer to current SettingManager instance
   static inline std::unique_ptr<SettingManager> setting_service;
+
+  /// Internal pointer to current Logger instance
+  static inline std::unique_ptr<Logger> logger_service;
 };
 
 #endif  // ENGINE_LOCATOR_H

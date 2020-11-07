@@ -1,5 +1,5 @@
 /*
- * Tools Class
+ * Tools
  * Allan Legemaate
  * 13/01/2017
  * Functions that may be needed by multiple files
@@ -7,11 +7,19 @@
 #ifndef HELPERS_TOOLS_H
 #define HELPERS_TOOLS_H
 
-#include <string>
-
-extern void abort_on_error(const std::string& message);
-
-// Math related functions
+/**
+ * @brief Bounding box collision between two objects
+ *
+ * @param xMin1 Min x of entity 1
+ * @param xMax1 Max x of entity 1
+ * @param xMin2 Min x of entity 2
+ * @param xMax2 Max x of entity 2
+ * @param yMin1 Min y of entity 1
+ * @param yMax1 Max y of entity 1
+ * @param yMin2 Min y of entity 2
+ * @param yMax2 Max y of entity 2
+ * @return True if colliding, false otherwise
+ */
 extern bool collision(const float xMin1,
                       const float xMax1,
                       const float xMin2,

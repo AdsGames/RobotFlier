@@ -3,7 +3,6 @@
 #include "../../constants/globals.h"
 #include "../../engine/random/RandomGenerator.h"
 #include "../../engine/scene/Scene.h"
-#include "../../helpers/tools.h"
 
 // Constructor
 Debris::Debris(Scene& scene,

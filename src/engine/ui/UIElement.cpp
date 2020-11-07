@@ -1,7 +1,5 @@
 #include "UIElement.h"
 
-#include <iostream>
-#include "../common/Tools.h"
 #include "../input/MouseListener.h"
 #include "../scene/Scene.h"
 
@@ -36,10 +34,10 @@ void UIElement::draw() {}
 // Update
 void UIElement::update() {
   if (onClick && MouseListener::mouse_pressed & 1) {
-    bool is_colliding =
-        tools::collision<int>(MouseListener::mouse_x, MouseListener::mouse_x, x,
-                              x + this->getWidth(), MouseListener::mouse_y,
-                              MouseListener::mouse_y, y, y + this->getHeight());
+    bool is_colliding = MouseListener::mouse_x < x + width &&
+                        MouseListener::mouse_y < y + width &&
+                        x < MouseListener::mouse_x &&
+                        y < MouseListener::mouse_y;
 
     if (is_colliding) {
       onClick();

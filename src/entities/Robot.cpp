@@ -6,10 +6,9 @@
 #include "../engine/input/MouseListener.h"
 #include "../engine/random/RandomGenerator.h"
 #include "../engine/scene/Scene.h"
-#include "../helpers/tools.h"
 
 // Gravity const
-const float GRAVITY = 1.6f;
+const float GRAVITY = 1.0f;
 
 // Constructor
 Robot::Robot(Scene& scene, const float x, float y)

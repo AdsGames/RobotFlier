@@ -1,7 +1,7 @@
 #include "PauseMenu.h"
 
 #include "../constants/globals.h"
-#include "../engine/helpers/stringFns.h"
+#include "../engine/common/stringFns.h"
 #include "../engine/input/JoystickListener.h"
 #include "../engine/input/KeyListener.h"
 #include "../engine/input/MouseListener.h"
