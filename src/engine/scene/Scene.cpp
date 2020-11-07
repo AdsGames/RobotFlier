@@ -111,3 +111,8 @@ Window& Scene::getWindow() {
 SettingManager& Scene::getSettings() {
   return Locator::getSettings();
 }
+
+// Get provided input
+Input& Scene::getInput() {
+  return Locator::getInput();
+}

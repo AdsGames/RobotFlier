@@ -1,8 +1,5 @@
 #include "Init.h"
 
-#include "../constants/globals.h"
-#include "../engine/input/JoystickListener.h"
-
 // Construct scene
 Init::Init() {
   // Backgrounds

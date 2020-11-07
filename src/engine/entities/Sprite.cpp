@@ -3,7 +3,6 @@
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_primitives.h>
 
-#include "../../constants/globals.h"
 #include "../scene/Scene.h"
 
 // Constructor

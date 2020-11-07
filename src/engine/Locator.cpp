@@ -1,6 +1,11 @@
 #include "Locator.h"
 
+#include "audio/NullAudioService.h"
 #include "common/Exceptions.h"
+
+// Init audio service
+static std::unique_ptr<AudioService> audio_service =
+    std::make_unique<NullAudioService>(NullAudioService());
 
 AudioService& Locator::getAudio() {
   if (!audio_service.get()) {
@@ -35,4 +40,11 @@ Logger& Locator::getLogger() {
     throw CoreServiceLookupException("Logger service not found");
   }
   return *logger_service;
+}
+
+Input& Locator::getInput() {
+  if (!input_service.get()) {
+    throw CoreServiceLookupException("Input service not found");
+  }
+  return *input_service;
 }

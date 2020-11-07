@@ -1,6 +1,5 @@
 #include "GameObject.h"
 
-#include "../../constants/globals.h"
 #include "../scene/Scene.h"
 
 // Set incrementing index count

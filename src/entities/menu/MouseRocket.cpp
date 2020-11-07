@@ -1,17 +1,16 @@
 #include "MouseRocket.h"
 
-#include "../../engine/input/MouseListener.h"
 #include "../../engine/random/RandomGenerator.h"
 
 MouseRocket::MouseRocket(Scene& scene) : Sprite(scene, "mouse", 0, 0, 20) {
   mouse_rocket_up = false;
-  mouse_y = MouseListener::mouse_y;
+  mouse_y = scene.getInput().mouse().y;
 }
 
 void MouseRocket::update() {
   // Set position of sprite
-  x = MouseListener::mouse_x - width / 2;
-  y = MouseListener::mouse_y;
+  x = scene.getInput().mouse().x - width / 2;
+  y = scene.getInput().mouse().y;
 
   // Add mouse particles
   if (scene.getSettings().get<int>("particleType", 0) != 3 && mouse_rocket_up) {

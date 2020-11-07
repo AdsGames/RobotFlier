@@ -5,9 +5,6 @@
 
 #include "../constants/globals.h"
 #include "../engine/common/stringFns.h"
-#include "../engine/input/JoystickListener.h"
-#include "../engine/input/KeyListener.h"
-#include "../engine/input/MouseListener.h"
 #include "../engine/random/RandomGenerator.h"
 #include "../entities/Background.h"
 #include "../entities/EntitySpawner.h"
@@ -169,15 +166,18 @@ void Game::update() {
     // Lose scripts
     if (hectar.isOnGround()) {
       // Name input
-      if (score > highscores.getScore(9) && KeyListener::lastKeyPressed != -1) {
+      if (score > highscores.getScore(9) &&
+          this->getInput().keyboard().lastKeyPressed != -1) {
         // Last key pressed
-        int newkey = KeyListener::lastKeyPressed;
+        int newkey = this->getInput().keyboard().lastKeyPressed;
 
         // Letters
         if (newkey >= ALLEGRO_KEY_A && newkey <= ALLEGRO_KEY_Z &&
             edittext.length() < 14) {
           iter = edittext.insert(
-              iter, newkey + 96 - (KeyListener::key[ALLEGRO_KEY_LSHIFT] * 32));
+              iter,
+              newkey + 96 -
+                  (this->getInput().keyboard().key[ALLEGRO_KEY_LSHIFT] * 32));
           ++iter;
         }
         // Numbers
@@ -197,9 +197,9 @@ void Game::update() {
         }
       }
 
-      if (KeyListener::key[ALLEGRO_KEY_ENTER] ||
-          JoystickListener::buttonPressed[JOY_XBOX_START] ||
-          JoystickListener::buttonPressed[JOY_XBOX_A]) {
+      if (this->getInput().keyboard().key[ALLEGRO_KEY_ENTER] ||
+          this->getInput().joystick().buttonPressed[JOY_XBOX_START] ||
+          this->getInput().joystick().buttonPressed[JOY_XBOX_A]) {
         highscores.add(edittext, score);
         Scene::setNextScene(SCENE_MENU);
       }
@@ -209,8 +209,8 @@ void Game::update() {
   }
 
   // Screenshot
-  if (KeyListener::keyPressed[ALLEGRO_KEY_F11] ||
-      JoystickListener::buttonPressed[3]) {
+  if (this->getInput().keyboard().keyPressed[ALLEGRO_KEY_F11] ||
+      this->getInput().joystick().buttonPressed[3]) {
     takeScreenshot();
   }
 
@@ -230,13 +230,14 @@ void Game::update() {
 
   // Random test stuff for devs
   if (this->getSettings().get<bool>("debug", false)) {
-    if (KeyListener::key[ALLEGRO_KEY_R])
+    if (this->getInput().keyboard().key[ALLEGRO_KEY_R])
       score += 10;
 
-    if (KeyListener::key[ALLEGRO_KEY_E] || JoystickListener::button[2])
+    if (this->getInput().keyboard().key[ALLEGRO_KEY_E] ||
+        this->getInput().joystick().button[2])
       hectar.addHealth(1);
 
-    if (KeyListener::key[ALLEGRO_KEY_T])
+    if (this->getInput().keyboard().key[ALLEGRO_KEY_T])
       hectar.addHealth(-100);
   }
 }
@@ -248,12 +249,13 @@ void Game::draw() {
 
   // Start arrow
   if (!hectar.isKeyPressed()) {
-    if (JoystickListener::joystickEnabled)
+    if (this->getInput().joystick().enabled) {
       ui_a.draw(hectar.getX() + 15,
                 hectar.getY() - 60 - sin(arrow_animation) * 10);
-    else
+    } else {
       ui_up.draw(hectar.getX() + 15,
                  hectar.getY() - 70 - sin(arrow_animation) * 10);
+    }
   }
 
   // Lose scripts

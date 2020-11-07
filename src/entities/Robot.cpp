@@ -1,9 +1,6 @@
 #include "Robot.h"
 
 #include "../constants/globals.h"
-#include "../engine/input/JoystickListener.h"
-#include "../engine/input/KeyListener.h"
-#include "../engine/input/MouseListener.h"
 #include "../engine/random/RandomGenerator.h"
 #include "../engine/scene/Scene.h"
 
@@ -121,10 +118,11 @@ void Robot::update() {
   // Moving controls
   if (alive) {
     // Controls movement up and down
-    if ((KeyListener::key[ALLEGRO_KEY_W] || KeyListener::key[ALLEGRO_KEY_UP] ||
-         MouseListener::mouse_button & 1) ||
-        JoystickListener::button[JOY_XBOX_A] ||
-        JoystickListener::button[JOY_XBOX_BUMPER_LEFT]) {
+    if ((scene.getInput().keyboard().key[ALLEGRO_KEY_W] ||
+         scene.getInput().keyboard().key[ALLEGRO_KEY_UP] ||
+         scene.getInput().mouse().button[1]) ||
+        scene.getInput().joystick().button[JOY_XBOX_A] ||
+        scene.getInput().joystick().button[JOY_XBOX_BUMPER_LEFT]) {
       keyPressed = true;
 
       if (RandomGenerator::randomInt(0, 3) == 1) {

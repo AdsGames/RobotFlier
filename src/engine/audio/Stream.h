@@ -41,7 +41,7 @@ class Stream {
   void stop();
 
   /**
-   * @breif Load and assign audio file to given path
+   * @brief Load and assign audio file to given path
    *
    * @param path Location of the audio stream to load
    * @throws FileIOException If stream can not be found at path

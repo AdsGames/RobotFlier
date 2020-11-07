@@ -5,9 +5,6 @@
 
 #include "../constants/globals.h"
 #include "../engine/entities/Sprite.h"
-#include "../engine/input/JoystickListener.h"
-#include "../engine/input/KeyListener.h"
-#include "../engine/input/MouseListener.h"
 #include "../engine/random/RandomGenerator.h"
 #include "../engine/ui/Button.h"
 #include "../entities/menu/HighScores.h"
@@ -48,7 +45,7 @@ Menu::Menu() : current_menu(MENU::NONE) {
 
   // Xbox start button
   if (this->getSettings().get<int>("controlMode", 0) != 1 &&
-      JoystickListener::joystickEnabled) {
+      this->getInput().joystick().enabled) {
     this->add<Sprite>(*this, "xbox_start", 240, 480, 3);
   }
 
@@ -119,18 +116,19 @@ void Menu::closeMenu(MENU menu) {
 // Update loop
 void Menu::update() {
   // Start game with controller
-  if (JoystickListener::buttonPressed[JOY_XBOX_START] ||
-      JoystickListener::buttonPressed[JOY_XBOX_A]) {
+  if (this->getInput().joystick().buttonPressed[JOY_XBOX_START] ||
+      this->getInput().joystick().buttonPressed[JOY_XBOX_A]) {
     handleClickStart();
   }
 
   // CLose menu
-  if (MouseListener::mouse_pressed & 1 || KeyListener::anyKeyPressed) {
+  if (this->getInput().mouse().down[1] ||
+      this->getInput().keyboard().anyKeyPressed) {
     closeMenu(current_menu);
   }
 
   // Close game
-  if (KeyListener::key[ALLEGRO_KEY_ESCAPE]) {
+  if (this->getInput().keyboard().key[ALLEGRO_KEY_ESCAPE]) {
     Scene::setNextScene(SCENE_EXIT);
   }
 }

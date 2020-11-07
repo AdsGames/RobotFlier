@@ -54,7 +54,7 @@ class Texture {
   void draw(const int x, const int y, const int flags = 0) const;
 
   /**
-   * @breif Draw scaled texture to screen
+   * @brief Draw scaled texture to screen
    *
    * @param x X position to draw to
    * @param y Y position to draw to

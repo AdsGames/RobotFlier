@@ -50,13 +50,13 @@ class Scene {
   virtual void update() = 0;
 
   /**
-   * @breif Draw all objects hooked into scene
+   * @brief Draw all objects hooked into scene
    *
    */
   void drawInternal();
 
   /**
-   * @breif Update all objects hooked into scene
+   * @brief Update all objects hooked into scene
    *
    */
   void updateInternal();
@@ -173,6 +173,13 @@ class Scene {
    * @return Reference to the setting manager
    */
   static SettingManager& getSettings();
+
+  /**
+   * @brief Get the Input registered with the game
+   *
+   * @return Reference to the input
+   */
+  static Input& getInput();
 
  private:
   /**

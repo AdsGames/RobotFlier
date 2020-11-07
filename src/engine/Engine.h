@@ -3,9 +3,6 @@
 
 #include <allegro5/allegro5.h>
 
-#include "input/JoystickListener.h"
-#include "input/KeyListener.h"
-#include "input/MouseListener.h"
 #include "scene/Scene.h"
 
 /**
@@ -59,15 +56,6 @@ class Engine {
 
   /// Current scene pointer
   Scene* current_scene = nullptr;
-
-  /// Mouse input listener
-  MouseListener m_listener;
-
-  /// Keyboard input lisetner
-  KeyListener k_listener;
-
-  // Joystick input listener
-  JoystickListener j_listener;
 };
 
 #endif  // ENGINE_ENGINE_H

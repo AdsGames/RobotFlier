@@ -5,8 +5,6 @@
 
 #include "../constants/globals.h"
 #include "../engine/common/stringFns.h"
-#include "../engine/input/KeyListener.h"
-#include "../engine/input/MouseListener.h"
 #include "../entities/Robot.h"
 
 // Constructor
@@ -84,12 +82,12 @@ void GameHud::draw() {
     orbitron_12.draw(120, 35,
                      stringFns::format("Magnetic:%i", robot.getMagneticTimer()),
                      al_map_rgb(255, 255, 255));
-    orbitron_12.draw(120, 45,
-                     stringFns::format("Mouse X:%i", MouseListener::mouse_x),
-                     al_map_rgb(255, 255, 255));
-    orbitron_12.draw(120, 55,
-                     stringFns::format("Mouse Y:%i", MouseListener::mouse_y),
-                     al_map_rgb(255, 255, 255));
+    orbitron_12.draw(
+        120, 45, stringFns::format("Mouse X:%i", scene.getInput().mouse().x),
+        al_map_rgb(255, 255, 255));
+    orbitron_12.draw(
+        120, 55, stringFns::format("Mouse Y:%i", scene.getInput().mouse().y),
+        al_map_rgb(255, 255, 255));
     orbitron_12.draw(
         120, 65,
         stringFns::format("Particles On:%i",
@@ -111,7 +109,9 @@ void GameHud::draw() {
 
     // Column 4
     orbitron_12.draw(
-        360, 25, stringFns::format("Last key:%i", KeyListener::lastKeyPressed),
+        360, 25,
+        stringFns::format("Last key:%i",
+                          scene.getInput().keyboard().lastKeyPressed),
         al_map_rgb(255, 255, 255));
     // orbitron_12.draw(
     //     360, 35,

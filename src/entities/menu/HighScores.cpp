@@ -1,9 +1,5 @@
 #include "HighScores.h"
 
-#include "../../engine/input/JoystickListener.h"
-#include "../../engine/input/KeyListener.h"
-#include "../../engine/input/MouseListener.h"
-
 #include <iostream>
 
 HighScores::HighScores(Scene& scene) : GameObject(scene, 0, 0, 3), open(false) {

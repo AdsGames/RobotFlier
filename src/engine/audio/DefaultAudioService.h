@@ -1,11 +1,7 @@
 #ifndef ENGINE_AUDIO_DEFAULT_AUDIO_SERVICE_H
 #define ENGINE_AUDIO_DEFAULT_AUDIO_SERVICE_H
 
-#include <string>
-
 #include "AudioService.h"
-#include "Sound.h"
-#include "Stream.h"
 
 /**
  * @brief Implementation of audio service

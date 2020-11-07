@@ -1,13 +1,19 @@
-/*
+/**
  * Robot Flier
- * @breif Entry point of robot flier game, Robots in space!
+ * @brief Entry point of robot flier game, Robots in space!
  *
  * @author A.D.S. Games
  * @date 03/01/2016
  */
 #include "engine/Engine.h"
 
-// main function of program
+/**
+ * @brief Entry point
+ *
+ * @param argc Unused args count
+ * @param argv Unused args
+ * @return Exit status
+ */
 int main(int argc, char** argv) {
   // Lets just ignore these
   (void)(argc);

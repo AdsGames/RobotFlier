@@ -1,7 +1,6 @@
 #include "SettingsMenu.h"
 
 #include "../../constants/globals.h"
-#include "../../engine/input/MouseListener.h"
 #include "../../helpers/tools.h"
 
 SettingsMenu::SettingsMenu(Scene& scene)
@@ -38,25 +37,28 @@ SettingsMenu::SettingsMenu(Scene& scene)
 }
 
 void SettingsMenu::update() {
-  if (open && MouseListener::mouse_pressed & 1) {
+  if (open && scene.getInput().mouse().down[1]) {
     // Particles toggle
-    if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x, 400,
-                  480, MouseListener::mouse_y, MouseListener::mouse_y)) {
+    if (collision(280, 360, scene.getInput().mouse().x,
+                  scene.getInput().mouse().x, 400, 480,
+                  scene.getInput().mouse().y, scene.getInput().mouse().y)) {
       scene.getSettings().set(
           "particleType",
           (scene.getSettings().get<int>("particleType", 0) + 1) % 4);
     }
     // Sound button toggle
-    else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
-                       180, 260, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
+    else if (collision(120, 200, scene.getInput().mouse().x,
+                       scene.getInput().mouse().x, 180, 260,
+                       scene.getInput().mouse().y,
+                       scene.getInput().mouse().y)) {
       scene.getSettings().set("sound",
                               !scene.getSettings().get<bool>("sound", true));
     }
     // Music button toggle
-    else if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x,
-                       180, 260, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
+    else if (collision(280, 360, scene.getInput().mouse().x,
+                       scene.getInput().mouse().x, 180, 260,
+                       scene.getInput().mouse().y,
+                       scene.getInput().mouse().y)) {
       scene.getSettings().set("music",
                               !scene.getSettings().get<bool>("music", true));
 
@@ -68,9 +70,10 @@ void SettingsMenu::update() {
 
     }
     // Fullscreen toggle
-    else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
-                       400, 480, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
+    else if (collision(120, 200, scene.getInput().mouse().x,
+                       scene.getInput().mouse().x, 400, 480,
+                       scene.getInput().mouse().y,
+                       scene.getInput().mouse().y)) {
       const bool isFullscreen =
           scene.getSettings().get<bool>("fullscreen", false);
 
@@ -84,31 +87,35 @@ void SettingsMenu::update() {
       scene.getWindow().hideMouse();
     }
     // Screen shake
-    else if (collision(280, 360, MouseListener::mouse_x, MouseListener::mouse_x,
-                       290, 370, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
+    else if (collision(280, 360, scene.getInput().mouse().x,
+                       scene.getInput().mouse().x, 290, 370,
+                       scene.getInput().mouse().y,
+                       scene.getInput().mouse().y)) {
       scene.getSettings().set(
           "screenshake",
           (scene.getSettings().get<int>("screenshake", 0) + 1) % 4);
     }
     // Control Toggle
-    else if (collision(120, 200, MouseListener::mouse_x, MouseListener::mouse_x,
-                       290, 370, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
+    else if (collision(120, 200, scene.getInput().mouse().x,
+                       scene.getInput().mouse().x, 290, 370,
+                       scene.getInput().mouse().y,
+                       scene.getInput().mouse().y)) {
       scene.getSettings().set(
           "controlMode",
           (scene.getSettings().get<int>("controlMode", 0) + 1) % 3);
     }
     // Power off
-    else if (collision(540, 620, MouseListener::mouse_x, MouseListener::mouse_x,
-                       180, 260, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
+    else if (collision(540, 620, scene.getInput().mouse().x,
+                       scene.getInput().mouse().x, 180, 260,
+                       scene.getInput().mouse().y,
+                       scene.getInput().mouse().y)) {
       Scene::setNextScene(SCENE_EXIT);
     }
     // Exit menu
-    else if (collision(540, 620, MouseListener::mouse_x, MouseListener::mouse_x,
-                       407, 487, MouseListener::mouse_y,
-                       MouseListener::mouse_y)) {
+    else if (collision(540, 620, scene.getInput().mouse().x,
+                       scene.getInput().mouse().x, 407, 487,
+                       scene.getInput().mouse().y,
+                       scene.getInput().mouse().y)) {
       setOpen(false);
     }
   }

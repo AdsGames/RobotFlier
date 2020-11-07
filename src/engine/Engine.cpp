@@ -17,6 +17,7 @@
 #include "assets/AssetManager.h"
 #include "audio/DefaultAudioService.h"
 #include "common/Exceptions.h"
+#include "input/Input.h"
 #include "logging/DebugLogger.h"
 #include "settings/SettingManager.h"
 
@@ -158,9 +159,6 @@ void Engine::setup() {
   Locator::getWindow().registerEventSource(event_queue);
   timer = al_create_timer(1.0 / UPDATES_PER_SECOND);
   al_register_event_source(event_queue, al_get_timer_event_source(timer));
-  al_register_event_source(event_queue, al_get_keyboard_event_source());
-  al_register_event_source(event_queue, al_get_joystick_event_source());
-
   al_start_timer(timer);
 
   // Window title
@@ -179,8 +177,9 @@ void Engine::setup() {
   // Setup logger
   Locator::provideLogger<DebugLogger>();
 
-  // Setup joystick global
-  JoystickListener::joystickEnabled = al_get_num_joysticks() > 0;
+  // Setup input
+  Locator::provideInput<Input>();
+  Locator::getInput().registerEvents(event_queue);
 }
 
 // Universal update
@@ -189,26 +188,15 @@ void Engine::update() {
   ALLEGRO_EVENT ev;
   al_wait_for_event(event_queue, &ev);
 
-  // Timer
+  // Update timer
   if (ev.type == ALLEGRO_EVENT_TIMER) {
     // Change scene (if needed)
     changeScene();
-
-    // Update listeners
-    m_listener.update();
-    k_listener.update();
-    j_listener.update();
 
     // Update scene
     if (current_scene) {
       current_scene->update();
       current_scene->updateInternal();
-    }
-
-    // Debug console toggle
-    if (k_listener.keyPressed[ALLEGRO_KEY_F12]) {
-      Locator::getSettings().set(
-          "debug", !Locator::getSettings().get<bool>("debug", false));
     }
   }
   // Exit
@@ -219,21 +207,9 @@ void Engine::update() {
   else if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE) {
     Locator::getWindow().resize(ev.display.width, ev.display.height);
   }
-  // Keyboard
-  else if (ev.type == ALLEGRO_EVENT_KEY_DOWN ||
-           ev.type == ALLEGRO_EVENT_KEY_UP) {
-    k_listener.on_event(ev.type, ev.keyboard.keycode);
-  }
-  // Joystick
-  else if (ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN ||
-           ev.type == ALLEGRO_EVENT_JOYSTICK_BUTTON_UP) {
-    j_listener.on_event(ev.type, ev.joystick.button);
-  }
-  // Joystick plugged or unplugged
-  else if (ev.type == ALLEGRO_EVENT_JOYSTICK_CONFIGURATION) {
-    al_reconfigure_joysticks();
-    JoystickListener::joystickEnabled = al_get_num_joysticks() > 0;
-  }
+
+  // Process input
+  Locator::getInput().processEvent(ev);
 
   // Queue empty? Lets draw
   if (al_is_event_queue_empty(event_queue)) {

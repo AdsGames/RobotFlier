@@ -4,7 +4,7 @@
 /// Unique id type alias
 using ObjId = unsigned int;
 
-// Foreward declare sprite class
+// Forward declare sprite class
 class Scene;
 
 /**
