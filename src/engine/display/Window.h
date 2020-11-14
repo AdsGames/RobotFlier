@@ -5,6 +5,8 @@
 #include <allegro5/display.h>
 #include <string>
 
+const int FRAME_BUFFER_SIZE = 100;
+
 class Scene;
 
 /**
@@ -58,7 +60,7 @@ class Window {
    * @param width Width of buffer in pixels
    * @param height Height of buffer in pixels
    */
-  void setBufferSize(const int width, const int height);
+  void setBufferSize(const unsigned int width, const unsigned int height);
 
   /**
    * @brief Set the size of the window
@@ -66,7 +68,7 @@ class Window {
    * @param width Width of window in pixels
    * @param height Height of window in pixels
    */
-  void setWindowSize(const int width, const int height);
+  void setWindowSize(const unsigned int width, const unsigned int height);
 
   /**
    * @brief Get the current display mode
@@ -81,42 +83,42 @@ class Window {
    *
    * @return Width of buffer in pixels
    */
-  int getDrawWidth() const;
+  unsigned int getDrawWidth() const;
 
   /**
    * @brief Get the buffer height
    *
    * @return Height of buffer in pixels
    */
-  int getDrawHeight() const;
+  unsigned int getDrawHeight() const;
 
   /**
    * @brief Get the x translation of the window
    *
    * @return X translation in pixels
    */
-  int getTranslationX() const;
+  unsigned int getTranslationX() const;
 
   /**
    * @brief Get the y translation of the window
    *
    * @return Y translation in pixels
    */
-  int getTranslationY() const;
+  unsigned int getTranslationY() const;
 
   /**
    * @brief Get the current width of the winodw
    *
    * @return width of window
    */
-  int getWindowWidth() const;
+  unsigned int getWindowWidth() const;
 
   /**
    * @brief Get the current height of window
    *
    * @return height of window
    */
-  int getWindowHeight() const;
+  unsigned int getWindowHeight() const;
 
   /**
    * @brief Get the scaling being done on buffer. This is equivalent to buffer
@@ -152,7 +154,7 @@ class Window {
    * @param window_w Width in pixels
    * @param window_h Height in pixels
    */
-  void resize(const int window_w, const int window_h);
+  void resize(const unsigned int window_w, const unsigned int window_h);
 
   /**
    * @brief Draw a scene. Calls the draw and draw_internal functions of a given
@@ -185,22 +187,22 @@ class Window {
 
  private:
   /// Width of buffer
-  int draw_w;
+  unsigned int draw_w;
 
   /// Height of buffer
-  int draw_h;
+  unsigned int draw_h;
 
   /// Width of window
-  int window_w;
+  unsigned int window_w;
 
   /// Height of window
-  int window_h;
+  unsigned int window_h;
 
   /// X translation of window
-  int translation_x;
+  unsigned int translation_x;
 
   /// Y translation of window
-  int translation_y;
+  unsigned int translation_y;
 
   /// X scaling amount
   float scale_x;
@@ -219,8 +221,8 @@ class Window {
 
   // Fps timer
   double old_time = 0;
-  int frames_array[100];
-  int fps = 0;
+  unsigned int frames_array[FRAME_BUFFER_SIZE];
+  unsigned int fps = 0;
 
   /**
    * @brief Sets the window scaling in percent
@@ -236,7 +238,7 @@ class Window {
    * @param x X translation
    * @param y Y translation
    */
-  void setTranslation(const int x, const int y);
+  void setTranslation(const unsigned int x, const unsigned int y);
 };
 
 #endif  // ENGINE_DISPLAY_WINDOW_H

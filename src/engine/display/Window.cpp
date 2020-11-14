@@ -5,29 +5,19 @@
 #include "../common/Exceptions.h"
 #include "../scene/Scene.h"
 
-Window::Window() {
-  window_w = 0;
-  window_h = 0;
-
-  draw_w = 0;
-  draw_h = 0;
-
-  scale_x = 1;
-  scale_y = 1;
-
-  translation_x = 0;
-  translation_y = 0;
-
-  display_mode = DISPLAY_MODE::WINDOWED;
-
-  display = nullptr;
-  buffer = nullptr;
-
-  // Clear frams array
-  for (int i = 0; i < 100; i++) {
-    frames_array[i] = 0;
-  }
-}
+Window::Window()
+    : draw_w(0),
+      draw_h(0),
+      window_w(0),
+      window_h(0),
+      translation_x(0),
+      translation_y(0),
+      scale_x(0),
+      scale_y(0),
+      display_mode(DISPLAY_MODE::WINDOWED),
+      display(nullptr),
+      buffer(nullptr),
+      frames_array() {}
 
 // Returns current display mode
 int Window::getDisplayMode() const {
@@ -35,32 +25,32 @@ int Window::getDisplayMode() const {
 }
 
 // Gets draw width
-int Window::getDrawWidth() const {
+unsigned int Window::getDrawWidth() const {
   return draw_w;
 }
 
 // Gets draw height
-int Window::getDrawHeight() const {
+unsigned int Window::getDrawHeight() const {
   return draw_h;
 }
 
 // Gets translation x
-int Window::getTranslationX() const {
+unsigned int Window::getTranslationX() const {
   return translation_x;
 }
 
 // Gets translation y
-int Window::getTranslationY() const {
+unsigned int Window::getTranslationY() const {
   return translation_y;
 }
 
 // Gets scale width
-int Window::getWindowWidth() const {
+unsigned int Window::getWindowWidth() const {
   return window_w;
 }
 
 // Gets scale height
-int Window::getWindowHeight() const {
+unsigned int Window::getWindowHeight() const {
   return window_h;
 }
 
@@ -90,7 +80,7 @@ void Window::registerEventSource(ALLEGRO_EVENT_QUEUE* queue) {
 }
 
 // Resize window
-void Window::resize(const int window_w, const int window_h) {
+void Window::resize(const unsigned int window_w, const unsigned int window_h) {
   // Get monitor width
   ALLEGRO_MONITOR_INFO info;
   al_get_monitor_info(0, &info);
@@ -155,13 +145,15 @@ void Window::resize(const int window_w, const int window_h) {
 }
 
 // Set window size
-void Window::setWindowSize(const int width, const int height) {
+void Window::setWindowSize(const unsigned int width,
+                           const unsigned int height) {
   window_w = width;
   window_h = height;
 }
 
 // Set buffer size
-void Window::setBufferSize(const int width, const int height) {
+void Window::setBufferSize(const unsigned int width,
+                           const unsigned int height) {
   draw_w = width;
   draw_h = height;
 }
@@ -173,7 +165,7 @@ void Window::setScale(const float width, const float height) {
 }
 
 // Set translation
-void Window::setTranslation(const int x, const int y) {
+void Window::setTranslation(const unsigned int x, const unsigned int y) {
   translation_x = x;
   translation_y = y;
 }
@@ -235,18 +227,20 @@ void Window::draw(Scene* current_scene) {
   // Flip (OpenGL)
   al_flip_display();
 
-  // Update fps buffer
-  for (int i = 99; i > 0; i--)
+  // Shift fps buffer
+  for (unsigned int i = FRAME_BUFFER_SIZE - 1; i > 0; i--) {
     frames_array[i] = frames_array[i - 1];
+  }
 
   frames_array[0] = (1.0 / (al_get_time() - old_time));
   old_time = al_get_time();
 
-  int fps_total = 0;
+  unsigned int fps_total = 0;
 
-  for (int i = 0; i < 100; i++)
+  for (unsigned int i = 0; i < FRAME_BUFFER_SIZE; i++) {
     fps_total += frames_array[i];
+  }
 
   // FPS = average
-  fps = fps_total / 100;
+  fps = fps_total / FRAME_BUFFER_SIZE;
 }
