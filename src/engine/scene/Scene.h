@@ -11,19 +11,6 @@
 #include "../entities/GameObject.h"
 
 /**
- * @brief Enum containg possible scene ids
- *
- */
-enum ProgramScene {
-  SCENE_NULL,
-  SCENE_INIT,
-  SCENE_INTRO,
-  SCENE_MENU,
-  SCENE_GAME,
-  SCENE_EXIT,
-};
-
-/**
  * @brief Scene for state machine
  *
  * @author Allan Legemaate
@@ -38,6 +25,12 @@ class Scene {
   virtual ~Scene(){};
 
   /**
+   * @brief Start the scene
+   *
+   */
+  virtual void start() = 0;
+
+  /**
    * @brief Draw to be overridden by derived scenes
    *
    */
@@ -48,6 +41,18 @@ class Scene {
    *
    */
   virtual void update() = 0;
+
+  /**
+   * @brief Stop the scene
+   *
+   */
+  virtual void stop() = 0;
+
+  /**
+   * @brief Internall cleanup call
+   *
+   */
+  void stopInternal();
 
   /**
    * @brief Draw all objects hooked into scene
@@ -136,15 +141,15 @@ class Scene {
   /**
    * @brief Set the next scene to be loaded in. Upon calling, deletes this scene
    *
-   * @param sceneId Id of next scene to load
+   * @param scene_id Id of next scene to load
    */
-  static void setNextScene(const ProgramScene sceneId);
+  static void setNextScene(const std::string& scene_id);
 
   /// Current scene
-  static ProgramScene sceneId;
+  static std::string scene_id;
 
   /// Next scene to load
-  static ProgramScene nextScene;
+  static std::string next_scene;
 
   /**
    * @brief Get the AudioService registered with the game

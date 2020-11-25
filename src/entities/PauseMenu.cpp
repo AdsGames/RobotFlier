@@ -35,7 +35,7 @@ void PauseMenu::update() {
         collision(220, 280, scene.getInput().mouse().x,
                   scene.getInput().mouse().x, 435, 460,
                   scene.getInput().mouse().y, scene.getInput().mouse().y)) {
-      Scene::setNextScene(SCENE_EXIT);
+      Scene::setNextScene("exit");
     }
 
     // Menu
@@ -43,7 +43,7 @@ void PauseMenu::update() {
         collision(300, 430, scene.getInput().mouse().x,
                   scene.getInput().mouse().x, 435, 460,
                   scene.getInput().mouse().y, scene.getInput().mouse().y)) {
-      Scene::setNextScene(SCENE_MENU);
+      Scene::setNextScene("menu");
     }
 
     // Resume

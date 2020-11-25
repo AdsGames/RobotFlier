@@ -7,6 +7,12 @@
  */
 #include "engine/Engine.h"
 
+// Scenes
+#include "scenes/Game.h"
+#include "scenes/Init.h"
+#include "scenes/Intro.h"
+#include "scenes/Menu.h"
+
 /**
  * @brief Entry point
  *
@@ -22,8 +28,14 @@ int main(int argc, char** argv) {
   // Create instance of game
   Engine game = Engine();
 
+  // Add scenes
+  game.addScene<Init>("init");
+  game.addScene<Intro>("intro");
+  game.addScene<Menu>("menu");
+  game.addScene<Game>("game");
+
   // Start it up!
-  game.start(SCENE_INIT);
+  game.start("init");
 
   // Exit!
   return 0;

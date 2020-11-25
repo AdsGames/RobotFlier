@@ -1,7 +1,7 @@
 #include "Init.h"
 
 // Construct scene
-Init::Init() {
+void Init::start() {
   // Backgrounds
   this->getAsset().loadImage("background_0",
                              "images/backgrounds/background_0.png");
@@ -166,14 +166,8 @@ Init::Init() {
   this->getSettings().setAutosave(true);
 }
 
-// Destruct scene
-Init::~Init() {}
-
-// Draw
-void Init::draw() {}
-
 // Update
 void Init::update() {
   // Go to menu
-  Scene::setNextScene(SCENE_MENU);
+  Scene::setNextScene("menu");
 }

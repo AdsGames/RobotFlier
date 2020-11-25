@@ -5,8 +5,15 @@
 #include "../entities/GameObject.h"
 
 // Static
-ProgramScene Scene::sceneId = SCENE_NULL;
-ProgramScene Scene::nextScene = SCENE_NULL;
+std::string Scene::scene_id = "";
+std::string Scene::next_scene = "";
+
+// Internal cleanup (on switch scene)
+void Scene::stopInternal() {
+  update_pool.clear();
+  lookup_map.clear();
+  collider_map.clear();
+}
 
 // Draw internal method
 void Scene::drawInternal() {
@@ -84,11 +91,11 @@ void Scene::sortGameObjects() {
 }
 
 // Set next scene to load
-void Scene::setNextScene(const ProgramScene sceneId) {
+void Scene::setNextScene(const std::string& scene_id) {
   // If the user doesn't want to exit
-  if (Scene::nextScene != SCENE_EXIT) {
+  if (Scene::next_scene != "exit") {
     // Set the next scene
-    Scene::nextScene = sceneId;
+    Scene::next_scene = scene_id;
   }
 }
 

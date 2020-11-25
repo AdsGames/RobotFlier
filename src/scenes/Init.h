@@ -11,13 +11,11 @@
 
 class Init : public Scene {
  public:
-  // Construct/deconstruct
-  Init();
-  virtual ~Init();
-
   // Override parent
+  virtual void start() override;
   virtual void update() override;
-  virtual void draw() override;
+  virtual void draw() override{};
+  virtual void stop() override{};
 };
 
 #endif  // SCENES_INIT_H

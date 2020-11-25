@@ -2,8 +2,16 @@
 #define ENGINE_ENGINE_H
 
 #include <allegro5/allegro5.h>
+#include <string>
+#include <vector>
 
 #include "scene/Scene.h"
+
+/// Struct containing scene id and scene type
+struct SceneType {
+  std::string scene_id;
+  Scene* scene;
+};
 
 /**
  * @brief Core engine class, manages scenes and sets up locator and allegro
@@ -20,11 +28,21 @@ class Engine {
   Engine();
 
   /**
+   * @brief Add scene to engine
+   *
+   * @param scene_id to add to engine
+   */
+  template <class T>
+  void addScene(const std::string& scene_id) {
+    scenes.push_back({scene_id, new T()});
+  }
+
+  /**
    * @brief Starts the main game loop
    *
    * @param scene_id Initial scene to start with
    */
-  void start(const ProgramScene scene_id);
+  void start(const std::string& scene_id);
 
  private:
   /**
@@ -56,6 +74,9 @@ class Engine {
 
   /// Current scene pointer
   Scene* current_scene = nullptr;
+
+  /// List of scene ids
+  std::vector<SceneType> scenes;
 };
 
 #endif  // ENGINE_ENGINE_H

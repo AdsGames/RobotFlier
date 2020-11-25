@@ -14,13 +14,11 @@ enum MENU { CREDITS, CONTROLS, SETTINGS, HIGHSCORES, HELP, NONE };
 
 class Menu : public Scene {
  public:
-  // Construct/deconstruct
-  Menu();
-  virtual ~Menu();
-
   // Override parent
+  virtual void start() override;
   virtual void update() override;
   virtual void draw() override{};
+  virtual void stop() override;
 
  private:
   // Close menu

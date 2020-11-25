@@ -109,7 +109,7 @@ void SettingsMenu::update() {
                        scene.getInput().mouse().x, 180, 260,
                        scene.getInput().mouse().y,
                        scene.getInput().mouse().y)) {
-      Scene::setNextScene(SCENE_EXIT);
+      Scene::setNextScene("exit");
     }
     // Exit menu
     else if (collision(540, 620, scene.getInput().mouse().x,

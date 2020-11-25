@@ -15,13 +15,11 @@
 // Game class
 class Game : public Scene {
  public:
-  // Construct/deconstruct
-  Game();
-  virtual ~Game();
-
   // Override parent
+  virtual void start() override;
   virtual void update() override;
   virtual void draw() override;
+  virtual void stop() override;
 
  private:
   void spawnObjects();

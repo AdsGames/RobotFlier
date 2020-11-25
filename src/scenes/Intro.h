@@ -14,13 +14,11 @@
 
 class Intro : public Scene {
  public:
-  // Construct/deconstruct
-  Intro();
-  virtual ~Intro(){};
-
   // Override parent
+  virtual void start() override;
   virtual void update() override;
   virtual void draw() override{};
+  virtual void stop() override{};
 
  private:
   // Splash image

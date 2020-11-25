@@ -5,12 +5,7 @@
 #include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
-
-// Scenes
-#include "../scenes/Game.h"
-#include "../scenes/Init.h"
-#include "../scenes/Intro.h"
-#include "../scenes/Menu.h"
+#include <algorithm>
 
 // Locator provisions
 #include "Locator.h"
@@ -36,16 +31,16 @@ Engine::Engine()
     : event_queue(nullptr),
       timer(nullptr),
       closing(false),
-      current_scene(nullptr) {}
+      current_scene(nullptr) {
+  // Setup engine
+  setup();
+}
 
 // Start your engine!
-void Engine::start(const ProgramScene scene_id) {
+void Engine::start(const std::string& scene_id) {
   try {
     // Set the current scene ID
-    Scene::nextScene = scene_id;
-
-    // Setup game
-    setup();
+    Scene::next_scene = scene_id;
 
     // Loop
     while (!closing) {
@@ -63,44 +58,36 @@ void Engine::start(const ProgramScene scene_id) {
 // Change game screen
 void Engine::changeScene() {
   // If the scene needs not to be changed
-  if (Scene::nextScene == SCENE_NULL) {
+  if (Scene::next_scene == "") {
     return;
   }
 
-  // Delete the current scene
-  if (Scene::nextScene != SCENE_EXIT) {
-    delete current_scene;
+  // Cleanup current scene
+  if (current_scene) {
+    current_scene->stop();
+    current_scene->stopInternal();
   }
 
-  // Change the scene
-  switch (Scene::nextScene) {
-    case SCENE_INIT:
-      current_scene = new Init();
-      break;
+  // Find scene
+  auto it =
+      std::find_if(scenes.begin(), scenes.end(), [](const SceneType& scene) {
+        return scene.scene_id == Scene::next_scene;
+      });
 
-    case SCENE_INTRO:
-      current_scene = new Intro();
-      break;
-
-    case SCENE_MENU:
-      current_scene = new Menu();
-      break;
-
-    case SCENE_GAME:
-      current_scene = new Game();
-      break;
-
-    case SCENE_EXIT:
-    default:
-      closing = true;
-      break;
+  // Dad not found
+  if (it == scenes.end()) {
+    showDialog("Scene not found", Scene::next_scene);
   }
+
+  // Create scene
+  current_scene = (*it).scene;
+  current_scene->start();
 
   // Change the current scene ID
-  Scene::sceneId = Scene::nextScene;
+  Scene::scene_id = Scene::next_scene;
 
   // NULL the next scene ID
-  Scene::nextScene = SCENE_NULL;
+  Scene::next_scene = "";
 }
 
 // Sets up game
@@ -112,7 +99,7 @@ void Engine::setup() {
 
   // Setup window
   Locator::provideWindow<Window>();
-  Locator::getWindow().setWindowSize(1600, 1200);
+  Locator::getWindow().setWindowSize(800, 600);
   Locator::getWindow().setBufferSize(800, 600);
   Locator::getWindow().setMode(DISPLAY_MODE::WINDOWED);
   Locator::getWindow().setTitle("Loading");

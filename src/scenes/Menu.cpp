@@ -12,7 +12,9 @@
 #include "../entities/menu/SettingsMenu.h"
 
 // Construct scene
-Menu::Menu() : current_menu(MENU::NONE) {
+void Menu::start() {
+  current_menu = MENU::NONE;
+
   // Load intro image
   // Random menu
   std::string background_image =
@@ -82,8 +84,7 @@ Menu::Menu() : current_menu(MENU::NONE) {
   }
 }
 
-// Destructor
-Menu::~Menu() {
+void Menu::stop() {
   // Stops music
   this->getAudio().stopStream("mainmenu");
 }
@@ -129,14 +130,14 @@ void Menu::update() {
 
   // Close game
   if (this->getInput().keyboard().key[ALLEGRO_KEY_ESCAPE]) {
-    Scene::setNextScene(SCENE_EXIT);
+    Scene::setNextScene("exit");
   }
 }
 
 // Click Start
 void Menu::handleClickStart() {
   if (current_menu == MENU::NONE) {
-    Scene::setNextScene(SCENE_GAME);
+    Scene::setNextScene("game");
   }
 }
 

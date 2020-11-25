@@ -13,7 +13,10 @@
 #include "../entities/Robot.h"
 
 // Constructor
-Game::Game() : edittext("Player") {
+void Game::start() {
+  // Set edittext
+  edittext = "Player";
+
   // From globals
   score = 0;
   screenshake = 0;
@@ -81,7 +84,7 @@ Game::Game() : edittext("Player") {
 }
 
 // Destructor
-Game::~Game() {
+void Game::stop() {
   // Stop music
   this->getAudio().stopStream("death");
   this->getAudio().stopStream("in_game");
@@ -201,7 +204,7 @@ void Game::update() {
           this->getInput().joystick().buttonPressed[JOY_XBOX_START] ||
           this->getInput().joystick().buttonPressed[JOY_XBOX_A]) {
         highscores.add(edittext, score);
-        Scene::setNextScene(SCENE_MENU);
+        Scene::setNextScene("menu");
       }
     }
   } else {
