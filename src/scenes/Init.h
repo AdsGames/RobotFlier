@@ -7,7 +7,7 @@
 #ifndef SCENES_INIT_H
 #define SCENES_INIT_H
 
-#include "../engine/scene/Scene.h"
+#include <afk/scene/Scene.h>
 
 class Init : public Scene {
  public:

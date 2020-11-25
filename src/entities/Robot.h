@@ -9,10 +9,10 @@
 
 #include <vector>
 
-#include "../engine/audio/Sound.h"
-#include "../engine/entities/GameObject.h"
-#include "../engine/particles/Particle.h"
-#include "../engine/textures/Texture.h"
+#include <afk/audio/Sound.h>
+#include <afk/entities/GameObject.h>
+#include <afk/particles/Particle.h>
+#include <afk/textures/Texture.h>
 
 class Robot : public GameObject {
  public:

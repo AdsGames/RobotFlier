@@ -5,7 +5,7 @@
  * @author A.D.S. Games
  * @date 03/01/2016
  */
-#include "engine/Engine.h"
+#include <afk/Engine.h>
 
 // Scenes
 #include "scenes/Game.h"

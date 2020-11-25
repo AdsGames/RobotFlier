@@ -3,9 +3,9 @@
 #include <algorithm>
 #include <fstream>
 
+#include <afk/common/stringFns.h>
+#include <afk/random/RandomGenerator.h>
 #include "../constants/globals.h"
-#include "../engine/common/stringFns.h"
-#include "../engine/random/RandomGenerator.h"
 #include "../entities/Background.h"
 #include "../entities/EntitySpawner.h"
 #include "../entities/GameHud.h"

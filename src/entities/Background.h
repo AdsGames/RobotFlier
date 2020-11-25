@@ -7,9 +7,9 @@
 #ifndef ENTITIES_BACKGROUND_H
 #define ENTITIES_BACKGROUND_H
 
-#include "../engine/entities/GameObject.h"
-#include "../engine/scene/Scene.h"
-#include "../engine/textures/Texture.h"
+#include <afk/entities/GameObject.h>
+#include <afk/scene/Scene.h>
+#include <afk/textures/Texture.h>
 
 class Background : public GameObject {
  public:

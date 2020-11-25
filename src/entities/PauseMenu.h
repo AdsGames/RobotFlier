@@ -8,10 +8,10 @@
 #ifndef ENTITIES_PAUSE_MENU_H
 #define ENTITIES_PAUSE_MENU_H
 
-#include "../engine/entities/GameObject.h"
-#include "../engine/fonts/Font.h"
-#include "../engine/scene/Scene.h"
-#include "../engine/textures/Texture.h"
+#include <afk/entities/GameObject.h>
+#include <afk/fonts/Font.h>
+#include <afk/scene/Scene.h>
+#include <afk/textures/Texture.h>
 
 class PauseMenu : public GameObject {
  public:

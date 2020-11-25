@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <fstream>
 
+#include <afk/common/stringFns.h>
 #include "../constants/globals.h"
-#include "../engine/common/stringFns.h"
 #include "../entities/Robot.h"
 
 // Constructor

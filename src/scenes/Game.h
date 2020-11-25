@@ -7,9 +7,9 @@
 #ifndef SCENES_GAME_H
 #define SCENES_GAME_H
 
-#include "../engine/fonts/Font.h"
-#include "../engine/scene/Scene.h"
-#include "../engine/textures/Texture.h"
+#include <afk/fonts/Font.h>
+#include <afk/scene/Scene.h>
+#include <afk/textures/Texture.h>
 #include "../entities/menu/ScoreTable.h"
 
 // Game class

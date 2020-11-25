@@ -1,6 +1,6 @@
 #include "MouseRocket.h"
 
-#include "../../engine/random/RandomGenerator.h"
+#include <afk/random/RandomGenerator.h>
 
 MouseRocket::MouseRocket(Scene& scene) : Sprite(scene, "mouse", 0, 0, 20) {
   mouse_rocket_up = false;

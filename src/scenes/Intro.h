@@ -9,8 +9,8 @@
 
 #include <chrono>
 
-#include "../engine/scene/Scene.h"
-#include "../engine/textures/Texture.h"
+#include <afk/scene/Scene.h>
+#include <afk/textures/Texture.h>
 
 class Intro : public Scene {
  public:

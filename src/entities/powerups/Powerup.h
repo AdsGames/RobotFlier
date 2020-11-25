@@ -6,7 +6,7 @@
 #ifndef ENTITIES_POWERUPS_POWERUP_H
 #define ENTITIES_POWERUPS_POWERUP_H
 
-#include "../../engine/entities/Sprite.h"
+#include <afk/entities/Sprite.h>
 
 class Powerup : public Sprite {
  public:

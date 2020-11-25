@@ -1,7 +1,7 @@
 #include "EntitySpawner.h"
 
+#include <afk/random/RandomGenerator.h>
 #include "../constants/globals.h"
-#include "../engine/random/RandomGenerator.h"
 #include "../entities/Energy.h"
 #include "../entities/PauseMenu.h"
 #include "../entities/Robot.h"

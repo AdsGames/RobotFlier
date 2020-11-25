@@ -1,8 +1,8 @@
 #include "Robot.h"
 
+#include <afk/random/RandomGenerator.h>
+#include <afk/scene/Scene.h>
 #include "../constants/globals.h"
-#include "../engine/random/RandomGenerator.h"
-#include "../engine/scene/Scene.h"
 
 // Gravity const
 const float GRAVITY = 1.0f;

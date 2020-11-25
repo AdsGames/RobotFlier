@@ -7,8 +7,8 @@
 #ifndef ENTITIES_MENU_MOUSE_ROCKET_H
 #define ENTITIES_MENU_MOUSE_ROCKET_H
 
-#include "../../engine/entities/Sprite.h"
-#include "../../engine/scene/Scene.h"
+#include <afk/entities/Sprite.h>
+#include <afk/scene/Scene.h>
 
 class MouseRocket : public Sprite {
  public:

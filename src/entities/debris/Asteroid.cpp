@@ -1,7 +1,7 @@
 #include "Asteroid.h"
 
-#include "../../engine/random/RandomGenerator.h"
-#include "../../engine/scene/Scene.h"
+#include <afk/random/RandomGenerator.h>
+#include <afk/scene/Scene.h>
 
 // Constructor
 Asteroid::Asteroid(Scene& scene, const float x, const float y, const int theme)

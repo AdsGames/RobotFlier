@@ -6,7 +6,7 @@
 #ifndef ENTITIES_DEBRIS_DEBRIE_H
 #define ENTITIES_DEBRIS_DEBRIE_H
 
-#include "../../engine/entities/Sprite.h"
+#include <afk/entities/Sprite.h>
 
 class Debris : public Sprite {
  public:

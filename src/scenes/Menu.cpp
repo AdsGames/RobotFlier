@@ -3,10 +3,10 @@
 #include <functional>
 #include <iostream>
 
+#include <afk/entities/Sprite.h>
+#include <afk/random/RandomGenerator.h>
+#include <afk/ui/Button.h>
 #include "../constants/globals.h"
-#include "../engine/entities/Sprite.h"
-#include "../engine/random/RandomGenerator.h"
-#include "../engine/ui/Button.h"
 #include "../entities/menu/HighScores.h"
 #include "../entities/menu/MouseRocket.h"
 #include "../entities/menu/SettingsMenu.h"

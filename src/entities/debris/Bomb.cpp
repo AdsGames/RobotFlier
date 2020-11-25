@@ -1,6 +1,6 @@
 #include "Bomb.h"
 
-#include "../../engine/scene/Scene.h"
+#include <afk/scene/Scene.h>
 
 // Constructor
 Bomb::Bomb(Scene& scene, const float x, const float y)

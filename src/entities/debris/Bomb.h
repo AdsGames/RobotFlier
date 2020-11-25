@@ -9,7 +9,7 @@
 
 #include "Debris.h"
 
-#include "../../engine/audio/Sound.h"
+#include <afk/audio/Sound.h>
 
 class Bomb : public Debris {
  public:

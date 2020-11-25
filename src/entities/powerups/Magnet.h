@@ -9,7 +9,7 @@
 
 #include "Powerup.h"
 
-#include "../../engine/audio/Sound.h"
+#include <afk/audio/Sound.h>
 
 class Magnet : public Powerup {
  public:

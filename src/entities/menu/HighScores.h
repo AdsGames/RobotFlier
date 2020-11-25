@@ -7,9 +7,9 @@
 #ifndef ENTITIES_MENU_HIGH_SCORES_H
 #define ENTITIES_MENU_HIGH_SCORES_H
 
-#include "../../engine/entities/GameObject.h"
-#include "../../engine/scene/Scene.h"
-#include "../../engine/textures/Texture.h"
+#include <afk/entities/GameObject.h>
+#include <afk/scene/Scene.h>
+#include <afk/textures/Texture.h>
 #include "ScoreTable.h"
 
 class HighScores : public GameObject {

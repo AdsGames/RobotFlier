@@ -1,7 +1,7 @@
 #include "PowerStar.h"
 
+#include <afk/scene/Scene.h>
 #include "../../constants/globals.h"
-#include "../../engine/scene/Scene.h"
 #include "../Robot.h"
 
 // Constructor

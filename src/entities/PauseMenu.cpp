@@ -1,8 +1,8 @@
 #include "PauseMenu.h"
 
+#include <afk/common/stringFns.h>
+#include <afk/scene/Scene.h>
 #include "../constants/globals.h"
-#include "../engine/common/stringFns.h"
-#include "../engine/scene/Scene.h"
 #include "../helpers/tools.h"
 
 PauseMenu::PauseMenu(Scene& scene) : GameObject(scene), paused(false) {

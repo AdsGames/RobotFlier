@@ -6,8 +6,8 @@
 #ifndef ENTITIES_ENERGY_H
 #define ENTITIES_ENERGY_H
 
-#include "../engine/audio/Sound.h"
-#include "../engine/entities/Sprite.h"
+#include <afk/audio/Sound.h>
+#include <afk/entities/Sprite.h>
 
 class Energy : public Sprite {
  public:

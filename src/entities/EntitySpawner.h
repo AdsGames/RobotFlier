@@ -7,8 +7,8 @@
 #ifndef ENTITIES_ENTITY_SPAWNER_H
 #define ENTITIES_ENTITY_SPAWNER_H
 
-#include "../engine/entities/GameObject.h"
-#include "../engine/scene/Scene.h"
+#include <afk/entities/GameObject.h>
+#include <afk/scene/Scene.h>
 
 class EntitySpawner : public GameObject {
  public:

@@ -7,7 +7,7 @@
 #ifndef SCENES_MENU_H
 #define SCENES_MENU_H
 
-#include "../engine/scene/Scene.h"
+#include <afk/scene/Scene.h>
 
 // Open menu enum
 enum MENU { CREDITS, CONTROLS, SETTINGS, HIGHSCORES, HELP, NONE };

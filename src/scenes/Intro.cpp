@@ -1,6 +1,6 @@
 #include "Intro.h"
 
-#include "../engine/entities/Sprite.h"
+#include <afk/entities/Sprite.h>
 
 // Construct scene
 void Intro::start() {

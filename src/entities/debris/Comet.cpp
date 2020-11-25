@@ -1,6 +1,6 @@
 #include "Comet.h"
 
-#include "../../engine/scene/Scene.h"
+#include <afk/scene/Scene.h>
 #include "../Robot.h"
 
 const int COMET_DAMAGE = -5;
