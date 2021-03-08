@@ -6,11 +6,10 @@
 
 HighScores::HighScores(afk::Scene& scene)
     : GameObject(scene, 0, 0, 3), open(false) {
-  afk::AssetService& assets = afk::Services::getAssetService();
-  highscores_table = assets.getImage("highscores_table");
-  orbitron_36 = assets.getFont("orbitron_36");
-  orbitron_24 = assets.getFont("orbitron_24");
-  orbitron_18 = assets.getFont("orbitron_18");
+  highscores_table = scene.assets.getImage("highscores_table");
+  orbitron_36 = scene.assets.getFont("orbitron_36");
+  orbitron_24 = scene.assets.getFont("orbitron_24");
+  orbitron_18 = scene.assets.getFont("orbitron_18");
 }
 
 void HighScores::draw() {

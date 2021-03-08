@@ -40,7 +40,6 @@ void MainGame::start() {
 
   // Images
   // Gui
-  afk::AssetService& assets = afk::Services::getAssetService();
   ui_game_end = assets.getImage("ui_game_end");
   ui_a = assets.getImage("ui_a");
   ui_b = assets.getImage("ui_b");
@@ -59,7 +58,6 @@ void MainGame::start() {
   themeNumber = 0;
 
   // Mouse
-  afk::DisplayService& display = afk::Services::getDisplayService();
   display.hideMouse();
 
   // Init hectar
@@ -78,7 +76,6 @@ void MainGame::start() {
   this->add<EntitySpawner>(*this, hectar_id, pause_menu_id);
 
   // Play music
-  afk::AudioService& audio = afk::Services::getAudioService();
   audio.playStream("in_game", true);
 
   // Scrolling background
@@ -88,7 +85,6 @@ void MainGame::start() {
 // Destructor
 void MainGame::stop() {
   // Stop music
-  afk::AudioService& audio = afk::Services::getAudioService();
   audio.stopStream("death");
   audio.stopStream("in_game");
 }
@@ -115,17 +111,11 @@ void MainGame::takeScreenshot() {
   //                al_get_backbuffer(display));
 
   // Snap sound
-  afk::AudioService& audio = afk::Services::getAudioService();
   audio.playSound("snap");
 }
 
 // Update logic of game
 void MainGame::update() {
-  afk::AudioService& audio = afk::Services::getAudioService();
-  afk::InputService& input = afk::Services::getInputService();
-  afk::ConfigService& config = afk::Services::getConfigService();
-  afk::SceneService& scene = afk::Services::getSceneService();
-
   // Get hectar
   Robot& hectar = this->get<Robot>(hectar_id);
 
@@ -179,40 +169,42 @@ void MainGame::update() {
     if (hectar.isOnGround()) {
       // Name input
       if (score > highscores.getScore(9) &&
-          input.lastKeyPressed() != (int)afk::Keys::KEY_UNKNOWN) {
+          input.lastKeyPressed() != static_cast<int>(afk::Keys::UNKNOWN)) {
         // Last key pressed
         int newkey = input.lastKeyPressed();
 
         // Letters
-        if (newkey >= (int)afk::Keys::KEY_A &&
-            newkey <= (int)afk::Keys::KEY_Z && edittext.length() < 14) {
+        if (newkey >= static_cast<int>(afk::Keys::A) &&
+            newkey <= static_cast<int>(afk::Keys::Z) &&
+            edittext.length() < 14) {
           iter = edittext.insert(
-              iter, newkey + 96 - (input.keyDown(afk::Keys::KEY_LSHIFT) * 32));
+              iter, newkey + 96 - (input.keyDown(afk::Keys::LSHIFT) * 32));
           ++iter;
         }
         // Numbers
-        else if (newkey >= (int)afk::Keys::KEY_0 &&
-                 newkey <= (int)afk::Keys::KEY_9 && edittext.length() < 14) {
+        else if (newkey >= static_cast<int>(afk::Keys::ZERO) &&
+                 newkey <= static_cast<int>(afk::Keys::NINE) &&
+                 edittext.length() < 14) {
           iter = edittext.insert(iter, newkey + 21);
           ++iter;
         }
         // Some other, "special" key was pressed, handle it here
-        else if (newkey == (int)afk::Keys::KEY_BACKSPACE &&
+        else if (newkey == static_cast<int>(afk::Keys::BACKSPACE) &&
                  iter != edittext.begin()) {
           --iter;
           iter = edittext.erase(iter);
-        } else if (newkey == (int)afk::Keys::KEY_RIGHT &&
+        } else if (newkey == static_cast<int>(afk::Keys::RIGHT) &&
                    iter != edittext.end()) {
           ++iter;
-        } else if (newkey == (int)afk::Keys::KEY_LEFT &&
+        } else if (newkey == static_cast<int>(afk::Keys::LEFT) &&
                    iter != edittext.begin()) {
           --iter;
         }
       }
 
-      if (input.keyDown(afk::Keys::KEY_RETURN) ||
-          input.joyPressed(afk::JoystickButtons::JOY_XBOX_START) ||
-          input.joyPressed(afk::JoystickButtons::JOY_XBOX_A)) {
+      if (input.keyDown(afk::Keys::RETURN) ||
+          input.joyPressed(afk::JoystickButtons::START) ||
+          input.joyPressed(afk::JoystickButtons::A)) {
         highscores.add(edittext, score);
         scene.setNextScene("menu");
       }
@@ -222,8 +214,8 @@ void MainGame::update() {
   }
 
   // Screenshot
-  if (input.keyPressed(afk::Keys::KEY_F11) ||
-      input.joyPressed(afk::JoystickButtons::JOY_XBOX_Y)) {
+  if (input.keyPressed(afk::Keys::F11) ||
+      input.joyPressed(afk::JoystickButtons::Y)) {
     takeScreenshot();
   }
 
@@ -243,22 +235,20 @@ void MainGame::update() {
 
   // Random test stuff for devs
   if (config.get<bool>("debug", false)) {
-    if (input.keyPressed(afk::Keys::KEY_R))
+    if (input.keyPressed(afk::Keys::R))
       score += 10;
 
-    if (input.keyPressed(afk::Keys::KEY_E) ||
-        input.joyDown(afk::JoystickButtons::JOY_XBOX_X))
+    if (input.keyPressed(afk::Keys::E) ||
+        input.joyDown(afk::JoystickButtons::X))
       hectar.addHealth(1);
 
-    if (input.keyPressed(afk::Keys::KEY_T))
+    if (input.keyPressed(afk::Keys::T))
       hectar.addHealth(-100);
   }
 }
 
 // Draw to screen
 void MainGame::draw() {
-  afk::InputService& input = afk::Services::getInputService();
-
   // Get hectar
   const Robot& hectar = this->get<Robot>(hectar_id);
 

@@ -7,15 +7,11 @@
 // Construct scene
 void Init::start() {
   // Setup display
-  afk::DisplayService& display = afk::Services::getDisplayService();
   display.setWindowSize(SCREEN_W, SCREEN_H);
   display.setBufferSize(SCREEN_W, SCREEN_H);
   display.setTitle("Robot Flier");
 
   display.setMode(afk::DisplayMode::WINDOWED);
-
-  // Get asset service
-  afk::AssetService& assets = afk::Services::getAssetService();
 
   // Backgrounds
   assets.loadImage("background_0", "images/backgrounds/background_0.png");
@@ -149,9 +145,6 @@ void Init::start() {
   assets.loadFont("orbitron_30", "fonts/orbitron_ttf.ttf", 30);
   assets.loadFont("orbitron_36", "fonts/orbitron_ttf.ttf", 36);
 
-  // Get config service
-  afk::ConfigService& config = afk::Services::getConfigService();
-
   // Load settings
   config.load("data/settings.dat");
   config.setAutosave(true);
@@ -159,9 +152,6 @@ void Init::start() {
 
 // Update
 void Init::update() {
-  // Get config service
-  afk::SceneService& scene = afk::Services::getSceneService();
-
   // Go to menu
   scene.setNextScene("menu");
 }

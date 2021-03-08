@@ -28,8 +28,7 @@ Debris::Debris(afk::Scene& scene,
 // Logic
 void Debris::update() {
   // Update particles
-  afk::ConfigService& config = afk::Services::getConfigService();
-  if (config.get<int>("particleType", 0) != 3) {
+  if (scene.config.get<int>("particleType", 0) != 3) {
     // for (unsigned int i = 0; i < parts.size(); i++) {
     //   parts.at(i).update();
     //   parts.at(i).scroll(motion, 0.0f);
@@ -50,14 +49,13 @@ void Debris::destroy() {
   stats[STAT_DEBRIS] += 1;
 
   // Make particles
-  afk::ConfigService& config = afk::Services::getConfigService();
-  if (config.get<int>("particleType", 0) != 3) {
+  if (scene.config.get<int>("particleType", 0) != 3) {
     // Sample a pixel
-    SDL_Color sample_color =
-        texture.getPixel(texture.getWidth() / 2, texture.getHeight() / 2);
+    // afk::color::Color sample_color =
+    //     texture.getPixel(texture.getWidth() / 2, texture.getHeight() / 2);
 
-    // Make some particles
-    int sampling_size = 5;
+    // // Make some particles
+    // int sampling_size = 5;
 
     // for (int i = 0; i < (width - sampling_size); i += sampling_size) {
     //   for (int t = 0; t < (height - sampling_size); t += sampling_size) {

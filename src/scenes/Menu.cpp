@@ -1,12 +1,13 @@
 #include "Menu.h"
 
-#include <functional>
-#include <iostream>
-
 #include <afk/entities/Sprite.h>
 #include <afk/entities/ui/Button.h>
 #include <afk/random/RandomGenerator.h>
 #include <afk/services/Services.h>
+
+#include <functional>
+#include <iostream>
+#include <string>
 
 #include "../constants/globals.h"
 #include "../entities/menu/HighScores.h"
@@ -15,11 +16,6 @@
 
 // Construct scene
 void Menu::start() {
-  afk::ConfigService& config = afk::Services::getConfigService();
-  afk::DisplayService& display = afk::Services::getDisplayService();
-  afk::InputService& input = afk::Services::getInputService();
-  afk::AudioService& audio = afk::Services::getAudioService();
-
   current_menu = MENU::NONE;
 
   // Load intro image
@@ -92,7 +88,6 @@ void Menu::start() {
 
 void Menu::stop() {
   // Stops music
-  afk::AudioService& audio = afk::Services::getAudioService();
   audio.stopStream("mainmenu");
 }
 
@@ -110,9 +105,6 @@ void Menu::closeMenu(MENU menu) {
     case CONTROLS:
       get<afk::Sprite>(controls_sprite).setVisible(false);
       break;
-    case SETTINGS:
-      get<SettingsMenu>(settings_screen).setOpen(false);
-      break;
     default:
       break;
   }
@@ -123,31 +115,25 @@ void Menu::closeMenu(MENU menu) {
 
 // Update loop
 void Menu::update() {
-  afk::InputService& input = afk::Services::getInputService();
-  afk::SceneService& scene = afk::Services::getSceneService();
-
   // Start game with controller
-  if (input.joyPressed(afk::JoystickButtons::JOY_XBOX_START) ||
-      input.joyPressed(afk::JoystickButtons::JOY_XBOX_A)) {
+  if (input.joyPressed(afk::JoystickButtons::START) ||
+      input.joyPressed(afk::JoystickButtons::A)) {
     handleClickStart();
   }
 
   // CLose menu
-  if (input.mousePressed(afk::MouseButtons::BUTTON_LEFT) ||
-      input.anyKeyDown()) {
+  if (input.mousePressed(afk::MouseButtons::LEFT) || input.anyKeyDown()) {
     closeMenu(current_menu);
   }
 
   // Close game
-  if (input.keyPressed(afk::Keys::KEY_ESCAPE)) {
+  if (input.keyPressed(afk::Keys::ESCAPE)) {
     scene.setNextScene("exit");
   }
 }
 
 // Click Start
 void Menu::handleClickStart() {
-  afk::SceneService& scene = afk::Services::getSceneService();
-
   if (current_menu == MENU::NONE) {
     scene.setNextScene("game");
   }

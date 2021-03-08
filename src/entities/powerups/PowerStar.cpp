@@ -16,8 +16,7 @@ PowerStar::PowerStar(afk::Scene& scene, const float x, const float y)
 // Load assets from manager
 void PowerStar::loadAssets() {
   // Load sound
-  afk::AssetService& asset = afk::Services::getAssetService();
-  power_star_sound = asset.getAudio("star");
+  power_star_sound = scene.assets.getAudio("star");
 
   // Load image
   setTexture("powerStar");

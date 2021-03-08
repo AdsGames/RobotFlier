@@ -16,8 +16,7 @@ Asteroid::Asteroid(afk::Scene& scene,
 void Asteroid::loadAssets(const int theme) {
   setTexture("asteroid_dark");
 
-  afk::ConfigService& config = afk::Services::getConfigService();
-  if (config.get<bool>("christmas", false)) {
+  if (scene.config.get<bool>("christmas", false)) {
     setTexture("asteroid_christmas");
   } else {
     switch (theme) {
@@ -38,8 +37,7 @@ void Asteroid::loadAssets(const int theme) {
     }
   }
 
-  afk::AssetService& assets = afk::Services::getAssetService();
-  destroy_sound = assets.getAudio("asteroid");
+  destroy_sound = scene.assets.getAudio("asteroid");
 }
 
 void Asteroid::onDestroy() {

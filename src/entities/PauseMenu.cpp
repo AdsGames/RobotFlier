@@ -8,9 +8,8 @@
 #include "../helpers/tools.h"
 
 PauseMenu::PauseMenu(afk::Scene& scene) : GameObject(scene), paused(false) {
-  afk::AssetService& asset = afk::Services::getAssetService();
-  background = asset.getImage("pauseMenu");
-  orbitron_18 = asset.getFont("orbitron_18");
+  background = scene.assets.getImage("pauseMenu");
+  orbitron_18 = scene.assets.getFont("orbitron_18");
 }
 
 bool PauseMenu::getPaused() const {
@@ -18,19 +17,15 @@ bool PauseMenu::getPaused() const {
 }
 
 void PauseMenu::update() {
-  afk::InputService& input = afk::Services::getInputService();
-  afk::SceneService& scene = afk::Services::getSceneService();
-  afk::DisplayService& display = afk::Services::getDisplayService();
-
   // Pause loop code
-  if (input.keyPressed(afk::Keys::KEY_ESCAPE) ||
-      input.mouseDown(afk::MouseButtons::BUTTON_RIGHT) ||
-      input.keyPressed(afk::Keys::KEY_SPACE) ||
-      input.joyPressed(afk::JoystickButtons::JOY_XBOX_START)) {
+  if (scene.input.keyPressed(afk::Keys::ESCAPE) ||
+      scene.input.mouseDown(afk::MouseButtons::RIGHT) ||
+      scene.input.keyPressed(afk::Keys::SPACE) ||
+      scene.input.joyPressed(afk::JoystickButtons::START)) {
     if (paused) {
-      display.hideMouse();
+      scene.display.hideMouse();
     } else {
-      display.showMouse();
+      scene.display.showMouse();
     }
     paused = !paused;
   }
@@ -38,23 +33,23 @@ void PauseMenu::update() {
   // Pause Menu Scripts
   if (paused) {
     // Quit game
-    if (input.mouseDown(afk::MouseButtons::BUTTON_LEFT) &&
-        collision(220, 280, input.mouseX(), input.mouseX(), 435, 460,
-                  input.mouseY(), input.mouseY())) {
-      scene.setNextScene("exit");
+    if (scene.input.mouseDown(afk::MouseButtons::LEFT) &&
+        collision(220, 280, scene.input.mouseX(), scene.input.mouseX(), 435,
+                  460, scene.input.mouseY(), scene.input.mouseY())) {
+      scene.scene.setNextScene("exit");
     }
 
     // Menu
-    if (input.mouseDown(afk::MouseButtons::BUTTON_LEFT) &&
-        collision(300, 430, input.mouseX(), input.mouseX(), 435, 460,
-                  input.mouseY(), input.mouseY())) {
-      scene.setNextScene("menu");
+    if (scene.input.mouseDown(afk::MouseButtons::LEFT) &&
+        collision(300, 430, scene.input.mouseX(), scene.input.mouseX(), 435,
+                  460, scene.input.mouseY(), scene.input.mouseY())) {
+      scene.scene.setNextScene("menu");
     }
 
     // Resume
-    if (input.mouseDown(afk::MouseButtons::BUTTON_LEFT) &&
-        collision(470, 540, input.mouseX(), input.mouseX(), 435, 460,
-                  input.mouseY(), input.mouseY())) {
+    if (scene.input.mouseDown(afk::MouseButtons::LEFT) &&
+        collision(470, 540, scene.input.mouseX(), scene.input.mouseX(), 435,
+                  460, scene.input.mouseY(), scene.input.mouseY())) {
       paused = false;
     }
   }

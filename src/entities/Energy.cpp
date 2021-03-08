@@ -13,16 +13,13 @@ Energy::Energy(afk::Scene& scene, const float x, const float y)
 }
 
 void Energy::loadAssets() {
-  afk::ConfigService& config = afk::Services::getConfigService();
-  afk::AssetService& asset = afk::Services::getAssetService();
-
-  if (config.get<bool>("christmas", false)) {
+  if (scene.config.get<bool>("christmas", false)) {
     setTexture("energy_christmas");
   } else {
     setTexture("energy");
   }
 
-  sound_orb = asset.getAudio("orb");
+  sound_orb = scene.assets.getAudio("orb");
 }
 
 void Energy::onCollide(const GameObject& other) {

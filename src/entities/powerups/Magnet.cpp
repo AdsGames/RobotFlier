@@ -16,8 +16,7 @@ Magnet::Magnet(afk::Scene& scene, const float x, const float y, const int type)
 // Load assets from manager
 void Magnet::loadAssets(const int type) {
   // Load sound
-  afk::AssetService& asset = afk::Services::getAssetService();
-  magnet_sound = asset.getAudio("magnet");
+  magnet_sound = scene.assets.getAudio("magnet");
 
   // Load image
   switch (type) {

@@ -7,24 +7,21 @@
 MouseRocket::MouseRocket(afk::Scene& scene) : Sprite(scene, "mouse", 0, 0, 20) {
   mouse_rocket_up = false;
 
-  afk::InputService& input = afk::Services::getInputService();
-  mouse_y = input.mouseY();
+  mouse_y = scene.input.mouseY();
 }
 
 void MouseRocket::update() {
   // Set position of sprite
-  afk::InputService& input = afk::Services::getInputService();
-  setPosition(input.mouseX() - width / 2, input.mouseY());
+  setPosition(scene.input.mouseX() - width / 2, scene.input.mouseY());
 
   // Add mouse particles
-  afk::ConfigService& config = afk::Services::getConfigService();
-  if (config.get<int>("particleType", 0) != 3 && mouse_rocket_up) {
+  if (scene.config.get<int>("particleType", 0) != 3 && mouse_rocket_up) {
     for (int i = 0; i < 50; i++) {
-      SDL_Color part_color =
+      afk::color::Color part_color =
           afk::color::rgb(255, afk::Random::randomInt(0, 255), 0);
 
       // Christmas colours
-      if (config.get<bool>("christmas", false)) {
+      if (scene.config.get<bool>("christmas", false)) {
         int red_or_green = afk::Random::randomInt(0, 1) * 255;
         part_color = afk::color::rgb(red_or_green, 255 - red_or_green, 0);
       }
@@ -32,7 +29,7 @@ void MouseRocket::update() {
       // Particle newParticle(x + width / 2, y + 16, part_color,
       //                      afk::Random::randomInt(-2, 2),
       //                      afk::Random::randomInt(8, 20), 1,
-      //                      config.get<int>("particleType", 0));
+      //                      scene.config.get<int>("particleType", 0));
       // parts.push_back(newParticle);
     }
   }

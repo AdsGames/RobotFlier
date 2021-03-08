@@ -12,8 +12,7 @@ Comet::Comet(afk::Scene& scene, const float x, const float y)
     : Debris(scene, x, y, 5, 1.4f, 0.01f) {
   setTexture("comet");
 
-  afk::AssetService& assets = afk::Services::getAssetService();
-  destroy_sound = assets.getAudio("asteroid");
+  destroy_sound = scene.assets.getAudio("asteroid");
 }
 
 void Comet::onCollide(const GameObject& other) {

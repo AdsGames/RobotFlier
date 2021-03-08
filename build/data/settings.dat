@@ -1,8 +1,8 @@
 christmas=false
-controlMode=2
+controlMode=1
 debug=true
-fullscreen=false
+fullscreen=true
 music=true
-particleType=1
-screenshake=1
+particleType=3
+screenshake=2
 sound=false

@@ -12,29 +12,23 @@
 // Constructor
 GameHud::GameHud(afk::Scene& scene, const ObjId robotId)
     : GameObject(scene), robot_id(robotId) {
-  afk::AssetService& asset = afk::Services::getAssetService();
-
   // Images
   // Gui
-  debug = asset.getImage("debug");
+  debug = scene.assets.getImage("debug");
 
   // Fonts
-  orbitron_12 = asset.getFont("orbitron_12");
-  orbitron_18 = asset.getFont("orbitron_18");
-  orbitron_24 = asset.getFont("orbitron_24");
-  orbitron_30 = asset.getFont("orbitron_30");
+  orbitron_12 = scene.assets.getFont("orbitron_12");
+  orbitron_18 = scene.assets.getFont("orbitron_18");
+  orbitron_24 = scene.assets.getFont("orbitron_24");
+  orbitron_30 = scene.assets.getFont("orbitron_30");
 
   // Objects
-  powerStar = asset.getImage("powerStar");
-  powerMagnet = asset.getImage("powerMagnet");
+  powerStar = scene.assets.getImage("powerStar");
+  powerMagnet = scene.assets.getImage("powerMagnet");
 }
 
 // Draw to screen
 void GameHud::draw() {
-  afk::ConfigService& config = afk::Services::getConfigService();
-  afk::InputService& input = afk::Services::getInputService();
-  afk::DisplayService& display = afk::Services::getDisplayService();
-
   // Get Robot
   const Robot& robot = scene.get<Robot>(robot_id);
 
@@ -70,7 +64,7 @@ void GameHud::draw() {
   }
 
   // Draw the debug window
-  if (config.get<bool>("debug", false)) {
+  if (scene.config.get<bool>("debug", false)) {
     debug.draw(0, 0);
 
     // Column 1
@@ -92,14 +86,16 @@ void GameHud::draw() {
     orbitron_12.draw(120, 35,
                      afk::str::format("Magnetic:%i", robot.getMagneticTimer()),
                      afk::color::rgb(255, 255, 255));
-    orbitron_12.draw(120, 45, afk::str::format("Mouse X:%i", input.mouseX()),
+    orbitron_12.draw(120, 45,
+                     afk::str::format("Mouse X:%i", scene.input.mouseX()),
                      afk::color::rgb(255, 255, 255));
-    orbitron_12.draw(120, 55, afk::str::format("Mouse Y:%i", input.mouseY()),
+    orbitron_12.draw(120, 55,
+                     afk::str::format("Mouse Y:%i", scene.input.mouseY()),
                      afk::color::rgb(255, 255, 255));
-    orbitron_12.draw(
-        120, 65,
-        afk::str::format("Particles On:%i", config.get<int>("particleType", 0)),
-        afk::color::rgb(255, 255, 255));
+    orbitron_12.draw(120, 65,
+                     afk::str::format("Particles On:%i",
+                                      scene.config.get<int>("particleType", 0)),
+                     afk::color::rgb(255, 255, 255));
 
     // Column 3
     // orbitron_12.draw(245, 25,
@@ -116,9 +112,9 @@ void GameHud::draw() {
     //                  afk::color::rgb(255, 255, 255));
 
     // Column 4
-    orbitron_12.draw(360, 25,
-                     afk::str::format("Last key:%i", input.lastKeyPressed()),
-                     afk::color::rgb(255, 255, 255));
+    orbitron_12.draw(
+        360, 25, afk::str::format("Last key:%i", scene.input.lastKeyPressed()),
+        afk::color::rgb(255, 255, 255));
     // orbitron_12.draw(
     //     360, 35,
     //     afk::str::format("Has highscore:%i", score >
@@ -126,7 +122,7 @@ void GameHud::draw() {
 
     // FPS
     orbitron_18.draw(SCREEN_W - 100, 25,
-                     afk::str::format("FPS:%i", display.getFps()),
+                     afk::str::format("FPS:%i", scene.display.getFps()),
                      afk::color::rgb(255, 255, 255));
   }
 }
