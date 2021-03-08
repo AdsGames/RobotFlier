@@ -7,18 +7,15 @@
 #ifndef ENTITIES_GAMEHUD_H
 #define ENTITIES_GAMEHUD_H
 
-#include <allegro5/allegro_color.h>
-#include <allegro5/allegro_primitives.h>
-
+#include <afk/assets/Font.h>
+#include <afk/assets/Texture.h>
 #include <afk/entities/GameObject.h>
-#include <afk/fonts/Font.h>
 #include <afk/scene/Scene.h>
-#include <afk/textures/Texture.h>
 
 // Game class
-class GameHud : public GameObject {
+class GameHud : public afk::GameObject {
  public:
-  GameHud(Scene& scene, const ObjId robotId);
+  GameHud(afk::Scene& scene, const ObjId robotId);
 
   virtual ~GameHud(){};
 
@@ -26,17 +23,17 @@ class GameHud : public GameObject {
 
  private:
   // GUI Images
-  Texture debug;
+  afk::Texture debug;
 
   // Powerup Images
-  Texture powerStar;
-  Texture powerMagnet;
+  afk::Texture powerStar;
+  afk::Texture powerMagnet;
 
   // Fonts
-  Font orbitron_12;
-  Font orbitron_18;
-  Font orbitron_24;
-  Font orbitron_30;
+  afk::Font orbitron_12;
+  afk::Font orbitron_18;
+  afk::Font orbitron_24;
+  afk::Font orbitron_30;
 
   // Robot id
   ObjId robot_id;

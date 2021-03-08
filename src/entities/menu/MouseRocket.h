@@ -10,10 +10,10 @@
 #include <afk/entities/Sprite.h>
 #include <afk/scene/Scene.h>
 
-class MouseRocket : public Sprite {
+class MouseRocket : public afk::Sprite {
  public:
   // Constructor
-  explicit MouseRocket(Scene& scene);
+  explicit MouseRocket(afk::Scene& scene);
 
   // Logic override
   virtual void update() override;

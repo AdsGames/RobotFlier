@@ -9,7 +9,7 @@
 
 #include <afk/scene/Scene.h>
 
-class Init : public Scene {
+class Init : public afk::Scene {
  public:
   // Override parent
   virtual void start() override;

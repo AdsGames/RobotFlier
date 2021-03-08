@@ -9,12 +9,12 @@
 
 #include "Debris.h"
 
-#include <afk/audio/Sound.h>
+#include <afk/assets/Sound.h>
 
 class Comet : public Debris {
  public:
   // Constructor
-  Comet(Scene& scene, const float x, const float y);
+  Comet(afk::Scene& scene, const float x, const float y);
 
   // Logic override
   virtual void onDestroy() override;
@@ -23,7 +23,7 @@ class Comet : public Debris {
 
  private:
   // Sound
-  Sound destroy_sound;
+  afk::Sound destroy_sound;
 };
 
 #endif  // ENTITIES_DEBRIS_COMET_H

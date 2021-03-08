@@ -6,13 +6,13 @@
 #ifndef ENTITIES_ENERGY_H
 #define ENTITIES_ENERGY_H
 
-#include <afk/audio/Sound.h>
+#include <afk/assets/Sound.h>
 #include <afk/entities/Sprite.h>
 
-class Energy : public Sprite {
+class Energy : public afk::Sprite {
  public:
   // Constructor
-  Energy(Scene& scene, const float x, const float y);
+  Energy(afk::Scene& scene, const float x, const float y);
 
   // Logic override
   virtual void update() override;
@@ -27,7 +27,7 @@ class Energy : public Sprite {
   void loadAssets();
 
   // Sound effect
-  Sound sound_orb;
+  afk::Sound sound_orb;
 };
 
 #endif  // ENTITIES_ENERGY_H

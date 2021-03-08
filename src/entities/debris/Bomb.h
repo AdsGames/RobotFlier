@@ -9,19 +9,19 @@
 
 #include "Debris.h"
 
-#include <afk/audio/Sound.h>
+#include <afk/assets/Sound.h>
 
 class Bomb : public Debris {
  public:
   // Constructor
-  Bomb(Scene& scene, const float x, const float y);
+  Bomb(afk::Scene& scene, const float x, const float y);
 
   // Logic override
   virtual void onDestroy() override;
 
  private:
   // Sound
-  Sound destroy_sound;
+  afk::Sound destroy_sound;
 };
 
 #endif  // ENTITIES_DEBRIS_BOMB_H

@@ -2,13 +2,15 @@
 
 #include <afk/random/RandomGenerator.h>
 #include <afk/scene/Scene.h>
+#include <afk/services/Services.h>
+
 #include "../constants/globals.h"
 
 // Gravity const
 const float GRAVITY = 1.0f;
 
 // Constructor
-Robot::Robot(Scene& scene, const float x, float y)
+Robot::Robot(afk::Scene& scene, const float x, float y)
     : GameObject(scene, x, y, 1) {
   // Init vars
   speed = 0;
@@ -25,21 +27,25 @@ Robot::Robot(Scene& scene, const float x, float y)
   keyPressed = false;
 
   // Images
-  mainRobot = scene.getAsset().getImage("robot");
-  robotFire = scene.getAsset().getImage("robotfire");
-  robotInvincible = scene.getAsset().getImage("robotInvincible");
-  robotInvincibleFire = scene.getAsset().getImage("robotInvincibleFire");
-  robotInvincibleTop = scene.getAsset().getImage("robotInvincibleTop");
-  robotDie = scene.getAsset().getImage("robotDie");
-  christmasHat = scene.getAsset().getImage("christmas_hat");
+  afk::AssetService& assets = afk::Services::getAssetService();
+  mainRobot = assets.getImage("robot");
+  robotFire = assets.getImage("robotfire");
+  robotInvincible = assets.getImage("robotInvincible");
+  robotInvincibleFire = assets.getImage("robotInvincibleFire");
+  robotInvincibleTop = assets.getImage("robotInvincibleTop");
+  robotDie = assets.getImage("robotDie");
+  christmasHat = assets.getImage("christmas_hat");
 
   // Sounds
-  soundFlame = scene.getAsset().getAudio("flame");
-  soundHitground = scene.getAsset().getAudio("hitground");
+  soundFlame = assets.getAudio("flame");
+  soundHitground = assets.getAudio("hitground");
 }
 
 // Update
 void Robot::update() {
+  afk::ConfigService& config = afk::Services::getConfigService();
+  afk::InputService& input = afk::Services::getInputService();
+
   // Check if you are dead!
   if (health < 1) {
     alive = false;
@@ -58,15 +64,14 @@ void Robot::update() {
     y += GRAVITY - speed;
 
   // Death smoke
-  if (scene.getSettings().get<int>("particleType", 0) != 3 && !alive) {
+  if (config.get<int>("particleType", 0) != 3 && !alive) {
     for (int i = 0; i < 800; i++) {
-      if (RandomGenerator::randomInt(0, 10) == 0) {
-        int randnum = RandomGenerator::randomInt(0, 255);
-        Particle newParticle(x + 20, y + 20,
-                             al_map_rgb(randnum, randnum, randnum),
-                             RandomGenerator::randomInt(-4, -1),
-                             RandomGenerator::randomInt(-5, -3), 1,
-                             scene.getSettings().get<int>("particleType", 0));
+      if (afk::Random::randomInt(0, 10) == 0) {
+        int randnum = afk::Random::randomInt(0, 255);
+        afk::Particle newParticle(
+            x + 20, y + 20, afk::color::rgb(randnum, randnum, randnum),
+            afk::Random::randomInt(-4, -1), afk::Random::randomInt(-5, -3), 1,
+            (afk::ParticleType)config.get<int>("particleType", 0));
         smokePart.push_back(newParticle);
       }
     }
@@ -75,32 +80,32 @@ void Robot::update() {
   for (unsigned int i = 0; i < smokePart.size(); i++) {
     smokePart.at(i).update();
 
-    if (RandomGenerator::randomInt(0, 10) == 0) {
+    if (afk::Random::randomInt(0, 10) == 0) {
       smokePart.erase(smokePart.begin() + i);
     }
   }
 
   // Rocket particles
-  if (scene.getSettings().get<int>("particleType", 0) != 3 && rocket) {
+  if (config.get<int>("particleType", 0) != 3 && rocket) {
     for (int i = 0; i < 800; i++) {
-      if (RandomGenerator::randomInt(0, 10) == 0) {
-        ALLEGRO_COLOR part_color =
-            al_map_rgb(255, RandomGenerator::randomInt(0, 255), 0);
+      if (afk::Random::randomInt(0, 10) == 0) {
+        SDL_Color part_color =
+            afk::color::rgb(255, afk::Random::randomInt(0, 255), 0);
 
-        if (scene.getSettings().get<bool>("christmas", false)) {
-          int red_or_green = RandomGenerator::randomInt(0, 1);
+        if (config.get<bool>("christmas", false)) {
+          int red_or_green = afk::Random::randomInt(0, 1);
           part_color =
-              al_map_rgb(255 * red_or_green, 255 - red_or_green * 255, 0);
+              afk::color::rgb(255 * red_or_green, 255 - red_or_green * 255, 0);
         }
 
-        Particle newParticle1(x + 21, y + 55, part_color,
-                              RandomGenerator::randomInt(-2, 2),
-                              RandomGenerator::randomInt(1, 5), 1,
-                              scene.getSettings().get<int>("particleType", 0));
-        Particle newParticle2(x + 52, y + 55, part_color,
-                              RandomGenerator::randomInt(-2, 2),
-                              RandomGenerator::randomInt(0, 4), 1,
-                              scene.getSettings().get<int>("particleType", 0));
+        afk::Particle newParticle1(
+            x + 21, y + 55, part_color, afk::Random::randomInt(-2, 2),
+            afk::Random::randomInt(1, 5), 1,
+            (afk::ParticleType)config.get<int>("particleType", 0));
+        afk::Particle newParticle2(
+            x + 52, y + 55, part_color, afk::Random::randomInt(-2, 2),
+            afk::Random::randomInt(0, 4), 1,
+            (afk::ParticleType)config.get<int>("particleType", 0));
         rocketPart.push_back(newParticle1);
         rocketPart.push_back(newParticle2);
       }
@@ -110,7 +115,7 @@ void Robot::update() {
   for (unsigned int i = 0; i < rocketPart.size(); i++) {
     rocketPart.at(i).update();
 
-    if (RandomGenerator::randomInt(0, 2) == 0) {
+    if (afk::Random::randomInt(0, 2) == 0) {
       rocketPart.erase(rocketPart.begin() + i);
     }
   }
@@ -118,14 +123,13 @@ void Robot::update() {
   // Moving controls
   if (alive) {
     // Controls movement up and down
-    if ((scene.getInput().keyboard().key[ALLEGRO_KEY_W] ||
-         scene.getInput().keyboard().key[ALLEGRO_KEY_UP] ||
-         scene.getInput().mouse().button[1]) ||
-        scene.getInput().joystick().button[JOY_XBOX_A] ||
-        scene.getInput().joystick().button[JOY_XBOX_BUMPER_LEFT]) {
+    if ((input.keyDown(afk::Keys::KEY_W) || input.keyDown(afk::Keys::KEY_UP) ||
+         input.mouseDown(afk::MouseButtons::BUTTON_LEFT)) ||
+        input.joyDown(afk::JoystickButtons::JOY_XBOX_A) ||
+        input.joyDown(afk::JoystickButtons::JOY_XBOX_BUMPER_LEFT)) {
       keyPressed = true;
 
-      if (RandomGenerator::randomInt(0, 3) == 1) {
+      if (afk::Random::randomInt(0, 3) == 1) {
         soundFlame.play({.gain = 0.01f});
       }
 
@@ -176,25 +180,27 @@ void Robot::update() {
 
 // Draw
 void Robot::draw() {
+  afk::ConfigService& config = afk::Services::getConfigService();
+
   // Draw robot sprite
   if (alive) {
     // Invincible
     if (invincibleTimer > 0) {
-      if (!rocket || scene.getSettings().get<int>("particleType", 0) != 3)
+      if (!rocket || config.get<int>("particleType", 0) != 3)
         robotInvincible.draw(x, y);
-      else if (rocket && scene.getSettings().get<int>("particleType", 0) == 3)
+      else if (rocket && config.get<int>("particleType", 0) == 3)
         robotInvincibleFire.draw(x, y);
     }
     // Standard
     else {
-      if (!rocket || scene.getSettings().get<int>("particleType", 0) != 3)
+      if (!rocket || config.get<int>("particleType", 0) != 3)
         mainRobot.draw(x, y);
-      else if (rocket && scene.getSettings().get<int>("particleType", 0) == 3)
+      else if (rocket && config.get<int>("particleType", 0) == 3)
         robotFire.draw(x, y);
     }
 
     // Xmas mode!
-    if (scene.getSettings().get<bool>("christmas", false)) {
+    if (config.get<bool>("christmas", false)) {
       christmasHat.draw(x + 20, y - 12);
     }
   }

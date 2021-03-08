@@ -1,15 +1,19 @@
 #include "Comet.h"
 
 #include <afk/scene/Scene.h>
+#include <afk/services/Services.h>
+
 #include "../Robot.h"
 
 const int COMET_DAMAGE = -5;
 
 // Constructor
-Comet::Comet(Scene& scene, const float x, const float y)
+Comet::Comet(afk::Scene& scene, const float x, const float y)
     : Debris(scene, x, y, 5, 1.4f, 0.01f) {
   setTexture("comet");
-  destroy_sound = scene.getAsset().getAudio("asteroid");
+
+  afk::AssetService& assets = afk::Services::getAssetService();
+  destroy_sound = assets.getAudio("asteroid");
 }
 
 void Comet::onCollide(const GameObject& other) {

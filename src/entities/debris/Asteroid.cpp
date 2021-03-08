@@ -2,17 +2,22 @@
 
 #include <afk/random/RandomGenerator.h>
 #include <afk/scene/Scene.h>
+#include <afk/services/Services.h>
 
 // Constructor
-Asteroid::Asteroid(Scene& scene, const float x, const float y, const int theme)
-    : Debris(scene, x, y, 5, 1.0f, 0.0f, RandomGenerator::randomInt(4, 20)) {
+Asteroid::Asteroid(afk::Scene& scene,
+                   const float x,
+                   const float y,
+                   const int theme)
+    : Debris(scene, x, y, 5, 1.0f, 0.0f, afk::Random::randomInt(4, 20)) {
   loadAssets(theme);
 }
 
 void Asteroid::loadAssets(const int theme) {
   setTexture("asteroid_dark");
 
-  if (scene.getSettings().get<bool>("christmas", false)) {
+  afk::ConfigService& config = afk::Services::getConfigService();
+  if (config.get<bool>("christmas", false)) {
     setTexture("asteroid_christmas");
   } else {
     switch (theme) {
@@ -33,7 +38,8 @@ void Asteroid::loadAssets(const int theme) {
     }
   }
 
-  destroy_sound = scene.getAsset().getAudio("asteroid");
+  afk::AssetService& assets = afk::Services::getAssetService();
+  destroy_sound = assets.getAudio("asteroid");
 }
 
 void Asteroid::onDestroy() {

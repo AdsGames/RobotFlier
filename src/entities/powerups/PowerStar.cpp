@@ -1,11 +1,13 @@
 #include "PowerStar.h"
 
 #include <afk/scene/Scene.h>
+#include <afk/services/Services.h>
+
 #include "../../constants/globals.h"
 #include "../Robot.h"
 
 // Constructor
-PowerStar::PowerStar(Scene& scene, const float x, const float y)
+PowerStar::PowerStar(afk::Scene& scene, const float x, const float y)
     : Powerup(scene, x, y) {
   loadAssets();
   setTimerLength(500);
@@ -14,7 +16,8 @@ PowerStar::PowerStar(Scene& scene, const float x, const float y)
 // Load assets from manager
 void PowerStar::loadAssets() {
   // Load sound
-  power_star_sound = scene.getAsset().getAudio("star");
+  afk::AssetService& asset = afk::Services::getAssetService();
+  power_star_sound = asset.getAudio("star");
 
   // Load image
   setTexture("powerStar");

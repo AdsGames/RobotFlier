@@ -1,6 +1,6 @@
 christmas=false
 controlMode=2
-debug=false
+debug=true
 fullscreen=false
 music=true
 particleType=1

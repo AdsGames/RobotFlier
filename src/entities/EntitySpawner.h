@@ -10,10 +10,12 @@
 #include <afk/entities/GameObject.h>
 #include <afk/scene/Scene.h>
 
-class EntitySpawner : public GameObject {
+class EntitySpawner : public afk::GameObject {
  public:
   // Constructor
-  EntitySpawner(Scene& scene, const ObjId robotId, const ObjId pauseMenuId);
+  EntitySpawner(afk::Scene& scene,
+                const ObjId robotId,
+                const ObjId pauseMenuId);
 
   // Logic override
   virtual void update() override;

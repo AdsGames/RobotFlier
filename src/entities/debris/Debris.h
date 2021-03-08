@@ -8,10 +8,10 @@
 
 #include <afk/entities/Sprite.h>
 
-class Debris : public Sprite {
+class Debris : public afk::Sprite {
  public:
   // Constructor
-  Debris(Scene& scene,
+  Debris(afk::Scene& scene,
          const float x,
          const float y,
          const int damage,

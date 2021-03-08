@@ -8,10 +8,10 @@
 
 #include <afk/entities/Sprite.h>
 
-class Powerup : public Sprite {
+class Powerup : public afk::Sprite {
  public:
   // Constructor
-  Powerup(Scene& scene, const float x, const float y);
+  Powerup(afk::Scene& scene, const float x, const float y);
 
   void setTimerLength(const int length);
   int getTimerLength();

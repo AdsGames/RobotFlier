@@ -1,13 +1,16 @@
 #include "Bomb.h"
 
 #include <afk/scene/Scene.h>
+#include <afk/services/Services.h>
 
 // Constructor
-Bomb::Bomb(Scene& scene, const float x, const float y)
+Bomb::Bomb(afk::Scene& scene, const float x, const float y)
     : Debris(scene, x, y, 10, 1.0f, 0.01f) {
-  destroy_sound = scene.getAsset().getAudio("bomb");
+  afk::AssetService& assets = afk::Services::getAssetService();
+  destroy_sound = assets.getAudio("bomb");
 
-  if (scene.getSettings().get<bool>("christmas", false)) {
+  afk::ConfigService& config = afk::Services::getConfigService();
+  if (config.get<bool>("christmas", false)) {
     setTexture("bomb_christmas");
   } else {
     setTexture("bomb");

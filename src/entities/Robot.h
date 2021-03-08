@@ -9,14 +9,14 @@
 
 #include <vector>
 
-#include <afk/audio/Sound.h>
+#include <afk/assets/Sound.h>
+#include <afk/assets/Texture.h>
 #include <afk/entities/GameObject.h>
-#include <afk/particles/Particle.h>
-#include <afk/textures/Texture.h>
+#include <afk/entities/Particle.h>
 
-class Robot : public GameObject {
+class Robot : public afk::GameObject {
  public:
-  explicit Robot(Scene& scene, float x = 0.0f, float y = 0.0f);
+  explicit Robot(afk::Scene& scene, float x = 0.0f, float y = 0.0f);
 
   virtual void update() override;
   virtual void draw() override;
@@ -52,21 +52,21 @@ class Robot : public GameObject {
   bool keyPressed;
 
   // Images
-  Texture mainRobot;
-  Texture robotFire;
-  Texture robotInvincible;
-  Texture robotInvincibleFire;
-  Texture robotInvincibleTop;
-  Texture robotDie;
-  Texture christmasHat;
+  afk::Texture mainRobot;
+  afk::Texture robotFire;
+  afk::Texture robotInvincible;
+  afk::Texture robotInvincibleFire;
+  afk::Texture robotInvincibleTop;
+  afk::Texture robotDie;
+  afk::Texture christmasHat;
 
   // Sounds
-  Sound soundFlame;
-  Sound soundHitground;
+  afk::Sound soundFlame;
+  afk::Sound soundHitground;
 
   // Particles
-  std::vector<Particle> rocketPart;
-  std::vector<Particle> smokePart;
+  std::vector<afk::Particle> rocketPart;
+  std::vector<afk::Particle> smokePart;
 };
 
 #endif  // ENTITIES_ROBOT_H

@@ -9,12 +9,12 @@
 
 #include "Powerup.h"
 
-#include <afk/audio/Sound.h>
+#include <afk/assets/Sound.h>
 
 class Magnet : public Powerup {
  public:
   // Constructor
-  Magnet(Scene& scene, const float x, const float y, const int type);
+  Magnet(afk::Scene& scene, const float x, const float y, const int type);
 
   // Logic override
   virtual void update() override;
@@ -29,7 +29,7 @@ class Magnet : public Powerup {
   void setTimer(const int type);
 
   // Sound
-  Sound magnet_sound;
+  afk::Sound magnet_sound;
 };
 
 #endif  // ENTITIES_POWERUPS_MAGNET_H

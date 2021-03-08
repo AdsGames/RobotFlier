@@ -9,12 +9,12 @@
 
 #include "Powerup.h"
 
-#include <afk/audio/Sound.h>
+#include <afk/assets/Sound.h>
 
 class PowerStar : public Powerup {
  public:
   // Constructor
-  PowerStar(Scene& scene, const float x, const float y);
+  PowerStar(afk::Scene& scene, const float x, const float y);
 
   // Logic override
   virtual void update() override;
@@ -26,7 +26,7 @@ class PowerStar : public Powerup {
   void loadAssets();
 
   // Sound
-  Sound power_star_sound;
+  afk::Sound power_star_sound;
 };
 
 #endif  // ENTITIES_POWERUPS_POWER_STAR_H

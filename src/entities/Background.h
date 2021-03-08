@@ -7,14 +7,14 @@
 #ifndef ENTITIES_BACKGROUND_H
 #define ENTITIES_BACKGROUND_H
 
+#include <afk/assets/Texture.h>
 #include <afk/entities/GameObject.h>
 #include <afk/scene/Scene.h>
-#include <afk/textures/Texture.h>
 
-class Background : public GameObject {
+class Background : public afk::GameObject {
  public:
   // Constructor
-  explicit Background(Scene& scene);
+  explicit Background(afk::Scene& scene);
 
   // Logic override
   virtual void update() override;
@@ -27,10 +27,10 @@ class Background : public GameObject {
   void changeTheme(const int theme);
 
   // Textures
-  Texture space;
-  Texture parallaxBack;
-  Texture groundOverlay;
-  Texture groundUnderlay;
+  afk::Texture space;
+  afk::Texture parallaxBack;
+  afk::Texture groundOverlay;
+  afk::Texture groundUnderlay;
 
   // Position
   int scroll;

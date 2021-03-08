@@ -9,12 +9,12 @@
 
 #include "Debris.h"
 
-#include <afk/audio/Sound.h>
+#include <afk/assets/Sound.h>
 
 class Asteroid : public Debris {
  public:
   // Constructor
-  Asteroid(Scene& scene, const float x, const float y, const int theme);
+  Asteroid(afk::Scene& scene, const float x, const float y, const int theme);
 
   // Logic override
   virtual void onDestroy() override;
@@ -24,7 +24,7 @@ class Asteroid : public Debris {
   void loadAssets(const int theme);
 
   // Sound
-  Sound destroy_sound;
+  afk::Sound destroy_sound;
 };
 
 #endif  // ENTITIES_DEBRIS_ASTEROID_H

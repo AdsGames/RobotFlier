@@ -2,10 +2,12 @@
 
 #include <afk/random/RandomGenerator.h>
 #include <afk/scene/Scene.h>
+#include <afk/services/Services.h>
+
 #include "../../constants/globals.h"
 
 // Constructor
-Debris::Debris(Scene& scene,
+Debris::Debris(afk::Scene& scene,
                const float x,
                const float y,
                const int damage,
@@ -26,11 +28,12 @@ Debris::Debris(Scene& scene,
 // Logic
 void Debris::update() {
   // Update particles
-  if (scene.getSettings().get<int>("particleType", 0) != 3) {
-    for (unsigned int i = 0; i < parts.size(); i++) {
-      parts.at(i).update();
-      parts.at(i).scroll(motion, 0.0f);
-    }
+  afk::ConfigService& config = afk::Services::getConfigService();
+  if (config.get<int>("particleType", 0) != 3) {
+    // for (unsigned int i = 0; i < parts.size(); i++) {
+    //   parts.at(i).update();
+    //   parts.at(i).scroll(motion, 0.0f);
+    // }
   }
 
   // Move across screen
@@ -47,22 +50,23 @@ void Debris::destroy() {
   stats[STAT_DEBRIS] += 1;
 
   // Make particles
-  if (scene.getSettings().get<int>("particleType", 0) != 3) {
+  afk::ConfigService& config = afk::Services::getConfigService();
+  if (config.get<int>("particleType", 0) != 3) {
     // Sample a pixel
-    ALLEGRO_COLOR sample_color =
+    SDL_Color sample_color =
         texture.getPixel(texture.getWidth() / 2, texture.getHeight() / 2);
 
     // Make some particles
     int sampling_size = 5;
 
-    for (int i = 0; i < (width - sampling_size); i += sampling_size) {
-      for (int t = 0; t < (height - sampling_size); t += sampling_size) {
-        Particle newParticle(i + x, t + y, sample_color,
-                             RandomGenerator::randomInt(-8, 8),
-                             RandomGenerator::randomInt(-8, 8), 1,
-                             scene.getSettings().get<int>("particleType", 0));
-        parts.push_back(newParticle);
-      }
-    }
+    // for (int i = 0; i < (width - sampling_size); i += sampling_size) {
+    //   for (int t = 0; t < (height - sampling_size); t += sampling_size) {
+    //     afk::Particle newParticle(i + x, t + y, sample_color,
+    //                               afk::Random::randomInt(-8, 8),
+    //                               afk::Random::randomInt(-8, 8), 1,
+    //                               config.get<int>("particleType", 0));
+    //     parts.push_back(newParticle);
+    //   }
+    // }
   }
 }

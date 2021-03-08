@@ -9,10 +9,10 @@
 
 #include <chrono>
 
+#include <afk/assets/Texture.h>
 #include <afk/scene/Scene.h>
-#include <afk/textures/Texture.h>
 
-class Intro : public Scene {
+class Intro : public afk::Scene {
  public:
   // Override parent
   virtual void start() override;
@@ -22,7 +22,7 @@ class Intro : public Scene {
 
  private:
   // Splash image
-  Texture img_intro;
+  afk::Texture img_intro;
 
   // Start time
   std::chrono::high_resolution_clock::time_point start_time;

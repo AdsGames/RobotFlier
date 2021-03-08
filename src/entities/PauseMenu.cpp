@@ -1,13 +1,16 @@
 #include "PauseMenu.h"
 
-#include <afk/common/stringFns.h>
+#include <afk/common/str.h>
 #include <afk/scene/Scene.h>
+#include <afk/services/Services.h>
+
 #include "../constants/globals.h"
 #include "../helpers/tools.h"
 
-PauseMenu::PauseMenu(Scene& scene) : GameObject(scene), paused(false) {
-  background = scene.getAsset().getImage("pauseMenu");
-  orbitron_18 = scene.getAsset().getFont("orbitron_18");
+PauseMenu::PauseMenu(afk::Scene& scene) : GameObject(scene), paused(false) {
+  afk::AssetService& asset = afk::Services::getAssetService();
+  background = asset.getImage("pauseMenu");
+  orbitron_18 = asset.getFont("orbitron_18");
 }
 
 bool PauseMenu::getPaused() const {
@@ -15,15 +18,19 @@ bool PauseMenu::getPaused() const {
 }
 
 void PauseMenu::update() {
+  afk::InputService& input = afk::Services::getInputService();
+  afk::SceneService& scene = afk::Services::getSceneService();
+  afk::DisplayService& display = afk::Services::getDisplayService();
+
   // Pause loop code
-  if (scene.getInput().keyboard().keyPressed[ALLEGRO_KEY_ESCAPE] ||
-      scene.getInput().mouse().down[2] ||
-      scene.getInput().keyboard().keyPressed[ALLEGRO_KEY_SPACE] ||
-      scene.getInput().joystick().buttonPressed[JOY_XBOX_START]) {
+  if (input.keyPressed(afk::Keys::KEY_ESCAPE) ||
+      input.mouseDown(afk::MouseButtons::BUTTON_RIGHT) ||
+      input.keyPressed(afk::Keys::KEY_SPACE) ||
+      input.joyPressed(afk::JoystickButtons::JOY_XBOX_START)) {
     if (paused) {
-      scene.getWindow().hideMouse();
+      display.hideMouse();
     } else {
-      scene.getWindow().showMouse();
+      display.showMouse();
     }
     paused = !paused;
   }
@@ -31,26 +38,23 @@ void PauseMenu::update() {
   // Pause Menu Scripts
   if (paused) {
     // Quit game
-    if (scene.getInput().mouse().down[1] &&
-        collision(220, 280, scene.getInput().mouse().x,
-                  scene.getInput().mouse().x, 435, 460,
-                  scene.getInput().mouse().y, scene.getInput().mouse().y)) {
-      Scene::setNextScene("exit");
+    if (input.mouseDown(afk::MouseButtons::BUTTON_LEFT) &&
+        collision(220, 280, input.mouseX(), input.mouseX(), 435, 460,
+                  input.mouseY(), input.mouseY())) {
+      scene.setNextScene("exit");
     }
 
     // Menu
-    if (scene.getInput().mouse().down[1] &&
-        collision(300, 430, scene.getInput().mouse().x,
-                  scene.getInput().mouse().x, 435, 460,
-                  scene.getInput().mouse().y, scene.getInput().mouse().y)) {
-      Scene::setNextScene("menu");
+    if (input.mouseDown(afk::MouseButtons::BUTTON_LEFT) &&
+        collision(300, 430, input.mouseX(), input.mouseX(), 435, 460,
+                  input.mouseY(), input.mouseY())) {
+      scene.setNextScene("menu");
     }
 
     // Resume
-    if (scene.getInput().mouse().down[1] &&
-        collision(470, 540, scene.getInput().mouse().x,
-                  scene.getInput().mouse().x, 435, 460,
-                  scene.getInput().mouse().y, scene.getInput().mouse().y)) {
+    if (input.mouseDown(afk::MouseButtons::BUTTON_LEFT) &&
+        collision(470, 540, input.mouseX(), input.mouseX(), 435, 460,
+                  input.mouseY(), input.mouseY())) {
       paused = false;
     }
   }
@@ -63,23 +67,22 @@ void PauseMenu::draw() {
   }
 
   // Menu
-  background.draw(130, 140, 0);
+  background.draw(130, 140);
 
   // Stats
   orbitron_18.draw(
       220, 250,
-      stringFns::format("Distance Flown: %i ft", stats[STAT_DISTANCE] / 10),
-      al_map_rgb(255, 255, 255));
+      afk::str::format("Distance Flown: %i ft", stats[STAT_DISTANCE] / 10),
+      afk::color::rgb(255, 255, 255));
+  orbitron_18.draw(220, 280,
+                   afk::str::format("Energy Collected: %i", stats[STAT_ENERGY]),
+                   afk::color::rgb(255, 255, 255));
   orbitron_18.draw(
-      220, 280, stringFns::format("Energy Collected: %i", stats[STAT_ENERGY]),
-      al_map_rgb(255, 255, 255));
-  orbitron_18.draw(
-      220, 310,
-      stringFns::format("Powerups Received: %i", stats[STAT_POWERUPS]),
-      al_map_rgb(255, 255, 255));
+      220, 310, afk::str::format("Powerups Received: %i", stats[STAT_POWERUPS]),
+      afk::color::rgb(255, 255, 255));
   orbitron_18.draw(220, 340,
-                   stringFns::format("Debris Collided: %i", stats[STAT_DEBRIS]),
-                   al_map_rgb(255, 255, 255));
+                   afk::str::format("Debris Collided: %i", stats[STAT_DEBRIS]),
+                   afk::color::rgb(255, 255, 255));
 
   // Buttons
   orbitron_18.draw(220, 445, "Quit");

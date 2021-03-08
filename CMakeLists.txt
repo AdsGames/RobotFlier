@@ -15,28 +15,56 @@ add_executable (${PROJECT_NAME} ${SOURCES} ${HEADERS})
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
 
 # Find libs
-find_library(ALLEGRO_LIBRARY NAMES liballegro REQUIRED)
-find_library(ALLEGRO_ACODEC_LIBRARY NAMES liballegro_acodec REQUIRED)
-find_library(ALLEGRO_AUDIO_LIBRARY NAMES liballegro_audio REQUIRED)
-find_library(ALLEGRO_COLOR_LIBRARY NAMES liballegro_color REQUIRED)
-find_library(ALLEGRO_DIALOG_LIBRARY NAMES liballegro_dialog REQUIRED)
-find_library(ALLEGRO_FONT_LIBRARY NAMES liballegro_font REQUIRED)
-find_library(ALLEGRO_IMAGE_LIBRARY NAMES liballegro_image REQUIRED)
-find_library(ALLEGRO_MAIN_LIBRARY NAMES liballegro_main REQUIRED)
-find_library(ALLEGRO_PRIMITIVES_LIBRARY NAMES liballegro_primitives REQUIRED)
-find_library(ALLEGRO_TTF_LIBRARY NAMES liballegro_ttf REQUIRED)
-find_library(AFK_LIBRARY NAMES libafk REQUIRED)
+if(NOT EMSCRIPTEN)
+  find_library(AFK_LIBRARY NAMES afk REQUIRED)
+  find_library(SDL_LIBRARY NAMES SDL2 REQUIRED)
+  find_library(SDL_MIXER_LIBRARY NAMES SDL2_mixer REQUIRED)
+  find_library(SDL_IMAGE_LIBRARY NAMES SDL2_image REQUIRED)
+  find_library(SDL_TTF_LIBRARY NAMES SDL2_ttf REQUIRED)
+  find_library(SDL_GFX_LIBRARY NAMES SDL2_gfx REQUIRED)
+  find_library(SDL_MAIN_LIBRARY NAMES SDL2main REQUIRED)
+endif()
 
-# Link Libs
-target_link_libraries(${PROJECT_NAME} ${ALLEGRO_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${ALLEGRO_ACODEC_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${ALLEGRO_AUDIO_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${ALLEGRO_COLOR_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${ALLEGRO_DIALOG_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${ALLEGRO_FONT_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${ALLEGRO_IMAGE_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${ALLEGRO_MAIN_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${ALLEGRO_PRIMITIVES_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${ALLEGRO_TTF_LIBRARY})
-target_link_libraries(${PROJECT_NAME} ${AFK_LIBRARY})
 
+
+if(EMSCRIPTEN)
+  set(CMAKE_EXECUTABLE_SUFFIX ".html")
+  target_link_libraries(
+    ${PROJECT_NAME} 
+    -sWASM=1 
+    -sUSE_SDL=2 
+    -sUSE_SDL_IMAGE=2 
+    -sUSE_SDL_TTF=2 
+    -sUSE_SDL_MIXER=2 
+    -sUSE_SDL_GFX=2 
+    -sSDL2_IMAGE_FORMATS=["png"] 
+    -sDEMANGLE_SUPPORT=1
+    -sTOTAL_MEMORY=512MB
+    -sDISABLE_EXCEPTION_CATCHING=0
+    afk
+  )
+  set_target_properties(
+    ${PROJECT_NAME} 
+    PROPERTIES 
+    LINK_FLAGS 
+    "--preload-file ${CMAKE_BINARY_DIR}/build/audio@/audio --preload-file ${CMAKE_BINARY_DIR}/build/data@/data --preload-file ${CMAKE_BINARY_DIR}/build/fonts@/fonts --preload-file ${CMAKE_BINARY_DIR}/build/images@/images --preload-file ${CMAKE_BINARY_DIR}/build/screenshots@/screenshots --use-preload-plugins"
+  )
+
+# Run of the mill executable
+else(EMSCRIPTEN)
+  if(MINGW)
+    target_link_libraries(${PROJECT_NAME} -lmingw32)
+  endif(MINGW)
+
+  target_link_libraries(
+    ${PROJECT_NAME} 
+    -lm 
+    ${AFK_LIBRARY} 
+    ${SDL_MAIN_LIBRARY} 
+    ${SDL_LIBRARY} 
+    ${SDL_MIXER_LIBRARY} 
+    ${SDL_IMAGE_LIBRARY} 
+    ${SDL_TTF_LIBRARY} 
+    ${SDL_GFX_LIBRARY}
+  )
+endif(EMSCRIPTEN)

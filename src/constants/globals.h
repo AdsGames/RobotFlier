@@ -15,7 +15,6 @@
 extern int score;
 extern int screenshake;
 extern float motion;
-extern int fps;
 extern int SCREEN_W;
 extern int SCREEN_H;
 

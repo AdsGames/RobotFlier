@@ -4,16 +4,17 @@
  * 03/01/2016
  * Main game scene
  */
-#ifndef SCENES_GAME_H
-#define SCENES_GAME_H
+#ifndef SCENES_MAIN_GAME_H
+#define SCENES_MAIN_GAME_H
 
-#include <afk/fonts/Font.h>
+#include <afk/assets/Font.h>
+#include <afk/assets/Texture.h>
 #include <afk/scene/Scene.h>
-#include <afk/textures/Texture.h>
+
 #include "../entities/menu/ScoreTable.h"
 
 // Game class
-class Game : public Scene {
+class MainGame : public afk::Scene {
  public:
   // Override parent
   virtual void start() override;
@@ -31,23 +32,20 @@ class Game : public Scene {
   // Change theme
   void changeTheme(int NewThemeNumber);
 
-  // Declare bitmaps
-  ALLEGRO_BITMAP* screenshot;
-
   // GUI Images
-  Texture debug;
-  Texture ui_game_end;
-  Texture ui_a;
-  Texture ui_b;
-  Texture ui_up;
+  afk::Texture debug;
+  afk::Texture ui_game_end;
+  afk::Texture ui_a;
+  afk::Texture ui_b;
+  afk::Texture ui_up;
 
   // Powerup Images
-  Texture powerStar;
-  Texture powerMagnet;
+  afk::Texture powerStar;
+  afk::Texture powerMagnet;
 
   // Fonts
-  Font orbitron_18;
-  Font orbitron_24;
+  afk::Font orbitron_18;
+  afk::Font orbitron_24;
 
   // Our robot
   ObjId hectar_id;
@@ -66,4 +64,4 @@ class Game : public Scene {
   std::string::iterator iter;
 };
 
-#endif  // SCENES_GAME_H
+#endif  // SCENES_MAIN_GAME_H

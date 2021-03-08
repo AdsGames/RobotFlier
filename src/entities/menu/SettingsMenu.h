@@ -7,15 +7,15 @@
 #ifndef ENTITIES_MENU_SETTINGS_MENU_H
 #define ENTITIES_MENU_SETTINGS_MENU_H
 
+#include <afk/assets/Font.h>
+#include <afk/assets/Texture.h>
 #include <afk/entities/GameObject.h>
-#include <afk/fonts/Font.h>
 #include <afk/scene/Scene.h>
-#include <afk/textures/Texture.h>
 
-class SettingsMenu : public GameObject {
+class SettingsMenu : public afk::GameObject {
  public:
   // Constructor
-  explicit SettingsMenu(Scene& scene);
+  explicit SettingsMenu(afk::Scene& scene);
 
   // Logic override
   virtual void update() override;
@@ -30,20 +30,20 @@ class SettingsMenu : public GameObject {
   bool open;
 
   // Options menu
-  Texture options;
+  afk::Texture options;
 
-  Texture ui_sound[2];
-  Texture ui_music[2];
-  Texture ui_screenshake[4];
-  Texture ui_window[2];
-  Texture ui_particle[4];
-  Texture ui_control[3];
+  afk::Texture ui_sound[2];
+  afk::Texture ui_music[2];
+  afk::Texture ui_screenshake[4];
+  afk::Texture ui_window[2];
+  afk::Texture ui_particle[4];
+  afk::Texture ui_control[3];
 
-  Texture ui_back;
-  Texture ui_exit;
+  afk::Texture ui_back;
+  afk::Texture ui_exit;
 
   // Fonts
-  Font orbitron_24;
+  afk::Font orbitron_24;
 };
 
 #endif  // ENTITIES_MENU_SETTINGS_MENU_H

@@ -1,10 +1,12 @@
-#include "Game.h"
+#include "MainGame.h"
 
 #include <algorithm>
 #include <fstream>
 
-#include <afk/common/stringFns.h>
+#include <afk/common/str.h>
 #include <afk/random/RandomGenerator.h>
+#include <afk/services/Services.h>
+
 #include "../constants/globals.h"
 #include "../entities/Background.h"
 #include "../entities/EntitySpawner.h"
@@ -13,7 +15,7 @@
 #include "../entities/Robot.h"
 
 // Constructor
-void Game::start() {
+void MainGame::start() {
   // Set edittext
   edittext = "Player";
 
@@ -38,28 +40,27 @@ void Game::start() {
 
   // Images
   // Gui
-  ui_game_end = this->getAsset().getImage("ui_game_end");
-  ui_a = this->getAsset().getImage("ui_a");
-  ui_b = this->getAsset().getImage("ui_b");
-  ui_up = this->getAsset().getImage("ui_up");
-  debug = this->getAsset().getImage("debug");
+  afk::AssetService& assets = afk::Services::getAssetService();
+  ui_game_end = assets.getImage("ui_game_end");
+  ui_a = assets.getImage("ui_a");
+  ui_b = assets.getImage("ui_b");
+  ui_up = assets.getImage("ui_up");
+  debug = assets.getImage("debug");
 
   // Fonts
-  orbitron_18 = this->getAsset().getFont("orbitron_18");
-  orbitron_24 = this->getAsset().getFont("orbitron_24");
-
-  // Nullfiy bitmaps not loaded yet
-  screenshot = nullptr;
+  orbitron_18 = assets.getFont("orbitron_18");
+  orbitron_24 = assets.getFont("orbitron_24");
 
   // Objects
-  powerStar = this->getAsset().getImage("powerStar");
-  powerMagnet = this->getAsset().getImage("powerMagnet");
+  powerStar = assets.getImage("powerStar");
+  powerMagnet = assets.getImage("powerMagnet");
 
   // Sets the level to 1
   themeNumber = 0;
 
   // Mouse
-  this->getWindow().hideMouse();
+  afk::DisplayService& display = afk::Services::getDisplayService();
+  display.hideMouse();
 
   // Init hectar
   hectar_id = this->add<Robot>(*this, 80, 300);
@@ -77,21 +78,23 @@ void Game::start() {
   this->add<EntitySpawner>(*this, hectar_id, pause_menu_id);
 
   // Play music
-  this->getAudio().playStream("in_game", true);
+  afk::AudioService& audio = afk::Services::getAudioService();
+  audio.playStream("in_game", true);
 
   // Scrolling background
   this->add<Background>(*this);
 }
 
 // Destructor
-void Game::stop() {
+void MainGame::stop() {
   // Stop music
-  this->getAudio().stopStream("death");
-  this->getAudio().stopStream("in_game");
+  afk::AudioService& audio = afk::Services::getAudioService();
+  audio.stopStream("death");
+  audio.stopStream("in_game");
 }
 
 // Take screenshot
-void Game::takeScreenshot() {
+void MainGame::takeScreenshot() {
   // Count screenshots
   int screenshotNumber;
 
@@ -112,11 +115,17 @@ void Game::takeScreenshot() {
   //                al_get_backbuffer(display));
 
   // Snap sound
-  this->getAudio().playSound("snap");
+  afk::AudioService& audio = afk::Services::getAudioService();
+  audio.playSound("snap");
 }
 
 // Update logic of game
-void Game::update() {
+void MainGame::update() {
+  afk::AudioService& audio = afk::Services::getAudioService();
+  afk::InputService& input = afk::Services::getInputService();
+  afk::ConfigService& config = afk::Services::getConfigService();
+  afk::SceneService& scene = afk::Services::getSceneService();
+
   // Get hectar
   Robot& hectar = this->get<Robot>(hectar_id);
 
@@ -133,10 +142,10 @@ void Game::update() {
 
     // If its different he died play music
     if (hectarHasDied != hectar.isAlive()) {
-      this->getAudio().stopStream("in_game");
+      audio.stopStream("in_game");
 
-      if (this->getSettings().get<bool>("music", true) == 1) {
-        this->getAudio().playStream("death", true);
+      if (config.get<bool>("music", true) == 1) {
+        audio.playStream("death", true);
       }
     }
 
@@ -170,41 +179,42 @@ void Game::update() {
     if (hectar.isOnGround()) {
       // Name input
       if (score > highscores.getScore(9) &&
-          this->getInput().keyboard().lastKeyPressed != -1) {
+          input.lastKeyPressed() != (int)afk::Keys::KEY_UNKNOWN) {
         // Last key pressed
-        int newkey = this->getInput().keyboard().lastKeyPressed;
+        int newkey = input.lastKeyPressed();
 
         // Letters
-        if (newkey >= ALLEGRO_KEY_A && newkey <= ALLEGRO_KEY_Z &&
-            edittext.length() < 14) {
+        if (newkey >= (int)afk::Keys::KEY_A &&
+            newkey <= (int)afk::Keys::KEY_Z && edittext.length() < 14) {
           iter = edittext.insert(
-              iter,
-              newkey + 96 -
-                  (this->getInput().keyboard().key[ALLEGRO_KEY_LSHIFT] * 32));
+              iter, newkey + 96 - (input.keyDown(afk::Keys::KEY_LSHIFT) * 32));
           ++iter;
         }
         // Numbers
-        else if (newkey >= ALLEGRO_KEY_0 && newkey <= ALLEGRO_KEY_9 &&
-                 edittext.length() < 14) {
+        else if (newkey >= (int)afk::Keys::KEY_0 &&
+                 newkey <= (int)afk::Keys::KEY_9 && edittext.length() < 14) {
           iter = edittext.insert(iter, newkey + 21);
           ++iter;
         }
         // Some other, "special" key was pressed, handle it here
-        else if (newkey == ALLEGRO_KEY_BACKSPACE && iter != edittext.begin()) {
+        else if (newkey == (int)afk::Keys::KEY_BACKSPACE &&
+                 iter != edittext.begin()) {
           --iter;
           iter = edittext.erase(iter);
-        } else if (newkey == ALLEGRO_KEY_RIGHT && iter != edittext.end()) {
+        } else if (newkey == (int)afk::Keys::KEY_RIGHT &&
+                   iter != edittext.end()) {
           ++iter;
-        } else if (newkey == ALLEGRO_KEY_LEFT && iter != edittext.begin()) {
+        } else if (newkey == (int)afk::Keys::KEY_LEFT &&
+                   iter != edittext.begin()) {
           --iter;
         }
       }
 
-      if (this->getInput().keyboard().key[ALLEGRO_KEY_ENTER] ||
-          this->getInput().joystick().buttonPressed[JOY_XBOX_START] ||
-          this->getInput().joystick().buttonPressed[JOY_XBOX_A]) {
+      if (input.keyDown(afk::Keys::KEY_RETURN) ||
+          input.joyPressed(afk::JoystickButtons::JOY_XBOX_START) ||
+          input.joyPressed(afk::JoystickButtons::JOY_XBOX_A)) {
         highscores.add(edittext, score);
-        Scene::setNextScene("menu");
+        scene.setNextScene("menu");
       }
     }
   } else {
@@ -212,18 +222,18 @@ void Game::update() {
   }
 
   // Screenshot
-  if (this->getInput().keyboard().keyPressed[ALLEGRO_KEY_F11] ||
-      this->getInput().joystick().buttonPressed[3]) {
+  if (input.keyPressed(afk::Keys::KEY_F11) ||
+      input.joyPressed(afk::JoystickButtons::JOY_XBOX_Y)) {
     takeScreenshot();
   }
 
   // Screen shake
-  if (screenshake > 0 && this->getSettings().get<int>("screenshake", 0) != 0) {
-    screenshake_x = screenshake_y = RandomGenerator::randomInt(
-        -(screenshake * this->getSettings().get<int>("screenshake", 0) +
-          100 * this->getSettings().get<bool>("supershake", false)),
-        screenshake * this->getSettings().get<int>("screenshake", 0) +
-            100 * this->getSettings().get<bool>("supershake", false));
+  if (screenshake > 0 && config.get<int>("screenshake", 0) != 0) {
+    screenshake_x = screenshake_y = afk::Random::randomInt(
+        -(screenshake * config.get<int>("screenshake", 0) +
+          100 * config.get<bool>("supershake", false)),
+        screenshake * config.get<int>("screenshake", 0) +
+            100 * config.get<bool>("supershake", false));
     screenshake--;
   }
 
@@ -232,27 +242,29 @@ void Game::update() {
   }
 
   // Random test stuff for devs
-  if (this->getSettings().get<bool>("debug", false)) {
-    if (this->getInput().keyboard().key[ALLEGRO_KEY_R])
+  if (config.get<bool>("debug", false)) {
+    if (input.keyPressed(afk::Keys::KEY_R))
       score += 10;
 
-    if (this->getInput().keyboard().key[ALLEGRO_KEY_E] ||
-        this->getInput().joystick().button[2])
+    if (input.keyPressed(afk::Keys::KEY_E) ||
+        input.joyDown(afk::JoystickButtons::JOY_XBOX_X))
       hectar.addHealth(1);
 
-    if (this->getInput().keyboard().key[ALLEGRO_KEY_T])
+    if (input.keyPressed(afk::Keys::KEY_T))
       hectar.addHealth(-100);
   }
 }
 
 // Draw to screen
-void Game::draw() {
+void MainGame::draw() {
+  afk::InputService& input = afk::Services::getInputService();
+
   // Get hectar
   const Robot& hectar = this->get<Robot>(hectar_id);
 
   // Start arrow
   if (!hectar.isKeyPressed()) {
-    if (this->getInput().joystick().enabled) {
+    if (input.joyEnabled()) {
       ui_a.draw(hectar.getX() + 15,
                 hectar.getY() - 60 - sin(arrow_animation) * 10);
     } else {
@@ -264,25 +276,24 @@ void Game::draw() {
   // Lose scripts
   if (hectar.isOnGround()) {
     ui_game_end.draw(0, 0);
-    orbitron_18.draw(130, 125, stringFns::format("Final Score: %i", score));
+    orbitron_18.draw(130, 125, afk::str::format("Final Score: %i", score));
     orbitron_18.draw(
         130, 165,
-        stringFns::format("Distance Flown: %i ft", stats[STAT_DISTANCE] / 10));
+        afk::str::format("Distance Flown: %i ft", stats[STAT_DISTANCE] / 10));
     orbitron_18.draw(
-        130, 205,
-        stringFns::format("Energy Collected: %i", stats[STAT_ENERGY]));
+        130, 205, afk::str::format("Energy Collected: %i", stats[STAT_ENERGY]));
     orbitron_18.draw(
         130, 245,
-        stringFns::format("Powerups Received: %i", stats[STAT_POWERUPS]));
+        afk::str::format("Powerups Received: %i", stats[STAT_POWERUPS]));
     orbitron_18.draw(
-        130, 285, stringFns::format("Debris Collided: %i", stats[STAT_DEBRIS]));
+        130, 285, afk::str::format("Debris Collided: %i", stats[STAT_DEBRIS]));
 
     if (score > highscores.getScore(9)) {
       // Input rectangle
-      al_draw_filled_rectangle(120, 388, orbitron_24.getWidth(edittext) + 138,
-                               432, al_map_rgb(0, 0, 0));
-      al_draw_filled_rectangle(122, 390, orbitron_24.getWidth(edittext) + 136,
-                               430, al_map_rgb(255, 255, 255));
+      afk::primitives::rectfill(120, 388, orbitron_24.getWidth(edittext) + 18,
+                                44, afk::color::rgb(0, 0, 0));
+      afk::primitives::rectfill(122, 390, orbitron_24.getWidth(edittext) + 14,
+                                40, afk::color::rgb(255, 255, 255));
 
       // Textbox lable
       orbitron_18.draw(129, 370, "Enter your name:");
@@ -291,22 +302,22 @@ void Game::draw() {
       orbitron_24.draw(129, 400, edittext);
 
       // Draw the caret
-      al_draw_line(orbitron_24.getWidth(edittext.substr(
-                       0, std::distance(edittext.begin(), iter))) +
-                       130,
-                   392,
-                   orbitron_24.getWidth(edittext.substr(
-                       0, std::distance(edittext.begin(), iter))) +
-                       130,
-                   428, al_map_rgb(0, 0, 0), 2);
+      // al_draw_line(orbitron_24.getWidth(edittext.substr(
+      //                  0, std::distance(edittext.begin(), iter))) +
+      //                  130,
+      //              392,
+      //              orbitron_24.getWidth(edittext.substr(
+      //                  0, std::distance(edittext.begin(), iter))) +
+      //                  130,
+      //              428, al_map_rgb(0, 0, 0), 2);
 
       // Draw the congrats message
-      orbitron_18.draw(150, 330, "New highscore!", al_map_rgb(0, 255, 0));
+      orbitron_18.draw(150, 330, "New highscore!", afk::color::rgb(0, 255, 0));
       orbitron_24.draw(150, 450, "Press Enter/   to continue");
-      ui_b.draw(370, 450, 0);
+      ui_b.draw(370, 450);
     } else {
       orbitron_24.draw(150, 395, "Press Enter/   to continue");
-      ui_b.draw(370, 395, 0);
+      ui_b.draw(370, 395);
     }
   }
 }

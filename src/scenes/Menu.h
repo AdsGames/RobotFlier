@@ -12,7 +12,7 @@
 // Open menu enum
 enum MENU { CREDITS, CONTROLS, SETTINGS, HIGHSCORES, HELP, NONE };
 
-class Menu : public Scene {
+class Menu : public afk::Scene {
  public:
   // Override parent
   virtual void start() override;

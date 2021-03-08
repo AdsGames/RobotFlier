@@ -40,9 +40,6 @@ Icon
 .Spotlight-V100
 .Trashes
 
-*.o
-*.res
-*.dll
 *.exe
 build/RobotFlier
 CppCheckResults.xml
@@ -52,3 +49,7 @@ CMakeFiles
 CMakeCache.txt
 cmake_install.cmake
 Makefile
+*.html
+*.data
+*.js
+*.wasm

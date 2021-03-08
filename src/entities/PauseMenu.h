@@ -8,15 +8,15 @@
 #ifndef ENTITIES_PAUSE_MENU_H
 #define ENTITIES_PAUSE_MENU_H
 
+#include <afk/assets/Font.h>
+#include <afk/assets/Texture.h>
 #include <afk/entities/GameObject.h>
-#include <afk/fonts/Font.h>
 #include <afk/scene/Scene.h>
-#include <afk/textures/Texture.h>
 
-class PauseMenu : public GameObject {
+class PauseMenu : public afk::GameObject {
  public:
   // Constructor
-  explicit PauseMenu(Scene& scene);
+  explicit PauseMenu(afk::Scene& scene);
 
   // Update pause menu
   virtual void update() override;
@@ -32,10 +32,10 @@ class PauseMenu : public GameObject {
   bool paused;
 
   // Images
-  Texture background;
+  afk::Texture background;
 
   // Fonts
-  Font orbitron_18;
+  afk::Font orbitron_18;
 };
 
 #endif  // ENTITIES_PAUSE_MENU_H

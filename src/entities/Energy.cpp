@@ -1,23 +1,28 @@
 #include "Energy.h"
 
 #include <afk/scene/Scene.h>
+#include <afk/services/Services.h>
+
 #include "../constants/globals.h"
 #include "Robot.h"
 
 // Constructor
-Energy::Energy(Scene& scene, const float x, const float y)
+Energy::Energy(afk::Scene& scene, const float x, const float y)
     : Sprite(scene, x, y) {
   loadAssets();
 }
 
 void Energy::loadAssets() {
-  if (scene.getSettings().get<bool>("christmas", false)) {
+  afk::ConfigService& config = afk::Services::getConfigService();
+  afk::AssetService& asset = afk::Services::getAssetService();
+
+  if (config.get<bool>("christmas", false)) {
     setTexture("energy_christmas");
   } else {
     setTexture("energy");
   }
 
-  sound_orb = scene.getAsset().getAudio("orb");
+  sound_orb = asset.getAudio("orb");
 }
 
 void Energy::onCollide(const GameObject& other) {

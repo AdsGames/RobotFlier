@@ -1,8 +1,10 @@
 #include "Background.h"
 
+#include <afk/services/Services.h>
+
 #include "../constants/globals.h"
 
-Background::Background(Scene& scene)
+Background::Background(afk::Scene& scene)
     : GameObject(scene, 0.0f, 0.0f, -1), scroll(0) {
   changeTheme(0);
 }
@@ -35,10 +37,11 @@ void Background::changeTheme(const int theme) {
   }
 
   // Choose theme images
-  groundOverlay = scene.getAsset().getImage("groundOverlay_" + themeName);
-  groundUnderlay = scene.getAsset().getImage("groundUnderlay_" + themeName);
-  parallaxBack = scene.getAsset().getImage("paralax_" + themeName);
-  space = scene.getAsset().getImage("space");
+  afk::AssetService& assets = afk::Services::getAssetService();
+  groundOverlay = assets.getImage("groundOverlay_" + themeName);
+  groundUnderlay = assets.getImage("groundUnderlay_" + themeName);
+  parallaxBack = assets.getImage("paralax_" + themeName);
+  space = assets.getImage("space");
 }
 
 void Background::draw() {

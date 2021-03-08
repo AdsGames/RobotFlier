@@ -1,11 +1,13 @@
 #include "Magnet.h"
 
 #include <afk/scene/Scene.h>
+#include <afk/services/Services.h>
+
 #include "../../constants/globals.h"
 #include "../Robot.h"
 
 // Constructor
-Magnet::Magnet(Scene& scene, const float x, const float y, const int type)
+Magnet::Magnet(afk::Scene& scene, const float x, const float y, const int type)
     : Powerup(scene, x, y) {
   loadAssets(type);
   setTimer(type);
@@ -14,7 +16,8 @@ Magnet::Magnet(Scene& scene, const float x, const float y, const int type)
 // Load assets from manager
 void Magnet::loadAssets(const int type) {
   // Load sound
-  magnet_sound = scene.getAsset().getAudio("magnet");
+  afk::AssetService& asset = afk::Services::getAssetService();
+  magnet_sound = asset.getAudio("magnet");
 
   // Load image
   switch (type) {
