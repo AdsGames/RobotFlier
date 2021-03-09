@@ -23,7 +23,7 @@ class Debris : public afk::Sprite {
   virtual void onDestroy() = 0;
 
   // Logic override
-  virtual void update() override;
+  virtual void update(Uint32 delta) override;
 
   void destroy();
 

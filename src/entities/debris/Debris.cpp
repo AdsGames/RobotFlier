@@ -26,11 +26,11 @@ Debris::Debris(afk::Scene& scene,
 }
 
 // Logic
-void Debris::update() {
+void Debris::update(Uint32 delta) {
   // Update particles
   if (scene.config.get<int>("particleType", 0) != 3) {
     // for (unsigned int i = 0; i < parts.size(); i++) {
-    //   parts.at(i).update();
+    //   parts.at(i).update(Uint32 delta);
     //   parts.at(i).scroll(motion, 0.0f);
     // }
   }

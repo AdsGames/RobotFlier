@@ -1,6 +1,7 @@
 #include "MouseRocket.h"
 
 #include <afk/color/Color.h>
+#include <afk/entities/ParticleEmitter.h>
 #include <afk/random/RandomGenerator.h>
 #include <afk/services/Services.h>
 
@@ -8,39 +9,37 @@ MouseRocket::MouseRocket(afk::Scene& scene) : Sprite(scene, "mouse", 0, 0, 20) {
   mouse_rocket_up = false;
 
   mouse_y = scene.input.mouseY();
+
+  // Add particle emitter
+  afk::ParticleEmitter& emitter =
+      scene.addObj<afk::ParticleEmitter>(scene, 0, 0, 0);
+  emitter_id = emitter.getId();
+
+  // Create "realistic" particles
+  for (int i = 0; i < 100; i++) {
+    afk::Particle particle(scene, 0, 0, 0, afk::ParticleType::SQUARE);
+    particle.setSize(2);
+
+    if (scene.config.get<bool>("christmas", false)) {
+      int red_or_green = afk::Random::randomInt(0, 1) * 255;
+      particle.setColor(afk::color::rgb(red_or_green, 255 - red_or_green, 0));
+    } else {
+      particle.setColor(afk::color::rgb(255, 255, 0),
+                        afk::color::rgb(128, 0, 0));
+    }
+
+    particle.setVelocity(afk::Random::randomFloat(-5.0, 5.0), 100.0);
+    particle.setLifespan(afk::Random::randomInt(30, 80));
+    emitter.addParticle(particle);
+  }
 }
 
-void MouseRocket::update() {
+void MouseRocket::update(Uint32 delta) {
   // Set position of sprite
   setPosition(scene.input.mouseX() - width / 2, scene.input.mouseY());
 
-  // Add mouse particles
-  if (scene.config.get<int>("particleType", 0) != 3 && mouse_rocket_up) {
-    for (int i = 0; i < 50; i++) {
-      afk::color::Color part_color =
-          afk::color::rgb(255, afk::Random::randomInt(0, 255), 0);
-
-      // Christmas colours
-      if (scene.config.get<bool>("christmas", false)) {
-        int red_or_green = afk::Random::randomInt(0, 1) * 255;
-        part_color = afk::color::rgb(red_or_green, 255 - red_or_green, 0);
-      }
-
-      // Particle newParticle(x + width / 2, y + 16, part_color,
-      //                      afk::Random::randomInt(-2, 2),
-      //                      afk::Random::randomInt(8, 20), 1,
-      //                      scene.config.get<int>("particleType", 0));
-      // parts.push_back(newParticle);
-    }
-  }
-
-  // Update particles
-  // for (unsigned int i = 0; i < parts.size(); i++) {
-  //   parts.at(i).update();
-  //   if (afk::Random::randomInt(0, 10) == 0) {
-  //     parts.erase(parts.begin() + i);
-  //   }
-  // }
+  scene.get<afk::ParticleEmitter>(emitter_id)
+      .setPosition(scene.input.mouseX(), scene.input.mouseY() + height * 0.8);
 
   // Just went up, flip textures
   if (y < mouse_y && !mouse_rocket_up) {

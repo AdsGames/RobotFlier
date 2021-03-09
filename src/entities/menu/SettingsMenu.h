@@ -18,7 +18,7 @@ class SettingsMenu : public afk::GameObject {
   explicit SettingsMenu(afk::Scene& scene);
 
   // Logic override
-  virtual void update() override;
+  virtual void update(Uint32 delta) override;
 
   // Draw
   virtual void draw() override;

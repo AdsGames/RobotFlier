@@ -19,7 +19,7 @@ class PauseMenu : public afk::GameObject {
   explicit PauseMenu(afk::Scene& scene);
 
   // Update pause menu
-  virtual void update() override;
+  virtual void update(Uint32 delta) override;
 
   // Draws pause menu
   virtual void draw() override;

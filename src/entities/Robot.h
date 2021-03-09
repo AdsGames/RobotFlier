@@ -18,7 +18,7 @@ class Robot : public afk::GameObject {
  public:
   explicit Robot(afk::Scene& scene, float x = 0.0f, float y = 0.0f);
 
-  virtual void update() override;
+  virtual void update(Uint32 delta) override;
   virtual void draw() override;
 
   // Getters

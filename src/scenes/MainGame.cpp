@@ -115,7 +115,7 @@ void MainGame::takeScreenshot() {
 }
 
 // Update logic of game
-void MainGame::update() {
+void MainGame::update(Uint32 delta) {
   // Get hectar
   Robot& hectar = this->get<Robot>(hectar_id);
 
@@ -124,11 +124,11 @@ void MainGame::update() {
 
   // Actual game stuff
   if (!pauseMenu.getPaused()) {
-    // Check if hectar has died between update();
+    // Check if hectar has died between update(Uint32 delta);
     bool hectarHasDied = hectar.isAlive();
 
     // Update robot
-    hectar.update();
+    hectar.update(delta);
 
     // If its different he died play music
     if (hectarHasDied != hectar.isAlive()) {

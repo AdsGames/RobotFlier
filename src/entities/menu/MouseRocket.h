@@ -4,8 +4,8 @@
  * Renders game settings menu
  * 01/11/2020
  */
-#ifndef ENTITIES_MENU_MOUSE_ROCKET_H
-#define ENTITIES_MENU_MOUSE_ROCKET_H
+#ifndef SRC_ENTITIES_MENU_MOUSEROCKET_H_
+#define SRC_ENTITIES_MENU_MOUSEROCKET_H_
 
 #include <afk/entities/Sprite.h>
 #include <afk/scene/Scene.h>
@@ -16,11 +16,12 @@ class MouseRocket : public afk::Sprite {
   explicit MouseRocket(afk::Scene& scene);
 
   // Logic override
-  virtual void update() override;
+  void update(Uint32 delta) override;
 
  private:
   bool mouse_rocket_up;
   int mouse_y;
+  ObjId emitter_id;
 };
 
-#endif  // ENTITIES_MENU_MOUSE_ROCKET_H
+#endif  // SRC_ENTITIES_MENU_MOUSEROCKET_H_

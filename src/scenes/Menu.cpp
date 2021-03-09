@@ -114,7 +114,7 @@ void Menu::closeMenu(MENU menu) {
 }
 
 // Update loop
-void Menu::update() {
+void Menu::update(Uint32 delta) {
   // Start game with controller
   if (input.joyPressed(afk::JoystickButtons::START) ||
       input.joyPressed(afk::JoystickButtons::A)) {

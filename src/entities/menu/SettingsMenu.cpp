@@ -38,7 +38,7 @@ SettingsMenu::SettingsMenu(afk::Scene& scene)
   orbitron_24 = scene.assets.getFont("orbitron_24");
 }
 
-void SettingsMenu::update() {
+void SettingsMenu::update(Uint32 delta) {
   if (open && scene.input.mousePressed(afk::MouseButtons::LEFT)) {
     // Particles toggle
     if (collision(280, 360, scene.input.mouseX(), scene.input.mouseX(), 400,

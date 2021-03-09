@@ -17,7 +17,7 @@ class PowerStar : public Powerup {
   PowerStar(afk::Scene& scene, const float x, const float y);
 
   // Logic override
-  virtual void update() override;
+  virtual void update(Uint32 delta) override;
 
   void onCollide(const GameObject& other) override;
 

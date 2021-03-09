@@ -18,7 +18,7 @@ class MainGame : public afk::Scene {
  public:
   // Override parent
   virtual void start() override;
-  virtual void update() override;
+  virtual void update(Uint32 delta) override;
   virtual void draw() override;
   virtual void stop() override;
 

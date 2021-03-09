@@ -41,7 +41,7 @@ Robot::Robot(afk::Scene& scene, const float x, float y)
 }
 
 // Update
-void Robot::update() {
+void Robot::update(Uint32 delta) {
   // Check if you are dead!
   if (health < 1) {
     alive = false;
@@ -60,61 +60,62 @@ void Robot::update() {
     y += GRAVITY - speed;
 
   // Death smoke
-  if (scene.config.get<int>("particleType", 0) != 3 && !alive) {
-    for (int i = 0; i < 800; i++) {
-      if (afk::Random::randomInt(0, 10) == 0) {
-        int randnum = afk::Random::randomInt(0, 255);
-        afk::Particle newParticle(
-            x + 20, y + 20, afk::color::rgb(randnum, randnum, randnum),
-            afk::Random::randomInt(-4, -1), afk::Random::randomInt(-5, -3), 1,
-            (afk::ParticleType)scene.config.get<int>("particleType", 0));
-        smokePart.push_back(newParticle);
-      }
-    }
-  }
+  // if (scene.config.get<int>("particleType", 0) != 3 && !alive) {
+  //   for (int i = 0; i < 800; i++) {
+  //     if (afk::Random::randomInt(0, 10) == 0) {
+  //       int randnum = afk::Random::randomInt(0, 255);
+  //       afk::Particle newParticle(
+  //           x + 20, y + 20, afk::color::rgb(randnum, randnum, randnum),
+  //           afk::Random::randomInt(-4, -1), afk::Random::randomInt(-5, -3),
+  //           1, (afk::ParticleType)scene.config.get<int>("particleType", 0));
+  //       smokePart.push_back(newParticle);
+  //     }
+  //   }
+  // }
 
-  for (unsigned int i = 0; i < smokePart.size(); i++) {
-    smokePart.at(i).update();
+  // for (unsigned int i = 0; i < smokePart.size(); i++) {
+  //   smokePart.at(i).update(Uint32 delta);
 
-    if (afk::Random::randomInt(0, 10) == 0) {
-      smokePart.erase(smokePart.begin() + i);
-    }
-  }
+  //   if (afk::Random::randomInt(0, 10) == 0) {
+  //     smokePart.erase(smokePart.begin() + i);
+  //   }
+  // }
 
-  // Rocket particles
-  if (scene.config.get<int>("particleType", 0) != 3 && rocket) {
-    for (int i = 0; i < 800; i++) {
-      if (afk::Random::randomInt(0, 10) == 0) {
-        afk::color::Color part_color =
-            afk::color::rgb(255, afk::Random::randomInt(0, 255), 0);
+  // // Rocket particles
+  // if (scene.config.get<int>("particleType", 0) != 3 && rocket) {
+  //   for (int i = 0; i < 800; i++) {
+  //     if (afk::Random::randomInt(0, 10) == 0) {
+  //       afk::color::Color part_color =
+  //           afk::color::rgb(255, afk::Random::randomInt(0, 255), 0);
 
-        if (scene.config.get<bool>("christmas", false)) {
-          int red_or_green = afk::Random::randomInt(0, 1);
-          part_color =
-              afk::color::rgb(255 * red_or_green, 255 - red_or_green * 255, 0);
-        }
+  //       if (scene.config.get<bool>("christmas", false)) {
+  //         int red_or_green = afk::Random::randomInt(0, 1);
+  //         part_color =
+  //             afk::color::rgb(255 * red_or_green, 255 - red_or_green * 255,
+  //             0);
+  //       }
 
-        afk::Particle newParticle1(
-            x + 21, y + 55, part_color, afk::Random::randomInt(-2, 2),
-            afk::Random::randomInt(1, 5), 1,
-            (afk::ParticleType)scene.config.get<int>("particleType", 0));
-        afk::Particle newParticle2(
-            x + 52, y + 55, part_color, afk::Random::randomInt(-2, 2),
-            afk::Random::randomInt(0, 4), 1,
-            (afk::ParticleType)scene.config.get<int>("particleType", 0));
-        rocketPart.push_back(newParticle1);
-        rocketPart.push_back(newParticle2);
-      }
-    }
-  }
+  //       afk::Particle newParticle1(
+  //           x + 21, y + 55, part_color, afk::Random::randomInt(-2, 2),
+  //           afk::Random::randomInt(1, 5), 1,
+  //           (afk::ParticleType)scene.config.get<int>("particleType", 0));
+  //       afk::Particle newParticle2(
+  //           x + 52, y + 55, part_color, afk::Random::randomInt(-2, 2),
+  //           afk::Random::randomInt(0, 4), 1,
+  //           (afk::ParticleType)scene.config.get<int>("particleType", 0));
+  //       rocketPart.push_back(newParticle1);
+  //       rocketPart.push_back(newParticle2);
+  //     }
+  //   }
+  // }
 
-  for (unsigned int i = 0; i < rocketPart.size(); i++) {
-    rocketPart.at(i).update();
+  // for (unsigned int i = 0; i < rocketPart.size(); i++) {
+  //   rocketPart.at(i).update(Uint32 delta);
 
-    if (afk::Random::randomInt(0, 2) == 0) {
-      rocketPart.erase(rocketPart.begin() + i);
-    }
-  }
+  //   if (afk::Random::randomInt(0, 2) == 0) {
+  //     rocketPart.erase(rocketPart.begin() + i);
+  //   }
+  // }
 
   // Moving controls
   if (alive) {

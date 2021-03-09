@@ -16,7 +16,7 @@ EntitySpawner::EntitySpawner(afk::Scene& scene,
                              const ObjId pauseMenuId)
     : GameObject(scene), robot_id(robotId), pause_menu_id(pauseMenuId) {}
 
-void EntitySpawner::update() {
+void EntitySpawner::update(Uint32 delta) {
   // Get hectar
   const Robot& hectar = scene.get<Robot>(robot_id);
 

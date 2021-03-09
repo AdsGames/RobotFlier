@@ -11,7 +11,7 @@ Background::Background(afk::Scene& scene)
   changeTheme(0);
 }
 
-void Background::update() {
+void Background::update(Uint32 delta) {
   scroll -= motion;
 
   if (scroll / 6 + SCREEN_W <= 0) {

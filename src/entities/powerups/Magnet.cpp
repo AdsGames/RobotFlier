@@ -70,7 +70,7 @@ void Magnet::onCollide(const GameObject& other) {
 }
 
 // Logic loop!
-void Magnet::update() {
+void Magnet::update(Uint32 delta) {
   x -= motion;
 
   if (x + width <= 0) {

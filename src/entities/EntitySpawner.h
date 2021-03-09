@@ -18,7 +18,7 @@ class EntitySpawner : public afk::GameObject {
                 const ObjId pauseMenuId);
 
   // Logic override
-  virtual void update() override;
+  virtual void update(Uint32 delta) override;
 
  private:
   ObjId robot_id;

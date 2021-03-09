@@ -35,7 +35,7 @@ void PowerStar::onCollide(const GameObject& other) {
 }
 
 // Logic loop!
-void PowerStar::update() {
+void PowerStar::update(Uint32 delta) {
   x -= motion;
 
   if (x + width <= 0) {

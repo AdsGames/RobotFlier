@@ -17,7 +17,7 @@ class Magnet : public Powerup {
   Magnet(afk::Scene& scene, const float x, const float y, const int type);
 
   // Logic override
-  virtual void update() override;
+  virtual void update(Uint32 delta) override;
 
   void onCollide(const GameObject& other) override;
 

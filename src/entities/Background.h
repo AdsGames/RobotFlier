@@ -4,8 +4,8 @@
  * Renders game background
  * 12/08/2020
  */
-#ifndef ENTITIES_BACKGROUND_H
-#define ENTITIES_BACKGROUND_H
+#ifndef SRC_ENTITIES_BACKGROUND_H_
+#define SRC_ENTITIES_BACKGROUND_H_
 
 #include <afk/assets/Texture.h>
 #include <afk/entities/GameObject.h>
@@ -17,10 +17,10 @@ class Background : public afk::GameObject {
   explicit Background(afk::Scene& scene);
 
   // Logic override
-  virtual void update() override;
+  void update(Uint32 delta) override;
 
   // Draw
-  virtual void draw() override;
+  void draw() override;
 
  private:
   // Change theme
@@ -36,4 +36,4 @@ class Background : public afk::GameObject {
   int scroll;
 };
 
-#endif  // ENTITIES_BACKGROUND_H
+#endif  // SRC_ENTITIES_BACKGROUND_H_

@@ -15,7 +15,7 @@ class Energy : public afk::Sprite {
   Energy(afk::Scene& scene, const float x, const float y);
 
   // Logic override
-  void update() override;
+  void update(Uint32 delta) override;
 
   // Move towards point
   void moveTowards(const float x, const float y, const float speed);

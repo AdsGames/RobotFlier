@@ -16,7 +16,7 @@ bool PauseMenu::getPaused() const {
   return paused;
 }
 
-void PauseMenu::update() {
+void PauseMenu::update(Uint32 delta) {
   // Pause loop code
   if (scene.input.keyPressed(afk::Keys::ESCAPE) ||
       scene.input.mouseDown(afk::MouseButtons::RIGHT) ||

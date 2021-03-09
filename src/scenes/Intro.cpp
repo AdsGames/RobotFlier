@@ -11,7 +11,7 @@ void Intro::start() {
 }
 
 // Update (goto menu!)
-void Intro::update() {
+void Intro::update(Uint32 delta) {
   auto current_time = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double, std::milli> elapsed = current_time - start_time;
   if (elapsed.count() > 3000 || input.anyKeyDown()) {

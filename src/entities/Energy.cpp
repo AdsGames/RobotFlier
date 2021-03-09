@@ -43,8 +43,8 @@ void Energy::onCollide(const GameObject& other) {
 }
 
 // Game logic
-void Energy::update() {
-  x -= motion;
+void Energy::update(Uint32 delta) {
+  x -= delta / 30.0f;
 
   if (x + width <= 0) {
     scene.remove(getId());
