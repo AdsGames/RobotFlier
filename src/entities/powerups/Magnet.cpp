@@ -1,7 +1,6 @@
 #include "Magnet.h"
 
 #include <afk/scene/Scene.h>
-#include <afk/services/Services.h>
 
 #include "../../constants/globals.h"
 #include "../Robot.h"
@@ -15,9 +14,6 @@ Magnet::Magnet(afk::Scene& scene, const float x, const float y, const int type)
 
 // Load assets from manager
 void Magnet::loadAssets(const int type) {
-  // Load sound
-  magnet_sound = scene.assets.getAudio("magnet");
-
   // Load image
   switch (type) {
     case 0:
@@ -62,8 +58,8 @@ void Magnet::onCollide(const GameObject& other) {
     auto robot = dynamic_cast<const Robot&>(other);
     robot.setMagneticTimer(getTimerLength());
     stats[STAT_POWERUPS] += 1;
-    magnet_sound.play();
-    scene.remove(getId());
+    scene.audio.playSound("magnet");
+    scene.remove(id);
   } catch (...) {
     // Nope!
   }
@@ -74,6 +70,6 @@ void Magnet::update(Uint32 delta) {
   x -= motion;
 
   if (x + width <= 0) {
-    scene.remove(getId());
+    scene.remove(id);
   }
 }

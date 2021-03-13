@@ -1,86 +1,67 @@
 #include "PauseMenu.h"
 
 #include <afk/common/str.h>
-#include <afk/scene/Scene.h>
-#include <afk/services/Services.h>
+#include <afk/entities/Sprite.h>
+#include <afk/entities/ui/Button.h>
+#include <afk/entities/ui/Label.h>
 
 #include "../constants/globals.h"
-#include "../helpers/tools.h"
 
-PauseMenu::PauseMenu(afk::Scene& scene) : GameObject(scene), paused(false) {
-  background = scene.assets.getImage("pauseMenu");
-  orbitron_18 = scene.assets.getFont("orbitron_18");
-}
+PauseMenu::PauseMenu(afk::Scene& scene) : GameObject(scene) {
+  // Background
+  scene.addObj<afk::Sprite>(scene, "pauseMenu", 130, 140, z).setParent(id);
 
-bool PauseMenu::getPaused() const {
-  return paused;
+  // Stats
+  auto& lbl_stat_1 = scene.addObj<afk::Label>(scene, 220, 250, z + 1);
+  lbl_stat_1.setFont("orbitron_18");
+  lbl_stat_1.setParent(id);
+  lbl_stat_1_id = lbl_stat_1.id;
+
+  auto& lbl_stat_2 = scene.addObj<afk::Label>(scene, 220, 280, z + 1);
+  lbl_stat_2.setFont("orbitron_18");
+  lbl_stat_2.setParent(id);
+  lbl_stat_2_id = lbl_stat_2.id;
+
+  auto& lbl_stat_3 = scene.addObj<afk::Label>(scene, 220, 310, z + 1);
+  lbl_stat_3.setFont("orbitron_18");
+  lbl_stat_3.setParent(id);
+  lbl_stat_3_id = lbl_stat_3.id;
+
+  auto& lbl_stat_4 = scene.addObj<afk::Label>(scene, 220, 340, z + 1);
+  lbl_stat_4.setFont("orbitron_18");
+  lbl_stat_4.setParent(id);
+  lbl_stat_4_id = lbl_stat_4.id;
+
+  // Buttons
+  auto& button_quit = scene.addObj<afk::Button>(scene, 220, 445, z + 1);
+  button_quit.setFont("orbitron_18");
+  button_quit.setText("QUIT");
+  button_quit.setParent(id);
+  button_quit.sizeToText();
+  button_quit.setOnClick([&]() { scene.scene.setNextScene("exit"); });
+
+  auto& button_menu = scene.addObj<afk::Button>(scene, 300, 445, z + 1);
+  button_menu.setFont("orbitron_18");
+  button_menu.setText("MENU");
+  button_menu.setParent(id);
+  button_menu.sizeToText();
+  button_menu.setOnClick([&]() { scene.scene.setNextScene("menu"); });
 }
 
 void PauseMenu::update(Uint32 delta) {
-  // Pause loop code
-  if (scene.input.keyPressed(afk::Keys::ESCAPE) ||
-      scene.input.mouseDown(afk::MouseButtons::RIGHT) ||
-      scene.input.keyPressed(afk::Keys::SPACE) ||
-      scene.input.joyPressed(afk::JoystickButtons::START)) {
-    if (paused) {
-      scene.display.hideMouse();
-    } else {
-      scene.display.showMouse();
-    }
-    paused = !paused;
-  }
+  auto& lbl_stat_1 = scene.get<afk::Label>(lbl_stat_1_id);
+  lbl_stat_1.setText(
+      afk::str::format("Distance Flown: %i ft", stats[STAT_DISTANCE] / 10));
 
-  // Pause Menu Scripts
-  if (paused) {
-    // Quit game
-    if (scene.input.mouseDown(afk::MouseButtons::LEFT) &&
-        collision(220, 280, scene.input.mouseX(), scene.input.mouseX(), 435,
-                  460, scene.input.mouseY(), scene.input.mouseY())) {
-      scene.scene.setNextScene("exit");
-    }
+  auto& lbl_stat_2 = scene.get<afk::Label>(lbl_stat_2_id);
+  lbl_stat_2.setText(
+      afk::str::format("Energy Collected: %i", stats[STAT_ENERGY]));
 
-    // Menu
-    if (scene.input.mouseDown(afk::MouseButtons::LEFT) &&
-        collision(300, 430, scene.input.mouseX(), scene.input.mouseX(), 435,
-                  460, scene.input.mouseY(), scene.input.mouseY())) {
-      scene.scene.setNextScene("menu");
-    }
+  auto& lbl_stat_3 = scene.get<afk::Label>(lbl_stat_3_id);
+  lbl_stat_3.setText(
+      afk::str::format("Powerups Received: %i", stats[STAT_POWERUPS]));
 
-    // Resume
-    if (scene.input.mouseDown(afk::MouseButtons::LEFT) &&
-        collision(470, 540, scene.input.mouseX(), scene.input.mouseX(), 435,
-                  460, scene.input.mouseY(), scene.input.mouseY())) {
-      paused = false;
-    }
-  }
-}
-
-void PauseMenu::draw() {
-  // Dont draw unless paused
-  if (!paused) {
-    return;
-  }
-
-  // Menu
-  background.draw(130, 140);
-
-  // Stats
-  orbitron_18.draw(
-      220, 250,
-      afk::str::format("Distance Flown: %i ft", stats[STAT_DISTANCE] / 10),
-      afk::color::rgb(255, 255, 255));
-  orbitron_18.draw(220, 280,
-                   afk::str::format("Energy Collected: %i", stats[STAT_ENERGY]),
-                   afk::color::rgb(255, 255, 255));
-  orbitron_18.draw(
-      220, 310, afk::str::format("Powerups Received: %i", stats[STAT_POWERUPS]),
-      afk::color::rgb(255, 255, 255));
-  orbitron_18.draw(220, 340,
-                   afk::str::format("Debris Collided: %i", stats[STAT_DEBRIS]),
-                   afk::color::rgb(255, 255, 255));
-
-  // Buttons
-  orbitron_18.draw(220, 445, "Quit");
-  orbitron_18.draw(300, 445, "Main Menu");
-  orbitron_18.draw(470, 445, "Resume");
+  auto& lbl_stat_4 = scene.get<afk::Label>(lbl_stat_4_id);
+  lbl_stat_4.setText(
+      afk::str::format("Debris Collided: %i", stats[STAT_DEBRIS]));
 }

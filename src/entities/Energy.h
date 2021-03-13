@@ -3,8 +3,8 @@
  * Gives the player health
  * A.D.S. Games
  */
-#ifndef ENTITIES_ENERGY_H
-#define ENTITIES_ENERGY_H
+#ifndef SRC_ENTITIES_ENERGY_H_
+#define SRC_ENTITIES_ENERGY_H_
 
 #include <afk/assets/Sound.h>
 #include <afk/entities/Sprite.h>
@@ -25,9 +25,6 @@ class Energy : public afk::Sprite {
  private:
   // Load assets
   void loadAssets();
-
-  // Sound effect
-  afk::Sound sound_orb;
 };
 
-#endif  // ENTITIES_ENERGY_H
+#endif  // SRC_ENTITIES_ENERGY_H_

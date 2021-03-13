@@ -4,8 +4,8 @@
  * Collidable Comet
  * 11/08/2020
  */
-#ifndef ENTITIES_DEBRIS_COMET_H
-#define ENTITIES_DEBRIS_COMET_H
+#ifndef SRC_ENTITIES_DEBRIS_COMET_H_
+#define SRC_ENTITIES_DEBRIS_COMET_H_
 
 #include "Debris.h"
 
@@ -17,13 +17,9 @@ class Comet : public Debris {
   Comet(afk::Scene& scene, const float x, const float y);
 
   // Logic override
-  virtual void onDestroy() override;
+  void onDestroy() override;
 
   void onCollide(const GameObject& other) override;
-
- private:
-  // Sound
-  afk::Sound destroy_sound;
 };
 
-#endif  // ENTITIES_DEBRIS_COMET_H
+#endif  // SRC_ENTITIES_DEBRIS_COMET_H_

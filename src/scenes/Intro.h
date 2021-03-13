@@ -4,21 +4,19 @@
  * 30/12/2016
  * A pretty nice splash screen
  */
-#ifndef SCENES_INTRO_H
-#define SCENES_INTRO_H
-
-#include <chrono>
+#ifndef SRC_SCENES_INTRO_H_
+#define SRC_SCENES_INTRO_H_
 
 #include <afk/assets/Texture.h>
 #include <afk/scene/Scene.h>
 
+#include <chrono>
+
 class Intro : public afk::Scene {
  public:
   // Override parent
-  virtual void start() override;
-  virtual void update(Uint32 delta) override;
-  virtual void draw() override{};
-  virtual void stop() override{};
+  void start() override;
+  void update(Uint32 delta) override;
 
  private:
   // Splash image
@@ -28,4 +26,4 @@ class Intro : public afk::Scene {
   std::chrono::high_resolution_clock::time_point start_time;
 };
 
-#endif  // SCENES_INTRO_H
+#endif  // SRC_SCENES_INTRO_H_

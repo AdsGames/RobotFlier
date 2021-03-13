@@ -6,7 +6,6 @@
  * @date 03/01/2016
  */
 #include <afk/Game.h>
-#include <afk/services/Services.h>
 
 // Scenes
 #include "scenes/Init.h"

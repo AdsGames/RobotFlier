@@ -4,8 +4,8 @@
  * Spawns entities
  * 31/10/2020
  */
-#ifndef ENTITIES_ENTITY_SPAWNER_H
-#define ENTITIES_ENTITY_SPAWNER_H
+#ifndef SRC_ENTITIES_ENTITYSPAWNER_H_
+#define SRC_ENTITIES_ENTITYSPAWNER_H_
 
 #include <afk/entities/GameObject.h>
 #include <afk/scene/Scene.h>
@@ -13,16 +13,14 @@
 class EntitySpawner : public afk::GameObject {
  public:
   // Constructor
-  EntitySpawner(afk::Scene& scene,
-                const ObjId robotId,
-                const ObjId pauseMenuId);
+  EntitySpawner(afk::Scene& scene);
 
   // Logic override
-  virtual void update(Uint32 delta) override;
+  void update(Uint32 delta) override;
 
  private:
   ObjId robot_id;
   ObjId pause_menu_id;
 };
 
-#endif  // ENTITIES_ENTITY_SPAWNER_H
+#endif  // SRC_ENTITIES_ENTITYSPAWNER_H_

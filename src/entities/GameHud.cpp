@@ -1,10 +1,9 @@
 #include "GameHud.h"
 
+#include <afk/common/str.h>
+
 #include <algorithm>
 #include <fstream>
-
-#include <afk/common/str.h>
-#include <afk/services/Services.h>
 
 #include "../constants/globals.h"
 #include "../entities/Robot.h"
@@ -47,20 +46,18 @@ void GameHud::draw() {
     afk::primitives::circle(45, 105, 20, afk::color::rgb(255, 255, 255));
     powerStar.draw(20, 80);
     orbitron_24.draw(44, 94, std::to_string(robot.getInvincibleTimer() / 5),
-                     afk::color::rgb(255, 255, 255),
-                     afk::FontAlign::ALIGN_CENTER);
+                     afk::color::rgb(255, 255, 255), afk::TextAlign::CENTER);
     orbitron_24.draw(45, 96, std::to_string(robot.getInvincibleTimer() / 5),
-                     afk::color::rgb(255, 0, 0), afk::FontAlign::ALIGN_CENTER);
+                     afk::color::rgb(255, 0, 0), afk::TextAlign::CENTER);
   }
 
   if (robot.isMagnetic()) {
     afk::primitives::circle(175, 105, 20, afk::color::rgb(255, 255, 255));
     powerMagnet.draw(175, 150);
     orbitron_24.draw(174, 94, std::to_string(robot.getMagneticTimer() / 5),
-                     afk::color::rgb(255, 255, 255),
-                     afk::FontAlign::ALIGN_CENTER);
+                     afk::color::rgb(255, 255, 255), afk::TextAlign::CENTER);
     orbitron_24.draw(175, 96, std::to_string(robot.getMagneticTimer() / 5),
-                     afk::color::rgb(255, 0, 0), afk::FontAlign::ALIGN_CENTER);
+                     afk::color::rgb(255, 0, 0), afk::TextAlign::CENTER);
   }
 
   // Draw the debug window

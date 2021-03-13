@@ -4,8 +4,8 @@
  * Collidable Bomb
  * 11/08/2020
  */
-#ifndef ENTITIES_DEBRIS_BOMB_H
-#define ENTITIES_DEBRIS_BOMB_H
+#ifndef SRC_ENTITIES_DEBRIS_BOMB_H_
+#define SRC_ENTITIES_DEBRIS_BOMB_H_
 
 #include "Debris.h"
 
@@ -17,11 +17,7 @@ class Bomb : public Debris {
   Bomb(afk::Scene& scene, const float x, const float y);
 
   // Logic override
-  virtual void onDestroy() override;
-
- private:
-  // Sound
-  afk::Sound destroy_sound;
+  void onDestroy() override;
 };
 
-#endif  // ENTITIES_DEBRIS_BOMB_H
+#endif  // SRC_ENTITIES_DEBRIS_BOMB_H_

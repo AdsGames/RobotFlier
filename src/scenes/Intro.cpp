@@ -1,7 +1,6 @@
 #include "Intro.h"
 
 #include <afk/entities/Sprite.h>
-#include <afk/services/Services.h>
 
 // Construct scene
 void Intro::start() {
@@ -18,4 +17,6 @@ void Intro::update(Uint32 delta) {
     // Go to menu
     scene.setNextScene("menu");
   }
+
+  Scene::update(delta);
 }

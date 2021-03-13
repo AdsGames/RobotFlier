@@ -2,7 +2,6 @@
 
 #include <afk/random/RandomGenerator.h>
 #include <afk/scene/Scene.h>
-#include <afk/services/Services.h>
 
 // Constructor
 Asteroid::Asteroid(afk::Scene& scene,
@@ -36,11 +35,9 @@ void Asteroid::loadAssets(const int theme) {
         break;
     }
   }
-
-  destroy_sound = scene.assets.getAudio("asteroid");
 }
 
 void Asteroid::onDestroy() {
   // Play sound
-  destroy_sound.play();
+  scene.audio.playSound("asteroid");
 }

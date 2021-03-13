@@ -1,7 +1,6 @@
 #include "Energy.h"
 
 #include <afk/scene/Scene.h>
-#include <afk/services/Services.h>
 
 #include "../constants/globals.h"
 #include "Robot.h"
@@ -18,8 +17,6 @@ void Energy::loadAssets() {
   } else {
     setTexture("energy");
   }
-
-  sound_orb = scene.assets.getAudio("orb");
 }
 
 void Energy::onCollide(const GameObject& other) {
@@ -34,9 +31,9 @@ void Energy::onCollide(const GameObject& other) {
       robot.addHealth(1);
     }
 
-    sound_orb.play();
+    scene.audio.playSound("orb");
 
-    scene.remove(getId());
+    scene.remove(id);
   } catch (...) {
     // Nope!
   }
@@ -47,7 +44,7 @@ void Energy::update(Uint32 delta) {
   x -= delta / 30.0f;
 
   if (x + width <= 0) {
-    scene.remove(getId());
+    scene.remove(id);
   }
 
   // if (hectar.isMagnetic()) {

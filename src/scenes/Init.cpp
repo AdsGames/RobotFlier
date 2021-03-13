@@ -1,7 +1,5 @@
 #include "Init.h"
 
-#include <afk/services/Services.h>
-
 #include "../constants/globals.h"
 
 // Construct scene
@@ -106,6 +104,7 @@ void Init::start() {
   assets.loadImage("bomb_christmas", "images/objects/bomb_christmas.png");
   assets.loadImage("comet", "images/objects/comet.png");
   assets.loadImage("energy", "images/objects/energy.png");
+  assets.loadImage("energy_christmas", "images/objects/energy_christmas.png");
   assets.loadImage("powerMagnet", "images/objects/powerMagnet.png");
   assets.loadImage("powerMagnetFour", "images/objects/powerMagnetFour.png");
   assets.loadImage("powerMagnetThree", "images/objects/powerMagnetThree.png");
@@ -121,6 +120,9 @@ void Init::start() {
   assets.loadImage("robotInvincibleFire",
                    "images/robot/robotInvincibleFire.png");
   assets.loadImage("robotInvincibleTop", "images/robot/robotInvincibleTop.png");
+
+  // Particles
+  assets.loadImage("fuzzball", "images/particles/fuzzball.png");
 
   // Load streams
   assets.loadStream("death", "audio/music_death.ogg");

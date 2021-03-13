@@ -11,23 +11,10 @@
 #include "../entities/powerups/Magnet.h"
 #include "../entities/powerups/PowerStar.h"
 
-EntitySpawner::EntitySpawner(afk::Scene& scene,
-                             const ObjId robotId,
-                             const ObjId pauseMenuId)
-    : GameObject(scene), robot_id(robotId), pause_menu_id(pauseMenuId) {}
+EntitySpawner::EntitySpawner(afk::Scene& scene) : GameObject(scene) {}
 
 void EntitySpawner::update(Uint32 delta) {
-  // Get hectar
-  const Robot& hectar = scene.get<Robot>(robot_id);
-
-  // Get pause menu
-  const PauseMenu& pauseMenu = scene.get<PauseMenu>(pause_menu_id);
-
   const int y = afk::Random::randomInt(30, 550);
-
-  if (pauseMenu.getPaused() || !hectar.isAlive() || hectar.isOnGround()) {
-    return;
-  }
 
   // Energy ball spawning
   if (afk::Random::randomInt(0, 50) == 0) {

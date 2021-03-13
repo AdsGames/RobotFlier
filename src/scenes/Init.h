@@ -4,18 +4,16 @@
  * 30/12/2016
  * Program inits here
  */
-#ifndef SCENES_INIT_H
-#define SCENES_INIT_H
+#ifndef SRC_SCENES_INIT_H_
+#define SRC_SCENES_INIT_H_
 
 #include <afk/scene/Scene.h>
 
 class Init : public afk::Scene {
  public:
   // Override parent
-  virtual void start() override;
-  virtual void update(Uint32 delta) override;
-  virtual void draw() override{};
-  virtual void stop() override{};
+  void start() override;
+  void update(Uint32 delta) override;
 };
 
-#endif  // SCENES_INIT_H
+#endif  // SRC_SCENES_INIT_H_

@@ -1,41 +1,34 @@
 #include "HighScores.h"
 
 #include <afk/color/Color.h>
-#include <afk/services/Services.h>
-#include <iostream>
+#include <afk/entities/Sprite.h>
+#include <afk/entities/ui/Label.h>
 
-HighScores::HighScores(afk::Scene& scene)
-    : GameObject(scene, 0, 0, 3), open(false) {
-  highscores_table = scene.assets.getImage("highscores_table");
-  orbitron_36 = scene.assets.getFont("orbitron_36");
-  orbitron_24 = scene.assets.getFont("orbitron_24");
-  orbitron_18 = scene.assets.getFont("orbitron_18");
-}
+HighScores::HighScores(afk::Scene& scene) : GameObject(scene, 0, 0, 3) {
+  auto& spr_back = scene.addObj<afk::Sprite>(scene, 200, 50, z + 1);
+  spr_back.setTexture("highscores_table");
+  spr_back.setParent(id);
 
-void HighScores::draw() {
-  // Do not display if closed
-  if (!open) {
-    return;
-  }
-
-  // Highscore background
-  highscores_table.draw(200, 50);
-
-  // Title
-  orbitron_36.draw(400, 75, "Highscores", afk::color::rgb(0, 0, 0),
-                   afk::FontAlign::ALIGN_CENTER);
+  auto& lbl_title = scene.addObj<afk::Label>(scene, 400, 75, z + 2);
+  lbl_title.setFont("orbitron_36");
+  lbl_title.setText("Highscores");
+  lbl_title.setTextAlign(afk::TextAlign::CENTER);
+  lbl_title.setParent(id);
 
   // Read the top 10 scores
   for (int i = 0; i < 10; i++) {
-    orbitron_24.draw(250, (i * 40) + 130,
-                     std::to_string(highscores.getScore(i)),
-                     afk::color::rgb(0, 0, 0), afk::FontAlign::ALIGN_CENTER);
-    orbitron_18.draw(575, (i * 40) + 132, highscores.getName(i),
-                     afk::color::rgb(0, 0, 0), afk::FontAlign::ALIGN_RIGHT);
-  }
-}
+    auto& lbl_score =
+        scene.addObj<afk::Label>(scene, 250, (i * 40) + 130, z + 2);
+    lbl_score.setFont("orbitron_24");
+    lbl_score.setText(std::to_string(highscores.getScore(i)));
+    lbl_score.setTextAlign(afk::TextAlign::CENTER);
+    lbl_score.setParent(id);
 
-// Set open statet
-void HighScores::setOpen(const bool open) {
-  this->open = open;
+    auto& lbl_name =
+        scene.addObj<afk::Label>(scene, 575, (i * 40) + 130, z + 2);
+    lbl_name.setFont("orbitron_18");
+    lbl_name.setText(highscores.getName(i));
+    lbl_name.setTextAlign(afk::TextAlign::RIGHT);
+    lbl_name.setParent(id);
+  }
 }

@@ -3,8 +3,8 @@
  * A collision object that can be crashed into
  * A.D.S. Games
  */
-#ifndef ENTITIES_DEBRIS_DEBRIE_H
-#define ENTITIES_DEBRIS_DEBRIE_H
+#ifndef SRC_ENTITIES_DEBRIS_DEBRIS_H_
+#define SRC_ENTITIES_DEBRIS_DEBRIS_H_
 
 #include <afk/entities/Sprite.h>
 
@@ -23,7 +23,7 @@ class Debris : public afk::Sprite {
   virtual void onDestroy() = 0;
 
   // Logic override
-  virtual void update(Uint32 delta) override;
+  void update(Uint32 delta) override;
 
   void destroy();
 
@@ -35,4 +35,4 @@ class Debris : public afk::Sprite {
   int damage;
 };
 
-#endif  // ENTITIES_DEBRIS_DEBRIE_H
+#endif  // SRC_ENTITIES_DEBRIS_DEBRIS_H_

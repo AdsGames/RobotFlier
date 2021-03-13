@@ -4,9 +4,9 @@
     {
       "label": "Build and Run",
       "type": "shell",
-      "command": "make -j8 RobotFlier && cd ./build && ./RobotFlier",
+      "command": "make -j24 RobotFlier && cd ./build && ./RobotFlier",
       "windows": {
-        "command": "make -j8 RobotFlier && cd ./build && RobotFlier.exe"
+        "command": "make -j24 RobotFlier && cd ./build && RobotFlier.exe"
       },
       "problemMatcher": ["$gcc"],
       "group": {
@@ -17,13 +17,13 @@
     {
       "label": "Build",
       "type": "shell",
-      "command": "make -j8 RobotFlier",
+      "command": "make -j24 RobotFlier",
       "problemMatcher": ["$gcc"]
     },
     {
       "label": "Rebuild",
-      "type": "shell", 
-      "command": "make clean && cmake -G \"MSYS Makefiles\" . && make -j8 RobotFlier",
+      "type": "shell",
+      "command": "make clean && cmake -G \"MSYS Makefiles\" . && make -j24 RobotFlier",
       "problemMatcher": ["$gcc"]
     },
     {

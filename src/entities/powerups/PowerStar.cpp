@@ -1,7 +1,6 @@
 #include "PowerStar.h"
 
 #include <afk/scene/Scene.h>
-#include <afk/services/Services.h>
 
 #include "../../constants/globals.h"
 #include "../Robot.h"
@@ -9,17 +8,8 @@
 // Constructor
 PowerStar::PowerStar(afk::Scene& scene, const float x, const float y)
     : Powerup(scene, x, y) {
-  loadAssets();
-  setTimerLength(500);
-}
-
-// Load assets from manager
-void PowerStar::loadAssets() {
-  // Load sound
-  power_star_sound = scene.assets.getAudio("star");
-
-  // Load image
   setTexture("powerStar");
+  setTimerLength(500);
 }
 
 void PowerStar::onCollide(const GameObject& other) {
@@ -27,8 +17,8 @@ void PowerStar::onCollide(const GameObject& other) {
     auto robot = dynamic_cast<const Robot&>(other);
     stats[STAT_POWERUPS] += 1;
     robot.setInvincibleTimer(getTimerLength());
-    power_star_sound.play();
-    scene.remove(getId());
+    scene.audio.playSound("star");
+    scene.remove(id);
   } catch (...) {
     // Nope!
   }
@@ -39,6 +29,6 @@ void PowerStar::update(Uint32 delta) {
   x -= motion;
 
   if (x + width <= 0) {
-    scene.remove(getId());
+    scene.remove(id);
   }
 }

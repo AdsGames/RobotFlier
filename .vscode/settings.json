@@ -109,7 +109,8 @@
     "__tree": "cpp",
     "__tuple": "cpp",
     "filesystem": "cpp",
-    "__cxx_version": "cpp"
+    "__cxx_version": "cpp",
+    "unordered_set": "cpp"
   },
   "cmake.configureOnOpen": true
 }

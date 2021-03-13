@@ -4,8 +4,8 @@
  * Magnet type powerup
  * 11/08/2020
  */
-#ifndef ENTITIES_POWERUPS_MAGNET_H
-#define ENTITIES_POWERUPS_MAGNET_H
+#ifndef SRC_ENTITIES_POWERUPS_MAGNET_H_
+#define SRC_ENTITIES_POWERUPS_MAGNET_H_
 
 #include "Powerup.h"
 
@@ -17,7 +17,7 @@ class Magnet : public Powerup {
   Magnet(afk::Scene& scene, const float x, const float y, const int type);
 
   // Logic override
-  virtual void update(Uint32 delta) override;
+  void update(Uint32 delta) override;
 
   void onCollide(const GameObject& other) override;
 
@@ -27,9 +27,6 @@ class Magnet : public Powerup {
 
   // Set timer
   void setTimer(const int type);
-
-  // Sound
-  afk::Sound magnet_sound;
 };
 
-#endif  // ENTITIES_POWERUPS_MAGNET_H
+#endif  // SRC_ENTITIES_POWERUPS_MAGNET_H_

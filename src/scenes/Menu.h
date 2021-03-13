@@ -4,25 +4,24 @@
  * 03/01/2016
  * The menu of Robot Flier
  */
-#ifndef SCENES_MENU_H
-#define SCENES_MENU_H
+#ifndef SRC_SCENES_MENU_H_
+#define SRC_SCENES_MENU_H_
 
 #include <afk/scene/Scene.h>
 
 // Open menu enum
-enum MENU { CREDITS, CONTROLS, SETTINGS, HIGHSCORES, HELP, NONE };
+enum class MenuState { CREDITS, CONTROLS, SETTINGS, HIGHSCORES, HELP, NONE };
 
 class Menu : public afk::Scene {
  public:
   // Override parent
-  virtual void start() override;
-  virtual void update(Uint32 delta) override;
-  virtual void draw() override{};
-  virtual void stop() override;
+  void start() override;
+  void update(Uint32 delta) override;
+  void stop() override;
 
  private:
   // Close menu
-  void closeMenu(MENU menu);
+  void closeMenu(MenuState menu);
 
   // On click events
   void handleClickStart();
@@ -33,7 +32,7 @@ class Menu : public afk::Scene {
   void handleClickControls();
 
   // Is a menu open?
-  MENU current_menu;
+  MenuState current_menu;
 
   // Objects
   ObjId settings_screen;
@@ -43,4 +42,4 @@ class Menu : public afk::Scene {
   ObjId controls_sprite;
 };
 
-#endif  // SCENES_MENU_H
+#endif  // SRC_SCENES_MENU_H_

@@ -4,28 +4,25 @@
  * A.D.S. Games
  * 12/01/2017
  */
-#ifndef ENTITIES_ROBOT_H
-#define ENTITIES_ROBOT_H
+#ifndef SRC_ENTITIES_ROBOT_H_
+#define SRC_ENTITIES_ROBOT_H_
 
-#include <vector>
-
-#include <afk/assets/Sound.h>
-#include <afk/assets/Texture.h>
 #include <afk/entities/GameObject.h>
 #include <afk/entities/Particle.h>
 
-class Robot : public afk::GameObject {
+#include <vector>
+
+class Robot : public afk::Sprite {
  public:
   explicit Robot(afk::Scene& scene, float x = 0.0f, float y = 0.0f);
 
-  virtual void update(Uint32 delta) override;
-  virtual void draw() override;
+  void update(Uint32 delta) override;
 
   // Getters
   int getHealth() const;
   void addHealth(int amount);
 
-  bool isOnGround() const;
+  bool isDead() const;
   bool isAlive() const;
   bool isKeyPressed() const;
 
@@ -45,28 +42,16 @@ class Robot : public afk::GameObject {
   bool alive;
   int invincibleTimer, magneticTimer;
   bool rocket;
-  bool onGround;
+  bool dead;
   int health;
 
   // Wait for keypress
   bool keyPressed;
 
-  // Images
-  afk::Texture mainRobot;
-  afk::Texture robotFire;
-  afk::Texture robotInvincible;
-  afk::Texture robotInvincibleFire;
-  afk::Texture robotInvincibleTop;
-  afk::Texture robotDie;
-  afk::Texture christmasHat;
-
-  // Sounds
-  afk::Sound soundFlame;
-  afk::Sound soundHitground;
-
   // Particles
-  std::vector<afk::Particle> rocketPart;
-  std::vector<afk::Particle> smokePart;
+  ObjId emitterRocket1Id;
+  ObjId emitterRocket2Id;
+  ObjId emitterSmokeId;
 };
 
-#endif  // ENTITIES_ROBOT_H
+#endif  // SRC_ENTITIES_ROBOT_H_

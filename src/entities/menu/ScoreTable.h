@@ -5,8 +5,8 @@
  * Easy highscore management
  **/
 
-#ifndef SCENES_SCORETABLE_H
-#define SCENES_SCORETABLE_H
+#ifndef SRC_ENTITIES_MENU_SCORETABLE_H_
+#define SRC_ENTITIES_MENU_SCORETABLE_H_
 
 #include <string>
 
@@ -15,7 +15,7 @@ class ScoreTable {
   ScoreTable();
   explicit ScoreTable(const std::string& path);
 
-  virtual ~ScoreTable(){};
+  virtual ~ScoreTable() {}
 
   void add(const std::string& name, int score);
 
@@ -36,4 +36,4 @@ class ScoreTable {
   int scores[TABLE_SIZE];
 };
 
-#endif  // SCENES_SCORETABLE_H
+#endif  // SRC_ENTITIES_MENU_SCORETABLE_H_

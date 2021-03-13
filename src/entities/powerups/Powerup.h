@@ -3,8 +3,8 @@
  * Various powerups do various things
  * A.D.S. Games
  */
-#ifndef ENTITIES_POWERUPS_POWERUP_H
-#define ENTITIES_POWERUPS_POWERUP_H
+#ifndef SRC_ENTITIES_POWERUPS_POWERUP_H_
+#define SRC_ENTITIES_POWERUPS_POWERUP_H_
 
 #include <afk/entities/Sprite.h>
 
@@ -21,4 +21,4 @@ class Powerup : public afk::Sprite {
   int timer_length;
 };
 
-#endif  // ENTITIES_POWERUPS_POWERUP_H
+#endif  // SRC_ENTITIES_POWERUPS_POWERUP_H_

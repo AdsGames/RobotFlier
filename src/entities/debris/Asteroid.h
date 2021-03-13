@@ -4,8 +4,8 @@
  * Collidable Asteroid
  * 11/08/2020
  */
-#ifndef ENTITIES_DEBRIS_ASTEROID_H
-#define ENTITIES_DEBRIS_ASTEROID_H
+#ifndef SRC_ENTITIES_DEBRIS_ASTEROID_H_
+#define SRC_ENTITIES_DEBRIS_ASTEROID_H_
 
 #include "Debris.h"
 
@@ -17,14 +17,11 @@ class Asteroid : public Debris {
   Asteroid(afk::Scene& scene, const float x, const float y, const int theme);
 
   // Logic override
-  virtual void onDestroy() override;
+  void onDestroy() override;
 
  private:
   // Load assets
   void loadAssets(const int theme);
-
-  // Sound
-  afk::Sound destroy_sound;
 };
 
-#endif  // ENTITIES_DEBRIS_ASTEROID_H
+#endif  // SRC_ENTITIES_DEBRIS_ASTEROID_H_

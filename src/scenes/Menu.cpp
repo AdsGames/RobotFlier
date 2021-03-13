@@ -1,9 +1,8 @@
 #include "Menu.h"
 
 #include <afk/entities/Sprite.h>
-#include <afk/entities/ui/Button.h>
+#include <afk/entities/ui/Image.h>
 #include <afk/random/RandomGenerator.h>
-#include <afk/services/Services.h>
 
 #include <functional>
 #include <iostream>
@@ -16,7 +15,7 @@
 
 // Construct scene
 void Menu::start() {
-  current_menu = MENU::NONE;
+  current_menu = MenuState::NONE;
 
   // Load intro image
   // Random menu
@@ -28,25 +27,29 @@ void Menu::start() {
   add<MouseRocket>(*this);
 
   // Add title
-  add<afk::Sprite>(*this, "title", 20, 20, 0);
+  add<afk::Sprite>(*this, "title", 20, 20, 1);
 
   // Add settings screen component
-  settings_screen = add<SettingsMenu>(*this);
+  SettingsMenu& settings = addObj<SettingsMenu>(*this);
+  settings.setHooked(false);
+  settings_screen = settings.id;
 
   // Add highscores component
-  scores_screen = add<HighScores>(*this);
+  HighScores& scores = addObj<HighScores>(*this);
+  scores.setHooked(false);
+  scores_screen = scores.id;
 
   // Add help sprite
   help_sprite = add<afk::Sprite>(*this, "helpScreen", 0, 0, 10);
-  get<afk::Sprite>(help_sprite).setVisible(false);
+  get<afk::Sprite>(help_sprite).setHooked(false);
 
   // Add credits sprite
   credits_sprite = add<afk::Sprite>(*this, "credits", 0, 0, 10);
-  get<afk::Sprite>(credits_sprite).setVisible(false);
+  get<afk::Sprite>(credits_sprite).setHooked(false);
 
   // Add controls sprite
   controls_sprite = add<afk::Sprite>(*this, "controls", 0, 0, 10);
-  get<afk::Sprite>(controls_sprite).setVisible(false);
+  get<afk::Sprite>(controls_sprite).setHooked(false);
 
   // Xbox start button
   if (config.get<int>("controlMode", 0) != 1 && input.joyEnabled()) {
@@ -54,34 +57,40 @@ void Menu::start() {
   }
 
   // Add credits button
-  addObj<afk::Button>(*this, 540, 548, 2, "ui_credits")
-      .setOnClick(std::bind(&Menu::handleClickCredits, this));
+  afk::Image& ui_credits = addObj<afk::Image>(*this, 540, 548, 2);
+  ui_credits.setOnClick(std::bind(&Menu::handleClickCredits, this));
+  ui_credits.setTexture("ui_credits");
 
   // Add help button
-  addObj<afk::Button>(*this, 696, 548, 2, "ui_help")
-      .setOnClick(std::bind(&Menu::handleClickHelp, this));
+  afk::Image& ui_help = addObj<afk::Image>(*this, 696, 548, 2);
+  ui_help.setOnClick(std::bind(&Menu::handleClickHelp, this));
+  ui_help.setTexture("ui_help");
 
   // Add settings button
-  addObj<afk::Button>(*this, 748, 548, 2, "ui_options")
-      .setOnClick(std::bind(&Menu::handleClickSettings, this));
+  afk::Image& ui_options = addObj<afk::Image>(*this, 748, 548, 2);
+  ui_options.setOnClick(std::bind(&Menu::handleClickSettings, this));
+  ui_options.setTexture("ui_options");
 
   // Add controls button
-  addObj<afk::Button>(*this, 644, 548, 2, "ui_controls")
-      .setOnClick(std::bind(&Menu::handleClickControls, this));
+  afk::Image& ui_controls = addObj<afk::Image>(*this, 644, 548, 2);
+  ui_controls.setOnClick(std::bind(&Menu::handleClickControls, this));
+  ui_controls.setTexture("ui_controls");
 
   // Add highscores button
-  addObj<afk::Button>(*this, 660, 20, 2, "highscores")
-      .setOnClick(std::bind(&Menu::handleClickScores, this));
+  afk::Image& ui_highscores = addObj<afk::Image>(*this, 660, 20, 2);
+  ui_highscores.setOnClick(std::bind(&Menu::handleClickScores, this));
+  ui_highscores.setTexture("highscores");
 
   // Add start button
-  addObj<afk::Button>(*this, 20, 440, 2, "start")
-      .setOnClick(std::bind(&Menu::handleClickStart, this));
+  afk::Image& ui_start = addObj<afk::Image>(*this, 20, 440, 2);
+  ui_start.setOnClick(std::bind(&Menu::handleClickStart, this));
+  ui_start.setTexture("start");
 
   // Hide mouse
   display.hideMouse();
 
   // Play music
-  if (config.get<bool>("music", false) == true) {
+  if (config.get<bool>("music", false)) {
     audio.playStream("mainmenu");
   }
 }
@@ -91,26 +100,26 @@ void Menu::stop() {
   audio.stopStream("mainmenu");
 }
 
-void Menu::closeMenu(MENU menu) {
+void Menu::closeMenu(MenuState menu) {
   switch (menu) {
-    case HELP:
-      get<afk::Sprite>(help_sprite).setVisible(false);
+    case MenuState::HELP:
+      get<afk::Sprite>(help_sprite).setHooked(false);
       break;
-    case CREDITS:
-      get<afk::Sprite>(credits_sprite).setVisible(false);
+    case MenuState::CREDITS:
+      get<afk::Sprite>(credits_sprite).setHooked(false);
       break;
-    case HIGHSCORES:
-      get<HighScores>(scores_screen).setOpen(false);
+    case MenuState::HIGHSCORES:
+      get<HighScores>(scores_screen).setHooked(false);
       break;
-    case CONTROLS:
-      get<afk::Sprite>(controls_sprite).setVisible(false);
+    case MenuState::CONTROLS:
+      get<afk::Sprite>(controls_sprite).setHooked(false);
       break;
     default:
       break;
   }
 
   // Reset open menu
-  current_menu = MENU::NONE;
+  current_menu = MenuState::NONE;
 }
 
 // Update loop
@@ -130,51 +139,53 @@ void Menu::update(Uint32 delta) {
   if (input.keyPressed(afk::Keys::ESCAPE)) {
     scene.setNextScene("exit");
   }
+
+  Scene::update(delta);
 }
 
 // Click Start
 void Menu::handleClickStart() {
-  if (current_menu == MENU::NONE) {
+  if (current_menu == MenuState::NONE) {
     scene.setNextScene("game");
   }
 }
 
 // Click settings button
 void Menu::handleClickSettings() {
-  if (current_menu == MENU::NONE) {
-    get<SettingsMenu>(settings_screen).setOpen(true);
-    current_menu = MENU::SETTINGS;
+  if (current_menu == MenuState::NONE) {
+    get<SettingsMenu>(settings_screen).setHooked(true);
+    current_menu = MenuState::SETTINGS;
   }
 }
 
 // Click help button
 void Menu::handleClickHelp() {
-  if (current_menu == MENU::NONE) {
-    get<afk::Sprite>(help_sprite).setVisible(true);
-    current_menu = MENU::HELP;
+  if (current_menu == MenuState::NONE) {
+    get<afk::Sprite>(help_sprite).setHooked(true);
+    current_menu = MenuState::HELP;
   }
 }
 
 // Click credits button
 void Menu::handleClickCredits() {
-  if (current_menu == MENU::NONE) {
-    get<afk::Sprite>(credits_sprite).setVisible(true);
-    current_menu = MENU::CREDITS;
+  if (current_menu == MenuState::NONE) {
+    get<afk::Sprite>(credits_sprite).setHooked(true);
+    current_menu = MenuState::CREDITS;
   }
 }
 
 // Click scores button
 void Menu::handleClickScores() {
-  if (current_menu == MENU::NONE) {
-    get<HighScores>(scores_screen).setOpen(true);
-    current_menu = MENU::HIGHSCORES;
+  if (current_menu == MenuState::NONE) {
+    get<HighScores>(scores_screen).setHooked(true);
+    current_menu = MenuState::HIGHSCORES;
   }
 }
 
 // Click controls button
 void Menu::handleClickControls() {
-  if (current_menu == MENU::NONE) {
-    get<afk::Sprite>(controls_sprite).setVisible(true);
-    current_menu = MENU::CONTROLS;
+  if (current_menu == MenuState::NONE) {
+    get<afk::Sprite>(controls_sprite).setHooked(true);
+    current_menu = MenuState::CONTROLS;
   }
 }

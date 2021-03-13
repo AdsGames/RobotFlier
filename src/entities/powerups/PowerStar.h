@@ -4,8 +4,8 @@
  * Magnet type powerup
  * 11/08/2020
  */
-#ifndef ENTITIES_POWERUPS_POWER_STAR_H
-#define ENTITIES_POWERUPS_POWER_STAR_H
+#ifndef SRC_ENTITIES_POWERUPS_POWERSTAR_H_
+#define SRC_ENTITIES_POWERUPS_POWERSTAR_H_
 
 #include "Powerup.h"
 
@@ -17,16 +17,9 @@ class PowerStar : public Powerup {
   PowerStar(afk::Scene& scene, const float x, const float y);
 
   // Logic override
-  virtual void update(Uint32 delta) override;
+  void update(Uint32 delta) override;
 
   void onCollide(const GameObject& other) override;
-
- private:
-  // Load assets
-  void loadAssets();
-
-  // Sound
-  afk::Sound power_star_sound;
 };
 
-#endif  // ENTITIES_POWERUPS_POWER_STAR_H
+#endif  // SRC_ENTITIES_POWERUPS_POWERSTAR_H_

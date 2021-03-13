@@ -4,8 +4,8 @@
  * 30/10/2020
  * Game hud
  */
-#ifndef ENTITIES_GAMEHUD_H
-#define ENTITIES_GAMEHUD_H
+#ifndef SRC_ENTITIES_GAMEHUD_H_
+#define SRC_ENTITIES_GAMEHUD_H_
 
 #include <afk/assets/Font.h>
 #include <afk/assets/Texture.h>
@@ -17,9 +17,9 @@ class GameHud : public afk::GameObject {
  public:
   GameHud(afk::Scene& scene, const ObjId robotId);
 
-  virtual ~GameHud(){};
+  virtual ~GameHud() {}
 
-  virtual void draw() override;
+  void draw() override;
 
  private:
   // GUI Images
@@ -39,4 +39,4 @@ class GameHud : public afk::GameObject {
   ObjId robot_id;
 };
 
-#endif  // ENTITIES_GAMEHUD_H
+#endif  // SRC_ENTITIES_GAMEHUD_H_
