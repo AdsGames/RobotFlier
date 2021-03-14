@@ -13,6 +13,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install Libraries
+        run: |
+          sudo apt update
+          sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev libsdl2-gfx-dev
+
       - name: Install AFK
         run: |
           git clone https://github.com/AdsGames/AfkLib
@@ -20,11 +25,6 @@ jobs:
           cmake .
           sudo make install -j4
           cd ../
-
-      - name: Install Libraries
-        run: |
-          sudo apt update
-          sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev libsdl2-gfx-dev
 
       - name: Run CMake
         run: cmake .
