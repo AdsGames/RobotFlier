@@ -14,12 +14,16 @@
 class Magnet : public Powerup {
  public:
   // Constructor
-  Magnet(afk::Scene& scene, const float x, const float y, const int type);
+  Magnet(afk::Scene& scene,
+         const float x,
+         const float y,
+         const int z,
+         const int type);
 
   // Logic override
   void update(Uint32 delta) override;
 
-  void onCollide(const GameObject& other) override;
+  void onCollide(GameObject& other) override;
 
  private:
   // Load assets

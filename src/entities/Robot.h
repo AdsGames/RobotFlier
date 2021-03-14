@@ -18,6 +18,9 @@ class Robot : public afk::Sprite {
 
   void update(Uint32 delta) override;
 
+  // Collisions
+  void onCollide(GameObject& other) override;
+
   // Getters
   int getHealth() const;
   void addHealth(int amount);

@@ -10,12 +10,12 @@
 
 SettingsMenu::SettingsMenu(afk::Scene& scene) : GameObject(scene, 0, 0, 10) {
   // Background
-  auto& spr_background = scene.addObj<afk::Sprite>(scene, 0, 0, z);
+  auto& spr_background = scene.add<afk::Sprite>(scene, 0, 0, z);
   spr_background.setTexture("options");
   spr_background.setParent(id);
 
   // Music
-  auto& chk_music = scene.addObj<afk::Checkbox>(scene, 280, 180, z + 1);
+  auto& chk_music = scene.add<afk::Checkbox>(scene, 280, 180, z + 1);
   chk_music.setChecked(scene.config.get("music", true));
   chk_music.setOnCheck([&](const bool checked) {
     scene.config.set("music", checked);
@@ -30,7 +30,7 @@ SettingsMenu::SettingsMenu(afk::Scene& scene) : GameObject(scene, 0, 0, 10) {
   chk_music.setParent(id);
 
   // Sound
-  auto& chk_sound = scene.addObj<afk::Checkbox>(scene, 120, 180, z + 1);
+  auto& chk_sound = scene.add<afk::Checkbox>(scene, 120, 180, z + 1);
   chk_sound.setChecked(scene.config.get("sound", true));
   chk_sound.setOnCheck(
       [&](const bool checked) { scene.config.set("sound", checked); });
@@ -39,7 +39,7 @@ SettingsMenu::SettingsMenu(afk::Scene& scene) : GameObject(scene, 0, 0, 10) {
   chk_sound.setParent(id);
 
   // Back button
-  auto& btn_back = scene.addObj<afk::Button>(scene, 540, 407, z + 1);
+  auto& btn_back = scene.add<afk::Button>(scene, 540, 407, z + 1);
   btn_back.setOnClick(std::bind(&SettingsMenu::setHooked, this, false));
   btn_back.setFont("orbitron_24");
   btn_back.setText("Back");
@@ -47,7 +47,7 @@ SettingsMenu::SettingsMenu(afk::Scene& scene) : GameObject(scene, 0, 0, 10) {
   btn_back.setParent(id);
 
   // Exit button
-  auto& btn_exit = scene.addObj<afk::Button>(scene, 540, 180, z + 1);
+  auto& btn_exit = scene.add<afk::Button>(scene, 540, 180, z + 1);
   btn_exit.setOnClick([&]() { scene.scene.setNextScene("exit"); });
   btn_exit.setFont("orbitron_24");
   btn_exit.setText("Exit");

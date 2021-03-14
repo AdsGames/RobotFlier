@@ -6,8 +6,8 @@
 #include "../Robot.h"
 
 // Constructor
-Magnet::Magnet(afk::Scene& scene, const float x, const float y, const int type)
-    : Powerup(scene, x, y) {
+Magnet::Magnet(afk::Scene& scene, const float x, const float y, const int z, const int type)
+    : Powerup(scene, x, y, z) {
   loadAssets(type);
   setTimer(type);
 }
@@ -53,9 +53,9 @@ void Magnet::setTimer(const int type) {
   }
 }
 
-void Magnet::onCollide(const GameObject& other) {
+void Magnet::onCollide(GameObject& other) {
   try {
-    auto robot = dynamic_cast<const Robot&>(other);
+    auto robot = dynamic_cast<Robot&>(other);
     robot.setMagneticTimer(getTimerLength());
     stats[STAT_POWERUPS] += 1;
     scene.audio.playSound("magnet");
@@ -67,7 +67,7 @@ void Magnet::onCollide(const GameObject& other) {
 
 // Logic loop!
 void Magnet::update(Uint32 delta) {
-  x -= motion;
+  x -= motion * delta;
 
   if (x + width <= 0) {
     scene.remove(id);

@@ -7,8 +7,9 @@
 Asteroid::Asteroid(afk::Scene& scene,
                    const float x,
                    const float y,
+                   const int z,
                    const int theme)
-    : Debris(scene, x, y, 5, 1.0f, 0.0f, afk::Random::randomInt(4, 20)) {
+    : Debris(scene, x, y, z, 5, 1.0f, 0.0f, afk::Random::randomInt(4, 20)) {
   loadAssets(theme);
 }
 

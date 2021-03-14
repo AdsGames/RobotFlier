@@ -14,12 +14,12 @@
 class PowerStar : public Powerup {
  public:
   // Constructor
-  PowerStar(afk::Scene& scene, const float x, const float y);
+  PowerStar(afk::Scene& scene, const float x, const float y, const int z);
 
   // Logic override
   void update(Uint32 delta) override;
 
-  void onCollide(const GameObject& other) override;
+  void onCollide( GameObject& other) override;
 };
 
 #endif  // SRC_ENTITIES_POWERUPS_POWERSTAR_H_

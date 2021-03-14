@@ -14,7 +14,7 @@
 class Asteroid : public Debris {
  public:
   // Constructor
-  Asteroid(afk::Scene& scene, const float x, const float y, const int theme);
+  Asteroid(afk::Scene& scene, const float x, const float y, const int z, const int theme);
 
   // Logic override
   void onDestroy() override;

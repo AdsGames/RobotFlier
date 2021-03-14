@@ -14,7 +14,7 @@
 class Bomb : public Debris {
  public:
   // Constructor
-  Bomb(afk::Scene& scene, const float x, const float y);
+  Bomb(afk::Scene& scene, const float x, const float y, const int z);
 
   // Logic override
   void onDestroy() override;

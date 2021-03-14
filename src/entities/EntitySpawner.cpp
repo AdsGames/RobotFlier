@@ -11,49 +11,60 @@
 #include "../entities/powerups/Magnet.h"
 #include "../entities/powerups/PowerStar.h"
 
-EntitySpawner::EntitySpawner(afk::Scene& scene) : GameObject(scene) {}
+EntitySpawner::EntitySpawner(afk::Scene& scene, ObjId robot_id)
+    : GameObject(scene), robot_id(robot_id) {}
 
 void EntitySpawner::update(Uint32 delta) {
-  const int y = afk::Random::randomInt(30, 550);
+  // Random y
+  int y = afk::Random::randomInt(0, SCREEN_H);
 
   // Energy ball spawning
   if (afk::Random::randomInt(0, 50) == 0) {
-    scene.add<Energy>(scene, SCREEN_W, y);
+    auto& obj = scene.add<Energy>(scene, SCREEN_W, y, z + 1);
+    obj.addCollider(robot_id);
   }
 
   // Asteroids spawning
-  if (score >= 100 && afk::Random::randomInt(0, 50) == 0) {
-    scene.add<Asteroid>(scene, SCREEN_W, y, 0);
+  if (score >= 50 && afk::Random::randomInt(0, 50) == 0) {
+    auto& obj = scene.add<Asteroid>(scene, SCREEN_W, y, z + 1, 0);
+    obj.addCollider(robot_id);
   }
 
   // Bomb spawning
-  if (score >= 200 && afk::Random::randomInt(0, 80) == 0) {
-    scene.add<Bomb>(scene, SCREEN_W, y);
+  if (score >= 100 && afk::Random::randomInt(0, 80) == 0) {
+    auto& obj = scene.add<Bomb>(scene, SCREEN_W, y, z + 1);
+    obj.addCollider(robot_id);
   }
 
   // Comets spawning
-  if (score >= 300 && afk::Random::randomInt(0, 200) == 0) {
-    scene.add<Comet>(scene, SCREEN_W, y);
+  if (score >= 200 && afk::Random::randomInt(0, 200) == 0) {
+    auto& obj = scene.add<Comet>(scene, SCREEN_W, y, z + 1);
+    obj.addCollider(robot_id);
   }
 
   // Powerup spawning
   if (score >= 100 && afk::Random::randomInt(0, 3000) == 0) {
-    scene.add<PowerStar>(scene, SCREEN_W, y);
+    auto& obj = scene.add<PowerStar>(scene, SCREEN_W, y, z + 1);
+    obj.addCollider(robot_id);
   }
 
-  if (score >= 100 && afk::Random::randomInt(0, 500) == 0) {
-    scene.add<Magnet>(scene, SCREEN_W, y, 0);
+  if (score >= 50 && afk::Random::randomInt(0, 500) == 0) {
+    auto& obj = scene.add<Magnet>(scene, SCREEN_W, y, z + 1, 0);
+    obj.addCollider(robot_id);
   }
 
-  if (score >= 200 && afk::Random::randomInt(0, 1000) == 0) {
-    scene.add<Magnet>(scene, SCREEN_W, y, 1);
+  if (score >= 150 && afk::Random::randomInt(0, 1000) == 0) {
+    auto& obj = scene.add<Magnet>(scene, SCREEN_W, y, z + 1, 1);
+    obj.addCollider(robot_id);
   }
 
-  if (score >= 300 && afk::Random::randomInt(0, 2000) == 0) {
-    scene.add<Magnet>(scene, SCREEN_W, y, 2);
+  if (score >= 200 && afk::Random::randomInt(0, 2000) == 0) {
+    auto& obj = scene.add<Magnet>(scene, SCREEN_W, y, z + 1, 2);
+    obj.addCollider(robot_id);
   }
 
-  if (score >= 500 && afk::Random::randomInt(0, 3000) == 0) {
-    scene.add<Magnet>(scene, SCREEN_W, y, 3);
+  if (score >= 400 && afk::Random::randomInt(0, 3000) == 0) {
+    auto& obj = scene.add<Magnet>(scene, SCREEN_W, y, z + 1, 3);
+    obj.addCollider(robot_id);
   }
 }

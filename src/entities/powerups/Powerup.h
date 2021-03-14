@@ -11,7 +11,7 @@
 class Powerup : public afk::Sprite {
  public:
   // Constructor
-  Powerup(afk::Scene& scene, const float x, const float y);
+  Powerup(afk::Scene& scene, const float x, const float y, const int z);
 
   void setTimerLength(const int length);
   int getTimerLength();

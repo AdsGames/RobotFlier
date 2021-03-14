@@ -30,26 +30,29 @@ void Menu::start() {
   add<afk::Sprite>(*this, "title", 20, 20, 1);
 
   // Add settings screen component
-  SettingsMenu& settings = addObj<SettingsMenu>(*this);
+  SettingsMenu& settings = add<SettingsMenu>(*this);
   settings.setHooked(false);
   settings_screen = settings.id;
 
   // Add highscores component
-  HighScores& scores = addObj<HighScores>(*this);
+  HighScores& scores = add<HighScores>(*this);
   scores.setHooked(false);
   scores_screen = scores.id;
 
   // Add help sprite
-  help_sprite = add<afk::Sprite>(*this, "helpScreen", 0, 0, 10);
-  get<afk::Sprite>(help_sprite).setHooked(false);
+  afk::Sprite& help = add<afk::Sprite>(*this, "helpScreen", 0, 0, 10);
+  help.setHooked(false);
+  help_sprite = help.id;
 
   // Add credits sprite
-  credits_sprite = add<afk::Sprite>(*this, "credits", 0, 0, 10);
-  get<afk::Sprite>(credits_sprite).setHooked(false);
+  afk::Sprite& credits = add<afk::Sprite>(*this, "credits", 0, 0, 10);
+  credits.setHooked(false);
+  credits_sprite = credits.id;
 
   // Add controls sprite
-  controls_sprite = add<afk::Sprite>(*this, "controls", 0, 0, 10);
-  get<afk::Sprite>(controls_sprite).setHooked(false);
+  afk::Sprite& controls = add<afk::Sprite>(*this, "controls", 0, 0, 10);
+  controls.setHooked(false);
+  controls_sprite = controls.id;
 
   // Xbox start button
   if (config.get<int>("controlMode", 0) != 1 && input.joyEnabled()) {
@@ -57,32 +60,32 @@ void Menu::start() {
   }
 
   // Add credits button
-  afk::Image& ui_credits = addObj<afk::Image>(*this, 540, 548, 2);
+  afk::Image& ui_credits = add<afk::Image>(*this, 540, 548, 2);
   ui_credits.setOnClick(std::bind(&Menu::handleClickCredits, this));
   ui_credits.setTexture("ui_credits");
 
   // Add help button
-  afk::Image& ui_help = addObj<afk::Image>(*this, 696, 548, 2);
+  afk::Image& ui_help = add<afk::Image>(*this, 696, 548, 2);
   ui_help.setOnClick(std::bind(&Menu::handleClickHelp, this));
   ui_help.setTexture("ui_help");
 
   // Add settings button
-  afk::Image& ui_options = addObj<afk::Image>(*this, 748, 548, 2);
+  afk::Image& ui_options = add<afk::Image>(*this, 748, 548, 2);
   ui_options.setOnClick(std::bind(&Menu::handleClickSettings, this));
   ui_options.setTexture("ui_options");
 
   // Add controls button
-  afk::Image& ui_controls = addObj<afk::Image>(*this, 644, 548, 2);
+  afk::Image& ui_controls = add<afk::Image>(*this, 644, 548, 2);
   ui_controls.setOnClick(std::bind(&Menu::handleClickControls, this));
   ui_controls.setTexture("ui_controls");
 
   // Add highscores button
-  afk::Image& ui_highscores = addObj<afk::Image>(*this, 660, 20, 2);
+  afk::Image& ui_highscores = add<afk::Image>(*this, 660, 20, 2);
   ui_highscores.setOnClick(std::bind(&Menu::handleClickScores, this));
   ui_highscores.setTexture("highscores");
 
   // Add start button
-  afk::Image& ui_start = addObj<afk::Image>(*this, 20, 440, 2);
+  afk::Image& ui_start = add<afk::Image>(*this, 20, 440, 2);
   ui_start.setOnClick(std::bind(&Menu::handleClickStart, this));
   ui_start.setTexture("start");
 

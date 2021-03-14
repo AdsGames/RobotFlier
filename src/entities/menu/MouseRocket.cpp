@@ -4,14 +4,13 @@
 #include <afk/entities/ParticleEmitter.h>
 #include <afk/random/RandomGenerator.h>
 
-MouseRocket::MouseRocket(afk::Scene& scene) : Sprite(scene, "mouse", 0, 0, 20) {
-  mouse_rocket_up = false;
-
-  mouse_y = scene.input.mouseY();
-
+MouseRocket::MouseRocket(afk::Scene& scene)
+    : Sprite(scene, "mouse", 0, 0, 20),
+      mouse_rocket_up(false),
+      mouse_y(scene.input.mouseY()) {
   // Add particle emitter
   afk::ParticleEmitter& emitter =
-      scene.addObj<afk::ParticleEmitter>(scene, 0, 0, z - 1, 10);
+      scene.add<afk::ParticleEmitter>(scene, 0, 0, z - 1, 10);
   emitter_id = emitter.id;
   emitter.disable();
 

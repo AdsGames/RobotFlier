@@ -19,9 +19,6 @@ class Intro : public afk::Scene {
   void update(Uint32 delta) override;
 
  private:
-  // Splash image
-  afk::Texture img_intro;
-
   // Start time
   std::chrono::high_resolution_clock::time_point start_time;
 };

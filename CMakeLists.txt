@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 
@@ -12,7 +12,7 @@ file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
 add_executable (${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
-target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
+target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic -O2)
 
 # Find libs
 if(NOT EMSCRIPTEN)
@@ -25,10 +25,18 @@ if(NOT EMSCRIPTEN)
   find_library(SDL_MAIN_LIBRARY NAMES SDL2main REQUIRED)
 endif()
 
-
-
 if(EMSCRIPTEN)
   set(CMAKE_EXECUTABLE_SUFFIX ".html")
+  target_compile_options(
+    ${PROJECT_NAME}
+    PRIVATE  
+    -sUSE_SDL=2 
+    -sUSE_SDL_IMAGE=2 
+    -sUSE_SDL_TTF=2 
+    -sUSE_SDL_MIXER=2 
+    -sUSE_SDL_GFX=2 
+    -sSDL2_IMAGE_FORMATS=["png"]
+  )
   target_link_libraries(
     ${PROJECT_NAME} 
     -sWASM=1 
@@ -40,7 +48,6 @@ if(EMSCRIPTEN)
     -sSDL2_IMAGE_FORMATS=["png"] 
     -sDEMANGLE_SUPPORT=1
     -sTOTAL_MEMORY=512MB
-    -sDISABLE_EXCEPTION_CATCHING=0
     afk
   )
   set_target_properties(

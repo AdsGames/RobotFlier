@@ -20,7 +20,7 @@ void MainGame::start() {
   screenshake = 0;
 
   // Game related
-  motion = 5;
+  motion = 0;
   themeNumber = 0;
   screenshake_x = 0;
   screenshake_y = 0;
@@ -34,13 +34,13 @@ void MainGame::start() {
   }
 
   // Die menu
-  DieMenu& die_menu = addObj<DieMenu>(*this);
+  DieMenu& die_menu = add<DieMenu>(*this);
   die_menu.setHooked(false);
   die_menu_id = die_menu.id;
 
   // Images
   // Gui
-  afk::Sprite& ui_up = addObj<afk::Sprite>(*this, 0, 0, 10);
+  afk::Sprite& ui_up = add<afk::Sprite>(*this, 0, 0, 10);
   ui_up_id = ui_up.id;
   if (input.joyEnabled()) {
     ui_up.setTexture("ui_a");
@@ -55,18 +55,18 @@ void MainGame::start() {
   display.hideMouse();
 
   // Init hectar
-  hectar_id = add<Robot>(*this, 80, 300);
+  hectar_id = add<Robot>(*this, 80, 300).id;
 
   // Create game hud
   add<GameHud>(*this, hectar_id);
 
   // Create game hud
-  auto& pauseMenu = addObj<PauseMenu>(*this);
+  auto& pauseMenu = add<PauseMenu>(*this);
   pauseMenu.setHooked(false);
   pause_menu_id = pauseMenu.id;
 
   // Add entity spawner
-  spawner_id = add<EntitySpawner>(*this);
+  spawner_id = add<EntitySpawner>(*this, hectar_id).id;
 
   // Play music
   audio.playStream("in_game", true);
@@ -141,6 +141,7 @@ void MainGame::update(Uint32 delta) {
       audio.stopStream("in_game");
       DieMenu& die_menu = get<DieMenu>(die_menu_id);
       die_menu.setHooked(true);
+      display.showMouse();
 
       if (config.get<bool>("music", true) == 1) {
         audio.playStream("death", true);
@@ -152,7 +153,7 @@ void MainGame::update(Uint32 delta) {
 
     // Changes speed
     if (hectar.isAlive() && hectar.isKeyPressed()) {
-      motion = ((score / 36) + 6);
+      motion = (static_cast<float>(score) / 400.0f + 0.1f);
     } else {
       motion *= 0.95;
     }

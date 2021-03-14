@@ -12,7 +12,7 @@
 class Energy : public afk::Sprite {
  public:
   // Constructor
-  Energy(afk::Scene& scene, const float x, const float y);
+  Energy(afk::Scene& scene, const float x, const float y, const int z);
 
   // Logic override
   void update(Uint32 delta) override;
@@ -20,7 +20,7 @@ class Energy : public afk::Sprite {
   // Move towards point
   void moveTowards(const float x, const float y, const float speed);
 
-  void onCollide(const GameObject& other) override;
+  void onCollide(GameObject& other) override;
 
  private:
   // Load assets

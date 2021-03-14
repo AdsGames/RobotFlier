@@ -5,31 +5,29 @@
 #include <afk/scene/Scene.h>
 
 #include "../constants/globals.h"
+#include "Energy.h"
 
 // Gravity const
-const float GRAVITY_SPEED = 0.01f;
-const float BOUNCE_SPEED = -0.02f;
-const float THRUST_SPEED = -0.02f;
+const float GRAVITY_SPEED = 0.03f;
+const float BOUNCE_SPEED = -0.40f;
+const float THRUST_SPEED = -0.06f;
 
 // Constructor
 Robot::Robot(afk::Scene& scene, const float x, float y)
-    : Sprite(scene, "robot", x, y, 1) {
-  // Init vars
-  speed = 0;
-  width = 70;
-  height = 70;
-  invincibleTimer = 0;
-  magneticTimer = 0;
-
-  health = 100;
-
-  rocket = false;
-  dead = false;
-  alive = true;
-  keyPressed = false;
+    : Sprite(scene, "robot", x, y, 1),
+      speed(0),
+      alive(true),
+      invincibleTimer(0),
+      magneticTimer(0),
+      rocket(false),
+      dead(false),
+      health(100),
+      keyPressed(false) {
+  // Set size
+  setSize(70, 70);
 
   // Xmas mode!
-  Sprite& xmasHat = scene.addObj<Sprite>(scene, "christmas_hat", 20, 12, z + 1);
+  Sprite& xmasHat = scene.add<Sprite>(scene, "christmas_hat", 20, 12, z + 1);
   if (!scene.config.get<bool>("christmas", false)) {
     xmasHat.setVisible(false);
   }
@@ -37,19 +35,19 @@ Robot::Robot(afk::Scene& scene, const float x, float y)
 
   // Add particle emitters
   afk::ParticleEmitter& emitterRocket1 =
-      scene.addObj<afk::ParticleEmitter>(scene, 20, height - 20, z - 1, 10);
+      scene.add<afk::ParticleEmitter>(scene, 20, height - 20, z - 1, 10);
   emitterRocket1.disable();
   emitterRocket1Id = emitterRocket1.id;
   emitterRocket1.setParent(id);
 
   afk::ParticleEmitter& emitterRocket2 =
-      scene.addObj<afk::ParticleEmitter>(scene, 50, height - 20, z - 1, 10);
+      scene.add<afk::ParticleEmitter>(scene, 50, height - 20, z - 1, 10);
   emitterRocket2.disable();
   emitterRocket2Id = emitterRocket2.id;
   emitterRocket2.setParent(id);
 
   afk::ParticleEmitter& emitterSmoke =
-      scene.addObj<afk::ParticleEmitter>(scene, 45, 5, z + 1, 100);
+      scene.add<afk::ParticleEmitter>(scene, 45, 5, z + 1, 100);
   emitterSmoke.setSize(5, 5);
   emitterSmoke.disable();
   emitterSmokeId = emitterSmoke.id;
@@ -107,8 +105,8 @@ void Robot::update(Uint32 delta) {
 
     // Update robots y position
     if (keyPressed) {
-      speed += GRAVITY_SPEED * delta;
-      y += speed;
+      speed += GRAVITY_SPEED;
+      y += speed * delta;
     }
 
     // Enable or disable emitters
@@ -137,7 +135,7 @@ void Robot::update(Uint32 delta) {
       }
 
       rocket = true;
-      speed += THRUST_SPEED * delta;
+      speed += THRUST_SPEED;
 
     } else if (keyPressed) {
       // If no keys pressed
@@ -151,9 +149,9 @@ void Robot::update(Uint32 delta) {
     }
 
     if (y > 550) {
-      speed = BOUNCE_SPEED * delta;
+      speed = BOUNCE_SPEED;
       if (invincibleTimer <= 0) {
-        health -= 500;
+        health -= 5;
         scene.audio.playSound("hitground");
         screenshake = 30;
       }
@@ -191,6 +189,23 @@ void Robot::update(Uint32 delta) {
   }
 }
 
+// On collide
+void Robot::onCollide(GameObject& other) {
+  try {
+    dynamic_cast<Energy&>(other);
+    addHealth(1);
+
+    score += 5;
+    stats[STAT_ENERGY] += 1;
+
+    if (getHealth() < 100) {
+      addHealth(1);
+    }
+  } catch (...) {
+    // Nope
+  }
+}
+
 // Getters
 int Robot::getHealth() const {
   return health;
@@ -198,6 +213,9 @@ int Robot::getHealth() const {
 
 void Robot::addHealth(int amount) {
   health += amount;
+  if (health > 100) {
+    health = 100;
+  }
 }
 
 bool Robot::isDead() const {

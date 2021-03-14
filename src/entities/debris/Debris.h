@@ -14,6 +14,7 @@ class Debris : public afk::Sprite {
   Debris(afk::Scene& scene,
          const float x,
          const float y,
+         const int z,
          const int damage,
          const float motionMultiplier,
          const float acceleration,

@@ -6,8 +6,8 @@
 #include "Robot.h"
 
 // Constructor
-Energy::Energy(afk::Scene& scene, const float x, const float y)
-    : Sprite(scene, x, y) {
+Energy::Energy(afk::Scene& scene, const float x, const float y, const int z)
+    : Sprite(scene, x, y, z) {
   loadAssets();
 }
 
@@ -19,20 +19,10 @@ void Energy::loadAssets() {
   }
 }
 
-void Energy::onCollide(const GameObject& other) {
+void Energy::onCollide(GameObject& other) {
   try {
-    auto robot = dynamic_cast<const Robot&>(other);
-    robot.addHealth(1);
-
-    score += 5;
-    stats[STAT_ENERGY] += 1;
-
-    if (robot.getHealth() < 100) {
-      robot.addHealth(1);
-    }
-
+    dynamic_cast<Robot&>(other);
     scene.audio.playSound("orb");
-
     scene.remove(id);
   } catch (...) {
     // Nope!
@@ -41,7 +31,7 @@ void Energy::onCollide(const GameObject& other) {
 
 // Game logic
 void Energy::update(Uint32 delta) {
-  x -= delta / 30.0f;
+  x -= motion * delta;
 
   if (x + width <= 0) {
     scene.remove(id);

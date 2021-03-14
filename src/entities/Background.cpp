@@ -10,7 +10,7 @@ Background::Background(afk::Scene& scene)
 }
 
 void Background::update(Uint32 delta) {
-  scroll -= motion;
+  scroll -= motion * delta;
 
   if (scroll / 6 + SCREEN_W <= 0) {
     scroll = 0;

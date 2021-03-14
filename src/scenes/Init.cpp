@@ -155,5 +155,5 @@ void Init::start() {
 // Update
 void Init::update(Uint32 delta) {
   // Go to menu
-  scene.setNextScene("menu");
+  scene.setNextScene("intro");
 }

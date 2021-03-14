@@ -40,6 +40,7 @@ class MainGame : public afk::Scene {
   double arrow_animation;
   bool hectarIsAlive;
   bool paused;
+
 };
 
 #endif  // SRC_SCENES_MAINGAME_H_
