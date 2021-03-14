@@ -4,30 +4,38 @@
     {
       "label": "Build and Run",
       "type": "shell",
-      "command": "make -j8 && cd ./build && RobotFlier",
+      "command": "make -j24 RobotFlier && cd ./build && ./RobotFlier",
       "windows": {
-        "command": "make -j8 && cd ./build && RobotFlier.exe"
+        "command": "make -j24 RobotFlier && cd ./build && RobotFlier.exe"
       },
-      "problemMatcher": [
-        "$gcc"
-      ]
-    },
-    {
-      "label": "Build",
-      "type": "shell",
-      "command": "make -j8",
-      "problemMatcher": [
-        "$gcc"
-      ],
+      "problemMatcher": ["$gcc"],
       "group": {
         "kind": "build",
         "isDefault": true
       }
     },
     {
+      "label": "Build",
+      "type": "shell",
+      "command": "make -j24 RobotFlier",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Rebuild",
+      "type": "shell",
+      "command": "rm -f CMakeCache.txt && cmake . -DCMAKE_BUILD_TYPE=Release && make -j24 RobotFlier",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Build Debug",
+      "type": "shell",
+      "command": "rm -f CMakeCache.txt && cmake . -DCMAKE_BUILD_TYPE=Debug && make -j24 RobotFlier",
+      "problemMatcher": ["$gcc"]
+    },
+    {
       "label": "Run",
       "type": "shell",
-      "command": "cd ./build && RobotFlier",
+      "command": "cd ./build && ./RobotFlier",
       "windows": {
         "command": "cd ./build && RobotFlier.exe"
       },

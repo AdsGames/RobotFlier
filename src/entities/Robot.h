@@ -4,84 +4,57 @@
  * A.D.S. Games
  * 12/01/2017
  */
-#ifndef ROBOT_H
-#define ROBOT_H
+#ifndef SRC_ENTITIES_ROBOT_H_
+#define SRC_ENTITIES_ROBOT_H_
 
-#include <iostream>
+#include <afk/entities/GameObject.h>
+#include <afk/entities/Particle.h>
+
 #include <vector>
 
-#include "../constants/globals.h"
-#include "../helpers/tools.h"
-#include "../input/joystickListener.h"
-#include "../input/keyListener.h"
-#include "../input/mouseListener.h"
-#include "Particle.h"
-
-class Robot {
+class Robot : public afk::Sprite {
  public:
-  Robot();
-  Robot(float x, float y);
-  ~Robot();
+  explicit Robot(afk::Scene& scene, float x = 0.0f, float y = 0.0f);
 
-  void loadResources();
-  void logic();
-  void draw();
-  void drawOverlay();
+  void update(Uint32 delta) override;
+
+  // Collisions
+  void onCollide(GameObject& other) override;
 
   // Getters
-  int  getHealth() const;
+  int getHealth() const;
   void addHealth(int amount);
 
-  float getX() const;
-  float getY() const;
-
-  float getWidth() const;
-  float getHeight() const;
-
-  bool isOnGround() const;
+  bool isDead() const;
   bool isAlive() const;
   bool isKeyPressed() const;
 
   // Invincibility
   bool isInvincible() const;
-  int  getInvincibleTimer() const;
+  int getInvincibleTimer() const;
   void setInvincibleTimer(int time);
 
   // Magnetic
   bool isMagnetic() const;
-  int  getMagneticTimer() const;
+  int getMagneticTimer() const;
   void setMagneticTimer(int time);
 
  private:
   // Robot specific
-  float gravity, speed;
-  bool  alive;
-  int   invincibleTimer, magneticTimer;
-  bool  rocket;
-  bool  onGround;
-  float x, y;
-  int   health;
-  int   width, height;
+  float speed;
+  bool alive;
+  int invincibleTimer, magneticTimer;
+  bool rocket;
+  bool dead;
+  int health;
 
   // Wait for keypress
   bool keyPressed;
 
-  // Images
-  ALLEGRO_BITMAP* mainRobot;
-  ALLEGRO_BITMAP* robotFire;
-  ALLEGRO_BITMAP* robotInvincible;
-  ALLEGRO_BITMAP* robotInvincibleFire;
-  ALLEGRO_BITMAP* robotInvincibleTop;
-  ALLEGRO_BITMAP* robotDie;
-  ALLEGRO_BITMAP* christmasHat;
-
-  // Sounds
-  ALLEGRO_SAMPLE* soundFlame;
-  ALLEGRO_SAMPLE* soundHitground;
-
   // Particles
-  std::vector<Particle> rocketPart;
-  std::vector<Particle> smokePart;
+  ObjId emitterRocket1Id;
+  ObjId emitterRocket2Id;
+  ObjId emitterSmokeId;
 };
 
-#endif  // ROBOT_H
+#endif  // SRC_ENTITIES_ROBOT_H_

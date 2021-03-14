@@ -1,278 +1,231 @@
 #include "Robot.h"
 
-// Constructor
-Robot::Robot() : Robot(0.0f, 0.0f) {}
+#include <afk/entities/ParticleEmitter.h>
+#include <afk/random/RandomGenerator.h>
+#include <afk/scene/Scene.h>
+
+#include "../constants/globals.h"
+#include "Energy.h"
+
+// Gravity const
+const float GRAVITY_SPEED = 0.03f;
+const float BOUNCE_SPEED = -0.40f;
+const float THRUST_SPEED = -0.06f;
 
 // Constructor
-Robot::Robot(float x, float y) {
-  // NULLIFY
-  mainRobot           = nullptr;
-  robotFire           = nullptr;
-  robotInvincible     = nullptr;
-  robotInvincibleFire = nullptr;
-  robotInvincibleTop  = nullptr;
-  robotDie            = nullptr;
-  christmasHat        = nullptr;
-  soundFlame          = nullptr;
-  soundHitground      = nullptr;
+Robot::Robot(afk::Scene& scene, const float x, float y)
+    : Sprite(scene, "robot", x, y, 1),
+      speed(0),
+      alive(true),
+      invincibleTimer(0),
+      magneticTimer(0),
+      rocket(false),
+      dead(false),
+      health(100),
+      keyPressed(false) {
+  // Set size
+  setSize(70, 70);
 
-  // Init vars
-  gravity = 1.6;
+  // Xmas mode!
+  Sprite& xmasHat = scene.add<Sprite>(scene, "christmas_hat", 20, 12, z + 1);
+  if (!scene.config.get<bool>("christmas", false)) {
+    xmasHat.setVisible(false);
+  }
+  xmasHat.setParent(id);
 
-  speed           = 0;
-  this->x         = x;
-  this->y         = y;
-  width           = 70;
-  height          = 70;
-  invincibleTimer = 0;
-  magneticTimer   = 0;
+  // Add particle emitters
+  afk::ParticleEmitter& emitterRocket1 =
+      scene.add<afk::ParticleEmitter>(scene, 20, height - 20, z - 1, 10);
+  emitterRocket1.disable();
+  emitterRocket1Id = emitterRocket1.id;
+  emitterRocket1.setParent(id);
 
-  health = 100;
+  afk::ParticleEmitter& emitterRocket2 =
+      scene.add<afk::ParticleEmitter>(scene, 50, height - 20, z - 1, 10);
+  emitterRocket2.disable();
+  emitterRocket2Id = emitterRocket2.id;
+  emitterRocket2.setParent(id);
 
-  rocket     = false;
-  onGround   = false;
-  alive      = true;
-  keyPressed = false;
-}
+  afk::ParticleEmitter& emitterSmoke =
+      scene.add<afk::ParticleEmitter>(scene, 45, 5, z + 1, 100);
+  emitterSmoke.setSize(5, 5);
+  emitterSmoke.disable();
+  emitterSmokeId = emitterSmoke.id;
+  emitterSmoke.setParent(id);
 
-// Destructor
-Robot::~Robot() {
-  // Clear particles
-  rocketPart.clear();
-  smokePart.clear();
+  // Create "realistic" smoke particles
+  for (int i = 0; i < 100; i++) {
+    afk::Particle particle(scene, 0, 0, 0, afk::ParticleType::IMAGE);
+    particle.setLifespan(afk::Random::randomInt(800, 1500));
+    particle.setTexture("fuzzball");
+    particle.setSize(16.0f, 20.0f);
+    particle.setVelocity(afk::Random::randomFloat(-2.0f, -3.0f), -15.0f);
+    emitterSmoke.addParticle(particle);
+  }
 
-  // Destroy samples
-  al_destroy_sample(soundFlame);
-  al_destroy_sample(soundHitground);
-
-  // Destroy images
-  al_destroy_bitmap(mainRobot);
-  al_destroy_bitmap(robotFire);
-  al_destroy_bitmap(robotInvincible);
-  al_destroy_bitmap(robotInvincibleFire);
-  al_destroy_bitmap(robotInvincibleTop);
-  al_destroy_bitmap(robotDie);
-  al_destroy_bitmap(christmasHat);
-}
-
-// Load images
-void Robot::loadResources() {
-  // Images
-  mainRobot           = load_bitmap_ex("images/robot/robot.png");
-  robotFire           = load_bitmap_ex("images/robot/robotfire.png");
-  robotInvincible     = load_bitmap_ex("images/robot/robotInvincible.png");
-  robotInvincibleFire = load_bitmap_ex("images/robot/robotInvincibleFire.png");
-  robotInvincibleTop  = load_bitmap_ex("images/robot/robotInvincibleTop.png");
-  robotDie            = load_bitmap_ex("images/robot/robotDie.png");
-  christmasHat        = load_bitmap_ex("images/robot/christmas_hat.png");
-
-  // Sounds
-  soundFlame     = load_sample_ex("audio/sound_flame.wav");
-  soundHitground = load_sample_ex("audio/sound_hitground.wav");
+  // Create "realistic" particles
+  for (int i = 0; i < 100; i++) {
+    afk::Particle particle(scene, 0, 0, 0, afk::ParticleType::SQUARE);
+    particle.setSize(2);
+    particle.setColor(afk::color::rgb(255, 255, 0), afk::color::rgb(128, 0, 0));
+    particle.setVelocity(afk::Random::randomFloat(-25.0, 25.0),
+                         afk::Random::randomFloat(100, 150));
+    particle.setLifespan(afk::Random::randomInt(30, 80));
+    emitterRocket1.addParticle(particle);
+    emitterRocket2.addParticle(particle);
+  }
 }
 
 // Update
-void Robot::logic() {
-  // Check if you are dead!
-  if (health < 1) {
-    alive  = false;
-    health = 0;
-  }
-
-  // Power up timers
-  if (invincibleTimer > 0)
-    invincibleTimer--;
-
-  if (magneticTimer > 0)
-    magneticTimer--;
-
-  // Update robots y position
-  if (keyPressed)
-    y += gravity - speed;
-
-  // Death smoke
-  if (settings[SETTING_PARTICLE_TYPE] != 3 && !alive) {
-    for (int i = 0; i < 800; i++) {
-      if (random(0, 10) == 0) {
-        int      randnum = random(0, 255);
-        Particle newParticle(
-            x + 20, y + 20, al_map_rgb(randnum, randnum, randnum),
-            random(-4, -1), random(-5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
-        smokePart.push_back(newParticle);
-      }
-    }
-  }
-
-  for (unsigned int i = 0; i < smokePart.size(); i++) {
-    smokePart.at(i).update();
-
-    if (random(0, 10) == 0) {
-      smokePart.erase(smokePart.begin() + i);
-    }
-  }
-
-  // Rocket particles
-  if (settings[SETTING_PARTICLE_TYPE] != 3 && rocket) {
-    for (int i = 0; i < 800; i++) {
-      if (random(0, 10) == 0) {
-        ALLEGRO_COLOR part_color = al_map_rgb(255, random(0, 255), 0);
-
-        if (settings[SETTING_CHRISTMAS]) {
-          int red_or_green = random(0, 1);
-          part_color =
-              al_map_rgb(255 * red_or_green, 255 - red_or_green * 255, 0);
-        }
-
-        Particle newParticle1(x + 21, y + 55, part_color, random(-2, 2),
-                              random(1, 5), 1, settings[SETTING_PARTICLE_TYPE]);
-        Particle newParticle2(x + 52, y + 55, part_color, random(-2, 2),
-                              random(0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
-        rocketPart.push_back(newParticle1);
-        rocketPart.push_back(newParticle2);
-      }
-    }
-  }
-
-  for (unsigned int i = 0; i < rocketPart.size(); i++) {
-    rocketPart.at(i).update();
-
-    if (random(0, 2) == 0) {
-      rocketPart.erase(rocketPart.begin() + i);
-    }
-  }
+void Robot::update(Uint32 delta) {
+  // Get emitters
+  afk::ParticleEmitter& emitterRocket1 =
+      scene.get<afk::ParticleEmitter>(emitterRocket1Id);
+  afk::ParticleEmitter& emitterRocket2 =
+      scene.get<afk::ParticleEmitter>(emitterRocket2Id);
+  afk::ParticleEmitter& emitterSmoke =
+      scene.get<afk::ParticleEmitter>(emitterSmokeId);
 
   // Moving controls
   if (alive) {
-    // Controls movement up and down
-    if ((keyListener::key[ALLEGRO_KEY_W] || keyListener::key[ALLEGRO_KEY_UP] ||
-         mouseListener::mouse_button & 1) ||
-        joystickListener::button[JOY_XBOX_A] ||
-        joystickListener::button[JOY_XBOX_BUMPER_LEFT]) {
+    // Check if you are dead!
+    if (health <= 0) {
+      alive = false;
+      health = 0;
+    }
+
+    // Power up timers
+    if (invincibleTimer > 0) {
+      invincibleTimer -= delta;
+    }
+
+    if (magneticTimer > 0) {
+      magneticTimer -= delta;
+    }
+
+    // Update robots y position
+    if (keyPressed) {
+      speed += GRAVITY_SPEED;
+      y += speed * delta;
+    }
+
+    // Enable or disable emitters
+    if (rocket) {
+      emitterRocket1.enable();
+      emitterRocket2.enable();
+    } else {
+      emitterRocket1.disable();
+      emitterRocket2.disable();
+    }
+
+    // Start the game
+    if (scene.input.keyPressed(afk::Keys::W) ||
+        scene.input.keyPressed(afk::Keys::UP)) {
       keyPressed = true;
+    }
 
-      if (settings[SETTING_SOUND] && random(0, 3) == 1)
-        al_play_sample(soundFlame, 0.05, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE,
-                       nullptr);
+    // Controls movement up and down
+    if ((scene.input.keyDown(afk::Keys::W) ||
+         scene.input.keyDown(afk::Keys::UP) ||
+         scene.input.mouseDown(afk::MouseButtons::LEFT)) ||
+        scene.input.joyDown(afk::JoystickButtons::A) ||
+        scene.input.joyDown(afk::JoystickButtons::BUMPER_LEFT)) {
+      if (afk::Random::randomInt(0, 3) == 1) {
+        scene.audio.playSound("flame", 0.05f);
+      }
 
-      if (speed < 8) {
-        rocket = true;
-        speed += 0.6;
+      rocket = true;
+      speed += THRUST_SPEED;
+
+    } else if (keyPressed) {
+      // If no keys pressed
+      rocket = false;
+    }
+
+    // Touching top or bottom
+    if (y < 0) {
+      y = 0;
+      speed = 0;
+    }
+
+    if (y > 550) {
+      speed = BOUNCE_SPEED;
+      if (invincibleTimer <= 0) {
+        health -= 5;
+        scene.audio.playSound("hitground");
+        screenshake = 30;
       }
     }
-    // If no keys pressed
-    else if (keyPressed) {
-      rocket = false;
 
-      if (speed > -8) {
-        speed -= 0.6;
+    // Set textures
+    if (invincibleTimer > 0) {
+      // Invincible
+      if (!rocket) {
+        setTexture("robotInvincible");
+      } else if (rocket) {
+        setTexture("robotInvincibleFire");
+      }
+    } else {
+      // Standard
+      if (!rocket) {
+        setTexture("robot");
+      } else if (rocket) {
+        setTexture("robotfire");
       }
     }
   }
 
   // Dying animation
   if (!alive) {
-    if (y < 550 && !onGround) {
-      y += 10;
+    // Death image
+    setTexture("robotDie");
+    emitterSmoke.enable();
+    if (y >= 550 && !dead) {
+      scene.audio.playSound("bomb");
+      dead = true;
+      y = 550;
       speed = 0;
-      // clear_keybuf();
-    } else if (y >= 550) {
-      y        = 550;
-      onGround = true;
-      // clear_keybuf();
-    }
-  }
-
-  // Touching top or bottom
-  if (y < 0) {
-    y     = 0;
-    speed = 0;
-  }
-
-  if (y > 550 && alive) {
-    speed = 14;
-
-    if (invincibleTimer <= 0) {
-      health -= 5;
-
-      if (settings[SETTING_SOUND])
-        al_play_sample(soundHitground, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE,
-                       nullptr);
-
-      screenshake = 30;
     }
   }
 }
 
-// Draw
-void Robot::draw() {
-  // Draw robot sprite
-  if (alive) {
-    // Invincible
-    if (invincibleTimer > 0) {
-      if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3)
-        al_draw_bitmap(robotInvincible, x, y, 0);
-      else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3)
-        al_draw_bitmap(robotInvincibleFire, x, y, 0);
+// On collide
+void Robot::onCollide(GameObject& other) {
+  try {
+    dynamic_cast<Energy&>(other);
+    addHealth(1);
+
+    score += 5;
+    stats[STAT_ENERGY] += 1;
+
+    if (getHealth() < 100) {
+      addHealth(1);
     }
-    // Standard
-    else {
-      if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3)
-        al_draw_bitmap(mainRobot, x, y, 0);
-      else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3)
-        al_draw_bitmap(robotFire, x, y, 0);
-    }
-
-    // Xmas mode!
-    if (settings[SETTING_CHRISTMAS])
-      al_draw_bitmap(christmasHat, x + 20, y - 12, 0);
+  } catch (...) {
+    // Nope
   }
-  // Death image
-  else {
-    al_draw_bitmap(robotDie, x, y, 0);
-  }
-
-  // Draw particles
-  for (auto& part : rocketPart)
-    part.draw();
-
-  for (auto& part : smokePart)
-    part.draw();
-}
-
-// Draw overlay
-void Robot::drawOverlay() {
-  if (alive && invincibleTimer > 0)
-    al_draw_bitmap(robotInvincibleTop, x, y, 0);
 }
 
 // Getters
 int Robot::getHealth() const {
   return health;
 }
+
 void Robot::addHealth(int amount) {
   health += amount;
+  if (health > 100) {
+    health = 100;
+  }
 }
 
-float Robot::getX() const {
-  return x;
-}
-float Robot::getY() const {
-  return y;
+bool Robot::isDead() const {
+  return dead;
 }
 
-float Robot::getWidth() const {
-  return width;
-}
-float Robot::getHeight() const {
-  return height;
-}
-
-bool Robot::isOnGround() const {
-  return onGround;
-}
 bool Robot::isAlive() const {
   return alive;
 }
+
 bool Robot::isKeyPressed() const {
   return keyPressed;
 }
@@ -281,9 +234,11 @@ bool Robot::isKeyPressed() const {
 bool Robot::isInvincible() const {
   return invincibleTimer > 0;
 }
+
 int Robot::getInvincibleTimer() const {
   return invincibleTimer;
 }
+
 void Robot::setInvincibleTimer(int time) {
   invincibleTimer += time;
 }
@@ -292,9 +247,11 @@ void Robot::setInvincibleTimer(int time) {
 bool Robot::isMagnetic() const {
   return magneticTimer > 0;
 }
+
 int Robot::getMagneticTimer() const {
   return magneticTimer;
 }
+
 void Robot::setMagneticTimer(int time) {
   magneticTimer += time;
 }

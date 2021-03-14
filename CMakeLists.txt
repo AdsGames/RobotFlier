@@ -1,40 +1,81 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.11)
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 
 project (RobotFlier)
 
-file(GLOB_RECURSE SOURCES "src/*.cpp")
-file(GLOB_RECURSE HEADERS "src/*.h")
+# Source code
+file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
-set (INCLUDE_DIRS "")
-foreach (_headerFile ${HEADERS})
-  get_filename_component(_dir ${_headerFile} PATH)
-  list (APPEND INCLUDE_DIRS ${_dir})
-endforeach()
-list(REMOVE_DUPLICATES INCLUDE_DIRS)
+add_executable (${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
-find_library(ALLEGRO_LIBRARY NAMES liballegro.dll.a liballegro.so liballegro.5.2.dylib)
-find_library(ALLEGRO_ACODEC_LIBRARY NAMES liballegro_acodec.dll.a liballegro_acodec.so liballegro_acodec.5.2.dylib)
-find_library(ALLEGRO_AUDIO_LIBRARY NAMES liballegro_audio.dll.a liballegro_audio.so liballegro_audio.5.2.dylib)
-find_library(ALLEGRO_COLOR_LIBRARY NAMES liballegro_color.dll.a liballegro_color.so liballegro_color.5.2.dylib)
-find_library(ALLEGRO_DIALOG_LIBRARY NAMES liballegro_dialog.dll.a liballegro_dialog.so liballegro_dialog.5.2.dylib)
-find_library(ALLEGRO_FONT_LIBRARY NAMES liballegro_font.dll.a liballegro_font.so liballegro_font.5.2.dylib)
-find_library(ALLEGRO_IMAGE_LIBRARY NAMES liballegro_image.dll.a liballegro_image.so liballegro_image.5.2.dylib)
-find_library(ALLEGRO_MAIN_LIBRARY NAMES liballegro_main.dll.a liballegro_main.so liballegro_main.5.2.dylib)
-find_library(ALLEGRO_PRIMITIVES_LIBRARY NAMES liballegro_primitives.dll.a liballegro_primitives.so liballegro_primitives.5.2.dylib)
-find_library(ALLEGRO_TTF_LIBRARY NAMES liballegro_ttf.dll.a liballegro_ttf.so liballegro_ttf.5.2.dylib)
+target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic -O2)
 
-add_executable (RobotFlier ${SOURCES})
-target_link_libraries(RobotFlier ${ALLEGRO_LIBRARY})
-target_link_libraries(RobotFlier ${ALLEGRO_ACODEC_LIBRARY})
-target_link_libraries(RobotFlier ${ALLEGRO_AUDIO_LIBRARY})
-target_link_libraries(RobotFlier ${ALLEGRO_COLOR_LIBRARY})
-target_link_libraries(RobotFlier ${ALLEGRO_DIALOG_LIBRARY})
-target_link_libraries(RobotFlier ${ALLEGRO_FONT_LIBRARY})
-target_link_libraries(RobotFlier ${ALLEGRO_IMAGE_LIBRARY})
-target_link_libraries(RobotFlier ${ALLEGRO_MAIN_LIBRARY})
-target_link_libraries(RobotFlier ${ALLEGRO_PRIMITIVES_LIBRARY})
-target_link_libraries(RobotFlier ${ALLEGRO_TTF_LIBRARY})
-target_include_directories(RobotFlier PRIVATE ${INCLUDE_DIRS})
+# Find libs
+if(NOT EMSCRIPTEN)
+  find_library(AFK_LIBRARY NAMES afk REQUIRED)
+  find_library(SDL_LIBRARY NAMES SDL2 REQUIRED)
+  find_library(SDL_MIXER_LIBRARY NAMES SDL2_mixer REQUIRED)
+  find_library(SDL_IMAGE_LIBRARY NAMES SDL2_image REQUIRED)
+  find_library(SDL_TTF_LIBRARY NAMES SDL2_ttf REQUIRED)
+  find_library(SDL_GFX_LIBRARY NAMES SDL2_gfx REQUIRED)
+  find_library(SDL_MAIN_LIBRARY NAMES SDL2main REQUIRED)
+endif()
+
+if(EMSCRIPTEN)
+  get_filename_component(EMSDK_DIR ${CMAKE_TOOLCHAIN_FILE} DIRECTORY)
+  include_directories(${EMSDK_DIR}/../../../system/include)
+  link_directories(${EMSDK_DIR}/../../../system/lib)
+
+  set(CMAKE_EXECUTABLE_SUFFIX ".html")
+  target_compile_options(
+    ${PROJECT_NAME}
+    PRIVATE  
+    -sUSE_SDL=2 
+    -sUSE_SDL_IMAGE=2 
+    -sUSE_SDL_TTF=2 
+    -sUSE_SDL_MIXER=2 
+    -sUSE_SDL_GFX=2 
+    -sSDL2_IMAGE_FORMATS=["png"]
+  )
+  target_link_libraries(
+    ${PROJECT_NAME} 
+    -sWASM=1 
+    -sUSE_SDL=2 
+    -sUSE_SDL_IMAGE=2 
+    -sUSE_SDL_TTF=2 
+    -sUSE_SDL_MIXER=2 
+    -sUSE_SDL_GFX=2 
+    -sSDL2_IMAGE_FORMATS=["png"] 
+    -sDEMANGLE_SUPPORT=1
+    -sTOTAL_MEMORY=512MB
+    afk
+  )
+  set_target_properties(
+    ${PROJECT_NAME} 
+    PROPERTIES 
+    LINK_FLAGS 
+    "--preload-file ${CMAKE_BINARY_DIR}/build/audio@/audio --preload-file ${CMAKE_BINARY_DIR}/build/data@/data --preload-file ${CMAKE_BINARY_DIR}/build/fonts@/fonts --preload-file ${CMAKE_BINARY_DIR}/build/images@/images --preload-file ${CMAKE_BINARY_DIR}/build/screenshots@/screenshots --use-preload-plugins"
+  )
+
+# Run of the mill executable
+else(EMSCRIPTEN)
+  if(MINGW)
+    target_link_libraries(${PROJECT_NAME} -lmingw32)
+  endif(MINGW)
+
+  target_link_libraries(
+    ${PROJECT_NAME} 
+    -lm 
+    ${AFK_LIBRARY} 
+    ${SDL_MAIN_LIBRARY} 
+    ${SDL_LIBRARY} 
+    ${SDL_MIXER_LIBRARY} 
+    ${SDL_IMAGE_LIBRARY} 
+    ${SDL_TTF_LIBRARY} 
+    ${SDL_GFX_LIBRARY}
+  )
+endif(EMSCRIPTEN)

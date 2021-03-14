@@ -3,28 +3,28 @@
  * Gives the player health
  * A.D.S. Games
  */
-#ifndef ENERGY_H
-#define ENERGY_H
+#ifndef SRC_ENTITIES_ENERGY_H_
+#define SRC_ENTITIES_ENERGY_H_
 
-#include "GameObject.h"
+#include <afk/assets/Sound.h>
+#include <afk/entities/Sprite.h>
 
-class Energy : public GameObject {
+class Energy : public afk::Sprite {
  public:
   // Constructor
-  Energy(ALLEGRO_BITMAP* sprite,
-         ALLEGRO_SAMPLE* sound,
-         const int       x,
-         const int       y);
+  Energy(afk::Scene& scene, const float x, const float y, const int z);
 
   // Logic override
-  void logic(const int motion, Robot* robot);
+  void update(Uint32 delta) override;
 
-  // Move towards robot
-  void move_towards(const float x, const float y, const float speed);
+  // Move towards point
+  void moveTowards(const float x, const float y, const float speed);
+
+  void onCollide(GameObject& other) override;
 
  private:
-  // Sound effect
-  ALLEGRO_SAMPLE* sound;
+  // Load assets
+  void loadAssets();
 };
 
-#endif
+#endif  // SRC_ENTITIES_ENERGY_H_

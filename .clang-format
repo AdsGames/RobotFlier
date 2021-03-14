@@ -1,7 +1,3 @@
 ---
 BasedOnStyle: Chromium
-IndentCaseLabels: 'true'
-BinPackParameters: 'false'
-AlignConsecutiveAssignments: 'true'
-AlignConsecutiveDeclarations: 'true'
 ...
