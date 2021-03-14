@@ -23,7 +23,7 @@ jobs:
           git clone https://github.com/AdsGames/AfkLib
           cd AfkLib
           emcmake cmake .
-          sudo make install -j4
+          sudo make install
           cd ../
 
       - name: Run CMake
