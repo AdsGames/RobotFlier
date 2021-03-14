@@ -6,7 +6,11 @@
 #include "../Robot.h"
 
 // Constructor
-Magnet::Magnet(afk::Scene& scene, const float x, const float y, const int z, const int type)
+Magnet::Magnet(afk::Scene& scene,
+               const float x,
+               const float y,
+               const int z,
+               const int type)
     : Powerup(scene, x, y, z) {
   loadAssets(type);
   setTimer(type);

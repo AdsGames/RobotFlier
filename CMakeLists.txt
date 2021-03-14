@@ -26,6 +26,9 @@ if(NOT EMSCRIPTEN)
 endif()
 
 if(EMSCRIPTEN)
+  get_filename_component(EMSDK_DIR ${CMAKE_TOOLCHAIN_FILE} DIRECTORY)
+  include_directories(${EMSDK_DIR}/../../../system/include)
+
   set(CMAKE_EXECUTABLE_SUFFIX ".html")
   target_compile_options(
     ${PROJECT_NAME}
