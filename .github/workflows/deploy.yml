@@ -18,8 +18,16 @@ jobs:
         with:
           actions-cache-folder: "emsdk-cache"
 
+      - name: Install AFK
+        run: |
+          git clone https://github.com/AdsGames/AfkLib
+          cd AfkLib
+          emcmake cmake .
+          sudo make install -j4
+          cd ../
+
       - name: Run CMake
-        run: emcmake cmake -G "Unix Makefiles" .
+        run: emcmake cmake .
 
       - name: Make
         run: emmake make -j4
