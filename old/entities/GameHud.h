@@ -17,7 +17,7 @@ class GameHud : public afk::GameObject {
  public:
   GameHud(afk::Scene& scene, const ObjId robotId);
 
-  virtual ~GameHud() {}
+  virtual ~GameHud() = default;
 
   void draw() override;
 

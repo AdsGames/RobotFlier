@@ -10,7 +10,7 @@
 // Scenes
 #include "scenes/Init.h"
 #include "scenes/Intro.h"
-#include "scenes/MainGame.h"
+// #include "scenes/MainGame.h"
 #include "scenes/Menu.h"
 
 /**
@@ -27,7 +27,7 @@ class GameEntry : afk::Game {
     scene.addScene<Init>("init");
     scene.addScene<Intro>("intro");
     scene.addScene<Menu>("menu");
-    scene.addScene<MainGame>("game");
+    // scene.addScene<MainGame>("game");
     scene.setNextScene("init");
 
     // Start it up!

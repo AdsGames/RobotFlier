@@ -1,7 +1,7 @@
 #include "Intro.h"
 
 #include <afk/common/math.h>
-#include <afk/entities/Sprite.h>
+#include <afk/components/Sprite.h>
 #include <afk/primitives/Primitives.h>
 
 const int INTRO_TIME = 0;
@@ -10,7 +10,10 @@ const int INTRO_TIME = 0;
 void Intro::start() {
   start_time = std::chrono::high_resolution_clock::now();
   // Load intro image
-  this->add<afk::Sprite>(*this, "intro");
+  auto intro = createEntity();
+  createComponent<afk::Sprite>(intro, assets.getImage("intro"));
+  createComponent<afk::Transform>(intro, afk::Vec3(0, 0, 0),
+                                  afk::Vec2(800, 600));
 }
 
 // Update (goto menu!)

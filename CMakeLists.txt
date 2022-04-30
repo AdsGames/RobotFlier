@@ -1,81 +1,78 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.16)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
 project (RobotFlier)
 
 # Source code
-file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
-file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
+file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/src/*.h)
 
-add_executable (${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic -O2)
 
-# Find libs
+# Find libs 
 if(NOT EMSCRIPTEN)
-  find_library(AFK_LIBRARY NAMES afk REQUIRED)
-  find_library(SDL_LIBRARY NAMES SDL2 REQUIRED)
-  find_library(SDL_MIXER_LIBRARY NAMES SDL2_mixer REQUIRED)
-  find_library(SDL_IMAGE_LIBRARY NAMES SDL2_image REQUIRED)
-  find_library(SDL_TTF_LIBRARY NAMES SDL2_ttf REQUIRED)
-  find_library(SDL_GFX_LIBRARY NAMES SDL2_gfx REQUIRED)
-  find_library(SDL_MAIN_LIBRARY NAMES SDL2main REQUIRED)
+  find_package(afk REQUIRED) 
+  find_package(SDL2 REQUIRED)
+  find_package(SDL2_mixer REQUIRED)
+  find_package(SDL2_image REQUIRED)
+  find_package(SDL2_ttf REQUIRED)
+  find_package(SDL2_gfx REQUIRED)
+  find_package(EnTT REQUIRED)
 endif()
 
 if(EMSCRIPTEN)
-  get_filename_component(EMSDK_DIR ${CMAKE_TOOLCHAIN_FILE} DIRECTORY)
-  include_directories(${EMSDK_DIR}/../../../system/include)
-  link_directories(${EMSDK_DIR}/../../../system/lib)
+  # get_filename_component(EMSDK_DIR ${CMAKE_TOOLCHAIN_FILE} DIRECTORY)
+  
+  # include_directories(${EMSDK_DIR}/../../../system/include)
 
-  set(CMAKE_EXECUTABLE_SUFFIX ".html")
-  target_compile_options(
-    ${PROJECT_NAME}
-    PRIVATE  
-    -sUSE_SDL=2 
-    -sUSE_SDL_IMAGE=2 
-    -sUSE_SDL_TTF=2 
-    -sUSE_SDL_MIXER=2 
-    -sUSE_SDL_GFX=2 
-    -sSDL2_IMAGE_FORMATS=["png"]
+  # link_directories(${EMSDK_DIR}/../../../system/lib)
+
+  target_compile_options(${PROJECT_NAME} 
+    PUBLIC
+      -sUSE_SDL=2
+      -sUSE_SDL_IMAGE=2
+      -sUSE_SDL_TTF=2
+      -sUSE_SDL_MIXER=2
+      -sUSE_SDL_GFX=2
   )
-  target_link_libraries(
-    ${PROJECT_NAME} 
-    -sWASM=1 
-    -sUSE_SDL=2 
-    -sUSE_SDL_IMAGE=2 
-    -sUSE_SDL_TTF=2 
-    -sUSE_SDL_MIXER=2 
-    -sUSE_SDL_GFX=2 
-    -sSDL2_IMAGE_FORMATS=["png"] 
-    -sDEMANGLE_SUPPORT=1
-    -sTOTAL_MEMORY=512MB
-    afk
-  )
-  set_target_properties(
-    ${PROJECT_NAME} 
-    PROPERTIES 
-    LINK_FLAGS 
-    "--preload-file ${CMAKE_BINARY_DIR}/build/audio@/audio --preload-file ${CMAKE_BINARY_DIR}/build/data@/data --preload-file ${CMAKE_BINARY_DIR}/build/fonts@/fonts --preload-file ${CMAKE_BINARY_DIR}/build/images@/images --preload-file ${CMAKE_BINARY_DIR}/build/screenshots@/screenshots --use-preload-plugins"
-  )
+
+  set(SDL_LIBRARIES 
+    "--use-preload-plugins \
+    --preload-file ${CMAKE_BINARY_DIR}/build/audio@/audio \
+    --preload-file ${CMAKE_BINARY_DIR}/build/data@/data \
+    --preload-file ${CMAKE_BINARY_DIR}/build/fonts@/fonts \
+    --preload-file ${CMAKE_BINARY_DIR}/build/images@/images \
+    --preload-file ${CMAKE_BINARY_DIR}/build/screenshots@/screenshots \
+    -s DISABLE_EXCEPTION_CATCHING=0 \
+    -s DEMANGLE_SUPPORT=1 \
+    -s USE_SDL=2 \
+    -s USE_SDL_IMAGE=2 \
+    -s USE_SDL_TTF=2 \
+    -s USE_SDL_MIXER=2 \
+    -s USE_SDL_GFX=2 \
+    -s SDL2_IMAGE_FORMATS=[\"png\"]"
+  ) 
 
 # Run of the mill executable
 else(EMSCRIPTEN)
-  if(MINGW)
-    target_link_libraries(${PROJECT_NAME} -lmingw32)
-  endif(MINGW)
-
-  target_link_libraries(
-    ${PROJECT_NAME} 
-    -lm 
-    ${AFK_LIBRARY} 
-    ${SDL_MAIN_LIBRARY} 
-    ${SDL_LIBRARY} 
-    ${SDL_MIXER_LIBRARY} 
-    ${SDL_IMAGE_LIBRARY} 
-    ${SDL_TTF_LIBRARY} 
-    ${SDL_GFX_LIBRARY}
-  )
+  set(SDL_LIBRARIES SDL2::Image SDL2::Mixer SDL2::TTF SDL2::GFX SDL2::Main)
 endif(EMSCRIPTEN)
+
+# Link libraries
+if(MINGW)
+  target_link_libraries(${PROJECT_NAME} PRIVATE -lmingw32)
+endif(MINGW)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL_LIBRARIES} EnTT::EnTT afk)
+
+# Export assets
+file(COPY ${PROJECT_SOURCE_DIR}/assets/audio DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${PROJECT_SOURCE_DIR}/assets/data DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${PROJECT_SOURCE_DIR}/assets/fonts DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${PROJECT_SOURCE_DIR}/assets/images DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${PROJECT_SOURCE_DIR}/assets/screenshots DESTINATION ${CMAKE_BINARY_DIR})

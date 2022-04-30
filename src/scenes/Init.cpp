@@ -9,7 +9,7 @@ void Init::start() {
   display.setBufferSize(SCREEN_W, SCREEN_H);
   display.setTitle("Robot Flier");
 
-  display.setMode(afk::DisplayMode::WINDOWED);
+  display.setMode(afk::DisplayMode::Windowed);
 
   // Backgrounds
   assets.loadImage("background_0", "images/backgrounds/background_0.png");
@@ -149,7 +149,7 @@ void Init::start() {
 
   // Load settings
   config.load("data/settings.dat");
-  config.setAutosave(true);
+  config.setAutoSave(true);
 }
 
 // Update

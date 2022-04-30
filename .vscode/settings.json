@@ -112,5 +112,6 @@
     "__cxx_version": "cpp",
     "unordered_set": "cpp"
   },
-  "cmake.configureOnOpen": true
+  "cmake.configureOnOpen": true,
+  "sonarlint.pathToCompileCommands": "c:\\Users\\alege\\Documents\\GitHub\\RobotFlier\\build\\compile_commands.json"
 }

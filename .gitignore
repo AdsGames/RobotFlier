@@ -44,12 +44,4 @@ Icon
 build/RobotFlier
 CppCheckResults.xml
 scores.dat
-build/screenshots
-CMakeFiles
-CMakeCache.txt
-cmake_install.cmake
-Makefile
-*.html
-*.data
-*.js
-*.wasm*
+build/

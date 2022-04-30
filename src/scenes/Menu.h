@@ -35,11 +35,11 @@ class Menu : public afk::Scene {
   MenuState current_menu;
 
   // Objects
-  ObjId settings_screen;
-  ObjId scores_screen;
-  ObjId help_sprite;
-  ObjId credits_sprite;
-  ObjId controls_sprite;
+  afk::Entity settings_screen;
+  afk::Entity scores_screen;
+  afk::Entity help_sprite;
+  afk::Entity credits_sprite;
+  afk::Entity controls_sprite;
 };
 
 #endif  // SRC_SCENES_MENU_H_

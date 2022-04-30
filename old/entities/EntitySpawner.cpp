@@ -48,21 +48,25 @@ void EntitySpawner::update(Uint32 delta) {
     obj.addCollider(robot_id);
   }
 
+  // Magnet power 1
   if (score >= 50 && afk::Random::randomInt(0, 500) == 0) {
     auto& obj = scene.add<Magnet>(scene, SCREEN_W, y, z + 1, 0);
     obj.addCollider(robot_id);
   }
 
+  // Magnet power 2
   if (score >= 150 && afk::Random::randomInt(0, 1000) == 0) {
     auto& obj = scene.add<Magnet>(scene, SCREEN_W, y, z + 1, 1);
     obj.addCollider(robot_id);
   }
 
+  // Magnet power 3
   if (score >= 200 && afk::Random::randomInt(0, 2000) == 0) {
     auto& obj = scene.add<Magnet>(scene, SCREEN_W, y, z + 1, 2);
     obj.addCollider(robot_id);
   }
 
+  // Magnet power 4
   if (score >= 400 && afk::Random::randomInt(0, 3000) == 0) {
     auto& obj = scene.add<Magnet>(scene, SCREEN_W, y, z + 1, 3);
     obj.addCollider(robot_id);

@@ -1,0 +1,29 @@
+Audio Attribution Credits
+-------------------------
+music_death.ogg, music_ingame.ogg, music_mainmenu.ogg, sound_flame.wav
+	Author: Allan Legemaate
+	Website: https://soundcloud.com/allan-legemaate
+sound_asteroid.wav, sound_hitground.wav
+	Author: JoelAudio
+	Website: http://freesound.org
+	License: CC Attribution (https://creativecommons.org/licenses/by/3.0/)
+sound_bomb.wav
+	Author: jobro
+	Website: http://freesound.org
+	License: CC Attribution (https://creativecommons.org/licenses/by/3.0/)
+sound_magnet.wav
+	Author: jorickhoofd
+	Website: http://freesound.org
+	License: CC Attribution (https://creativecommons.org/licenses/by/3.0/)
+sound_orb.wav
+	Author: ejfortin
+	Website: http://freesound.org
+	License: CC Sampling+ (https://creativecommons.org/licenses/sampling+/1.0/)
+sound_snap.wav
+	Author: thecheeseman
+	Website: http://freesound.org
+	License: CC Attribution (https://creativecommons.org/licenses/by/3.0/)
+sound_star.wav
+	Author: PhreaKsAccount
+	Website: http://freesound.org
+	License: CC Attribution (https://creativecommons.org/licenses/by/3.0/)
