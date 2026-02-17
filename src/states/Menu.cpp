@@ -167,7 +167,7 @@ void MenuScene::read_settings() {
     return;
   }
 
-  for (int i = 0; i < 7; i++) {
+  for (int i = 0; i < 6; i++) {
     read >> settings[i];
   }
 
@@ -277,33 +277,38 @@ void MenuScene::update(float deltaTime) {
            asw::input::getMouseButtonDown(asw::input::MouseButton::Left)) {
     // Particles toggle
     if (ui_particle[0].transform.contains(asw::input::mouse.position)) {
-      settings[SETTING_PARTICLE_TYPE] =
-          (settings[SETTING_PARTICLE_TYPE] + 1) % 4;
+      settings[SETTING_PARTICLE_TYPE]++;
+      settings[SETTING_PARTICLE_TYPE] %= 4;
       write_settings();
     }
     // Sound button toggle
     else if (ui_sound[0].transform.contains(asw::input::mouse.position)) {
-      settings[SETTING_SOUND] = (settings[SETTING_SOUND] + 1) % 2;
+      settings[SETTING_SOUND]++;
+      settings[SETTING_SOUND] %= 2;
       write_settings();
     }
     // Music button toggle
     else if (ui_music[0].transform.contains(asw::input::mouse.position)) {
-      settings[SETTING_MUSIC] = (settings[SETTING_MUSIC] + 1) % 2;
+      settings[SETTING_MUSIC]++;
+      settings[SETTING_MUSIC] %= 2;
       write_settings();
     }
     // Fullscreen toggle
     else if (ui_window[0].transform.contains(asw::input::mouse.position)) {
-      settings[SETTING_FULLSCREEN] = (settings[SETTING_FULLSCREEN] + 1) % 2;
+      settings[SETTING_FULLSCREEN]++;
+      settings[SETTING_FULLSCREEN] %= 2;
       write_settings();
     }
     // Screen shake
     else if (ui_screenshake[0].transform.contains(asw::input::mouse.position)) {
-      settings[SETTING_SCREENSHAKE] = (settings[SETTING_SCREENSHAKE] + 1) % 4;
+      settings[SETTING_SCREENSHAKE]++;
+      settings[SETTING_SCREENSHAKE] %= 4;
       write_settings();
     }
     // Control Toggle
     else if (ui_control[0].transform.contains(asw::input::mouse.position)) {
-      settings[SETTING_CONTROLMODE] = ((settings[SETTING_CONTROLMODE] + 1) % 3);
+      settings[SETTING_CONTROLMODE]++;
+      settings[SETTING_CONTROLMODE] %= 3;
       write_settings();
     }
     // Power off

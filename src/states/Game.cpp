@@ -472,17 +472,17 @@ void GameScene::draw() {
     asw::draw::sprite(debug, asw::Vec2<float>(0, 0));
 
     // Column 1
-    asw::draw::text(orbitron_12, std::format("Motion:%4.2f", motion),
+    asw::draw::text(orbitron_12, std::format("Motion:{:.2}", motion),
                     asw::Vec2<float>(5, 25), asw::Color(255, 255, 255));
     asw::draw::text(
         orbitron_12,
-        std::format("Robot X:%4.2f", hectar.getTransform().position.x),
+        std::format("Robot X:{:.2}", hectar.getTransform().position.x),
         asw::Vec2<float>(5, 35), asw::Color(255, 255, 255));
     asw::draw::text(
         orbitron_12,
-        std::format("Robot Y:%4.2f", hectar.getTransform().position.y),
+        std::format("Robot Y:{:.2}", hectar.getTransform().position.y),
         asw::Vec2<float>(5, 45), asw::Color(255, 255, 255));
-    asw::draw::text(orbitron_12, std::format("Motion:%4.2f", motion),
+    asw::draw::text(orbitron_12, std::format("Motion:{:.2}", motion),
                     asw::Vec2<float>(5, 55), asw::Color(255, 255, 255));
     asw::draw::text(orbitron_12,
                     std::format("Invincible:{}", hectar.getInvincibleTimer()),

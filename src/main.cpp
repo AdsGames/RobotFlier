@@ -25,6 +25,8 @@ int main(int argc, char* argv[]) {
       settings[SETTING_SUPERSHAKE] = true;
     else if (strcmp(argv[i], "merrychristmas") == 0)
       settings[SETTING_CHRISTMAS] = true;
+    else if (strcmp(argv[i], "debug") == 0)
+      settings[SETTING_DEBUG] = true;
 
     std::cout << argv[i];
   }
