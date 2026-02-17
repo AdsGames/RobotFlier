@@ -1,1 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/cc   -D_GNU_SOURCE=1 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_5428d.dir/CheckSymbolExists.c.o -o cmTC_5428d  -lm

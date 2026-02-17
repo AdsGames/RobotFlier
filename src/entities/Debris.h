@@ -3,32 +3,34 @@
  * A collision object that can be crashed into
  * A.D.S. Games
  */
-#ifndef DEBRIE_H
-#define DEBRIE_H
+#pragma once
 
-#include "./GameObject.h"
+#include <asw/asw.h>
 
-class Debris : public GameObject {
- public:
-  // Constructor
-  Debris(asw::Texture            sprite,
-         asw::Sample             sound,
-         const asw::Vec2<float>& position,
-         const int               damage,
-         const float             motionMultiplier = 1.0f,
-         const float             acceleration     = 0.0f,
-         const int               size             = -1);
+#include "./robot.h"
 
-  // Logic override
-  void logic(const float motion, Robot* robot);
+class Debris : public asw::game::GameObject {
+public:
+    // Constructor
+    Debris(asw::Texture sprite, asw::Sample sound, const asw::Vec2<float>& position,
+        const float damage, const float motionMultiplier = 1.0f, const float acceleration = 0.0f,
+        const float size = -1);
 
- private:
-  // Motion multiplier
-  float motionMultiplier;
-  float acceleration;
+    // Logic override
+    void logic(const float motion, Robot* robot, const float deltaTime);
 
-  // Sound
-  asw::Sample sound;
+    // Draw override
+    void draw() override;
+
+private:
+    // Motion multiplier
+    float motionMultiplier;
+    float acceleration;
+    float damage;
+
+    // Texture
+    asw::Texture texture;
+
+    // Sound
+    asw::Sample sound;
 };
-
-#endif

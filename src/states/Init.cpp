@@ -1,17 +1,18 @@
-#include "Init.h"
+#include "init.h"
 
 // Construct state
-void InitScene::init() {
-  // Title
-  asw::display::setTitle("A.D.S. Games - Robot Flier");
+void InitScene::init()
+{
+    // Title
+    asw::display::setTitle("A.D.S. Games - Robot Flier");
 
-  // Icon
-  asw::display::setIcon("assets/images/objects/bomb.png");
+    // Icon
+    asw::display::setIcon("assets/icon.ico");
 
-  // Loads fonts
-  orbitron_12 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 12);
-  orbitron_18 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 18);
-  orbitron_24 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 24);
-  orbitron_30 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 30);
-  orbitron_36 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 36);
+    // Loads fonts
+    orbitron_12 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 12);
+    orbitron_18 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 18);
+    orbitron_24 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 24);
+    orbitron_30 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 30);
+    orbitron_36 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 36);
 }

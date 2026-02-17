@@ -9,16 +9,17 @@
 #include <asw/asw.h>
 
 #include "../constants/globals.h"
-#include "State.h"
+#include "state.h"
 
 class InitScene : public asw::scene::Scene<Scenes> {
- public:
-  using asw::scene::Scene<Scenes>::Scene;
+public:
+    using asw::scene::Scene<Scenes>::Scene;
 
-  // Override parent
-  void init() override;
+    // Override parent
+    void init() override;
 
-  void update(float deltaTime) override {
-    sceneManager.setNextScene(Scenes::Intro);
-  }
+    void update(float deltaTime) override
+    {
+        sceneManager.setNextScene(Scenes::Intro);
+    }
 };

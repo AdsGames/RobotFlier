@@ -7,21 +7,21 @@
 #pragma once
 
 #include "../constants/globals.h"
-#include "State.h"
+#include "state.h"
 
 class IntroScene : public asw::scene::Scene<Scenes> {
- public:
-  // Construct/deconstruct
-  using asw::scene::Scene<Scenes>::Scene;
+public:
+    // Construct/deconstruct
+    using asw::scene::Scene<Scenes>::Scene;
 
-  // Override parent
-  void init() override;
-  void update(float deltaTime) override;
-  void draw() override;
+    // Override parent
+    void init() override;
+    void update(float deltaTime) override;
+    void draw() override;
 
- private:
-  // Splash image
-  asw::game::Sprite img_intro;
+private:
+    // Splash image
+    asw::game::Sprite img_intro;
 
-  float timer;
+    float timer;
 };

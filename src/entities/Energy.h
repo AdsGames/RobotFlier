@@ -3,27 +3,30 @@
  * Gives the player health
  * A.D.S. Games
  */
-#ifndef ENERGY_H
-#define ENERGY_H
+#pragma once
 
-#include "GameObject.h"
+#include <asw/asw.h>
 
-class Energy : public GameObject {
- public:
-  // Constructor
-  Energy(asw::Texture            sprite,
-         asw::Sample             sound,
-         const asw::Vec2<float>& position);
+#include "./robot.h"
 
-  // Logic override
-  void logic(const float motion, Robot* robot);
+class Energy : public asw::game::GameObject {
+public:
+    // Constructor
+    Energy(asw::Texture sprite, asw::Sample sound, const asw::Vec2<float>& position);
 
-  // Move towards robot
-  void move_towards(const asw::Vec2<float>& target, const float speed);
+    // Logic override
+    void logic(const float motion, Robot* robot);
 
- private:
-  // Sound effect
-  asw::Sample sound;
+    // Draw override
+    void draw() override;
+
+    // Move towards robot
+    void moveTowards(const asw::Vec2<float>& target, const float speed);
+
+private:
+    // Sound effect
+    asw::Sample sound;
+
+    // Texture
+    asw::Texture texture;
 };
-
-#endif

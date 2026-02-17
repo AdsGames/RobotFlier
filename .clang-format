@@ -1,7 +1,5 @@
----
-BasedOnStyle: Chromium
-IndentCaseLabels: 'true'
-BinPackParameters: 'false'
-AlignConsecutiveAssignments: 'true'
-AlignConsecutiveDeclarations: 'true'
-...
+BasedOnStyle: WebKit
+IndentWidth: 4
+ColumnLimit: 100
+SortIncludes: true
+AllowShortFunctionsOnASingleLine: Empty

@@ -1,52 +1,68 @@
-#include "Debris.h"
+#include "debris.h"
+
+#include "../constants/globals.h"
 
 // Constructor
-Debris::Debris(asw::Texture            sprite,
-               asw::Sample             sound,
-               const asw::Vec2<float>& position,
-               const int               damage,
-               const float             motionMultiplier,
-               const float             acceleration,
-               const int               size)
-    : GameObject(sprite, position) {
-  if (size != -1) {
-    transform.size.y = size * 8;
-    transform.size.x = size * 10;
-  }
+Debris::Debris(asw::Texture sprite, asw::Sample sound, const asw::Vec2<float>& position,
+    const float damage, const float motionMultiplier, const float acceleration, const float size)
+    : asw::game::GameObject()
+    , motionMultiplier(motionMultiplier)
+    , acceleration(acceleration)
+    , damage(damage)
+    , sound(sound)
+{
+    transform.position = position;
 
-  this->sound            = sound;
-  this->motionMultiplier = motionMultiplier;
-  this->damage           = damage;
-  this->acceleration     = acceleration;
+    if (size != -1) {
+        transform.size.y = size * 8;
+        transform.size.x = size * 10;
+    } else {
+        transform.size.x = static_cast<float>(sprite->w);
+        transform.size.y = static_cast<float>(sprite->h);
+    }
 }
 
 // Logic
-void Debris::logic(const float motion, Robot* robot) {
-  // Move across screen
-  transform.position.x -= motion * motionMultiplier;
-  motionMultiplier += acceleration;
+void Debris::logic(const float motion, Robot* robot, const float deltaTime)
+{
+    GameObject::update(deltaTime);
 
-  // Allow for some padding (since we use bounding box)
-  const auto collisionBuffer = transform.size.y / 3.0F;
+    // Move across screen
+    transform.position.x -= motion * motionMultiplier;
+    motionMultiplier += acceleration;
 
-  // Collide with robot
-  const auto offset =
-      asw::Quad<float>(collisionBuffer, collisionBuffer,
-                       -collisionBuffer * 2.0F, -collisionBuffer * 2.0F);
+    // Allow for some padding (since we use bounding box)
+    const auto collisionBuffer = transform.size.y / 3.0F;
 
-  if (!isDead && !robot->isInvincible() &&
-      transform.collides(robot->getTransform() + offset) && !isDead) {
-    // Hurt robot
-    robot->addHealth(-damage);
+    // Collide with robot
+    const auto offset = asw::Quad<float>(
+        collisionBuffer, collisionBuffer, -collisionBuffer * 2.0F, -collisionBuffer * 2.0F);
 
-    // Shake it up
-    screenshake += damage * 4;
+    if (this->alive && !robot->isInvincible()
+        && transform.collides(robot->getTransform() + offset)) {
+        // Hurt robot
+        robot->addHealth(-damage);
 
-    // Play sound
-    asw::sound::play(sound);
+        // Shake it up
+        screenshake += damage * 4;
 
-    // Get hit
-    isDead = true;
-    stats[STAT_DEBRIS] += 1;
-  }
+        // Play sound
+        asw::sound::play(sound);
+
+        // Get hit
+        this->alive = false;
+        stats[STAT_DEBRIS] += 1;
+    }
+
+    // Offscreen
+    if (this->alive && transform.position.x + transform.size.x < 0) {
+        this->alive = false;
+    }
+}
+
+void Debris::draw()
+{
+    if (this->alive) {
+        asw::draw::stretchSprite(texture, transform);
+    }
 }

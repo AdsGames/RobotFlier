@@ -1,32 +1,45 @@
-#include "Powerup.h"
+#include "powerup.h"
 
 // Constructor
-Powerup::Powerup(asw::Texture            sprite,
-                 asw::Sample             sound,
-                 const asw::Vec2<float>& position,
-                 int                     timerLength,
-                 const int               type)
-    : GameObject(sprite, position) {
-  this->timerLength = timerLength;
-  this->type        = type;
-  this->sound       = sound;
+Powerup::Powerup(asw::Texture sprite, asw::Sample sound, const asw::Vec2<float>& position,
+    float timerLength, const int type)
+    : type(type)
+    , timerLength(timerLength)
+    , sound(sound)
+    , texture(sprite)
+{
+    transform.position = position;
+    transform.size.x = static_cast<float>(sprite->w);
+    transform.size.y = static_cast<float>(sprite->h);
 }
 
 // Logic loop!
-void Powerup::logic(const float motion, Robot* robot) {
-  transform.position.x -= motion;
+void Powerup::logic(const float motion, Robot* robot)
+{
+    transform.position.x -= motion;
 
-  if (!isDead && transform.collides(robot->getTransform())) {
-    stats[STAT_POWERUPS] += 1;
+    if (this->alive && transform.collides(robot->getTransform())) {
+        stats[STAT_POWERUPS] += 1;
 
-    if (type == 1) {
-      robot->setInvincibleTimer(timerLength);
-    } else {
-      robot->setMagneticTimer(timerLength);
+        if (type == 1) {
+            robot->setInvincibleTimer(timerLength);
+        } else {
+            robot->setMagneticTimer(timerLength);
+        }
+
+        asw::sound::play(sound);
+
+        this->alive = false;
     }
 
-    asw::sound::play(sound);
+    if (this->alive && transform.position.x + transform.size.x < 0) {
+        this->alive = false;
+    }
+}
 
-    isDead = true;
-  }
+void Powerup::draw()
+{
+    if (this->alive) {
+        asw::draw::sprite(texture, transform.position);
+    }
 }

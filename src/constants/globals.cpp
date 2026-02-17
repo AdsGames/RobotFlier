@@ -2,12 +2,12 @@
 
 // Global variables
 int score;
-int screenshake;
+float screenshake;
 
 int fps = 0;
 
 // Data
-int stats[4];
+std::array<int, 4> stats;
 
 // Fonts
 asw::Font orbitron_12 = nullptr;

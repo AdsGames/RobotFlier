@@ -7,9 +7,9 @@
 #pragma once
 
 // Game states
-enum Scenes {
-  Init,
-  Intro,
-  Menu,
-  Game,
+enum class Scenes {
+    Init,
+    Intro,
+    Menu,
+    Game,
 };

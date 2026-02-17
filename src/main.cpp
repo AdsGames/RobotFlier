@@ -5,43 +5,31 @@
  * Robots in space!
  */
 #include <asw/asw.h>
-#include <time.h>
 
-#include <string>
-
-#include "constants/globals.h"
-#include "states/Game.h"
-#include "states/Init.h"
-#include "states/Intro.h"
-#include "states/Menu.h"
+#include "./constants/globals.h"
+#include "./constants/settings.h"
+#include "./states/game.h"
+#include "./states/init.h"
+#include "./states/intro.h"
+#include "./states/menu.h"
 
 // main function of program
-int main(int argc, char* argv[]) {
-  // Copy over the command line args
-  for (int i = 1; i < argc; i++) {
-    if (strcmp(argv[i], "mega") == 0)
-      settings.mega = true;
-    else if (strcmp(argv[i], "supershake") == 0)
-      settings.supershake = true;
-    else if (strcmp(argv[i], "merrychristmas") == 0)
-      settings.christmas = true;
-    else if (strcmp(argv[i], "debug") == 0)
-      settings.debug = true;
+int main(int argc, char* argv[])
+{
+    // Copy over the command line args
+    settings.parseArgs(argc, argv);
 
-    std::cout << argv[i];
-  }
+    asw::core::init(SCREEN_W, SCREEN_H, 1);
+    asw::core::print_info();
 
-  asw::core::init(SCREEN_W, SCREEN_H, 1);
-  asw::core::print_info();
+    // Starts Game
+    auto app = asw::scene::SceneManager<Scenes>();
+    app.registerScene<InitScene>(Scenes::Init, app);
+    app.registerScene<IntroScene>(Scenes::Intro, app);
+    app.registerScene<MenuScene>(Scenes::Menu, app);
+    app.registerScene<GameScene>(Scenes::Game, app);
+    app.setNextScene(Scenes::Init);
+    app.start();
 
-  // Starts Game
-  auto app = asw::scene::SceneManager<Scenes>();
-  app.registerScene<InitScene>(Scenes::Init, app);
-  app.registerScene<IntroScene>(Scenes::Intro, app);
-  app.registerScene<MenuScene>(Scenes::Menu, app);
-  app.registerScene<GameScene>(Scenes::Game, app);
-  app.setNextScene(Scenes::Init);
-  app.start();
-
-  return 0;
+    return 0;
 }

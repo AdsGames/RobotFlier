@@ -3,31 +3,27 @@
  * Various powerups do various things
  * A.D.S. Games
  */
-#ifndef POWERUP_H
-#define POWERUP_H
-
-#include "GameObject.h"
+#pragma once
 
 #include <asw/asw.h>
 
-class Powerup : public GameObject {
- public:
-  // Constructor
-  Powerup(asw::Texture            sprite,
-          asw::Sample             sound,
-          const asw::Vec2<float>& position,
-          const int               timerLength,
-          const int               type);
+#include "./robot.h"
 
-  // Logic override
-  void logic(const float motion, Robot* robot);
+class Powerup : public asw::game::GameObject {
+public:
+    // Constructor
+    Powerup(asw::Texture sprite, asw::Sample sound, const asw::Vec2<float>& position,
+        const float timerLength, const int type);
 
-  // Vars
+    // Logic override
+    void logic(const float motion, Robot* robot);
 
- private:
-  int         type;
-  int         timerLength;
-  asw::Sample sound;
+    // Draw override
+    void draw() override;
+
+private:
+    int type;
+    float timerLength;
+    asw::Sample sound;
+    asw::Texture texture;
 };
-
-#endif
