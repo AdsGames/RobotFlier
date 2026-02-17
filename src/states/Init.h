@@ -9,7 +9,6 @@
 #include <asw/asw.h>
 
 #include "../constants/globals.h"
-#include "../helpers/tools.h"
 #include "State.h"
 
 class InitScene : public asw::scene::Scene<Scenes> {
@@ -20,7 +19,6 @@ class InitScene : public asw::scene::Scene<Scenes> {
   void init() override;
 
   void update(float deltaTime) override {
-    // Go to menu
-    sceneManager.setNextScene(Scenes::Menu);
+    sceneManager.setNextScene(Scenes::Intro);
   }
 };

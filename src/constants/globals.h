@@ -31,8 +31,11 @@
 extern int score;
 extern int screenshake;
 extern int fps;
-extern int SCREEN_W;
-extern int SCREEN_H;
+
+constexpr int   SCREEN_W = 800;
+constexpr int   SCREEN_H = 600;
+constexpr float S_W_F    = float(SCREEN_W);
+constexpr float S_H_F    = float(SCREEN_H);
 
 // Data
 extern int stats[4];

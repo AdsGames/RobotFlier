@@ -15,7 +15,7 @@ void GameScene::init() {
   themeNumber     = 0;
   screenshake_x   = 0;
   screenshake_y   = 0;
-  arrow_animation = 0.0f;
+  arrow_animation = 0.0F;
   paused          = false;
 
   // End game menu
@@ -84,15 +84,14 @@ void GameScene::init() {
   changeTheme(0);
 
   // Init hectar
-  hectar = Robot(80, 300);
+  hectar = Robot({80, 300});
   hectar.loadResources();
 
   // Load scores
   highscores = ScoreTable("scores.dat");
 
   // Play music
-  if (settings[SETTING_MUSIC] == 1)
-    asw::sound::playMusic(music_ingame);
+  asw::sound::playMusic(music_ingame);
 }
 
 // Themes
@@ -140,10 +139,7 @@ void GameScene::update(float deltaTime) {
     // If its different he died play music
     if (hectarHasDied != hectar.isAlive()) {
       asw::sound::stopMusic();
-
-      if (settings[SETTING_MUSIC] == 1) {
-        asw::sound::playMusic(music_death);
-      }
+      asw::sound::playMusic(music_death);
     }
 
     // Add to distance travelled
@@ -188,9 +184,9 @@ void GameScene::update(float deltaTime) {
 
       // Magnet
       if (hectar.isMagnetic()) {
-        energy.move_towards(hectar.getX() + hectar.getWidth() / 2,
-                            hectar.getY() + hectar.getHeight() / 2,
-                            (float)hectar.getMagneticTimer());
+        const auto& target =
+            hectar.getTransform().position + hectar.getTransform().size / 2.0F;
+        energy.move_towards(target, (float)hectar.getMagneticTimer());
       }
     }
 
@@ -221,64 +217,73 @@ void GameScene::update(float deltaTime) {
       // Energy ball spawning
       if (asw::random::between(0, 50) == 0 ||
           (settings[SETTING_MEGA] && asw::random::between(0, 20))) {
-        Energy newEnergyBall(energyImage, sound_orb, SCREEN_W,
-                             asw::random::between(30, 550));
+        const auto position =
+            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 550));
+        Energy newEnergyBall(energyImage, sound_orb, position);
         energys.push_back(newEnergyBall);
       }
 
       // Asteroids spawning
       if ((score >= 100 && asw::random::between(0, 50) == 0) ||
           (settings[SETTING_MEGA] && asw::random::between(0, 20))) {
-        Debris newAsteroid(asteroidImage, sound_asteroid, SCREEN_W,
-                           asw::random::between(30, 400), 5, 1.0f, 0.0f,
-                           asw::random::between(4, 20));
+        const auto position =
+            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 400));
+        Debris newAsteroid(asteroidImage, sound_asteroid, position, 5, 1.0f,
+                           0.0f, asw::random::between(4, 20));
         debries.push_back(newAsteroid);
       }
 
       // Bomb spawning
       if ((score >= 200 && asw::random::between(0, 80) == 0) ||
           (settings[SETTING_MEGA] && asw::random::between(0, 20))) {
-        Debris newBomb(bombImage, sound_bomb, SCREEN_W,
-                       asw::random::between(30, 550), 10, 1.0f, 0.01f);
+        const auto position =
+            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 550));
+        Debris newBomb(bombImage, sound_bomb, position, 10, 1.0f, 0.01f);
         debries.push_back(newBomb);
       }
 
       // Comets spawning
       if ((score >= 300 && asw::random::between(0, 200) == 0) ||
           (settings[SETTING_MEGA] && asw::random::between(0, 20))) {
-        Debris newComet(cometImage, sound_asteroid, SCREEN_W,
-                        asw::random::between(30, 550), 5, 1.4f, 0.01f);
+        const auto position =
+            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 550));
+        Debris newComet(cometImage, sound_asteroid, position, 5, 1.4f, 0.01f);
         debries.push_back(newComet);
       }
 
       // Powerup spawning
       if (score >= 100 && asw::random::between(0, 3000) == 0) {
-        Powerup newPowerup(powerStar, sound_star, SCREEN_W,
-                           asw::random::between(30, 600), 500, 1);
+        const auto position =
+            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
+        Powerup newPowerup(powerStar, sound_star, position, 500, 1);
         powerups.push_back(newPowerup);
       }
 
       if (score >= 100 && asw::random::between(0, 500) == 0) {
-        Powerup newPowerup(powerMagnet[0], sound_magnet, SCREEN_W,
-                           asw::random::between(30, 600), 500, 10);
+        const auto position =
+            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
+        Powerup newPowerup(powerMagnet[0], sound_magnet, position, 500, 10);
         powerups.push_back(newPowerup);
       }
 
       if (score >= 200 && asw::random::between(0, 1000) == 0) {
-        Powerup newPowerup(powerMagnet[1], sound_magnet, SCREEN_W,
-                           asw::random::between(30, 600), 750, 11);
+        const auto position =
+            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
+        Powerup newPowerup(powerMagnet[1], sound_magnet, position, 750, 11);
         powerups.push_back(newPowerup);
       }
 
       if (score >= 300 && asw::random::between(0, 2000) == 0) {
-        Powerup newPowerup(powerMagnet[2], sound_magnet, SCREEN_W,
-                           asw::random::between(30, 600), 1000, 12);
+        const auto position =
+            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
+        Powerup newPowerup(powerMagnet[2], sound_magnet, position, 1000, 12);
         powerups.push_back(newPowerup);
       }
 
       if (score >= 500 && asw::random::between(0, 3000) == 0) {
-        Powerup newPowerup(powerMagnet[3], sound_magnet, SCREEN_W,
-                           asw::random::between(30, 600), 1500, 13);
+        const auto position =
+            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
+        Powerup newPowerup(powerMagnet[3], sound_magnet, position, 1500, 13);
         powerups.push_back(newPowerup);
       }
     }
@@ -396,28 +401,25 @@ void GameScene::update(float deltaTime) {
 
   // Pause Menu Scripts
   if (paused) {
-    // Quit game
-    if (asw::input::getMouseButtonDown(asw::input::MouseButton::Left) &&
-        collision(220, 280, asw::input::mouse.position.x,
-                  asw::input::mouse.position.x, 435, 460,
-                  asw::input::mouse.position.y, asw::input::mouse.position.y)) {
-      asw::core::exit = true;
-    }
+    const auto& quitQuad   = asw::Quad<float>(220, 435, 60, 25);
+    const auto& menuQuad   = asw::Quad<float>(300, 435, 130, 25);
+    const auto& resumeQuad = asw::Quad<float>(470, 435, 70, 25);
 
-    // Menu
-    if (asw::input::getMouseButtonDown(asw::input::MouseButton::Left) &&
-        collision(300, 430, asw::input::mouse.position.x,
-                  asw::input::mouse.position.x, 435, 460,
-                  asw::input::mouse.position.y, asw::input::mouse.position.y)) {
-      sceneManager.setNextScene(Scenes::Menu);
-    }
+    if (asw::input::getMouseButtonDown(asw::input::MouseButton::Left)) {
+      // Quit game
+      if (quitQuad.contains(asw::input::mouse.position)) {
+        asw::core::exit = true;
+      }
 
-    // Resume
-    if (asw::input::getMouseButtonDown(asw::input::MouseButton::Left) &&
-        collision(470, 540, asw::input::mouse.position.x,
-                  asw::input::mouse.position.x, 435, 460,
-                  asw::input::mouse.position.y, asw::input::mouse.position.y)) {
-      paused = false;
+      // Menu
+      if (menuQuad.contains(asw::input::mouse.position)) {
+        sceneManager.setNextScene(Scenes::Menu);
+      }
+
+      // Resume
+      if (resumeQuad.contains(asw::input::mouse.position)) {
+        paused = false;
+      }
     }
   }
 }
@@ -472,10 +474,14 @@ void GameScene::draw() {
     // Column 1
     asw::draw::text(orbitron_12, std::format("Motion:%4.2f", motion),
                     asw::Vec2<float>(5, 25), asw::Color(255, 255, 255));
-    asw::draw::text(orbitron_12, std::format("Robot X:%4.2f", hectar.getX()),
-                    asw::Vec2<float>(5, 35), asw::Color(255, 255, 255));
-    asw::draw::text(orbitron_12, std::format("Robot Y:%4.2f", hectar.getY()),
-                    asw::Vec2<float>(5, 45), asw::Color(255, 255, 255));
+    asw::draw::text(
+        orbitron_12,
+        std::format("Robot X:%4.2f", hectar.getTransform().position.x),
+        asw::Vec2<float>(5, 35), asw::Color(255, 255, 255));
+    asw::draw::text(
+        orbitron_12,
+        std::format("Robot Y:%4.2f", hectar.getTransform().position.y),
+        asw::Vec2<float>(5, 45), asw::Color(255, 255, 255));
     asw::draw::text(orbitron_12, std::format("Motion:%4.2f", motion),
                     asw::Vec2<float>(5, 55), asw::Color(255, 255, 255));
     asw::draw::text(orbitron_12,
@@ -556,13 +562,13 @@ void GameScene::draw() {
   // Start arrow
   if (!hectar.isKeyPressed()) {
     if (joystick_enabled) {
-      asw::draw::sprite(ui_a, asw::Vec2<float>(hectar.getX() + 15,
-                                               hectar.getY() - 60 -
-                                                   sin(arrow_animation) * 10));
+      asw::draw::sprite(
+          ui_a, hectar.getTransform().position +
+                    asw::Vec2<float>(15, -60 - sinf(arrow_animation) * 10));
     } else {
-      asw::draw::sprite(ui_up, asw::Vec2<float>(hectar.getX() + 15,
-                                                hectar.getY() - 70 -
-                                                    sin(arrow_animation) * 10));
+      asw::draw::sprite(
+          ui_up, hectar.getTransform().position +
+                     asw::Vec2<float>(15, -70 - sinf(arrow_animation) * 10));
     }
   }
 

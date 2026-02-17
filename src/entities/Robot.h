@@ -10,13 +10,12 @@
 #include <vector>
 
 #include "../constants/globals.h"
-#include "../helpers/tools.h"
 #include "./Particle.h"
 
 class Robot {
  public:
   Robot();
-  Robot(float x, float y);
+  Robot(const asw::Vec2<float>& position);
 
   void loadResources();
   void logic(float deltaTime);
@@ -27,11 +26,7 @@ class Robot {
   int  getHealth() const;
   void addHealth(int amount);
 
-  float getX() const;
-  float getY() const;
-
-  float getWidth() const;
-  float getHeight() const;
+  const asw::Quad<float>& getTransform() const { return transform; }
 
   bool isOnGround() const;
   bool isAlive() const;
@@ -48,6 +43,9 @@ class Robot {
   void setMagneticTimer(int time);
 
  private:
+  // Transform
+  asw::Quad<float> transform;
+
   // Robot specific
   float gravity;
   float speed;
@@ -56,11 +54,7 @@ class Robot {
   int   magneticTimer;
   bool  rocket;
   bool  onGround;
-  float x;
-  float y;
   int   health;
-  int   width;
-  int   height;
 
   // Wait for keypress
   bool keyPressed;

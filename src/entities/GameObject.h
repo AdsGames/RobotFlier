@@ -11,14 +11,13 @@
 #include <asw/asw.h>
 
 #include "../constants/globals.h"
-#include "../helpers/tools.h"
 #include "./Particle.h"
 #include "./Robot.h"
 
 class GameObject {
  public:
   // Constructor
-  GameObject(asw::Texture sprite, const int x, const int y);
+  GameObject(asw::Texture sprite, const asw::Vec2<float>& position);
 
   // Updates asteroid logic
   void logic(int newMotion, float deltaTime);
@@ -37,12 +36,7 @@ class GameObject {
   asw::Texture sprite;
 
   // Position
-  float x;
-  float y;
-
-  // Size
-  int height;
-  int width;
+  asw::Quad<float> transform;
 
   // Dead or naw
   bool isDead;

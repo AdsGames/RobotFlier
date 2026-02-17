@@ -4,9 +4,7 @@
 int score;
 int screenshake;
 
-int fps      = 0;
-int SCREEN_W = 800;
-int SCREEN_H = 600;
+int fps = 0;
 
 // Data
 int stats[4];

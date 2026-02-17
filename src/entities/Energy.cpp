@@ -1,34 +1,33 @@
 #include "Energy.h"
 
 // Constructor
-Energy::Energy(asw::Texture sprite, asw::Sample sound, const int x, const int y)
-    : GameObject(sprite, x, y) {
+Energy::Energy(asw::Texture            sprite,
+               asw::Sample             sound,
+               const asw::Vec2<float>& position)
+    : GameObject(sprite, position) {
   this->sound = sound;
 }
 
 // Game logic
 void Energy::logic(const int motion, Robot* robot) {
-  x -= motion;
+  transform.position.x -= motion;
 
-  if (!isDead && collision(x, x + width, robot->getX(),
-                           robot->getX() + robot->getWidth(), y, y + height,
-                           robot->getY(), robot->getY() + robot->getHeight())) {
+  if (!isDead && transform.collides(robot->getTransform())) {
     score += 5;
     stats[STAT_ENERGY] += 1;
 
-    if (robot->getHealth() < 100)
+    if (robot->getHealth() < 100) {
       robot->addHealth(1);
-
-    if (settings[SETTING_SOUND]) {
-      asw::sound::play(sound);
     }
+
+    asw::sound::play(sound);
 
     isDead = true;
   }
 }
 
 // Move towards robot
-void Energy::move_towards(const float x, const float y, const float speed) {
-  this->x += (speed * (x - this->x)) / 20000;
-  this->y += (speed * (y - this->y)) / 20000;
+void Energy::move_towards(const asw::Vec2<float>& target, const float speed) {
+  transform.position.x += (speed * (target.x - transform.position.x)) / 20000;
+  transform.position.y += (speed * (target.y - transform.position.y)) / 20000;
 }

@@ -7,7 +7,6 @@
 #pragma once
 
 #include "../constants/globals.h"
-#include "../helpers/tools.h"
 #include "State.h"
 
 class IntroScene : public asw::scene::Scene<Scenes> {
@@ -18,8 +17,11 @@ class IntroScene : public asw::scene::Scene<Scenes> {
   // Override parent
   void init() override;
   void update(float deltaTime) override;
+  void draw() override;
 
  private:
   // Splash image
-  asw::Texture img_intro;
+  asw::game::Sprite img_intro;
+
+  float timer;
 };

@@ -11,14 +11,13 @@
 class Debris : public GameObject {
  public:
   // Constructor
-  Debris(asw::Texture sprite,
-         asw::Sample  sound,
-         const int    x,
-         const int    y,
-         const int    damage,
-         const float  motionMultiplier = 1.0f,
-         const float  acceleration     = 0.0f,
-         const int    size             = -1);
+  Debris(asw::Texture            sprite,
+         asw::Sample             sound,
+         const asw::Vec2<float>& position,
+         const int               damage,
+         const float             motionMultiplier = 1.0f,
+         const float             acceleration     = 0.0f,
+         const int               size             = -1);
 
   // Logic override
   void logic(const int motion, Robot* robot, float deltaTime);

@@ -15,7 +15,6 @@
 #include "../entities/Particle.h"
 #include "../entities/Powerup.h"
 #include "../entities/Robot.h"
-#include "../helpers/tools.h"
 #include "ScoreTable.h"
 #include "State.h"
 
@@ -79,12 +78,12 @@ class GameScene : public asw::scene::Scene<Scenes> {
   Robot hectar;
 
   // Declare integers
-  int    scroll;
-  int    themeNumber;
-  int    screenshake_x;
-  int    screenshake_y;
-  double arrow_animation;
-  float  motion;
+  int   scroll;
+  int   themeNumber;
+  int   screenshake_x;
+  int   screenshake_y;
+  float arrow_animation;
+  float motion;
 
   // Declare booleans
   bool paused;

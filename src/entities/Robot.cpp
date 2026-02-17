@@ -1,10 +1,10 @@
 #include "Robot.h"
 
 // Constructor
-Robot::Robot() : Robot(0.0f, 0.0f) {}
+Robot::Robot() : Robot({0.0f, 0.0f}) {}
 
 // Constructor
-Robot::Robot(float x, float y) {
+Robot::Robot(const asw::Vec2<float>& position) {
   // NULLIFY
   mainRobot           = nullptr;
   robotFire           = nullptr;
@@ -17,15 +17,13 @@ Robot::Robot(float x, float y) {
   soundHitground      = nullptr;
 
   // Init vars
-  gravity = 1.6;
+  gravity = 1.6F;
 
-  speed           = 0;
-  this->x         = x;
-  this->y         = y;
-  width           = 70;
-  height          = 70;
-  invincibleTimer = 0;
-  magneticTimer   = 0;
+  speed              = 0;
+  transform.position = position;
+  transform.size     = {70, 70};
+  invincibleTimer    = 0;
+  magneticTimer      = 0;
 
   health = 100;
 
@@ -74,7 +72,7 @@ void Robot::logic(float deltaTime) {
 
   // Update robots y position
   if (keyPressed) {
-    y += (gravity - speed) * (deltaTime / 16.0F);
+    transform.position.y += (gravity - speed) * (deltaTime / 16.0F);
   }
 
   // Death smoke
@@ -83,9 +81,9 @@ void Robot::logic(float deltaTime) {
       if (asw::random::between(0, 10) == 0) {
         int      randnum = asw::random::between(0, 255);
         Particle newParticle(
-            x + 20, y + 20, asw::Color(randnum, randnum, randnum),
-            asw::random::between(-4, -1), asw::random::between(-5, -3), 1,
-            settings[SETTING_PARTICLE_TYPE]);
+            transform.position.x + 20, transform.position.y + 20,
+            asw::Color(randnum, randnum, randnum), asw::random::between(-4, -1),
+            asw::random::between(-5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
         smokePart.push_back(newParticle);
       }
     }
@@ -112,11 +110,13 @@ void Robot::logic(float deltaTime) {
         }
 
         Particle newParticle1(
-            x + 21, y + 55, part_color, asw::random::between(-2, 2),
-            asw::random::between(1, 5), 1, settings[SETTING_PARTICLE_TYPE]);
+            transform.position.x + 21, transform.position.y + 55, part_color,
+            asw::random::between(-2, 2), asw::random::between(1, 5), 1,
+            settings[SETTING_PARTICLE_TYPE]);
         Particle newParticle2(
-            x + 52, y + 55, part_color, asw::random::between(-2, 2),
-            asw::random::between(0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
+            transform.position.x + 52, transform.position.y + 55, part_color,
+            asw::random::between(-2, 2), asw::random::between(0, 4), 1,
+            settings[SETTING_PARTICLE_TYPE]);
         rocketPart.push_back(newParticle1);
         rocketPart.push_back(newParticle2);
       }
@@ -142,12 +142,12 @@ void Robot::logic(float deltaTime) {
             0, asw::input::ControllerButton::LeftPaddle1)) {
       keyPressed = true;
 
-      if (settings[SETTING_SOUND] && asw::random::between(0, 3) == 1)
+      if (asw::random::between(0, 3) == 1)
         asw::sound::play(soundFlame, 0.05F);
 
       if (speed < 8) {
         rocket = true;
-        speed += 0.6;
+        speed += 0.6F;
       }
     }
     // If no keys pressed
@@ -155,38 +155,34 @@ void Robot::logic(float deltaTime) {
       rocket = false;
 
       if (speed > -8) {
-        speed -= 0.6;
+        speed -= 0.6F;
       }
     }
   }
 
   // Dying animation
   if (!alive) {
-    if (y < 550 && !onGround) {
-      y += 10;
+    if (transform.position.y < 550 && !onGround) {
+      transform.position.y += 10;
       speed = 0;
-    } else if (y >= 550) {
-      y        = 550;
-      onGround = true;
+    } else if (transform.position.y >= 550) {
+      transform.position.y = 550;
+      onGround             = true;
     }
   }
 
   // Touching top or bottom
-  if (y < 0) {
-    y     = 0;
-    speed = 0;
+  if (transform.position.y < 0) {
+    transform.position.y = 0;
+    speed                = 0;
   }
 
-  if (y > 550 && alive) {
+  if (transform.position.y > 550 && alive) {
     speed = 14;
 
     if (invincibleTimer <= 0) {
       health -= 5;
-
-      if (settings[SETTING_SOUND]) {
-        asw::sound::play(soundHitground);
-      }
-
+      asw::sound::play(soundHitground);
       screenshake = 30;
     }
   }
@@ -198,26 +194,30 @@ void Robot::draw() {
   if (alive) {
     // Invincible
     if (invincibleTimer > 0) {
-      if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3)
-        asw::draw::sprite(robotInvincible, {x, y});
-      else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3)
-        asw::draw::sprite(robotInvincibleFire, {x, y});
+      if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3) {
+        asw::draw::sprite(robotInvincible, transform.position);
+      } else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3) {
+        asw::draw::sprite(robotInvincibleFire, transform.position);
+      }
     }
     // Standard
     else {
-      if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3)
-        asw::draw::sprite(mainRobot, {x, y});
-      else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3)
-        asw::draw::sprite(robotFire, {x, y});
+      if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3) {
+        asw::draw::sprite(mainRobot, transform.position);
+      } else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3) {
+        asw::draw::sprite(robotFire, transform.position);
+      }
     }
 
     // Xmas mode!
-    if (settings[SETTING_CHRISTMAS])
-      asw::draw::sprite(christmasHat, {x + 20, y - 12});
+    if (settings[SETTING_CHRISTMAS]) {
+      asw::draw::sprite(christmasHat,
+                        transform.position + asw::Vec2<float>(20, -12));
+    }
   }
   // Death image
   else {
-    asw::draw::sprite(robotDie, {x, y});
+    asw::draw::sprite(robotDie, transform.position);
   }
 
   // Draw particles
@@ -231,7 +231,7 @@ void Robot::draw() {
 // Draw overlay
 void Robot::drawOverlay() {
   if (alive && invincibleTimer > 0)
-    asw::draw::sprite(robotInvincibleTop, {x, y});
+    asw::draw::sprite(robotInvincibleTop, transform.position);
 }
 
 // Getters
@@ -240,20 +240,6 @@ int Robot::getHealth() const {
 }
 void Robot::addHealth(int amount) {
   health += amount;
-}
-
-float Robot::getX() const {
-  return x;
-}
-float Robot::getY() const {
-  return y;
-}
-
-float Robot::getWidth() const {
-  return width;
-}
-float Robot::getHeight() const {
-  return height;
 }
 
 bool Robot::isOnGround() const {

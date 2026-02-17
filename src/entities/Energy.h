@@ -11,13 +11,15 @@
 class Energy : public GameObject {
  public:
   // Constructor
-  Energy(asw::Texture sprite, asw::Sample sound, const int x, const int y);
+  Energy(asw::Texture            sprite,
+         asw::Sample             sound,
+         const asw::Vec2<float>& position);
 
   // Logic override
   void logic(const int motion, Robot* robot);
 
   // Move towards robot
-  void move_towards(const float x, const float y, const float speed);
+  void move_towards(const asw::Vec2<float>& target, const float speed);
 
  private:
   // Sound effect

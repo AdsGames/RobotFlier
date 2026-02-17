@@ -3,17 +3,21 @@
 // Construct state
 void IntroScene::init() {
   // Load intro image
-  img_intro = asw::assets::loadTexture("assets/images/backgrounds/intro.png");
-  int a     = 0;
+  img_intro.setTexture(
+      asw::assets::loadTexture("assets/images/backgrounds/intro.png"));
+  timer = 0.0F;
 }
 
 // Update (goto menu!)
 void IntroScene::update(float deltaTime) {
-  // Intro screen
-  // fade_in( img_intro, 16);
-  // al_rest(1.0);
-  // fade_out( 16);
+  timer += deltaTime;
 
   // Go to menu
-  sceneManager.setNextScene(Scenes::Menu);
+  if (timer >= 3000.0F || asw::input::keyboard.anyPressed) {
+    sceneManager.setNextScene(Scenes::Menu);
+  }
+}
+
+void IntroScene::draw() {
+  img_intro.draw();
 }

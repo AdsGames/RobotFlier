@@ -13,12 +13,11 @@
 class Powerup : public GameObject {
  public:
   // Constructor
-  Powerup(asw::Texture sprite,
-          asw::Sample  sound,
-          const int    x,
-          const int    y,
-          const int    timerLength,
-          const int    type);
+  Powerup(asw::Texture            sprite,
+          asw::Sample             sound,
+          const asw::Vec2<float>& position,
+          const int               timerLength,
+          const int               type);
 
   // Logic override
   void logic(const int motion, Robot* robot, float deltaTime);
