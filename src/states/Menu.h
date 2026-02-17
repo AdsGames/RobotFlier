@@ -25,7 +25,7 @@ constexpr int MINISTATE_SCORES   = 5;
 
 class MenuScene : public asw::scene::Scene<Scenes> {
  public:
-  static constexpr float ANIMATION_DURATION = 1300.0F;
+  static constexpr float ANIMATION_DURATION = 1.3F;
 
   using asw::scene::Scene<Scenes>::Scene;
 
@@ -35,25 +35,17 @@ class MenuScene : public asw::scene::Scene<Scenes> {
   void draw() override;
 
  private:
-  // Settings
-  void read_settings();
-  void write_settings();
-
   // Score table
   ScoreTable highscores;
+
+  // Particle emitter
+  asw::ParticleEmitter emitter;
 
   // Vars
   float animation_ticker;
 
-  float mouseMove;
-  int   mini_screen;
-  bool  startMove;
-  bool  startClicked;
-  bool  mouse_rocket_up;
-
-  // Particles
-  std::vector<Particle> mousePart;
-  std::vector<Particle> menuPart;
+  int  mini_screen;
+  bool startClicked;
 
   // Screens
   asw::game::Sprite img_menu;

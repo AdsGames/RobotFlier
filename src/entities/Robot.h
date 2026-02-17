@@ -30,7 +30,7 @@ class Robot {
 
   bool isOnGround() const;
   bool isAlive() const;
-  bool isKeyPressed() const;
+  bool hasBegun() const;
 
   // Invincibility
   bool isInvincible() const;
@@ -72,7 +72,8 @@ class Robot {
   asw::Sample soundFlame;
   asw::Sample soundHitground;
 
-  // Particles
-  std::vector<Particle> rocketPart;
-  std::vector<Particle> smokePart;
+  // Particle emitters
+  asw::ParticleEmitter emitter_left;
+  asw::ParticleEmitter emitter_right;
+  asw::ParticleEmitter emitter_smoke;
 };

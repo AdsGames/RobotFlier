@@ -9,7 +9,7 @@ Energy::Energy(asw::Texture            sprite,
 }
 
 // Game logic
-void Energy::logic(const int motion, Robot* robot) {
+void Energy::logic(const float motion, Robot* robot) {
   transform.position.x -= motion;
 
   if (!isDead && transform.collides(robot->getTransform())) {

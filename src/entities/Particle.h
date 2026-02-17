@@ -6,39 +6,28 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
-#define CIRCLE 0
-#define SQUARE 1
-#define PIXEL 2
-
 #include <asw/asw.h>
 
 #include "../constants/globals.h"
 
 class Particle {
  public:
-  Particle(int        x,
-           int        y,
-           asw::Color color,
-           int        velocity_x,
-           int        velocity_y,
-           int        size,
-           int        type);
+  Particle(const asw::Vec2<float>& position,
+           asw::Color              color,
+           const asw::Vec2<float>& velocity,
+           float                   size,
+           ParticleType            type);
 
   void update(float deltaTime);
   void scroll(float x, float y);
-  void draw();
+  void draw() const;
 
  private:
-  float x;
-  float y;
+  asw::Quad<float> transform;
+  asw::Vec2<float> velocity;
 
-  int size;
-  int type;
-
-  int velocity_x;
-  int velocity_y;
-
-  asw::Color color;
+  ParticleType type;
+  asw::Color   color;
 };
 
 #endif

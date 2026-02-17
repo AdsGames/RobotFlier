@@ -8,9 +8,6 @@ void InitScene::init() {
   // Icon
   asw::display::setIcon("assets/images/objects/bomb.png");
 
-  // Joystick detector
-  joystick_enabled = asw::input::getControllerCount() > 0;
-
   // Loads fonts
   orbitron_12 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 12);
   orbitron_18 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 18);

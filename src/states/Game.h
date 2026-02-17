@@ -35,6 +35,9 @@ class GameScene : public asw::scene::Scene<Scenes> {
   // Change theme
   void changeTheme(int NewThemeNumber);
 
+  // Ticker
+  void gameTick();
+
   // Declare bitmaps
   asw::Texture screenshot;
 
@@ -78,12 +81,13 @@ class GameScene : public asw::scene::Scene<Scenes> {
   Robot hectar;
 
   // Declare integers
-  int   scroll;
+  float scroll;
   int   themeNumber;
   int   screenshake_x;
   int   screenshake_y;
   float arrow_animation;
   float motion;
+  float ticker;
 
   // Declare booleans
   bool paused;

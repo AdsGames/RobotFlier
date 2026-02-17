@@ -20,7 +20,7 @@ class GameObject {
   GameObject(asw::Texture sprite, const asw::Vec2<float>& position);
 
   // Updates asteroid logic
-  void logic(int newMotion, float deltaTime);
+  void logic(float motion, float deltaTime);
 
   // Has it been hit?
   bool dead() const;
@@ -29,7 +29,7 @@ class GameObject {
   bool offScreen() const;
 
   // Draws the object to screen
-  void draw();
+  void draw() const;
 
  protected:
   // Images

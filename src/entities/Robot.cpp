@@ -31,6 +31,39 @@ Robot::Robot(const asw::Vec2<float>& position) {
   onGround   = false;
   alive      = true;
   keyPressed = false;
+
+  // Emitters
+  asw::ParticleConfig config_rocket;
+  config_rocket.lifetimeMin = 0.2F;
+  config_rocket.lifetimeMax = 0.5F;
+  config_rocket.speedMin    = 1.0F;
+  config_rocket.speedMax    = 10.0F;
+  config_rocket.colorStart  = {255, 200, 50, 255};
+  config_rocket.colorEnd    = {255, 50, 0, 0};
+  config_rocket.sizeStart   = 6.0F;
+  config_rocket.sizeEnd     = 1.0F;
+  config_rocket.gravity     = {0.0F, 0.2F};
+
+  emitter_left = asw::ParticleEmitter(config_rocket);
+  emitter_left.start();
+
+  emitter_right = asw::ParticleEmitter(config_rocket);
+  emitter_right.start();
+
+  // Smoke emitter
+  asw::ParticleConfig config_smoke;
+  config_smoke.lifetimeMin = 1.0F;
+  config_smoke.lifetimeMax = 20.0F;
+  config_smoke.speedMin    = 0.5F;
+  config_smoke.speedMax    = 1.5F;
+  config_smoke.colorStart  = {255, 255, 255, 200};
+  config_smoke.colorEnd    = {255, 255, 255, 0};
+  config_smoke.sizeStart   = 5.0F;
+  config_smoke.sizeEnd     = 20.0F;
+  config_smoke.gravity     = {0.0F, -0.02F};
+
+  emitter_smoke = asw::ParticleEmitter(config_smoke, 512);
+  emitter_smoke.start();
 }
 
 // Load images
@@ -72,63 +105,34 @@ void Robot::logic(float deltaTime) {
 
   // Update robots y position
   if (keyPressed) {
-    transform.position.y += (gravity - speed) * (deltaTime / 16.0F);
+    transform.position.y += (gravity - speed) * (deltaTime * 62.5F);
   }
+
+  // Emitters
+  emitter_smoke.transform.position =
+      transform.position + asw::Vec2<float>(35, 35);
+  emitter_left.transform.position =
+      transform.position + asw::Vec2<float>(21, 55);
+  emitter_right.transform.position =
+      transform.position + asw::Vec2<float>(52, 55);
+
+  emitter_smoke.update(deltaTime);
+  emitter_left.update(deltaTime);
+  emitter_right.update(deltaTime);
 
   // Death smoke
-  if (settings[SETTING_PARTICLE_TYPE] != 3 && !alive) {
-    for (int i = 0; i < 800; i++) {
-      if (asw::random::between(0, 10) == 0) {
-        int      randnum = asw::random::between(0, 255);
-        Particle newParticle(
-            transform.position.x + 20, transform.position.y + 20,
-            asw::Color(randnum, randnum, randnum), asw::random::between(-4, -1),
-            asw::random::between(-5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
-        smokePart.push_back(newParticle);
-      }
-    }
-  }
-
-  for (unsigned int i = 0; i < smokePart.size(); i++) {
-    smokePart.at(i).update(deltaTime);
-
-    if (asw::random::between(0, 10) == 0) {
-      smokePart.erase(smokePart.begin() + i);
-    }
+  if (settings.particlesEnabled() && !alive) {
+    emitter_smoke.emit(100);
+    emitter_smoke.setEmissionRate(100.0F);
   }
 
   // Rocket particles
-  if (settings[SETTING_PARTICLE_TYPE] != 3 && rocket) {
-    for (int i = 0; i < 800; i++) {
-      if (asw::random::between(0, 10) == 0) {
-        auto part_color = asw::Color(255, asw::random::between(0, 255), 0);
-
-        if (settings[SETTING_CHRISTMAS]) {
-          int red_or_green = asw::random::between(0, 1);
-          part_color =
-              asw::Color(255 * red_or_green, 255 - red_or_green * 255, 0);
-        }
-
-        Particle newParticle1(
-            transform.position.x + 21, transform.position.y + 55, part_color,
-            asw::random::between(-2, 2), asw::random::between(1, 5), 1,
-            settings[SETTING_PARTICLE_TYPE]);
-        Particle newParticle2(
-            transform.position.x + 52, transform.position.y + 55, part_color,
-            asw::random::between(-2, 2), asw::random::between(0, 4), 1,
-            settings[SETTING_PARTICLE_TYPE]);
-        rocketPart.push_back(newParticle1);
-        rocketPart.push_back(newParticle2);
-      }
-    }
-  }
-
-  for (unsigned int i = 0; i < rocketPart.size(); i++) {
-    rocketPart.at(i).update(deltaTime);
-
-    if (asw::random::between(0, 2) == 0) {
-      rocketPart.erase(rocketPart.begin() + i);
-    }
+  if (settings.particlesEnabled() && rocket) {
+    emitter_left.setEmissionRate(50.0F);
+    emitter_right.setEmissionRate(50.0F);
+  } else {
+    emitter_left.setEmissionRate(0.0F);
+    emitter_right.setEmissionRate(0.0F);
   }
 
   // Moving controls
@@ -142,8 +146,9 @@ void Robot::logic(float deltaTime) {
             0, asw::input::ControllerButton::LeftPaddle1)) {
       keyPressed = true;
 
-      if (asw::random::between(0, 3) == 1)
-        asw::sound::play(soundFlame, 0.05F);
+      if (asw::random::chance(0.2F)) {
+        asw::sound::play(soundFlame, 0.01F);
+      }
 
       if (speed < 8) {
         rocket = true;
@@ -194,23 +199,23 @@ void Robot::draw() {
   if (alive) {
     // Invincible
     if (invincibleTimer > 0) {
-      if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3) {
+      if (!rocket || settings.particlesEnabled()) {
         asw::draw::sprite(robotInvincible, transform.position);
-      } else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3) {
+      } else if (rocket && !settings.particlesEnabled()) {
         asw::draw::sprite(robotInvincibleFire, transform.position);
       }
     }
     // Standard
     else {
-      if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3) {
+      if (!rocket || settings.particlesEnabled()) {
         asw::draw::sprite(mainRobot, transform.position);
-      } else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3) {
+      } else if (rocket && !settings.particlesEnabled()) {
         asw::draw::sprite(robotFire, transform.position);
       }
     }
 
     // Xmas mode!
-    if (settings[SETTING_CHRISTMAS]) {
+    if (settings.christmas) {
       asw::draw::sprite(christmasHat,
                         transform.position + asw::Vec2<float>(20, -12));
     }
@@ -221,17 +226,16 @@ void Robot::draw() {
   }
 
   // Draw particles
-  for (auto& part : rocketPart)
-    part.draw();
-
-  for (auto& part : smokePart)
-    part.draw();
+  emitter_smoke.draw();
+  emitter_left.draw();
+  emitter_right.draw();
 }
 
 // Draw overlay
 void Robot::drawOverlay() {
-  if (alive && invincibleTimer > 0)
+  if (alive && invincibleTimer > 0) {
     asw::draw::sprite(robotInvincibleTop, transform.position);
+  }
 }
 
 // Getters
@@ -248,7 +252,7 @@ bool Robot::isOnGround() const {
 bool Robot::isAlive() const {
   return alive;
 }
-bool Robot::isKeyPressed() const {
+bool Robot::hasBegun() const {
   return keyPressed;
 }
 

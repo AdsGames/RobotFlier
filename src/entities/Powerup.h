@@ -20,13 +20,13 @@ class Powerup : public GameObject {
           const int               type);
 
   // Logic override
-  void logic(const int motion, Robot* robot, float deltaTime);
+  void logic(const float motion, Robot* robot);
 
   // Vars
-  int timerLength;
-  int type;
 
  private:
+  int         type;
+  int         timerLength;
   asw::Sample sound;
 };
 

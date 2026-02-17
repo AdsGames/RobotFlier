@@ -7,19 +7,19 @@ GameObject::GameObject(asw::Texture sprite, const asw::Vec2<float>& position) {
   transform.position.y = position.y;
   isDead               = false;
 
-  transform.size.x = sprite->w;
-  transform.size.y = sprite->h;
+  transform.size.x = static_cast<float>(sprite->w);
+  transform.size.y = static_cast<float>(sprite->h);
 
   damage = 0;
 }
 
 // Updates object logic
-void GameObject::logic(int newMotion, float deltaTime) {
+void GameObject::logic(float motion, float deltaTime) {
   // Update particles
-  if (settings[SETTING_PARTICLE_TYPE] != 3) {
+  if (settings.particlesEnabled()) {
     for (auto& part : parts) {
       part.update(deltaTime);
-      part.scroll(newMotion, 0.0f);
+      part.scroll(motion, 0.0f);
     }
   }
 }
@@ -35,21 +35,21 @@ bool GameObject::offScreen() const {
 }
 
 // Draw
-void GameObject::draw() {
+void GameObject::draw() const {
   // Draw image unless dead
   if (!isDead) {
     asw::draw::stretchSprite(sprite, transform);
   }
 
   // Draw particles
-  if (settings[SETTING_PARTICLE_TYPE] != 3) {
-    for (auto& part : parts) {
+  if (settings.particlesEnabled()) {
+    for (const auto& part : parts) {
       part.draw();
     }
   }
 
   // Draw bounding box
-  if (settings[SETTING_DEBUG] == 1) {
+  if (settings.debug) {
     asw::draw::rect(transform, asw::color::gray);
   }
 }

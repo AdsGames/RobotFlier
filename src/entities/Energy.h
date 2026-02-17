@@ -16,7 +16,7 @@ class Energy : public GameObject {
          const asw::Vec2<float>& position);
 
   // Logic override
-  void logic(const int motion, Robot* robot);
+  void logic(const float motion, Robot* robot);
 
   // Move towards robot
   void move_towards(const asw::Vec2<float>& target, const float speed);

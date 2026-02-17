@@ -20,18 +20,19 @@ int main(int argc, char* argv[]) {
   // Copy over the command line args
   for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "mega") == 0)
-      settings[SETTING_MEGA] = true;
+      settings.mega = true;
     else if (strcmp(argv[i], "supershake") == 0)
-      settings[SETTING_SUPERSHAKE] = true;
+      settings.supershake = true;
     else if (strcmp(argv[i], "merrychristmas") == 0)
-      settings[SETTING_CHRISTMAS] = true;
+      settings.christmas = true;
     else if (strcmp(argv[i], "debug") == 0)
-      settings[SETTING_DEBUG] = true;
+      settings.debug = true;
 
     std::cout << argv[i];
   }
 
   asw::core::init(SCREEN_W, SCREEN_H, 1);
+  asw::core::print_info();
 
   // Starts Game
   auto app = asw::scene::SceneManager<Scenes>();

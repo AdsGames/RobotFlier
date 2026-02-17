@@ -21,7 +21,7 @@ Debris::Debris(asw::Texture            sprite,
 }
 
 // Logic
-void Debris::logic(const int motion, Robot* robot, float deltaTime) {
+void Debris::logic(const float motion, Robot* robot, float deltaTime) {
   // Move across screen
   transform.position.x -= motion * motionMultiplier;
   motionMultiplier += acceleration;
@@ -50,7 +50,7 @@ void Debris::logic(const int motion, Robot* robot, float deltaTime) {
     stats[STAT_DEBRIS] += 1;
 
     // Make particles
-    if (settings[SETTING_PARTICLE_TYPE] != 3) {
+    if (settings.particlesEnabled()) {
       // Sample a pixel
       auto sample_color =
           asw::Color(0, 0, 0);  // al_get_pixel(sprite,
@@ -64,10 +64,11 @@ void Debris::logic(const int motion, Robot* robot, float deltaTime) {
            i += sampling_size) {
         for (int t = 0; t < (transform.size.y - sampling_size);
              t += sampling_size) {
-          Particle newParticle(
-              i + transform.position.x, t + transform.position.y, sample_color,
-              asw::random::between(-8, 8), asw::random::between(-8, 8), 1,
-              settings[SETTING_PARTICLE_TYPE]);
+          Particle newParticle(transform.position + asw::Vec2<float>(i, t),
+                               sample_color,
+                               asw::Vec2<float>(asw::random::between(-8, 8),
+                                                asw::random::between(-8, 8)),
+                               1, settings.particleType);
 
           parts.push_back(newParticle);
         }

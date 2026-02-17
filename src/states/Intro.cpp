@@ -13,7 +13,7 @@ void IntroScene::update(float deltaTime) {
   timer += deltaTime;
 
   // Go to menu
-  if (timer >= 3000.0F || asw::input::keyboard.anyPressed) {
+  if (timer >= 3.0F || asw::input::keyboard.anyPressed) {
     sceneManager.setNextScene(Scenes::Menu);
   }
 }

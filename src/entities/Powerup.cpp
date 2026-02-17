@@ -13,7 +13,7 @@ Powerup::Powerup(asw::Texture            sprite,
 }
 
 // Logic loop!
-void Powerup::logic(const int motion, Robot* robot, float deltaTime) {
+void Powerup::logic(const float motion, Robot* robot) {
   transform.position.x -= motion;
 
   if (!isDead && transform.collides(robot->getTransform())) {

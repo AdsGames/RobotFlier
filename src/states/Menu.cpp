@@ -1,17 +1,12 @@
 #include "Menu.h"
 
-#include <fstream>
-
 // Construct state
 void MenuScene::init() {
   using namespace asw::assets;
   using namespace asw::random;
 
   // Init vars
-  startMove       = false;
-  startClicked    = false;
-  mouse_rocket_up = false;
-  mouseMove       = asw::input::mouse.position.y;
+  startClicked = false;
 
   // Screen on
   mini_screen = MINISTATE_MENU;
@@ -127,73 +122,31 @@ void MenuScene::init() {
   music_mainmenu = loadMusic("assets/audio/music_mainmenu.ogg");
 
   // Read settings from file
-  read_settings();
+  settings.load();
+  settings.apply();
 
   // Load scores
   highscores = ScoreTable("scores.dat");
 
   // Play music
   asw::sound::playMusic(music_mainmenu);
-}
 
-// Writes the settings to file
-void MenuScene::write_settings() {
-  std::ofstream settings_file("assets/data/settings.dat");
+  // Setup particle emitter
+  asw::ParticleConfig config;
+  config.lifetimeMin = 0.5F;
+  config.lifetimeMax = 2.0F;
+  config.speedMin    = 5.0F;
+  config.speedMax    = 50.0F;
+  config.colorStart  = {255, 200, 50, 255};
+  config.colorEnd    = {255, 50, 0, 0};
+  config.sizeStart   = 6.0F;
+  config.sizeEnd     = 1.0F;
+  config.gravity     = {0.0F, 0.1F};
 
-  for (int i = 0; i < 7; i++) {
-    settings_file << settings[i] << " ";
-  }
-
-  settings_file.close();
-
-  // Read settings to apply changes
-  read_settings();
-}
-
-// Reads the data from file
-void MenuScene::read_settings() {
-  std::ifstream read("assets/data/settings.dat");
-
-  if (!read.is_open()) {
-    // Set defaults
-    settings[SETTING_SOUND]         = 1;
-    settings[SETTING_MUSIC]         = 1;
-    settings[SETTING_FULLSCREEN]    = 0;
-    settings[SETTING_SCREENSHAKE]   = 2;
-    settings[SETTING_PARTICLE_TYPE] = 0;
-    settings[SETTING_CONTROLMODE]   = 0;
-
-    write_settings();
-    return;
-  }
-
-  for (int i = 0; i < 6; i++) {
-    read >> settings[i];
-  }
-
-  read.close();
-
-  if (settings[SETTING_SOUND] == 0) {
-    asw::sound::setSfxVolume(0);
-  } else if (settings[SETTING_SOUND] == 1) {
-    asw::sound::setSfxVolume(1);
-  }
-
-  if (settings[SETTING_MUSIC] == 0) {
-    asw::sound::setMusicVolume(0);
-    asw::sound::stopMusic();
-  } else if (settings[SETTING_MUSIC] == 1) {
-    asw::sound::setMusicVolume(1);
-    if (!asw::sound::isMusicPlaying()) {
-      asw::sound::playMusic(music_mainmenu);
-    }
-  }
-
-  if (settings[SETTING_FULLSCREEN]) {
-    asw::display::setFullscreen(true);
-  } else {
-    asw::display::setFullscreen(false);
-  }
+  // Create emitter in a scene
+  emitter = asw::ParticleEmitter(config, 512);
+  emitter.setEmissionRate(0.0F);
+  emitter.start();
 }
 
 // Update loop
@@ -277,39 +230,39 @@ void MenuScene::update(float deltaTime) {
            asw::input::getMouseButtonDown(asw::input::MouseButton::Left)) {
     // Particles toggle
     if (ui_particle[0].transform.contains(asw::input::mouse.position)) {
-      settings[SETTING_PARTICLE_TYPE]++;
-      settings[SETTING_PARTICLE_TYPE] %= 4;
-      write_settings();
+      settings.cycleParticleType();
+      settings.save();
     }
     // Sound button toggle
     else if (ui_sound[0].transform.contains(asw::input::mouse.position)) {
-      settings[SETTING_SOUND]++;
-      settings[SETTING_SOUND] %= 2;
-      write_settings();
+      settings.cycleSound();
+      settings.save();
+      settings.applyAudio();
     }
     // Music button toggle
     else if (ui_music[0].transform.contains(asw::input::mouse.position)) {
-      settings[SETTING_MUSIC]++;
-      settings[SETTING_MUSIC] %= 2;
-      write_settings();
+      settings.cycleMusic();
+      settings.save();
+      settings.applyAudio();
+      if (settings.music && !asw::sound::isMusicPlaying()) {
+        asw::sound::playMusic(music_mainmenu);
+      }
     }
     // Fullscreen toggle
     else if (ui_window[0].transform.contains(asw::input::mouse.position)) {
-      settings[SETTING_FULLSCREEN]++;
-      settings[SETTING_FULLSCREEN] %= 2;
-      write_settings();
+      settings.cycleFullscreen();
+      settings.save();
+      settings.applyFullscreen();
     }
     // Screen shake
     else if (ui_screenshake[0].transform.contains(asw::input::mouse.position)) {
-      settings[SETTING_SCREENSHAKE]++;
-      settings[SETTING_SCREENSHAKE] %= 4;
-      write_settings();
+      settings.cycleScreenShake();
+      settings.save();
     }
     // Control Toggle
     else if (ui_control[0].transform.contains(asw::input::mouse.position)) {
-      settings[SETTING_CONTROLMODE]++;
-      settings[SETTING_CONTROLMODE] %= 3;
-      write_settings();
+      settings.cycleControlMode();
+      settings.save();
     }
     // Power off
     else if (ui_exit.transform.contains(asw::input::mouse.position)) {
@@ -322,41 +275,20 @@ void MenuScene::update(float deltaTime) {
   }
 
   // Update mouse particles
-  if (settings[SETTING_PARTICLE_TYPE] != 3 && mouse_rocket_up) {
-    for (int i = 0; i < 500; i++) {
-      if (!asw::random::chance(10)) {
-        continue;
-      }
-
-      auto part_color = asw::Color(255, asw::random::between(0, 255), 0);
-
-      if (settings[SETTING_CHRISTMAS]) {
-        int red_or_green = asw::random::between(0, 1) * 255;
-        part_color       = asw::Color(red_or_green, 255 - red_or_green, 0);
-      }
-
-      mousePart.emplace_back(
-          asw::input::mouse.position.x, asw::input::mouse.position.y + 16,
-          part_color, asw::random::between(-2, 2), asw::random::between(8, 20),
-          1, settings[SETTING_PARTICLE_TYPE]);
-    }
+  if (settings.particlesEnabled() && asw::input::mouse.yChange < 0) {
+    emitter.setEmissionRate(200.0F);
+  } else {
+    emitter.setEmissionRate(0.0F);
   }
-
-  for (auto& p : mousePart) {
-    p.update(deltaTime);
-  }
-
-  std::erase_if(mousePart,
-                [](const auto&) { return asw::random::between(0, 10) == 0; });
 
   // Close game
   if (asw::input::getKeyDown(asw::input::Key::Escape)) {
     asw::core::exit = true;
   }
 
-  // Check if mouse is going up
-  mouse_rocket_up = (asw::input::mouse.position.y < mouseMove);
-  mouseMove       = asw::input::mouse.position.y;
+  // Update emitter
+  emitter.transform.position = asw::input::mouse.position;
+  emitter.update(deltaTime);
 }
 
 // Draw to screen
@@ -371,7 +303,8 @@ void MenuScene::draw() {
   highscores_button.draw();
 
   // Joystick Mode
-  if (settings[SETTING_CONTROLMODE] != 1 && joystick_enabled) {
+  if (settings.controlMode != ControlMode::Keyboard &&
+      asw::input::getControllerCount() > 0) {
     xbox_start.draw();
   }
 
@@ -421,12 +354,12 @@ void MenuScene::draw() {
     options.draw();
 
     // Buttons
-    ui_particle[settings[SETTING_PARTICLE_TYPE]].draw();
-    ui_sound[settings[SETTING_SOUND]].draw();
-    ui_music[settings[SETTING_MUSIC]].draw();
-    ui_window[settings[SETTING_FULLSCREEN]].draw();
-    ui_screenshake[settings[SETTING_SCREENSHAKE]].draw();
-    ui_control[settings[SETTING_CONTROLMODE]].draw();
+    ui_particle[static_cast<int>(settings.particleType)].draw();
+    ui_sound[settings.sound ? 1 : 0].draw();
+    ui_music[settings.music ? 1 : 0].draw();
+    ui_window[settings.fullscreen ? 1 : 0].draw();
+    ui_screenshake[static_cast<int>(settings.screenshake)].draw();
+    ui_control[static_cast<int>(settings.controlMode)].draw();
 
     // Button Text
     asw::draw::text(orbitron_24,
@@ -444,9 +377,9 @@ void MenuScene::draw() {
   }
 
   // Debug
-  if (settings[SETTING_DEBUG]) {
+  if (settings.debug) {
     // Joystick testing
-    if (joystick_enabled) {
+    if (asw::input::getControllerCount() > 0) {
       for (auto i = 0; i < asw::input::controller[0].down.size(); i++) {
         asw::draw::text(orbitron_12,
                         std::format("Joystick {}: {}", i,
@@ -462,8 +395,6 @@ void MenuScene::draw() {
                     asw::Color(255, 255, 255));
   }
 
-  // Draw mouse particles
-  for (unsigned int i = 0; i < mousePart.size(); i++) {
-    mousePart.at(i).draw();
-  }
+  // Draw particle emitter
+  emitter.draw();
 }

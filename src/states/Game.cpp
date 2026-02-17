@@ -70,7 +70,7 @@ void GameScene::init() {
   powerMagnet[3] =
       asw::assets::loadTexture("assets/images/objects/powerMagnetFour.png");
 
-  if (settings[SETTING_CHRISTMAS]) {
+  if (settings.christmas) {
     energyImage =
         asw::assets::loadTexture("assets/images/objects/energy_christmas.png");
     bombImage =
@@ -117,7 +117,7 @@ void GameScene::changeTheme(int NewThemeNumber) {
   parallaxBack = asw::assets::loadTexture("assets/images/ground/paralax_" +
                                           themeName + ".png");
 
-  if (settings[SETTING_CHRISTMAS]) {
+  if (settings.christmas) {
     asteroidImage = asw::assets::loadTexture(
         "assets/images/objects/asteroid_christmas.png");
   } else {
@@ -130,14 +130,17 @@ void GameScene::changeTheme(int NewThemeNumber) {
 void GameScene::update(float deltaTime) {
   // Actual game stuff
   if (!paused) {
+    // Add to ticker
+    ticker += deltaTime;
+
     // Check if hectar has died between logic();
-    bool hectarHasDied = hectar.isAlive();
+    bool hectarAlive = hectar.isAlive();
 
     // Update robot
     hectar.logic(deltaTime);
 
     // If its different he died play music
-    if (hectarHasDied != hectar.isAlive()) {
+    if (hectarAlive != hectar.isAlive()) {
       asw::sound::stopMusic();
       asw::sound::playMusic(music_death);
     }
@@ -146,25 +149,20 @@ void GameScene::update(float deltaTime) {
     stats[STAT_DISTANCE] += motion;
 
     // Changes speed
-    if (hectar.isAlive() && hectar.isKeyPressed()) {
-      motion = ((score / 36) + 6) * (deltaTime / 16.0F);
+    if (hectar.isAlive() && hectar.hasBegun()) {
+      motion = ((score / 36) + 6) * deltaTime * 62.5F;
     } else {
       motion *= 0.95F;
     }
 
     // Arrow animation
-    if (!hectar.isKeyPressed()) {
-      arrow_animation += 0.15F;
-    }
+    arrow_animation += 0.15F * deltaTime * 62.5F;
 
     // No negative scores
-    if (score < 0) {
-      score = 0;
-    }
+    score = std::max(score, 0);
 
     // Scrolls background
     scroll -= motion;
-
     if (scroll / 6 + SCREEN_W <= 0) {
       scroll = 0;
     }
@@ -205,86 +203,23 @@ void GameScene::update(float deltaTime) {
 
     // Powerups
     for (auto& powerup : powerups) {
-      powerup.logic(motion, &hectar, deltaTime);
+      powerup.logic(motion, &hectar);
     }
 
     std::erase_if(powerups, [](const auto& powerup) {
       return powerup.offScreen() || powerup.dead();
     });
 
-    // Spawning
-    if (hectar.isAlive() && hectar.isKeyPressed()) {
-      // Energy ball spawning
-      if (asw::random::between(0, 50) == 0 ||
-          (settings[SETTING_MEGA] && asw::random::between(0, 20))) {
-        const auto position =
-            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 550));
-        Energy newEnergyBall(energyImage, sound_orb, position);
-        energys.push_back(newEnergyBall);
-      }
+    // Spawning (every 0.1 seconds)
+    if (hectar.isAlive() && hectar.hasBegun() && ticker > 0.1F) {
+      // Subtract from ticker
+      ticker -= 0.1F;
 
-      // Asteroids spawning
-      if ((score >= 100 && asw::random::between(0, 50) == 0) ||
-          (settings[SETTING_MEGA] && asw::random::between(0, 20))) {
-        const auto position =
-            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 400));
-        Debris newAsteroid(asteroidImage, sound_asteroid, position, 5, 1.0f,
-                           0.0f, asw::random::between(4, 20));
-        debries.push_back(newAsteroid);
-      }
+      gameTick();
 
-      // Bomb spawning
-      if ((score >= 200 && asw::random::between(0, 80) == 0) ||
-          (settings[SETTING_MEGA] && asw::random::between(0, 20))) {
-        const auto position =
-            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 550));
-        Debris newBomb(bombImage, sound_bomb, position, 10, 1.0f, 0.01f);
-        debries.push_back(newBomb);
-      }
-
-      // Comets spawning
-      if ((score >= 300 && asw::random::between(0, 200) == 0) ||
-          (settings[SETTING_MEGA] && asw::random::between(0, 20))) {
-        const auto position =
-            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 550));
-        Debris newComet(cometImage, sound_asteroid, position, 5, 1.4f, 0.01f);
-        debries.push_back(newComet);
-      }
-
-      // Powerup spawning
-      if (score >= 100 && asw::random::between(0, 3000) == 0) {
-        const auto position =
-            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
-        Powerup newPowerup(powerStar, sound_star, position, 500, 1);
-        powerups.push_back(newPowerup);
-      }
-
-      if (score >= 100 && asw::random::between(0, 500) == 0) {
-        const auto position =
-            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
-        Powerup newPowerup(powerMagnet[0], sound_magnet, position, 500, 10);
-        powerups.push_back(newPowerup);
-      }
-
-      if (score >= 200 && asw::random::between(0, 1000) == 0) {
-        const auto position =
-            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
-        Powerup newPowerup(powerMagnet[1], sound_magnet, position, 750, 11);
-        powerups.push_back(newPowerup);
-      }
-
-      if (score >= 300 && asw::random::between(0, 2000) == 0) {
-        const auto position =
-            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
-        Powerup newPowerup(powerMagnet[2], sound_magnet, position, 1000, 12);
-        powerups.push_back(newPowerup);
-      }
-
-      if (score >= 500 && asw::random::between(0, 3000) == 0) {
-        const auto position =
-            asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
-        Powerup newPowerup(powerMagnet[3], sound_magnet, position, 1500, 13);
-        powerups.push_back(newPowerup);
+      // Double fun
+      if (settings.mega) {
+        gameTick();
       }
     }
 
@@ -358,12 +293,12 @@ void GameScene::update(float deltaTime) {
   }
 
   // Screen shake
-  if (screenshake > 0 && settings[SETTING_SCREENSHAKE] != 0) {
+  if (screenshake > 0 && settings.screenshakeMultiplier() != 0) {
     screenshake_x = screenshake_y =
-        asw::random::between(-(screenshake * settings[SETTING_SCREENSHAKE] +
-                               100 * settings[SETTING_SUPERSHAKE]),
-                             screenshake * settings[SETTING_SCREENSHAKE] +
-                                 100 * settings[SETTING_SUPERSHAKE]);
+        asw::random::between(-(screenshake * settings.screenshakeMultiplier() +
+                               100 * static_cast<int>(settings.supershake)),
+                             screenshake * settings.screenshakeMultiplier() +
+                                 100 * static_cast<int>(settings.supershake));
     screenshake--;
   }
 
@@ -371,7 +306,7 @@ void GameScene::update(float deltaTime) {
     screenshake_x = screenshake_y = 0;
 
   // Random test stuff for devs
-  if (settings[SETTING_DEBUG]) {
+  if (settings.debug) {
     if (asw::input::getKey(asw::input::Key::R)) {
       score += 10;
     }
@@ -424,6 +359,73 @@ void GameScene::update(float deltaTime) {
   }
 }
 
+// Spawning
+void GameScene::gameTick() {
+  // Energy ball spawning
+  if (asw::random::chance(0.08F)) {
+    const auto position =
+        asw::Vec2<float>(SCREEN_W, asw::random::between(30, 550));
+    Energy newEnergyBall(energyImage, sound_orb, position);
+    energys.push_back(newEnergyBall);
+  }
+
+  // Asteroids spawning
+  if (score >= 100 && asw::random::chance(0.04F)) {
+    const auto position =
+        asw::Vec2<float>(SCREEN_W, asw::random::between(30, 400));
+    Debris newAsteroid(asteroidImage, sound_asteroid, position, 5, 1.0f, 0.0f,
+                       asw::random::between(4, 20));
+    debries.push_back(newAsteroid);
+  }
+
+  // Bomb spawning
+  if (score >= 200 && asw::random::chance(0.1F)) {
+    const auto position =
+        asw::Vec2<float>(SCREEN_W, asw::random::between(30, 550));
+    Debris newBomb(bombImage, sound_bomb, position, 10, 1.0f, 0.01f);
+    debries.push_back(newBomb);
+  }
+
+  // Comets spawning
+  if (score >= 300 && asw::random::chance(0.05F)) {
+    const auto position =
+        asw::Vec2<float>(SCREEN_W, asw::random::between(30, 550));
+    Debris newComet(cometImage, sound_asteroid, position, 5, 1.4f, 0.01f);
+    debries.push_back(newComet);
+  }
+
+  // Powerup spawning
+  if (score >= 100 && asw::random::chance(0.033F)) {
+    const auto position =
+        asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
+    powerups.emplace_back(powerStar, sound_star, position, 500, 1);
+  }
+
+  if (score >= 100 && asw::random::chance(0.02F)) {
+    const auto position =
+        asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
+    powerups.emplace_back(powerMagnet[0], sound_magnet, position, 500, 10);
+  }
+
+  if (score >= 200 && asw::random::chance(0.1F)) {
+    const auto position =
+        asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
+    powerups.emplace_back(powerMagnet[1], sound_magnet, position, 750, 11);
+  }
+
+  if (score >= 300 && asw::random::chance(0.05F)) {
+    const auto position =
+        asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
+    powerups.emplace_back(powerMagnet[2], sound_magnet, position, 1000, 12);
+  }
+
+  if (score >= 500 && asw::random::chance(0.01F)) {
+    const auto position =
+        asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
+    powerups.emplace_back(powerMagnet[3], sound_magnet, position, 1500, 13);
+  }
+}
+
 // Draw to screen
 void GameScene::draw() {
   // Draw backgrounds and Ground Overlay
@@ -468,7 +470,7 @@ void GameScene::draw() {
   }
 
   // Draw the debug window
-  if (settings[SETTING_DEBUG]) {
+  if (settings.debug) {
     asw::draw::sprite(debug, asw::Vec2<float>(0, 0));
 
     // Column 1
@@ -502,7 +504,7 @@ void GameScene::draw() {
                     asw::Vec2<float>(120, 55), asw::Color(255, 255, 255));
     asw::draw::text(
         orbitron_12,
-        std::format("Particles On:{}", settings[SETTING_PARTICLE_TYPE]),
+        std::format("Particles On:{}", static_cast<int>(settings.particleType)),
         asw::Vec2<float>(120, 65), asw::Color(255, 255, 255));
 
     // Column 3
@@ -534,25 +536,30 @@ void GameScene::draw() {
                     asw::Color(255, 255, 255));
   }
 
+  // Scrolling
+  const auto scroll_int = static_cast<int>(scroll);
+
   // Mountain Paralax
-  asw::draw::sprite(parallaxBack, asw::Vec2<float>((scroll / 3) % SCREEN_W, 0));
   asw::draw::sprite(parallaxBack,
-                    asw::Vec2<float>((scroll / 3) % SCREEN_W + SCREEN_W, 0));
+                    asw::Vec2<float>((scroll_int / 3) % SCREEN_W, 0));
+  asw::draw::sprite(
+      parallaxBack,
+      asw::Vec2<float>((scroll_int / 3) % SCREEN_W + SCREEN_W, 0));
 
   // Ground
   asw::draw::sprite(groundUnderlay,
-                    asw::Vec2<float>(scroll % SCREEN_W, SCREEN_H - 40));
+                    asw::Vec2<float>(scroll_int % SCREEN_W, SCREEN_H - 40));
   asw::draw::sprite(
       groundUnderlay,
-      asw::Vec2<float>(scroll % SCREEN_W + SCREEN_W, SCREEN_H - 40));
+      asw::Vec2<float>(scroll_int % SCREEN_W + SCREEN_W, SCREEN_H - 40));
 
   // Energy
-  for (auto& energy : energys) {
+  for (const auto& energy : energys) {
     energy.draw();
   }
 
   // Powerups
-  for (auto& powerup : powerups) {
+  for (const auto& powerup : powerups) {
     powerup.draw();
   }
 
@@ -560,8 +567,8 @@ void GameScene::draw() {
   hectar.draw();
 
   // Start arrow
-  if (!hectar.isKeyPressed()) {
-    if (joystick_enabled) {
+  if (!hectar.hasBegun()) {
+    if (asw::input::getControllerCount() > 0) {
       asw::draw::sprite(
           ui_a, hectar.getTransform().position +
                     asw::Vec2<float>(15, -60 - sinf(arrow_animation) * 10));
@@ -573,15 +580,16 @@ void GameScene::draw() {
   }
 
   // Debris
-  for (unsigned int i = 0; i < debries.size(); i++)
+  for (unsigned int i = 0; i < debries.size(); i++) {
     debries.at(i).draw();
+  }
 
   // Ground underlay
   asw::draw::sprite(groundOverlay,
-                    asw::Vec2<float>(scroll % SCREEN_W, SCREEN_H - 20));
+                    asw::Vec2<float>(scroll_int % SCREEN_W, SCREEN_H - 20));
   asw::draw::sprite(
       groundOverlay,
-      asw::Vec2<float>(scroll % SCREEN_W + SCREEN_W, SCREEN_H - 20));
+      asw::Vec2<float>(scroll_int % SCREEN_W + SCREEN_W, SCREEN_H - 20));
 
   // Robot above asteroids
   hectar.drawOverlay();

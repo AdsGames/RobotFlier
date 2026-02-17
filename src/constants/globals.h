@@ -11,16 +11,7 @@
 
 #include <string>
 
-#define SETTING_PARTICLE_TYPE 0
-#define SETTING_SOUND 1
-#define SETTING_MUSIC 2
-#define SETTING_FULLSCREEN 3
-#define SETTING_SCREENSHAKE 4
-#define SETTING_CONTROLMODE 5
-#define SETTING_DEBUG 6
-#define SETTING_MEGA 7
-#define SETTING_SUPERSHAKE 8
-#define SETTING_CHRISTMAS 9
+#include "Settings.h"
 
 #define STAT_DISTANCE 0
 #define STAT_ENERGY 1
@@ -39,10 +30,6 @@ constexpr float S_H_F    = float(SCREEN_H);
 
 // Data
 extern int stats[4];
-extern int settings[11];
-
-// Is the joystick enabled?
-extern bool joystick_enabled;
 
 // Fonts
 extern asw::Font orbitron_12;
