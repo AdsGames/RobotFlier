@@ -11,10 +11,7 @@
 class Energy : public GameObject {
  public:
   // Constructor
-  Energy(ALLEGRO_BITMAP* sprite,
-         ALLEGRO_SAMPLE* sound,
-         const int       x,
-         const int       y);
+  Energy(asw::Texture sprite, asw::Sample sound, const int x, const int y);
 
   // Logic override
   void logic(const int motion, Robot* robot);
@@ -24,7 +21,7 @@ class Energy : public GameObject {
 
  private:
   // Sound effect
-  ALLEGRO_SAMPLE* sound;
+  asw::Sample sound;
 };
 
 #endif

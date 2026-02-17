@@ -4,27 +4,22 @@
  * A.D.S. Games
  * 12/01/2017
  */
-#ifndef ROBOT_H
-#define ROBOT_H
+#pragma once
 
 #include <iostream>
 #include <vector>
 
 #include "../constants/globals.h"
 #include "../helpers/tools.h"
-#include "../input/joystickListener.h"
-#include "../input/keyListener.h"
-#include "../input/mouseListener.h"
-#include "Particle.h"
+#include "./Particle.h"
 
 class Robot {
  public:
   Robot();
   Robot(float x, float y);
-  ~Robot();
 
   void loadResources();
-  void logic();
+  void logic(float deltaTime);
   void draw();
   void drawOverlay();
 
@@ -54,34 +49,36 @@ class Robot {
 
  private:
   // Robot specific
-  float gravity, speed;
+  float gravity;
+  float speed;
   bool  alive;
-  int   invincibleTimer, magneticTimer;
+  int   invincibleTimer;
+  int   magneticTimer;
   bool  rocket;
   bool  onGround;
-  float x, y;
+  float x;
+  float y;
   int   health;
-  int   width, height;
+  int   width;
+  int   height;
 
   // Wait for keypress
   bool keyPressed;
 
   // Images
-  ALLEGRO_BITMAP* mainRobot;
-  ALLEGRO_BITMAP* robotFire;
-  ALLEGRO_BITMAP* robotInvincible;
-  ALLEGRO_BITMAP* robotInvincibleFire;
-  ALLEGRO_BITMAP* robotInvincibleTop;
-  ALLEGRO_BITMAP* robotDie;
-  ALLEGRO_BITMAP* christmasHat;
+  asw::Texture mainRobot;
+  asw::Texture robotFire;
+  asw::Texture robotInvincible;
+  asw::Texture robotInvincibleFire;
+  asw::Texture robotInvincibleTop;
+  asw::Texture robotDie;
+  asw::Texture christmasHat;
 
   // Sounds
-  ALLEGRO_SAMPLE* soundFlame;
-  ALLEGRO_SAMPLE* soundHitground;
+  asw::Sample soundFlame;
+  asw::Sample soundHitground;
 
   // Particles
   std::vector<Particle> rocketPart;
   std::vector<Particle> smokePart;
 };
-
-#endif  // ROBOT_H

@@ -35,44 +35,28 @@ Robot::Robot(float x, float y) {
   keyPressed = false;
 }
 
-// Destructor
-Robot::~Robot() {
-  // Clear particles
-  rocketPart.clear();
-  smokePart.clear();
-
-  // Destroy samples
-  al_destroy_sample(soundFlame);
-  al_destroy_sample(soundHitground);
-
-  // Destroy images
-  al_destroy_bitmap(mainRobot);
-  al_destroy_bitmap(robotFire);
-  al_destroy_bitmap(robotInvincible);
-  al_destroy_bitmap(robotInvincibleFire);
-  al_destroy_bitmap(robotInvincibleTop);
-  al_destroy_bitmap(robotDie);
-  al_destroy_bitmap(christmasHat);
-}
-
 // Load images
 void Robot::loadResources() {
   // Images
-  mainRobot           = load_bitmap_ex("images/robot/robot.png");
-  robotFire           = load_bitmap_ex("images/robot/robotfire.png");
-  robotInvincible     = load_bitmap_ex("images/robot/robotInvincible.png");
-  robotInvincibleFire = load_bitmap_ex("images/robot/robotInvincibleFire.png");
-  robotInvincibleTop  = load_bitmap_ex("images/robot/robotInvincibleTop.png");
-  robotDie            = load_bitmap_ex("images/robot/robotDie.png");
-  christmasHat        = load_bitmap_ex("images/robot/christmas_hat.png");
+  mainRobot = asw::assets::loadTexture("assets/images/robot/robot.png");
+  robotFire = asw::assets::loadTexture("assets/images/robot/robotfire.png");
+  robotInvincible =
+      asw::assets::loadTexture("assets/images/robot/robotInvincible.png");
+  robotInvincibleFire =
+      asw::assets::loadTexture("assets/images/robot/robotInvincibleFire.png");
+  robotInvincibleTop =
+      asw::assets::loadTexture("assets/images/robot/robotInvincibleTop.png");
+  robotDie = asw::assets::loadTexture("assets/images/robot/robotDie.png");
+  christmasHat =
+      asw::assets::loadTexture("assets/images/robot/christmas_hat.png");
 
   // Sounds
-  soundFlame     = load_sample_ex("audio/sound_flame.wav");
-  soundHitground = load_sample_ex("audio/sound_hitground.wav");
+  soundFlame     = asw::assets::loadSample("assets/audio/sound_flame.wav");
+  soundHitground = asw::assets::loadSample("assets/audio/sound_hitground.wav");
 }
 
 // Update
-void Robot::logic() {
+void Robot::logic(float deltaTime) {
   // Check if you are dead!
   if (health < 1) {
     alive  = false;
@@ -80,33 +64,37 @@ void Robot::logic() {
   }
 
   // Power up timers
-  if (invincibleTimer > 0)
+  if (invincibleTimer > 0) {
     invincibleTimer--;
+  }
 
-  if (magneticTimer > 0)
+  if (magneticTimer > 0) {
     magneticTimer--;
+  }
 
   // Update robots y position
-  if (keyPressed)
-    y += gravity - speed;
+  if (keyPressed) {
+    y += (gravity - speed) * (deltaTime / 16.0F);
+  }
 
   // Death smoke
   if (settings[SETTING_PARTICLE_TYPE] != 3 && !alive) {
     for (int i = 0; i < 800; i++) {
-      if (random(0, 10) == 0) {
-        int      randnum = random(0, 255);
+      if (asw::random::between(0, 10) == 0) {
+        int      randnum = asw::random::between(0, 255);
         Particle newParticle(
-            x + 20, y + 20, al_map_rgb(randnum, randnum, randnum),
-            random(-4, -1), random(-5, -3), 1, settings[SETTING_PARTICLE_TYPE]);
+            x + 20, y + 20, asw::Color(randnum, randnum, randnum),
+            asw::random::between(-4, -1), asw::random::between(-5, -3), 1,
+            settings[SETTING_PARTICLE_TYPE]);
         smokePart.push_back(newParticle);
       }
     }
   }
 
   for (unsigned int i = 0; i < smokePart.size(); i++) {
-    smokePart.at(i).update();
+    smokePart.at(i).update(deltaTime);
 
-    if (random(0, 10) == 0) {
+    if (asw::random::between(0, 10) == 0) {
       smokePart.erase(smokePart.begin() + i);
     }
   }
@@ -114,19 +102,21 @@ void Robot::logic() {
   // Rocket particles
   if (settings[SETTING_PARTICLE_TYPE] != 3 && rocket) {
     for (int i = 0; i < 800; i++) {
-      if (random(0, 10) == 0) {
-        ALLEGRO_COLOR part_color = al_map_rgb(255, random(0, 255), 0);
+      if (asw::random::between(0, 10) == 0) {
+        auto part_color = asw::Color(255, asw::random::between(0, 255), 0);
 
         if (settings[SETTING_CHRISTMAS]) {
-          int red_or_green = random(0, 1);
+          int red_or_green = asw::random::between(0, 1);
           part_color =
-              al_map_rgb(255 * red_or_green, 255 - red_or_green * 255, 0);
+              asw::Color(255 * red_or_green, 255 - red_or_green * 255, 0);
         }
 
-        Particle newParticle1(x + 21, y + 55, part_color, random(-2, 2),
-                              random(1, 5), 1, settings[SETTING_PARTICLE_TYPE]);
-        Particle newParticle2(x + 52, y + 55, part_color, random(-2, 2),
-                              random(0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
+        Particle newParticle1(
+            x + 21, y + 55, part_color, asw::random::between(-2, 2),
+            asw::random::between(1, 5), 1, settings[SETTING_PARTICLE_TYPE]);
+        Particle newParticle2(
+            x + 52, y + 55, part_color, asw::random::between(-2, 2),
+            asw::random::between(0, 4), 1, settings[SETTING_PARTICLE_TYPE]);
         rocketPart.push_back(newParticle1);
         rocketPart.push_back(newParticle2);
       }
@@ -134,9 +124,9 @@ void Robot::logic() {
   }
 
   for (unsigned int i = 0; i < rocketPart.size(); i++) {
-    rocketPart.at(i).update();
+    rocketPart.at(i).update(deltaTime);
 
-    if (random(0, 2) == 0) {
+    if (asw::random::between(0, 2) == 0) {
       rocketPart.erase(rocketPart.begin() + i);
     }
   }
@@ -144,15 +134,16 @@ void Robot::logic() {
   // Moving controls
   if (alive) {
     // Controls movement up and down
-    if ((keyListener::key[ALLEGRO_KEY_W] || keyListener::key[ALLEGRO_KEY_UP] ||
-         mouseListener::mouse_button & 1) ||
-        joystickListener::button[JOY_XBOX_A] ||
-        joystickListener::button[JOY_XBOX_BUMPER_LEFT]) {
+    if ((asw::input::getKey(asw::input::Key::W) ||
+         asw::input::getKey(asw::input::Key::Up) ||
+         asw::input::getMouseButton(asw::input::MouseButton::Left)) ||
+        asw::input::getControllerButton(0, asw::input::ControllerButton::A) ||
+        asw::input::getControllerButton(
+            0, asw::input::ControllerButton::LeftPaddle1)) {
       keyPressed = true;
 
-      if (settings[SETTING_SOUND] && random(0, 3) == 1)
-        al_play_sample(soundFlame, 0.05, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE,
-                       nullptr);
+      if (settings[SETTING_SOUND] && asw::random::between(0, 3) == 1)
+        asw::sound::play(soundFlame, 0.05F);
 
       if (speed < 8) {
         rocket = true;
@@ -174,11 +165,9 @@ void Robot::logic() {
     if (y < 550 && !onGround) {
       y += 10;
       speed = 0;
-      // clear_keybuf();
     } else if (y >= 550) {
       y        = 550;
       onGround = true;
-      // clear_keybuf();
     }
   }
 
@@ -194,9 +183,9 @@ void Robot::logic() {
     if (invincibleTimer <= 0) {
       health -= 5;
 
-      if (settings[SETTING_SOUND])
-        al_play_sample(soundHitground, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE,
-                       nullptr);
+      if (settings[SETTING_SOUND]) {
+        asw::sound::play(soundHitground);
+      }
 
       screenshake = 30;
     }
@@ -210,25 +199,25 @@ void Robot::draw() {
     // Invincible
     if (invincibleTimer > 0) {
       if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3)
-        al_draw_bitmap(robotInvincible, x, y, 0);
+        asw::draw::sprite(robotInvincible, {x, y});
       else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3)
-        al_draw_bitmap(robotInvincibleFire, x, y, 0);
+        asw::draw::sprite(robotInvincibleFire, {x, y});
     }
     // Standard
     else {
       if (!rocket || settings[SETTING_PARTICLE_TYPE] != 3)
-        al_draw_bitmap(mainRobot, x, y, 0);
+        asw::draw::sprite(mainRobot, {x, y});
       else if (rocket && settings[SETTING_PARTICLE_TYPE] == 3)
-        al_draw_bitmap(robotFire, x, y, 0);
+        asw::draw::sprite(robotFire, {x, y});
     }
 
     // Xmas mode!
     if (settings[SETTING_CHRISTMAS])
-      al_draw_bitmap(christmasHat, x + 20, y - 12, 0);
+      asw::draw::sprite(christmasHat, {x + 20, y - 12});
   }
   // Death image
   else {
-    al_draw_bitmap(robotDie, x, y, 0);
+    asw::draw::sprite(robotDie, {x, y});
   }
 
   // Draw particles
@@ -242,7 +231,7 @@ void Robot::draw() {
 // Draw overlay
 void Robot::drawOverlay() {
   if (alive && invincibleTimer > 0)
-    al_draw_bitmap(robotInvincibleTop, x, y, 0);
+    asw::draw::sprite(robotInvincibleTop, {x, y});
 }
 
 // Getters

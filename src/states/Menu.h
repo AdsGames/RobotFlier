@@ -14,28 +14,24 @@
 #define MINISTATE_CONTROLS 4
 #define MINISTATE_SCORES 5
 
+#include <asw/asw.h>
 #include <time.h>
-
 #include <vector>
 
 #include "../constants/globals.h"
 #include "../entities/Particle.h"
 #include "../helpers/tools.h"
-#include "../input/joystickListener.h"
-#include "../input/keyListener.h"
-#include "../input/mouseListener.h"
 #include "ScoreTable.h"
 #include "State.h"
 
-class menu : public state {
+class MenuScene : public asw::scene::Scene<Scenes> {
  public:
-  // Construct/deconstruct
-  menu();
-  virtual ~menu();
+  using asw::scene::Scene<Scenes>::Scene;
 
   // Override parent
-  virtual void update() override;
-  virtual void draw() override;
+  void init() override;
+  void update(float deltaTime) override;
+  void draw() override;
 
  private:
   // Settings
@@ -48,58 +44,55 @@ class menu : public state {
   // Vars
   int animation_pos;
 
-  int  mouseMove;
-  int  mini_screen;
-  bool startMove;
-  bool startClicked;
-  bool mouse_rocket_up;
+  float mouseMove;
+  int   mini_screen;
+  bool  startMove;
+  bool  startClicked;
+  bool  mouse_rocket_up;
 
   // Particles
   std::vector<Particle> mousePart;
   std::vector<Particle> menuPart;
 
-  // Images
-  ALLEGRO_BITMAP* buffer;
-
   // Screens
-  ALLEGRO_BITMAP* img_menu;
-  ALLEGRO_BITMAP* options;
-  ALLEGRO_BITMAP* helpScreen;
-  ALLEGRO_BITMAP* controls;
-  ALLEGRO_BITMAP* credits;
-  ALLEGRO_BITMAP* highscores_table;
+  asw::Texture img_menu;
+  asw::Texture options;
+  asw::Texture helpScreen;
+  asw::Texture controls;
+  asw::Texture credits;
+  asw::Texture highscores_table;
 
   // Buttons
-  ALLEGRO_BITMAP* start;
-  ALLEGRO_BITMAP* title;
-  ALLEGRO_BITMAP* highscores_button;
+  asw::Texture start;
+  asw::Texture title;
+  asw::Texture highscores_button;
 
   // Mouse
-  ALLEGRO_BITMAP* mouse;
-  ALLEGRO_BITMAP* mouse_rocket;
+  asw::Texture mouse;
+  asw::Texture mouse_rocket;
 
   // Start button for xbox control
-  ALLEGRO_BITMAP* xbox_start;
+  asw::Texture xbox_start;
 
   // Options menu
-  ALLEGRO_BITMAP* ui_sound[2];
-  ALLEGRO_BITMAP* ui_music[2];
-  ALLEGRO_BITMAP* ui_screenshake[4];
-  ALLEGRO_BITMAP* ui_window[2];
-  ALLEGRO_BITMAP* ui_particle[4];
-  ALLEGRO_BITMAP* ui_control[3];
+  asw::Texture ui_sound[2];
+  asw::Texture ui_music[2];
+  asw::Texture ui_screenshake[4];
+  asw::Texture ui_window[2];
+  asw::Texture ui_particle[4];
+  asw::Texture ui_control[3];
 
-  ALLEGRO_BITMAP* ui_options;
-  ALLEGRO_BITMAP* ui_options_small;
-  ALLEGRO_BITMAP* ui_back;
-  ALLEGRO_BITMAP* ui_credits;
-  ALLEGRO_BITMAP* ui_exit;
-  ALLEGRO_BITMAP* ui_help;
-  ALLEGRO_BITMAP* ui_screenshot_notification;
-  ALLEGRO_BITMAP* ui_controls;
+  asw::Texture ui_options;
+  asw::Texture ui_options_small;
+  asw::Texture ui_back;
+  asw::Texture ui_credits;
+  asw::Texture ui_exit;
+  asw::Texture ui_help;
+  asw::Texture ui_screenshot_notification;
+  asw::Texture ui_controls;
 
   // Music
-  ALLEGRO_SAMPLE* music_mainmenu;
+  asw::Music music_mainmenu;
 };
 
 #endif  // MENU_H

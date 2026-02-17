@@ -8,24 +8,20 @@
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
-#include <allegro5/allegro_color.h>
-#include <allegro5/allegro_primitives.h>
+#include <asw/asw.h>
 
 #include "../constants/globals.h"
 #include "../helpers/tools.h"
-#include "Particle.h"
-#include "Robot.h"
+#include "./Particle.h"
+#include "./Robot.h"
 
 class GameObject {
  public:
   // Constructor
-  GameObject(ALLEGRO_BITMAP* sprite, const int x, const int y);
-
-  // Destructor
-  ~GameObject();
+  GameObject(asw::Texture sprite, const int x, const int y);
 
   // Updates asteroid logic
-  void logic(int newMotion);
+  void logic(int newMotion, float deltaTime);
 
   // Has it been hit?
   bool dead() const;
@@ -38,13 +34,15 @@ class GameObject {
 
  protected:
   // Images
-  ALLEGRO_BITMAP* sprite;
+  asw::Texture sprite;
 
   // Position
-  float x, y;
+  float x;
+  float y;
 
   // Size
-  int height, width;
+  int height;
+  int width;
 
   // Dead or naw
   bool isDead;

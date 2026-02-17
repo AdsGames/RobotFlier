@@ -6,22 +6,22 @@
 #ifndef DEBRIE_H
 #define DEBRIE_H
 
-#include "GameObject.h"
+#include "./GameObject.h"
 
 class Debris : public GameObject {
  public:
   // Constructor
-  Debris(ALLEGRO_BITMAP* sprite,
-         ALLEGRO_SAMPLE* sound,
-         const int       x,
-         const int       y,
-         const int       damage,
-         const float     motionMultiplier = 1.0f,
-         const float     acceleration     = 0.0f,
-         const int       size             = -1);
+  Debris(asw::Texture sprite,
+         asw::Sample  sound,
+         const int    x,
+         const int    y,
+         const int    damage,
+         const float  motionMultiplier = 1.0f,
+         const float  acceleration     = 0.0f,
+         const int    size             = -1);
 
   // Logic override
-  void logic(const int motion, Robot* robot);
+  void logic(const int motion, Robot* robot, float deltaTime);
 
  private:
   // Motion multiplier
@@ -29,7 +29,7 @@ class Debris : public GameObject {
   float acceleration;
 
   // Sound
-  ALLEGRO_SAMPLE* sound;
+  asw::Sample sound;
 };
 
 #endif

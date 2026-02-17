@@ -8,25 +8,27 @@
 
 #include "GameObject.h"
 
+#include <asw/asw.h>
+
 class Powerup : public GameObject {
  public:
   // Constructor
-  Powerup(ALLEGRO_BITMAP* sprite,
-          ALLEGRO_SAMPLE* sound,
-          const int       x,
-          const int       y,
-          const int       timerLength,
-          const int       type);
+  Powerup(asw::Texture sprite,
+          asw::Sample  sound,
+          const int    x,
+          const int    y,
+          const int    timerLength,
+          const int    type);
 
   // Logic override
-  void logic(const int motion, Robot* robot);
+  void logic(const int motion, Robot* robot, float deltaTime);
 
   // Vars
   int timerLength;
   int type;
 
  private:
-  ALLEGRO_SAMPLE* sound;
+  asw::Sample sound;
 };
 
 #endif

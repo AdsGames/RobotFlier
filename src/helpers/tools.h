@@ -7,26 +7,6 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
-#include <allegro5/allegro_native_dialog.h>
-#include <math.h>
-#include <time.h>
-
-#include <fstream>
-#include <sstream>
-
-#include "../constants/globals.h"
-
-// Error handling loading functions
-extern ALLEGRO_BITMAP* load_bitmap_ex(std::string file);
-extern ALLEGRO_SAMPLE* load_sample_ex(std::string file);
-extern ALLEGRO_SAMPLE* logg_load_ex(std::string file);
-extern ALLEGRO_FONT*   load_font_ex(std::string file, int size, int flags);
-
-extern void abort_on_error(std::string message);
-
-// Random generator
-extern int random(int newLowest, int newHighest);
-
 // Math related functions
 extern bool collision(float xMin1,
                       float xMax1,

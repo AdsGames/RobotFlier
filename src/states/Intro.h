@@ -4,26 +4,22 @@
  * 30/12/2016
  * A pretty nice splash screen
  */
-#ifndef INTRO_H
-#define INTRO_H
+#pragma once
 
 #include "../constants/globals.h"
 #include "../helpers/tools.h"
 #include "State.h"
 
-class intro : public state {
+class IntroScene : public asw::scene::Scene<Scenes> {
  public:
   // Construct/deconstruct
-  intro();
-  virtual ~intro();
+  using asw::scene::Scene<Scenes>::Scene;
 
   // Override parent
-  virtual void update() override;
-  virtual void draw() override{};
+  void init() override;
+  void update(float deltaTime) override;
 
  private:
   // Splash image
-  ALLEGRO_BITMAP* img_intro;
+  asw::Texture img_intro;
 };
-
-#endif  // INTRO_H

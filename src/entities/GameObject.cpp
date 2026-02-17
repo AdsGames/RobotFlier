@@ -1,27 +1,24 @@
 #include "GameObject.h"
 
 // Constructor
-GameObject::GameObject(ALLEGRO_BITMAP* sprite, const int x, const int y) {
+GameObject::GameObject(asw::Texture sprite, const int x, const int y) {
   this->sprite = sprite;
   this->x      = x;
   this->y      = y;
   isDead       = false;
 
-  height = al_get_bitmap_height(sprite);
-  width  = al_get_bitmap_width(sprite);
+  height = sprite->h;
+  width  = sprite->w;
 
   damage = 0;
 }
 
-// Destructor
-GameObject::~GameObject() {}
-
 // Updates object logic
-void GameObject::logic(int newMotion) {
+void GameObject::logic(int newMotion, float deltaTime) {
   // Update particles
   if (settings[SETTING_PARTICLE_TYPE] != 3) {
     for (unsigned int i = 0; i < parts.size(); i++) {
-      parts.at(i).update();
+      parts.at(i).update(deltaTime);
       parts.at(i).scroll(newMotion, 0.0f);
     }
   }
@@ -41,22 +38,19 @@ bool GameObject::offScreen() const {
 void GameObject::draw() {
   // Draw image unless dead
   if (!isDead) {
-    if (sprite != nullptr) {
-      al_draw_scaled_bitmap(sprite, 0, 0, al_get_bitmap_width(sprite),
-                            al_get_bitmap_height(sprite), x, y, width, height,
-                            0);
-    }
+    asw::draw::stretchSprite(sprite, asw::Quad<float>(x, y, width, height));
   }
 
   // Draw particles
   if (settings[SETTING_PARTICLE_TYPE] != 3) {
-    for (unsigned int i = 0; i < parts.size(); i++) {
-      parts.at(i).draw();
+    for (auto& part : parts) {
+      part.draw();
     }
   }
 
   // Draw bounding box
   if (settings[SETTING_DEBUG] == 1) {
-    al_draw_rectangle(x, y, x + width, y + height, al_map_rgb(88, 88, 88), 1);
+    asw::draw::rect(asw::Quad<float>(x, y, width, height),
+                    asw::Color(88, 88, 88));
   }
 }

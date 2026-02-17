@@ -7,9 +7,7 @@
 #define GLOBALS_H
 
 // Import libraries
-#include <allegro5/allegro_acodec.h>
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_font.h>
+#include <asw/asw.h>
 
 #include <string>
 
@@ -44,16 +42,10 @@ extern int settings[11];
 extern bool joystick_enabled;
 
 // Fonts
-extern ALLEGRO_FONT* orbitron_12;
-extern ALLEGRO_FONT* orbitron_18;
-extern ALLEGRO_FONT* orbitron_24;
-extern ALLEGRO_FONT* orbitron_30;
-extern ALLEGRO_FONT* orbitron_36;
-
-// Current music
-extern ALLEGRO_SAMPLE_ID currentMusic;
-
-// Display
-extern ALLEGRO_DISPLAY* display;
+extern asw::Font orbitron_12;
+extern asw::Font orbitron_18;
+extern asw::Font orbitron_24;
+extern asw::Font orbitron_30;
+extern asw::Font orbitron_36;
 
 #endif

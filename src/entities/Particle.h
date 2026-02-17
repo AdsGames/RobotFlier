@@ -10,34 +10,35 @@
 #define SQUARE 1
 #define PIXEL 2
 
-#include <allegro5/allegro_primitives.h>
+#include <asw/asw.h>
 
 #include "../constants/globals.h"
 
 class Particle {
  public:
-  Particle(int           x,
-           int           y,
-           ALLEGRO_COLOR color,
-           int           velocity_x,
-           int           velocity_y,
-           int           size,
-           int           type);
-  ~Particle();
+  Particle(int        x,
+           int        y,
+           asw::Color color,
+           int        velocity_x,
+           int        velocity_y,
+           int        size,
+           int        type);
 
-  void update();
+  void update(float deltaTime);
   void scroll(float x, float y);
   void draw();
 
  private:
-  float x, y;
+  float x;
+  float y;
 
   int size;
   int type;
 
-  int velocity_x, velocity_y;
+  int velocity_x;
+  int velocity_y;
 
-  ALLEGRO_COLOR color;
+  asw::Color color;
 };
 
 #endif

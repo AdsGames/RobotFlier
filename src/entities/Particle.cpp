@@ -1,13 +1,13 @@
 #include "Particle.h"
 
 // Constructor
-Particle::Particle(int           x,
-                   int           y,
-                   ALLEGRO_COLOR color,
-                   int           velocity_x,
-                   int           velocity_y,
-                   int           size,
-                   int           type)
+Particle::Particle(int        x,
+                   int        y,
+                   asw::Color color,
+                   int        velocity_x,
+                   int        velocity_y,
+                   int        size,
+                   int        type)
     : x(x),
       y(y),
       size(size),
@@ -16,13 +16,10 @@ Particle::Particle(int           x,
       velocity_y(velocity_y),
       color(color) {}
 
-// Destructor
-Particle::~Particle() {}
-
 // Logic
-void Particle::update() {
-  x += velocity_x;
-  y += velocity_y;
+void Particle::update(float deltaTime) {
+  x += velocity_x * (deltaTime / 16.0F);
+  y += velocity_y * (deltaTime / 16.0F);
 }
 
 // Scrolly by
@@ -34,10 +31,8 @@ void Particle::scroll(float x, float y) {
 // Draw
 void Particle::draw() {
   if (type == PIXEL) {
-    al_put_pixel(x, y, color);
-  } else if (type == SQUARE) {
-    al_draw_rectangle(x, y, x + size, y + size, color, 1);
-  } else if (type == CIRCLE) {
-    al_draw_circle(x, y, size, color, 1);
+    asw::draw::point(asw::Vec2<float>(x, y), color);
+  } else if (type == SQUARE || type == CIRCLE) {
+    asw::draw::rectFill(asw::Quad<float>(x, y, size, size), color);
   }
 }

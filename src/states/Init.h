@@ -4,24 +4,23 @@
  * 30/12/2016
  * Program inits here
  */
-#ifndef INIT_H
-#define INIT_H
+#pragma once
 
-#include <allegro5/allegro_font.h>
+#include <asw/asw.h>
 
 #include "../constants/globals.h"
 #include "../helpers/tools.h"
 #include "State.h"
 
-class init : public state {
+class InitScene : public asw::scene::Scene<Scenes> {
  public:
-  // Construct/deconstruct
-  init();
-  virtual ~init();
+  using asw::scene::Scene<Scenes>::Scene;
 
   // Override parent
-  virtual void update() override{};
-  virtual void draw() override{};
-};
+  void init() override;
 
-#endif  // INIT_H
+  void update(float deltaTime) override {
+    // Go to menu
+    sceneManager.setNextScene(Scenes::Menu);
+  }
+};

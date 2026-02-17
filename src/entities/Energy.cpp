@@ -1,10 +1,7 @@
 #include "Energy.h"
 
 // Constructor
-Energy::Energy(ALLEGRO_BITMAP* sprite,
-               ALLEGRO_SAMPLE* sound,
-               const int       x,
-               const int       y)
+Energy::Energy(asw::Texture sprite, asw::Sample sound, const int x, const int y)
     : GameObject(sprite, x, y) {
   this->sound = sound;
 }
@@ -22,8 +19,9 @@ void Energy::logic(const int motion, Robot* robot) {
     if (robot->getHealth() < 100)
       robot->addHealth(1);
 
-    if (settings[SETTING_SOUND])
-      al_play_sample(sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, nullptr);
+    if (settings[SETTING_SOUND]) {
+      asw::sound::play(sound);
+    }
 
     isDead = true;
   }

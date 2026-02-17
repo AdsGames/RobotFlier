@@ -7,8 +7,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <allegro5/allegro_color.h>
-#include <allegro5/allegro_primitives.h>
+#include <asw/asw.h>
 
 #include "../constants/globals.h"
 #include "../entities/Debris.h"
@@ -17,22 +16,18 @@
 #include "../entities/Powerup.h"
 #include "../entities/Robot.h"
 #include "../helpers/tools.h"
-#include "../input/joystickListener.h"
-#include "../input/keyListener.h"
-#include "../input/mouseListener.h"
 #include "ScoreTable.h"
 #include "State.h"
 
 // Game class
-class game : public state {
+class GameScene : public asw::scene::Scene<Scenes> {
  public:
-  // Construct/deconstruct
-  game();
-  virtual ~game();
+  using asw::scene::Scene<Scenes>::Scene;
 
   // Override parent
-  virtual void update() override;
-  virtual void draw() override;
+  void init() override;
+  void update(float deltaTime) override;
+  void draw() override;
 
  private:
   // Score table
@@ -42,43 +37,43 @@ class game : public state {
   void changeTheme(int NewThemeNumber);
 
   // Declare bitmaps
-  ALLEGRO_BITMAP* screenshot;
+  asw::Texture screenshot;
 
   // Game images
-  ALLEGRO_BITMAP* space;
-  ALLEGRO_BITMAP* parallaxBack;
-  ALLEGRO_BITMAP* groundOverlay;
-  ALLEGRO_BITMAP* groundUnderlay;
+  asw::Texture space;
+  asw::Texture parallaxBack;
+  asw::Texture groundOverlay;
+  asw::Texture groundUnderlay;
 
   // GUI Images
-  ALLEGRO_BITMAP* debug;
-  ALLEGRO_BITMAP* pauseMenu;
-  ALLEGRO_BITMAP* ui_game_end;
-  ALLEGRO_BITMAP* ui_a;
-  ALLEGRO_BITMAP* ui_b;
-  ALLEGRO_BITMAP* ui_up;
+  asw::Texture debug;
+  asw::Texture pauseMenu;
+  asw::Texture ui_game_end;
+  asw::Texture ui_a;
+  asw::Texture ui_b;
+  asw::Texture ui_up;
 
   // Danger images
-  ALLEGRO_BITMAP* energyImage;
-  ALLEGRO_BITMAP* asteroidImage;
-  ALLEGRO_BITMAP* bombImage;
-  ALLEGRO_BITMAP* cometImage;
+  asw::Texture energyImage;
+  asw::Texture asteroidImage;
+  asw::Texture bombImage;
+  asw::Texture cometImage;
 
   // Powerup Images
-  ALLEGRO_BITMAP* powerStar;
-  ALLEGRO_BITMAP* powerMagnet[4];
+  asw::Texture powerStar;
+  asw::Texture powerMagnet[4];
 
   // Declare sounds
-  ALLEGRO_SAMPLE* sound_orb;
-  ALLEGRO_SAMPLE* sound_bomb;
-  ALLEGRO_SAMPLE* sound_asteroid;
-  ALLEGRO_SAMPLE* sound_magnet;
-  ALLEGRO_SAMPLE* sound_star;
-  ALLEGRO_SAMPLE* sound_snap;
+  asw::Sample sound_orb;
+  asw::Sample sound_bomb;
+  asw::Sample sound_asteroid;
+  asw::Sample sound_magnet;
+  asw::Sample sound_star;
+  asw::Sample sound_snap;
 
   // Music
-  ALLEGRO_SAMPLE* music_ingame;
-  ALLEGRO_SAMPLE* music_death;
+  asw::Music music_ingame;
+  asw::Music music_death;
 
   // Our robot
   Robot hectar;
