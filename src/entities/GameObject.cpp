@@ -13,17 +13,6 @@ GameObject::GameObject(asw::Texture sprite, const asw::Vec2<float>& position) {
   damage = 0;
 }
 
-// Updates object logic
-void GameObject::logic(float motion, float deltaTime) {
-  // Update particles
-  if (settings.particlesEnabled()) {
-    for (auto& part : parts) {
-      part.update(deltaTime);
-      part.scroll(motion, 0.0f);
-    }
-  }
-}
-
 // Has it been hit?
 bool GameObject::dead() const {
   return isDead;
@@ -39,13 +28,6 @@ void GameObject::draw() const {
   // Draw image unless dead
   if (!isDead) {
     asw::draw::stretchSprite(sprite, transform);
-  }
-
-  // Draw particles
-  if (settings.particlesEnabled()) {
-    for (const auto& part : parts) {
-      part.draw();
-    }
   }
 
   // Draw bounding box

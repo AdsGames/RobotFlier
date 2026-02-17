@@ -11,16 +11,12 @@
 #include <asw/asw.h>
 
 #include "../constants/globals.h"
-#include "./Particle.h"
 #include "./Robot.h"
 
 class GameObject {
  public:
   // Constructor
   GameObject(asw::Texture sprite, const asw::Vec2<float>& position);
-
-  // Updates asteroid logic
-  void logic(float motion, float deltaTime);
 
   // Has it been hit?
   bool dead() const;
@@ -40,9 +36,6 @@ class GameObject {
 
   // Dead or naw
   bool isDead;
-
-  // Particles
-  std::vector<Particle> parts;
 
   // Damage
   int damage;

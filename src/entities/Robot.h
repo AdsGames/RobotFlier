@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "../constants/globals.h"
-#include "./Particle.h"
 
 class Robot {
  public:

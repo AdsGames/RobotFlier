@@ -12,7 +12,6 @@
 #include "../constants/globals.h"
 #include "../entities/Debris.h"
 #include "../entities/Energy.h"
-#include "../entities/Particle.h"
 #include "../entities/Powerup.h"
 #include "../entities/Robot.h"
 #include "ScoreTable.h"
@@ -36,7 +35,9 @@ class GameScene : public asw::scene::Scene<Scenes> {
   void changeTheme(int NewThemeNumber);
 
   // Ticker
-  void gameTick();
+  void  gameTick();
+  void  spawnWave();
+  float difficulty() const;
 
   // Declare bitmaps
   asw::Texture screenshot;

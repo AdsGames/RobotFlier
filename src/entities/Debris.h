@@ -20,7 +20,7 @@ class Debris : public GameObject {
          const int               size             = -1);
 
   // Logic override
-  void logic(const float motion, Robot* robot, float deltaTime);
+  void logic(const float motion, Robot* robot);
 
  private:
   // Motion multiplier

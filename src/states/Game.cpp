@@ -194,7 +194,7 @@ void GameScene::update(float deltaTime) {
 
     // Debries
     for (auto& debris : debries) {
-      debris.logic(motion, &hectar, deltaTime);
+      debris.logic(motion, &hectar);
     }
 
     std::erase_if(debries, [](const auto& debris) {

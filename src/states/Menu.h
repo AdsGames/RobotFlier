@@ -19,7 +19,6 @@ constexpr int MINISTATE_SCORES   = 5;
 #include <vector>
 
 #include "../constants/globals.h"
-#include "../entities/Particle.h"
 #include "ScoreTable.h"
 #include "State.h"
 

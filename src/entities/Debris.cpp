@@ -21,7 +21,7 @@ Debris::Debris(asw::Texture            sprite,
 }
 
 // Logic
-void Debris::logic(const float motion, Robot* robot, float deltaTime) {
+void Debris::logic(const float motion, Robot* robot) {
   // Move across screen
   transform.position.x -= motion * motionMultiplier;
   motionMultiplier += acceleration;
@@ -48,34 +48,5 @@ void Debris::logic(const float motion, Robot* robot, float deltaTime) {
     // Get hit
     isDead = true;
     stats[STAT_DEBRIS] += 1;
-
-    // Make particles
-    if (settings.particlesEnabled()) {
-      // Sample a pixel
-      auto sample_color =
-          asw::Color(0, 0, 0);  // al_get_pixel(sprite,
-                                // al_get_bitmap_width(sprite) / 2,
-                                //  al_get_bitmap_height(sprite) / 2);
-
-      // Make some particles
-      int sampling_size = 5;
-
-      for (int i = 0; i < (transform.size.x - sampling_size);
-           i += sampling_size) {
-        for (int t = 0; t < (transform.size.y - sampling_size);
-             t += sampling_size) {
-          Particle newParticle(transform.position + asw::Vec2<float>(i, t),
-                               sample_color,
-                               asw::Vec2<float>(asw::random::between(-8, 8),
-                                                asw::random::between(-8, 8)),
-                               1, settings.particleType);
-
-          parts.push_back(newParticle);
-        }
-      }
-    }
   }
-
-  // Parent logic
-  GameObject::logic(motion, deltaTime);
 }
