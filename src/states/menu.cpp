@@ -16,97 +16,97 @@ void MenuScene::init()
     // Random menu
     const auto background
         = std::format("assets/images/backgrounds/background_{}.png", between(0, 3));
-    img_menu.setTexture(loadTexture(background));
+    img_menu.set_texture(load_texture(background));
 
-    start.setTexture(loadTexture("assets/images/gui/start.png"));
+    start.set_texture(load_texture("assets/images/gui/start.png"));
     start.transform.position.y = 400;
 
-    highscores_button.setTexture(loadTexture("assets/images/gui/highscores.png"));
+    highscores_button.set_texture(load_texture("assets/images/gui/highscores.png"));
     highscores_button.transform.position.y = 30;
 
-    title.setTexture(loadTexture("assets/images/gui/title.png"));
+    title.set_texture(load_texture("assets/images/gui/title.png"));
     title.transform.position.x = 20;
 
-    options.setTexture(loadTexture("assets/images/gui/options.png"));
+    options.set_texture(load_texture("assets/images/gui/options.png"));
 
-    ui_sound[1].setTexture(loadTexture("assets/images/gui/ui_sound_on.png"));
-    ui_sound[0].setTexture(loadTexture("assets/images/gui/ui_sound_off.png"));
+    ui_sound[1].set_texture(load_texture("assets/images/gui/ui_sound_on.png"));
+    ui_sound[0].set_texture(load_texture("assets/images/gui/ui_sound_off.png"));
 
     ui_sound[0].transform.position = asw::Vec2<float>(120, 180);
     ui_sound[1].transform.position = asw::Vec2<float>(120, 180);
 
-    ui_music[1].setTexture(loadTexture("assets/images/gui/ui_music_on.png"));
-    ui_music[0].setTexture(loadTexture("assets/images/gui/ui_music_off.png"));
+    ui_music[1].set_texture(load_texture("assets/images/gui/ui_music_on.png"));
+    ui_music[0].set_texture(load_texture("assets/images/gui/ui_music_off.png"));
 
     ui_music[0].transform.position = asw::Vec2<float>(280, 180);
     ui_music[1].transform.position = asw::Vec2<float>(280, 180);
 
-    ui_window[1].setTexture(loadTexture("assets/images/gui/ui_window_windowed.png"));
-    ui_window[0].setTexture(loadTexture("assets/images/gui/ui_window_fullscreen.png"));
+    ui_window[1].set_texture(load_texture("assets/images/gui/ui_window_windowed.png"));
+    ui_window[0].set_texture(load_texture("assets/images/gui/ui_window_fullscreen.png"));
 
     ui_window[0].transform.position = asw::Vec2<float>(120, 407);
     ui_window[1].transform.position = asw::Vec2<float>(120, 407);
 
-    ui_particle[0].setTexture(loadTexture("assets/images/gui/ui_particle_circle.png"));
-    ui_particle[1].setTexture(loadTexture("assets/images/gui/ui_particle_square.png"));
-    ui_particle[2].setTexture(loadTexture("assets/images/gui/ui_particle_pixel.png"));
-    ui_particle[3].setTexture(loadTexture("assets/images/gui/ui_particle_off.png"));
+    ui_particle[0].set_texture(load_texture("assets/images/gui/ui_particle_circle.png"));
+    ui_particle[1].set_texture(load_texture("assets/images/gui/ui_particle_square.png"));
+    ui_particle[2].set_texture(load_texture("assets/images/gui/ui_particle_pixel.png"));
+    ui_particle[3].set_texture(load_texture("assets/images/gui/ui_particle_off.png"));
 
     ui_particle[0].transform.position = asw::Vec2<float>(280, 407);
     ui_particle[1].transform.position = asw::Vec2<float>(280, 407);
     ui_particle[2].transform.position = asw::Vec2<float>(280, 407);
     ui_particle[3].transform.position = asw::Vec2<float>(280, 407);
 
-    ui_control[0].setTexture(loadTexture("assets/images/gui/ui_control_xbox.png"));
-    ui_control[1].setTexture(loadTexture("assets/images/gui/ui_control_keyboard.png"));
-    ui_control[2].setTexture(loadTexture("assets/images/gui/ui_control_auto.png"));
+    ui_control[0].set_texture(load_texture("assets/images/gui/ui_control_xbox.png"));
+    ui_control[1].set_texture(load_texture("assets/images/gui/ui_control_keyboard.png"));
+    ui_control[2].set_texture(load_texture("assets/images/gui/ui_control_auto.png"));
 
     ui_control[0].transform.position = asw::Vec2<float>(120, 295);
     ui_control[1].transform.position = asw::Vec2<float>(120, 295);
     ui_control[2].transform.position = asw::Vec2<float>(120, 295);
 
-    ui_screenshake[0].setTexture(loadTexture("assets/images/gui/ui_screenshake_none.png"));
-    ui_screenshake[1].setTexture(loadTexture("assets/images/gui/ui_screenshake_low.png"));
-    ui_screenshake[2].setTexture(loadTexture("assets/images/gui/ui_screenshake_medium.png"));
-    ui_screenshake[3].setTexture(loadTexture("assets/images/gui/ui_screenshake_high.png"));
+    ui_screenshake[0].set_texture(load_texture("assets/images/gui/ui_screenshake_none.png"));
+    ui_screenshake[1].set_texture(load_texture("assets/images/gui/ui_screenshake_low.png"));
+    ui_screenshake[2].set_texture(load_texture("assets/images/gui/ui_screenshake_medium.png"));
+    ui_screenshake[3].set_texture(load_texture("assets/images/gui/ui_screenshake_high.png"));
 
     ui_screenshake[0].transform.position = asw::Vec2<float>(280, 295);
     ui_screenshake[1].transform.position = asw::Vec2<float>(280, 295);
     ui_screenshake[2].transform.position = asw::Vec2<float>(280, 295);
     ui_screenshake[3].transform.position = asw::Vec2<float>(280, 295);
 
-    ui_back.setTexture(loadTexture("assets/images/gui/ui_back.png"));
+    ui_back.set_texture(load_texture("assets/images/gui/ui_back.png"));
     ui_back.transform.position = asw::Vec2<float>(540, 407);
 
-    credits.setTexture(loadTexture("assets/images/gui/credits.png"));
+    credits.set_texture(load_texture("assets/images/gui/credits.png"));
 
-    highscores_table.setTexture(loadTexture("assets/images/gui/highscores_table.png"));
+    highscores_table.set_texture(load_texture("assets/images/gui/highscores_table.png"));
     highscores_table.transform.position = asw::Vec2<float>(200, 50);
 
-    ui_help.setTexture(loadTexture("assets/images/gui/ui_help.png"));
+    ui_help.set_texture(load_texture("assets/images/gui/ui_help.png"));
     ui_help.transform.position.x = 697;
 
-    ui_controls.setTexture(loadTexture("assets/images/gui/ui_controls.png"));
+    ui_controls.set_texture(load_texture("assets/images/gui/ui_controls.png"));
     ui_controls.transform.position.x = 645;
 
-    ui_credits.setTexture(loadTexture("assets/images/gui/ui_credits.png"));
+    ui_credits.set_texture(load_texture("assets/images/gui/ui_credits.png"));
     ui_credits.transform.position.x = 541;
 
-    ui_options.setTexture(loadTexture("assets/images/gui/ui_options.png"));
+    ui_options.set_texture(load_texture("assets/images/gui/ui_options.png"));
     ui_options.transform.position.x = 749;
 
-    helpScreen.setTexture(loadTexture("assets/images/gui/helpScreen.png"));
+    helpScreen.set_texture(load_texture("assets/images/gui/helpScreen.png"));
 
-    ui_exit.setTexture(loadTexture("assets/images/gui/ui_exit.png"));
+    ui_exit.set_texture(load_texture("assets/images/gui/ui_exit.png"));
     ui_exit.transform.position = asw::Vec2<float>(540, 180);
 
-    xbox_start.setTexture(loadTexture("assets/images/gui/xbox_start.png"));
+    xbox_start.set_texture(load_texture("assets/images/gui/xbox_start.png"));
     xbox_start.transform.position.y = 430;
 
-    controls.setTexture(loadTexture("assets/images/gui/controls.png"));
+    controls.set_texture(load_texture("assets/images/gui/controls.png"));
 
     // Load that menu music
-    music_mainmenu = loadMusic("assets/audio/music_mainmenu.ogg");
+    music_mainmenu = load_music("assets/audio/music_mainmenu.ogg");
 
     // Read settings from file
     settings.load();
@@ -116,23 +116,23 @@ void MenuScene::init()
     highscores = ScoreTable("scores.dat");
 
     // Play music
-    asw::sound::playMusic(music_mainmenu);
+    asw::sound::play_music(music_mainmenu);
 
     // Setup particle emitter
     asw::ParticleConfig config;
-    config.lifetimeMin = 0.5F;
-    config.lifetimeMax = 2.0F;
-    config.speedMin = 5.0F;
-    config.speedMax = 50.0F;
-    config.colorStart = { 255, 200, 50, 255 };
-    config.colorEnd = { 255, 50, 0, 0 };
-    config.sizeStart = 6.0F;
-    config.sizeEnd = 1.0F;
+    config.lifetime_min = 0.5F;
+    config.lifetime_max = 2.0F;
+    config.speed_min = 5.0F;
+    config.speed_max = 50.0F;
+    config.color_start = { 255, 200, 50, 255 };
+    config.color_end = { 255, 50, 0, 0 };
+    config.size_start = 6.0F;
+    config.size_end = 1.0F;
     config.gravity = { 0.0F, 0.1F };
 
     // Create emitter in a scene
     emitter = asw::ParticleEmitter(config, 512);
-    emitter.setEmissionRate(0.0F);
+    emitter.set_emission_rate(0.0F);
     emitter.start();
 }
 
@@ -143,7 +143,7 @@ void MenuScene::update(float deltaTime)
 
     animation_ticker += startClicked ? -deltaTime : deltaTime;
     auto t = std::clamp(animation_ticker / ANIMATION_DURATION, 0.0F, 1.0F);
-    auto ease_func = startClicked ? easeInExpo : easeOutElastic;
+    auto ease_func = startClicked ? ease_in_expo : ease_out_elastic;
 
     // Animation
     title.transform.position.y = ease(-100.0F, 20.0F, t, ease_func);
@@ -157,20 +157,30 @@ void MenuScene::update(float deltaTime)
 
     // Start the game
     if (startClicked && t <= 0.01F) {
-        sceneManager.setNextScene(Scenes::Game);
+        manager.set_next_scene(Scenes::Game);
+    }
+
+    // Exit menus
+    if (mini_screen == MINISTATE_TUTORIAL || mini_screen == MINISTATE_CREDITS
+        || mini_screen == MINISTATE_CONTROLS || mini_screen == MINISTATE_SCORES) {
+        if (asw::input::keyboard.any_pressed
+            || asw::input::get_mouse_button_down(asw::input::MouseButton::Left)
+            || asw::input::get_controller_button_down(0, asw::input::ControllerButton::A)) {
+            mini_screen = MINISTATE_MENU;
+        }
     }
 
     // Open submenu or start game
     if (mini_screen == MINISTATE_MENU) {
         // Start game with controller
-        if (asw::input::getControllerButtonDown(0, asw::input::ControllerButton::Start)
-            || asw::input::getControllerButtonDown(0, asw::input::ControllerButton::A)) {
+        if (asw::input::get_controller_button_down(0, asw::input::ControllerButton::Start)
+            || asw::input::get_controller_button_down(0, asw::input::ControllerButton::A)) {
             startClicked = true;
             animation_ticker = ANIMATION_DURATION;
         }
 
         // Buttons
-        if (asw::input::getMouseButtonDown(asw::input::MouseButton::Left)) {
+        if (asw::input::get_mouse_button_down(asw::input::MouseButton::Left)) {
             // Start game
             if (start.transform.contains(asw::input::mouse.position)) {
                 startClicked = true;
@@ -198,18 +208,10 @@ void MenuScene::update(float deltaTime)
             }
         }
     }
-    // Exit menus
-    else if (mini_screen == MINISTATE_TUTORIAL || mini_screen == MINISTATE_CREDITS
-        || mini_screen == MINISTATE_CONTROLS || mini_screen == MINISTATE_SCORES) {
-        if (asw::input::keyboard.anyPressed
-            || asw::input::getMouseButtonDown(asw::input::MouseButton::Left)
-            || asw::input::controller[0].anyPressed) {
-            mini_screen = MINISTATE_MENU;
-        }
-    }
+
     // Options
-    else if (mini_screen == MINISTATE_OPTIONS
-        && asw::input::getMouseButtonDown(asw::input::MouseButton::Left)) {
+    if (mini_screen == MINISTATE_OPTIONS
+        && asw::input::get_mouse_button_down(asw::input::MouseButton::Left)) {
         // Particles toggle
         if (ui_particle[0].transform.contains(asw::input::mouse.position)) {
             settings.cycleParticleType();
@@ -226,8 +228,8 @@ void MenuScene::update(float deltaTime)
             settings.cycleMusic();
             settings.save();
             settings.applyAudio();
-            if (settings.music && !asw::sound::isMusicPlaying()) {
-                asw::sound::playMusic(music_mainmenu);
+            if (settings.music && !asw::sound::is_music_playing()) {
+                asw::sound::play_music(music_mainmenu);
             }
         }
         // Fullscreen toggle
@@ -257,15 +259,10 @@ void MenuScene::update(float deltaTime)
     }
 
     // Update mouse particles
-    if (settings.particlesEnabled() && asw::input::mouse.yChange < 0) {
-        emitter.setEmissionRate(200.0F);
+    if (settings.particlesEnabled() && asw::input::mouse.change.y < 0) {
+        emitter.set_emission_rate(200.0F);
     } else {
-        emitter.setEmissionRate(0.0F);
-    }
-
-    // Close game
-    if (asw::input::getKeyDown(asw::input::Key::Escape)) {
-        asw::core::exit = true;
+        emitter.set_emission_rate(0.0F);
     }
 
     // Update emitter
@@ -286,7 +283,7 @@ void MenuScene::draw()
     highscores_button.draw();
 
     // Joystick Mode
-    if (settings.controlMode != ControlMode::Keyboard && asw::input::getControllerCount() > 0) {
+    if (settings.controlMode != ControlMode::Keyboard && asw::input::get_controller_count() > 0) {
         xbox_start.draw();
     }
 
@@ -305,15 +302,16 @@ void MenuScene::draw()
         highscores_table.draw();
 
         // Title
-        asw::draw::textCenter(
-            orbitron_36, "Highscores", asw::Vec2<float>(400, 75), asw::Color(0, 0, 0));
+        asw::draw::text(orbitron_36, "Highscores", asw::Vec2<float>(400, 75), asw::Color(0, 0, 0),
+            asw::TextJustify::Center);
 
         // Read the top 10 scores
         for (int i = 0; i < 10; i++) {
             asw::draw::text(orbitron_24, std::to_string(highscores.getScore(i)),
                 asw::Vec2<float>(225, (i * 40) + 130), asw::Color(0, 0, 0));
-            asw::draw::textRight(orbitron_18, highscores.getName(i),
-                asw::Vec2<float>(575, (i * 40) + 132), asw::Color(0, 0, 0));
+            asw::draw::text(orbitron_18, highscores.getName(i),
+                asw::Vec2<float>(575, (i * 40) + 132), asw::Color(0, 0, 0),
+                asw::TextJustify::Right);
         }
     }
     // Tutorial screen
@@ -357,7 +355,7 @@ void MenuScene::draw()
     // Debug
     if (settings.debug) {
         // Joystick testing
-        if (asw::input::getControllerCount() > 0) {
+        if (asw::input::get_controller_count() > 0) {
             for (auto i = 0; i < asw::input::controller[0].down.size(); i++) {
                 asw::draw::text(orbitron_12,
                     std::format("Joystick {}: {}", i, asw::input::controller[0].down[i]),

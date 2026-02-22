@@ -4,15 +4,15 @@
 void InitScene::init()
 {
     // Title
-    asw::display::setTitle("A.D.S. Games - Robot Flier");
+    asw::display::set_title("A.D.S. Games - Robot Flier");
 
     // Icon
-    asw::display::setIcon("assets/icon.ico");
+    asw::display::set_icon("assets/icon.ico");
 
     // Loads fonts
-    orbitron_12 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 12);
-    orbitron_18 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 18);
-    orbitron_24 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 24);
-    orbitron_30 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 30);
-    orbitron_36 = asw::assets::loadFont("assets/fonts/orbitron_ttf.ttf", 36);
+    orbitron_12 = asw::assets::load_font("assets/fonts/orbitron_ttf.ttf", 12);
+    orbitron_18 = asw::assets::load_font("assets/fonts/orbitron_ttf.ttf", 18);
+    orbitron_24 = asw::assets::load_font("assets/fonts/orbitron_ttf.ttf", 24);
+    orbitron_30 = asw::assets::load_font("assets/fonts/orbitron_ttf.ttf", 30);
+    orbitron_36 = asw::assets::load_font("assets/fonts/orbitron_ttf.ttf", 36);
 }

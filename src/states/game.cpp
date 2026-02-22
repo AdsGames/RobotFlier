@@ -31,28 +31,28 @@ void GameScene::init()
     }
 
     // Sounds
-    sound_bomb = loadSample("assets/audio/sound_bomb.wav");
-    sound_orb = loadSample("assets/audio/sound_orb.wav");
-    sound_asteroid = loadSample("assets/audio/sound_asteroid.wav");
-    sound_magnet = loadSample("assets/audio/sound_magnet.wav");
-    sound_star = loadSample("assets/audio/sound_star.wav");
-    sound_snap = loadSample("assets/audio/sound_snap.wav");
+    sound_bomb = load_sample("assets/audio/sound_bomb.wav");
+    sound_orb = load_sample("assets/audio/sound_orb.wav");
+    sound_asteroid = load_sample("assets/audio/sound_asteroid.wav");
+    sound_magnet = load_sample("assets/audio/sound_magnet.wav");
+    sound_star = load_sample("assets/audio/sound_star.wav");
+    sound_snap = load_sample("assets/audio/sound_snap.wav");
 
     // Music
-    music_death = loadMusic("assets/audio/music_death.ogg");
-    music_ingame = loadMusic("assets/audio/music_ingame.ogg");
+    music_death = load_music("assets/audio/music_death.ogg");
+    music_ingame = load_music("assets/audio/music_ingame.ogg");
 
     // Images
     // Gui
-    pauseMenu = loadTexture("assets/images/gui/pauseMenu.png");
-    ui_game_end = loadTexture("assets/images/gui/ui_game_end.png");
-    ui_a = loadTexture("assets/images/gui/ui_a.png");
-    ui_b = loadTexture("assets/images/gui/ui_b.png");
-    ui_up = loadTexture("assets/images/gui/ui_up.png");
-    debug = loadTexture("assets/images/gui/debug.png");
+    pauseMenu = load_texture("assets/images/gui/pauseMenu.png");
+    ui_game_end = load_texture("assets/images/gui/ui_game_end.png");
+    ui_a = load_texture("assets/images/gui/ui_a.png");
+    ui_b = load_texture("assets/images/gui/ui_b.png");
+    ui_up = load_texture("assets/images/gui/ui_up.png");
+    debug = load_texture("assets/images/gui/debug.png");
 
     // Background
-    space = loadTexture("assets/images/backgrounds/space.png");
+    space = load_texture("assets/images/backgrounds/space.png");
 
     // Nullfiy bitmaps not loaded yet
     screenshot = nullptr;
@@ -62,19 +62,19 @@ void GameScene::init()
     groundUnderlay = nullptr;
 
     // Objects
-    cometImage = loadTexture("assets/images/objects/comet.png");
-    powerStar = loadTexture("assets/images/objects/powerStar.png");
-    powerMagnet[0] = loadTexture("assets/images/objects/powerMagnet.png");
-    powerMagnet[1] = loadTexture("assets/images/objects/powerMagnetTwo.png");
-    powerMagnet[2] = loadTexture("assets/images/objects/powerMagnetThree.png");
-    powerMagnet[3] = loadTexture("assets/images/objects/powerMagnetFour.png");
+    cometImage = load_texture("assets/images/objects/comet.png");
+    powerStar = load_texture("assets/images/objects/powerStar.png");
+    powerMagnet[0] = load_texture("assets/images/objects/powerMagnet.png");
+    powerMagnet[1] = load_texture("assets/images/objects/powerMagnetTwo.png");
+    powerMagnet[2] = load_texture("assets/images/objects/powerMagnetThree.png");
+    powerMagnet[3] = load_texture("assets/images/objects/powerMagnetFour.png");
 
     if (settings.christmas) {
-        energyImage = loadTexture("assets/images/objects/energy_christmas.png");
-        bombImage = loadTexture("assets/images/objects/bomb_christmas.png");
+        energyImage = load_texture("assets/images/objects/energy_christmas.png");
+        bombImage = load_texture("assets/images/objects/bomb_christmas.png");
     } else {
-        energyImage = loadTexture("assets/images/objects/energy.png");
-        bombImage = loadTexture("assets/images/objects/bomb.png");
+        energyImage = load_texture("assets/images/objects/energy.png");
+        bombImage = load_texture("assets/images/objects/bomb.png");
     }
 
     // Sets the level to 1
@@ -87,7 +87,7 @@ void GameScene::init()
     highscores = ScoreTable("scores.dat");
 
     // Play music
-    asw::sound::playMusic(music_ingame);
+    asw::sound::play_music(music_ingame);
 }
 
 // Themes
@@ -110,14 +110,14 @@ void GameScene::changeTheme(int theme)
     themeNumber = theme;
 
     // Replace textures
-    groundOverlay = loadTexture("assets/images/ground/groundOverlay_" + themeName + ".png");
-    groundUnderlay = loadTexture("assets/images/ground/groundUnderlay_" + themeName + ".png");
-    parallaxBack = loadTexture("assets/images/ground/paralax_" + themeName + ".png");
+    groundOverlay = load_texture("assets/images/ground/groundOverlay_" + themeName + ".png");
+    groundUnderlay = load_texture("assets/images/ground/groundUnderlay_" + themeName + ".png");
+    parallaxBack = load_texture("assets/images/ground/paralax_" + themeName + ".png");
 
     if (settings.christmas) {
-        asteroidImage = loadTexture("assets/images/objects/asteroid_christmas.png");
+        asteroidImage = load_texture("assets/images/objects/asteroid_christmas.png");
     } else {
-        asteroidImage = loadTexture("assets/images/objects/asteroid_" + themeName + ".png");
+        asteroidImage = load_texture("assets/images/objects/asteroid_" + themeName + ".png");
     }
 }
 
@@ -139,8 +139,8 @@ void GameScene::update(float deltaTime)
 
         // If its different he died play music
         if (hectarAlive != hectar.isAlive()) {
-            asw::sound::stopMusic();
-            asw::sound::playMusic(music_death);
+            asw::sound::stop_music();
+            asw::sound::play_music(music_death);
         }
 
         // Add to distance travelled
@@ -218,9 +218,9 @@ void GameScene::update(float deltaTime)
         // Lose scripts
         if (hectar.isOnGround()) {
             // Name input
-            if (score > highscores.getScore(9) && asw::input::keyboard.anyPressed) {
+            if (score > highscores.getScore(9) && asw::input::keyboard.any_pressed) {
                 // Last key pressed
-                int newkey = asw::input::keyboard.lastPressed;
+                int newkey = asw::input::keyboard.last_pressed;
 
                 // Letters
                 if (newkey >= SDL_SCANCODE_A && newkey <= SDL_SCANCODE_Z
@@ -246,16 +246,16 @@ void GameScene::update(float deltaTime)
                 }
             }
 
-            if (getKey(Key::Return) || getControllerButton(0, ControllerButton::Start)
-                || getControllerButton(0, ControllerButton::A)) {
+            if (get_key(Key::Return) || get_controller_button(0, ControllerButton::Start)
+                || get_controller_button(0, ControllerButton::A)) {
                 highscores.add(edittext, score);
-                sceneManager.setNextScene(Scenes::Menu);
+                manager.set_next_scene(Scenes::Menu);
             }
         }
     }
 
     // Screenshot
-    if (getKeyDown(Key::F11) || getControllerButtonDown(0, ControllerButton::Y)) {
+    if (get_key_down(Key::F11) || get_controller_button_down(0, ControllerButton::Y)) {
         // Count screenshots
         int screenshotNumber;
 
@@ -295,22 +295,22 @@ void GameScene::update(float deltaTime)
 
     // Random test stuff for devs
     if (settings.debug) {
-        if (getKey(Key::R)) {
+        if (get_key(Key::R)) {
             score += 10;
         }
 
-        if (getKey(Key::E) || getControllerButton(0, ControllerButton::B)) {
+        if (get_key(Key::E) || get_controller_button(0, ControllerButton::B)) {
             hectar.addHealth(1);
         }
 
-        if (getKey(Key::T)) {
+        if (get_key(Key::T)) {
             hectar.addHealth(-100);
         }
     }
 
     // Pause loop code
-    if (getKeyDown(Key::Escape) || getMouseButtonDown(MouseButton::Right) || getKeyDown(Key::Space)
-        || getControllerButtonDown(0, ControllerButton::Start)) {
+    if (get_key_down(Key::Escape) || get_mouse_button_down(MouseButton::Right)
+        || get_key_down(Key::Space) || get_controller_button_down(0, ControllerButton::Start)) {
         if (paused) {
             paused = false;
         } else if (hectar.isAlive()) {
@@ -324,7 +324,7 @@ void GameScene::update(float deltaTime)
         const auto& menuQuad = asw::Quad<float>(300, 435, 130, 25);
         const auto& resumeQuad = asw::Quad<float>(470, 435, 70, 25);
 
-        if (getMouseButtonDown(MouseButton::Left)) {
+        if (get_mouse_button_down(MouseButton::Left)) {
             // Quit game
             if (quitQuad.contains(mouse.position)) {
                 asw::core::exit = true;
@@ -332,7 +332,7 @@ void GameScene::update(float deltaTime)
 
             // Menu
             if (menuQuad.contains(mouse.position)) {
-                sceneManager.setNextScene(Scenes::Menu);
+                manager.set_next_scene(Scenes::Menu);
             }
 
             // Resume
@@ -348,53 +348,46 @@ void GameScene::gameTick()
 {
     // Energy ball spawning
     if (asw::random::chance(0.08F)) {
-        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30, 550));
+        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30.0F, 550.0F));
         energys.emplace_back(energyImage, sound_orb, position);
     }
 
     // Asteroids spawning
-    if (score >= 100 && asw::random::chance(0.04F)) {
-        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30, 400));
+    if (score >= 50 && asw::random::chance(0.04F)) {
+        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30.0F, 400.0F));
         debries.emplace_back(
-            asteroidImage, sound_asteroid, position, 5, 1.0f, 0.0f, asw::random::between(4, 20));
+            asteroidImage, sound_asteroid, position, 5, 1.0F, 0.0F, asw::random::between(4, 20));
     }
 
     // Bomb spawning
-    if (score >= 200 && asw::random::chance(0.1F)) {
-        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30, 550));
-        debries.emplace_back(bombImage, sound_bomb, position, 10, 1.0f, 0.01f);
+    if (score >= 150 && asw::random::chance(0.1F)) {
+        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30.0F, 550.0F));
+        debries.emplace_back(bombImage, sound_bomb, position, 10, 1.0F, 0.01F);
     }
 
     // Comets spawning
     if (score >= 300 && asw::random::chance(0.05F)) {
-        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30, 550));
-        debries.emplace_back(cometImage, sound_asteroid, position, 5, 1.4f, 0.01f);
+        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30.0F, 550.0F));
+        debries.emplace_back(cometImage, sound_asteroid, position, 5, 1.4F, 0.01F);
     }
 
     // Powerup spawning
-    if (score >= 100 && asw::random::chance(0.033F)) {
-        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
-        powerups.emplace_back(powerStar, sound_star, position, 500, 1);
+    if (score >= 100 && asw::random::chance(0.01F)) {
+        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30.0F, 600.0F));
+        powerups.emplace_back(powerStar, sound_star, position, 5.0F, 1);
     }
 
-    if (score >= 100 && asw::random::chance(0.02F)) {
-        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
-        powerups.emplace_back(powerMagnet[0], sound_magnet, position, 500, 10);
-    }
-
-    if (score >= 200 && asw::random::chance(0.1F)) {
-        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
-        powerups.emplace_back(powerMagnet[1], sound_magnet, position, 750, 11);
-    }
-
-    if (score >= 300 && asw::random::chance(0.05F)) {
-        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
-        powerups.emplace_back(powerMagnet[2], sound_magnet, position, 1000, 12);
-    }
-
-    if (score >= 500 && asw::random::chance(0.01F)) {
-        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30, 600));
-        powerups.emplace_back(powerMagnet[3], sound_magnet, position, 1500, 13);
+    if (asw::random::chance(0.02F)) {
+        const auto position = asw::Vec2<float>(SCREEN_W, asw::random::between(30.0F, 600.0F));
+        if (score >= 500) {
+            powerups.emplace_back(powerMagnet[3], sound_magnet, position, 15.0F, 13);
+        } else if (score >= 300) {
+            powerups.emplace_back(powerMagnet[2], sound_magnet, position, 10.0F, 12);
+        } else if (score >= 200) {
+            powerups.emplace_back(powerMagnet[1], sound_magnet, position, 7.5F, 11);
+        } else if (score >= 100) {
+            powerups.emplace_back(powerMagnet[0], sound_magnet, position, 5.0F, 10);
+        }
     }
 }
 
@@ -420,25 +413,25 @@ void GameScene::draw()
     auto healthColor = asw::Color(255, 0, 0);
     healthColor.r -= static_cast<int>(healthFloat * 2.5F);
     healthColor.g += static_cast<int>(healthFloat * 2.5F);
-    asw::draw::rectFill(asw::Quad<float>(10.0F, 68.0F, healthFloat * 1.7F, 10.0F), healthColor);
+    asw::draw::rect_fill(asw::Quad<float>(10.0F, 68.0F, healthFloat * 1.7F, 10.0F), healthColor);
 
     // Power up timers
     if (hectar.isInvincible()) {
-        asw::draw::circleFill(asw::Vec2<float>(45, 105), 20, asw::Color(255, 255, 255));
+        asw::draw::circle_fill(asw::Vec2<float>(45, 105), 20, asw::Color(255, 255, 255));
         asw::draw::sprite(powerStar, asw::Vec2<float>(20, 80));
-        asw::draw::textCenter(orbitron_24, std::format("{}", hectar.getInvincibleTimer() / 5),
-            asw::Vec2<float>(44, 94), asw::Color(255, 255, 255));
-        asw::draw::textCenter(orbitron_24, std::format("{}", hectar.getInvincibleTimer() / 5),
-            asw::Vec2<float>(45, 96), asw::Color(255, 0, 0));
+        asw::draw::text(orbitron_24, std::format("{:.0f}", hectar.getInvincibleTimer()),
+            asw::Vec2<float>(44, 94), asw::Color(255, 255, 255), asw::TextJustify::Center);
+        asw::draw::text(orbitron_24, std::format("{:.0f}", hectar.getInvincibleTimer()),
+            asw::Vec2<float>(45, 96), asw::Color(255, 0, 0), asw::TextJustify::Center);
     }
 
     if (hectar.isMagnetic()) {
-        asw::draw::circleFill(asw::Vec2<float>(175, 105), 20, asw::Color(255, 255, 255));
+        asw::draw::circle_fill(asw::Vec2<float>(175, 105), 20, asw::Color(255, 255, 255));
         asw::draw::sprite(powerMagnet[0], asw::Vec2<float>(150, 80));
-        asw::draw::textCenter(orbitron_24, std::format("{}", hectar.getMagneticTimer() / 5),
-            asw::Vec2<float>(174, 94), asw::Color(255, 255, 255));
-        asw::draw::textCenter(orbitron_24, std::format("{}", hectar.getMagneticTimer() / 5),
-            asw::Vec2<float>(175, 96), asw::Color(255, 0, 0));
+        asw::draw::text(orbitron_24, std::format("{:.0f}", hectar.getMagneticTimer()),
+            asw::Vec2<float>(174, 94), asw::Color(255, 255, 255), asw::TextJustify::Center);
+        asw::draw::text(orbitron_24, std::format("{:.0f}", hectar.getMagneticTimer()),
+            asw::Vec2<float>(175, 96), asw::Color(255, 0, 0), asw::TextJustify::Center);
     }
 
     // Draw the debug window
@@ -483,7 +476,7 @@ void GameScene::draw()
             asw::Vec2<float>(245, 65), asw::Color(255, 255, 255));
 
         // Column 4
-        asw::draw::text(orbitron_12, std::format("Last key:{}", keyboard.lastPressed),
+        asw::draw::text(orbitron_12, std::format("Last key:{}", keyboard.last_pressed),
             asw::Vec2<float>(360, 25), asw::Color(255, 255, 255));
         asw::draw::text(orbitron_12,
             std::format("Has highscore:{}", score > highscores.getScore(9)),
@@ -521,20 +514,20 @@ void GameScene::draw()
 
     // Start arrow
     if (!hectar.hasBegun()) {
-        if (asw::input::getControllerCount() > 0) {
+        if (asw::input::get_controller_count() > 0) {
             asw::draw::sprite(ui_a,
                 hectar.getTransform().position
-                    + asw::Vec2<float>(15, -60 - sinf(arrow_animation) * 10));
+                    + asw::Vec2<float>(15, -60 - (sinf(arrow_animation) * 10)));
         } else {
             asw::draw::sprite(ui_up,
                 hectar.getTransform().position
-                    + asw::Vec2<float>(15, -70 - sinf(arrow_animation) * 10));
+                    + asw::Vec2<float>(15, -70 - (sinf(arrow_animation) * 10)));
         }
     }
 
     // Debris
-    for (unsigned int i = 0; i < debries.size(); i++) {
-        debries.at(i).draw();
+    for (auto& debris : debries) {
+        debris.draw();
     }
 
     // Ground underlay
@@ -563,13 +556,13 @@ void GameScene::draw()
 
         if (score > highscores.getScore(9)) {
             // Input rectangle
-            asw::draw::rectFill(
+            asw::draw::rect_fill(
                 asw::Quad<float>(
-                    120, 388, asw::util::getTextSize(orbitron_24, edittext.c_str()).x + 18, 44),
+                    120, 388, asw::util::get_text_size(orbitron_24, edittext.c_str()).x + 18, 44),
                 asw::Color(0, 0, 0));
-            asw::draw::rectFill(
+            asw::draw::rect_fill(
                 asw::Quad<float>(
-                    122, 390, asw::util::getTextSize(orbitron_24, edittext.c_str()).x + 14, 40),
+                    122, 390, asw::util::get_text_size(orbitron_24, edittext.c_str()).x + 14, 40),
                 asw::Color(255, 255, 255));
 
             // Textbox lable
@@ -583,13 +576,13 @@ void GameScene::draw()
             // Draw the caret
             asw::draw::line(
                 asw::Vec2<float>(
-                    asw::util::getTextSize(orbitron_24,
+                    asw::util::get_text_size(orbitron_24,
                         edittext.substr(0, std::distance(edittext.begin(), iter)).c_str())
                             .x
                         + 130,
                     392),
                 asw::Vec2<float>(
-                    asw::util::getTextSize(orbitron_24,
+                    asw::util::get_text_size(orbitron_24,
                         edittext.substr(0, std::distance(edittext.begin(), iter)).c_str())
                             .x
                         + 130,

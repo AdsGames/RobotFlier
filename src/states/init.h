@@ -20,6 +20,6 @@ public:
 
     void update(float deltaTime) override
     {
-        sceneManager.setNextScene(Scenes::Intro);
+        manager.set_next_scene(Scenes::Intro);
     }
 };

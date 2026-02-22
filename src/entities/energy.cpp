@@ -45,6 +45,6 @@ void Energy::draw()
 // Move towards robot
 void Energy::moveTowards(const asw::Vec2<float>& target, const float speed)
 {
-    transform.position.x += (speed * (target.x - transform.position.x)) / 20000;
-    transform.position.y += (speed * (target.y - transform.position.y)) / 20000;
+    transform.position.x += (speed * (target.x - transform.position.x)) / 200.0F;
+    transform.position.y += (speed * (target.y - transform.position.y)) / 200.0F;
 }

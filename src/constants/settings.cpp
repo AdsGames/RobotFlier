@@ -56,18 +56,18 @@ void Settings::parseArgs(int argc, char* argv[])
 
 void Settings::applyAudio() const
 {
-    asw::sound::setSfxVolume(sound ? 1 : 0);
+    asw::sound::set_sfx_volume(sound ? 1 : 0);
     if (music) {
-        asw::sound::setMusicVolume(1);
+        asw::sound::set_music_volume(1);
     } else {
-        asw::sound::setMusicVolume(0);
-        asw::sound::stopMusic();
+        asw::sound::set_music_volume(0);
+        asw::sound::stop_music();
     }
 }
 
 void Settings::applyFullscreen() const
 {
-    asw::display::setFullscreen(fullscreen);
+    asw::display::set_fullscreen(fullscreen);
 }
 
 void Settings::apply() const

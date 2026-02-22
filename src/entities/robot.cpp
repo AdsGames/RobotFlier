@@ -15,14 +15,14 @@ Robot::Robot(const asw::Vec2<float>& position)
 
     // Emitters
     asw::ParticleConfig config_rocket;
-    config_rocket.lifetimeMin = 0.2F;
-    config_rocket.lifetimeMax = 0.5F;
-    config_rocket.speedMin = 1.0F;
-    config_rocket.speedMax = 10.0F;
-    config_rocket.colorStart = { 255, 200, 50, 255 };
-    config_rocket.colorEnd = { 255, 50, 0, 0 };
-    config_rocket.sizeStart = 6.0F;
-    config_rocket.sizeEnd = 1.0F;
+    config_rocket.lifetime_min = 0.2F;
+    config_rocket.lifetime_max = 0.5F;
+    config_rocket.speed_min = 1.0F;
+    config_rocket.speed_max = 10.0F;
+    config_rocket.color_start = { 255, 200, 50, 255 };
+    config_rocket.color_end = { 255, 50, 0, 0 };
+    config_rocket.size_start = 6.0F;
+    config_rocket.size_end = 1.0F;
     config_rocket.gravity = { 0.0F, 0.2F };
 
     emitter_left = asw::ParticleEmitter(config_rocket);
@@ -33,31 +33,31 @@ Robot::Robot(const asw::Vec2<float>& position)
 
     // Smoke emitter
     asw::ParticleConfig config_smoke;
-    config_smoke.lifetimeMin = 1.0F;
-    config_smoke.lifetimeMax = 20.0F;
-    config_smoke.speedMin = 0.5F;
-    config_smoke.speedMax = 1.5F;
-    config_smoke.colorStart = { 255, 255, 255, 200 };
-    config_smoke.colorEnd = { 255, 255, 255, 0 };
-    config_smoke.sizeStart = 5.0F;
-    config_smoke.sizeEnd = 20.0F;
+    config_smoke.lifetime_min = 1.0F;
+    config_smoke.lifetime_max = 20.0F;
+    config_smoke.speed_min = 0.5F;
+    config_smoke.speed_max = 1.5F;
+    config_smoke.color_start = { 255, 255, 255, 200 };
+    config_smoke.color_end = { 255, 255, 255, 0 };
+    config_smoke.size_start = 5.0F;
+    config_smoke.size_end = 20.0F;
     config_smoke.gravity = { 0.0F, -0.02F };
 
     emitter_smoke = asw::ParticleEmitter(config_smoke, 512);
     emitter_smoke.start();
 
     // Images
-    mainRobot = asw::assets::loadTexture("assets/images/robot/robot.png");
-    robotFire = asw::assets::loadTexture("assets/images/robot/robotfire.png");
-    robotInvincible = asw::assets::loadTexture("assets/images/robot/robotInvincible.png");
-    robotInvincibleFire = asw::assets::loadTexture("assets/images/robot/robotInvincibleFire.png");
-    robotInvincibleTop = asw::assets::loadTexture("assets/images/robot/robotInvincibleTop.png");
-    robotDie = asw::assets::loadTexture("assets/images/robot/robotDie.png");
-    christmasHat = asw::assets::loadTexture("assets/images/robot/christmas_hat.png");
+    mainRobot = asw::assets::load_texture("assets/images/robot/robot.png");
+    robotFire = asw::assets::load_texture("assets/images/robot/robotfire.png");
+    robotInvincible = asw::assets::load_texture("assets/images/robot/robotInvincible.png");
+    robotInvincibleFire = asw::assets::load_texture("assets/images/robot/robotInvincibleFire.png");
+    robotInvincibleTop = asw::assets::load_texture("assets/images/robot/robotInvincibleTop.png");
+    robotDie = asw::assets::load_texture("assets/images/robot/robotDie.png");
+    christmasHat = asw::assets::load_texture("assets/images/robot/christmas_hat.png");
 
     // Sounds
-    soundFlame = asw::assets::loadSample("assets/audio/sound_flame.wav");
-    soundHitground = asw::assets::loadSample("assets/audio/sound_hitground.wav");
+    soundFlame = asw::assets::load_sample("assets/audio/sound_flame.wav");
+    soundHitground = asw::assets::load_sample("assets/audio/sound_hitground.wav");
 }
 
 // Update
@@ -95,25 +95,25 @@ void Robot::logic(float deltaTime)
     // Death smoke
     if (settings.particlesEnabled() && !alive) {
         emitter_smoke.emit(100);
-        emitter_smoke.setEmissionRate(100.0F);
+        emitter_smoke.set_emission_rate(100.0F);
     }
 
     // Rocket particles
     if (settings.particlesEnabled() && rocket) {
-        emitter_left.setEmissionRate(50.0F);
-        emitter_right.setEmissionRate(50.0F);
+        emitter_left.set_emission_rate(50.0F);
+        emitter_right.set_emission_rate(50.0F);
     } else {
-        emitter_left.setEmissionRate(0.0F);
-        emitter_right.setEmissionRate(0.0F);
+        emitter_left.set_emission_rate(0.0F);
+        emitter_right.set_emission_rate(0.0F);
     }
 
     // Moving controls
     if (alive) {
         // Controls movement up and down
-        if ((asw::input::getKey(asw::input::Key::W) || asw::input::getKey(asw::input::Key::Up)
-                || asw::input::getMouseButton(asw::input::MouseButton::Left))
-            || asw::input::getControllerButton(0, asw::input::ControllerButton::A)
-            || asw::input::getControllerButton(0, asw::input::ControllerButton::LeftPaddle1)) {
+        if ((asw::input::get_key(asw::input::Key::W) || asw::input::get_key(asw::input::Key::Up)
+                || asw::input::get_mouse_button(asw::input::MouseButton::Left))
+            || asw::input::get_controller_button(0, asw::input::ControllerButton::A)
+            || asw::input::get_controller_button(0, asw::input::ControllerButton::LeftPaddle1)) {
             keyPressed = true;
 
             if (asw::random::chance(0.2F)) {

@@ -24,11 +24,11 @@ int main(int argc, char* argv[])
 
     // Starts Game
     auto app = asw::scene::SceneManager<Scenes>();
-    app.registerScene<InitScene>(Scenes::Init, app);
-    app.registerScene<IntroScene>(Scenes::Intro, app);
-    app.registerScene<MenuScene>(Scenes::Menu, app);
-    app.registerScene<GameScene>(Scenes::Game, app);
-    app.setNextScene(Scenes::Init);
+    app.register_scene<InitScene>(Scenes::Init, app);
+    app.register_scene<IntroScene>(Scenes::Intro, app);
+    app.register_scene<MenuScene>(Scenes::Menu, app);
+    app.register_scene<GameScene>(Scenes::Game, app);
+    app.set_next_scene(Scenes::Init);
     app.start();
 
     return 0;
