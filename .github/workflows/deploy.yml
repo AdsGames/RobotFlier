@@ -79,6 +79,7 @@ jobs:
   deploy-binary:
     name: Deploy Binary
     strategy:
+      fail-fast: false
       matrix:
         platform:
           - system: windows-2022
