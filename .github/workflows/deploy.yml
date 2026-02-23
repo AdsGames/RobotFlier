@@ -21,72 +21,19 @@ concurrency:
 
 jobs:
   deploy:
-    name: Deploy Web
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup cache
-        uses: actions/cache@v4
-        with:
-          path: "./build/release/_deps"
-          key: deps-${{ runner.os }}
-
-      - uses: mymindstorm/setup-emsdk@v14
-        with:
-          version: 4.0.6
-          actions-cache-folder: "emsdk-cache"
-
-      - name: Configure
-        run: emcmake cmake --preset release
-
-      - name: Build
-        run: cmake --build --preset release
-
-      - name: Get the version
-        id: get_version
-        run: echo "VERSION=$(git describe --tags --always)" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./build/release/target/
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-      - name: Deploy to A.D.S. Games
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: adsgames/deploy-to-adsgames@v1
-        with:
-          project-id: robotflier
-          build-dir: ./build/release/target/
-          platform: WEB
-          bucket-access-key: ${{ secrets.LINODE_BUCKET_ACCESS_KEY }}
-          bucket-secret-key: ${{ secrets.LINODE_BUCKET_SECRET_KEY }}
-          api-key: ${{ secrets.ADSGAMES_API_KEY }}
-
-  deploy-binary:
     name: Deploy Binary
     strategy:
       fail-fast: false
       matrix:
         platform:
           - runs_on: windows-2022
-            cpack_type: Windows
-            release_type: WINDOWS
+            platform: WINDOWS
           - runs_on: ubuntu-24.04
-            cpack_type: Linux
-            release_type: LINUX
+            platform: LINUX
           - runs_on: macos-15
-            cpack_type: Darwin
-            release_type: MACOS
+            platform: MACOS
+          - runs_on: ubuntu-24.04
+            platform: WEB
 
     runs-on: ${{ matrix.platform.runs_on }}
     steps:
@@ -99,14 +46,18 @@ jobs:
         uses: actions/cache@v4
         with:
           path: "./build/release/_deps"
-          key: deps-binary-${{ runner.os }}
+          key: deps-${{ runner.os }}
 
       - name: Get the version
         id: get_version
         run: echo "VERSION=$(git describe --tags --always)" >> "$GITHUB_OUTPUT"
 
-        # Core SDL dependencies for Linux.
-        # freetype and harfbuzz are required from SDL3_ttf, and the rest are required from SDL3.
+      - uses: mymindstorm/setup-emsdk@v14
+        if: matrix.platform.platform == 'WEB'
+        with:
+          version: 4.0.6
+          actions-cache-folder: "emsdk-cache"
+
       - name: Install linux packages
         if: matrix.platform.runs_on == 'ubuntu-24.04'
         run: |
@@ -118,20 +69,16 @@ jobs:
             libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev \
             libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev libthai-dev libpipewire-0.3-dev libdecor-0-dev
 
-      - name: Configure
+      - name: Configure for Native
+        if: matrix.platform.platform != 'WEB'
         run: cmake --preset release -DPROJECT_VERSION="3.0.0"
 
-      - name: Build and Package
-        run: cmake --build --preset release --target package
+      - name: Configure for Web
+        if: matrix.platform.platform == 'WEB'
+        run: emcmake cmake --preset release -DPROJECT_VERSION="3.0.0"
 
-      - name: Upload Release Asset
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./build/release/RobotFlier-${{ matrix.platform.type }}-3.0.0.zip
-          asset_name: RobotFlier-${{ matrix.platform.cpack_type }}-v3.0.0.zip
-          asset_content_type: application/zip
+      - name: Build
+        run: cmake --build --preset release
 
       - name: Deploy to A.D.S. Games
         if: startsWith(github.ref, 'refs/tags/v')
@@ -139,7 +86,17 @@ jobs:
         with:
           project-id: robotflier
           build-dir: ./build/release/target/
-          platform: ${{ matrix.platform.release_type }}
+          platform: ${{ matrix.platform.platform }}
           bucket-access-key: ${{ secrets.LINODE_BUCKET_ACCESS_KEY }}
           bucket-secret-key: ${{ secrets.LINODE_BUCKET_SECRET_KEY }}
           api-key: ${{ secrets.ADSGAMES_API_KEY }}
+
+      - uses: actions/upload-pages-artifact@v3
+        if: matrix.platform.platform == 'WEB'
+        with:
+          path: ./build/release/target/
+
+      - name: Deploy to GitHub Pages
+        if: matrix.platform.platform == 'WEB'
+        id: deployment
+        uses: actions/deploy-pages@v4
