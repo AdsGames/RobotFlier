@@ -14,7 +14,7 @@ if (APPLE)
 endif()
 
 include(cmake/get_cpm.cmake)
-CPMAddPackage("gh:adsgames/asw#44c48b7ee3ea68aff5f8638a243fa81915fb49be")
+CPMAddPackage("gh:adsgames/asw#ef58f0ebd199f0e796887bd8ba5315e087cef3dd")
 
 # Source code
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
