@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   deploy:
-    name: Deploy Binary
+    name: Deploy
     strategy:
       fail-fast: false
       matrix:
@@ -46,7 +46,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: "./build/release/_deps"
-          key: deps-${{ runner.os }}
+          key: deps-${{ runner.os }}-${{ matrix.platform.platform }}-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: |
+            deps-${{ runner.os }}-${{ matrix.platform.platform }}-
+            deps-${{ runner.os }}-
 
       - name: Get the version
         id: get_version
