@@ -14,6 +14,8 @@ if (APPLE)
 endif()
 
 include(cmake/get_cpm.cmake)
+CPMAddPackage("gh:freetype/freetype#31db10d922e9a16c45d240cbdbdd73fe61f4ea7f")
+CPMAddPackage("gh:harfbuzz/harfbuzz@12.3.2")
 CPMAddPackage("gh:adsgames/asw#44c48b7ee3ea68aff5f8638a243fa81915fb49be")
 
 # Source code

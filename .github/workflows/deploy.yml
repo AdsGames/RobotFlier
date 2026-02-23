@@ -82,17 +82,17 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - system: windows-2022
+          - runs_on: windows-2022
             cpack_type: Windows
             release_type: WINDOWS
-          - system: ubuntu-24.04
+          - runs_on: ubuntu-24.04
             cpack_type: Linux
             release_type: LINUX
-          - system: macos-15
+          - runs_on: macos-15
             cpack_type: Darwin
             release_type: MACOS
 
-    runs-on: ${{ matrix.platform.system }}
+    runs-on: ${{ matrix.platform.runs_on }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -109,8 +109,10 @@ jobs:
         id: get_version
         run: echo "VERSION=$(git describe --tags --always)" >> "$GITHUB_OUTPUT"
 
+        # Core SDL dependencies for Linux.
+        # freetype and harfbuzz are required from SDL3_ttf, and the rest are required from SDL3.
       - name: Install linux packages
-        if: matrix.platform.system == 'ubuntu-24.04'
+        if: matrix.platform.runs_on == 'ubuntu-24.04'
         run: |
           sudo apt-get update
           sudo apt-get install --fix-missing -y \
