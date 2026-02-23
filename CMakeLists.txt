@@ -8,9 +8,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/target)
 
 project(RobotFlier VERSION ${PROJECT_VERSION} LANGUAGES CXX)
 
+# Set the architecture and deployment target for macOS.
 if (APPLE)
   set(CMAKE_OSX_ARCHITECTURES "arm64")
   set(CMAKE_OSX_DEPLOYMENT_TARGET "13.3")
+endif()
+
+# Must disable OpenGLES for CI to build windows.
+if (WIN32)
+  set(SDL_OPENGLES OFF)
 endif()
 
 include(cmake/get_cpm.cmake)
@@ -49,6 +55,7 @@ if(EMSCRIPTEN)
 
   target_link_options(${PROJECT_NAME} PRIVATE
     -sWASM=1
+    -sUSE_ZLIB=1
     -sALLOW_MEMORY_GROWTH=1
     -sMAXIMUM_MEMORY=1gb
     -sSTACK_SIZE=32mb
