@@ -2,28 +2,16 @@
 
 // Global variables
 int score;
-int screenshake;
+float screenshake;
 
-int fps      = 0;
-int SCREEN_W = 800;
-int SCREEN_H = 600;
+int fps = 0;
 
 // Data
-int stats[4];
-int settings[11];
-
-// Is the joystick enabled?
-bool joystick_enabled = false;
+std::array<int, 4> stats;
 
 // Fonts
-ALLEGRO_FONT* orbitron_12 = nullptr;
-ALLEGRO_FONT* orbitron_18 = nullptr;
-ALLEGRO_FONT* orbitron_24 = nullptr;
-ALLEGRO_FONT* orbitron_30 = nullptr;
-ALLEGRO_FONT* orbitron_36 = nullptr;
-
-// Current music
-ALLEGRO_SAMPLE_ID currentMusic;
-
-// Display
-ALLEGRO_DISPLAY* display = nullptr;
+asw::Font orbitron_12 = nullptr;
+asw::Font orbitron_18 = nullptr;
+asw::Font orbitron_24 = nullptr;
+asw::Font orbitron_30 = nullptr;
+asw::Font orbitron_36 = nullptr;
