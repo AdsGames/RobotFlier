@@ -137,11 +137,11 @@ void MenuScene::init()
 }
 
 // Update loop
-void MenuScene::update(float deltaTime)
+void MenuScene::update(float dt)
 {
     using namespace asw::easing;
 
-    animation_ticker += startClicked ? -deltaTime : deltaTime;
+    animation_ticker += startClicked ? -dt : dt;
     auto t = std::clamp(animation_ticker / ANIMATION_DURATION, 0.0F, 1.0F);
     auto ease_func = startClicked ? ease_in_expo : ease_out_elastic;
 
@@ -267,7 +267,7 @@ void MenuScene::update(float deltaTime)
 
     // Update emitter
     emitter.transform.position = asw::input::mouse.position;
-    emitter.update(deltaTime);
+    emitter.update(dt);
 }
 
 // Draw to screen

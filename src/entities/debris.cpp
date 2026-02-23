@@ -5,12 +5,11 @@
 // Constructor
 Debris::Debris(asw::Texture sprite, asw::Sample sound, const asw::Vec2<float>& position,
     const float damage, const float motionMultiplier, const float acceleration, const float size)
-    : asw::game::GameObject()
-    , motionMultiplier(motionMultiplier)
+    : motionMultiplier(motionMultiplier)
     , acceleration(acceleration)
     , damage(damage)
-    , sound(sound)
     , texture(sprite)
+    , sound(sound)
 {
     transform.position = position;
 
@@ -24,9 +23,9 @@ Debris::Debris(asw::Texture sprite, asw::Sample sound, const asw::Vec2<float>& p
 }
 
 // Logic
-void Debris::logic(const float motion, Robot* robot, const float deltaTime)
+void Debris::logic(const float motion, Robot* robot, const float dt)
 {
-    GameObject::update(deltaTime);
+    GameObject::update(dt);
 
     // Move across screen
     transform.position.x -= motion * motionMultiplier;

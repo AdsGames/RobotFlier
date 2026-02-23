@@ -22,10 +22,20 @@ concurrency:
 jobs:
   deploy:
     name: Deploy
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - runs_on: windows-2022
+            platform: WINDOWS
+          - runs_on: ubuntu-24.04
+            platform: LINUX
+          - runs_on: macos-15
+            platform: MACOS
+          - runs_on: ubuntu-24.04
+            platform: WEB
+
+    runs-on: ${{ matrix.platform.runs_on }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,34 +46,42 @@ jobs:
         uses: actions/cache@v4
         with:
           path: "./build/release/_deps"
-          key: deps-${{ runner.os }}
-
-      - uses: mymindstorm/setup-emsdk@v14
-        with:
-          version: 4.0.6
-          actions-cache-folder: "emsdk-cache"
-
-      - name: Download ports
-        run: |
-          embuilder build harfbuzz
-
-      - name: Configure
-        run: emcmake cmake --preset release
-
-      - name: Build
-        run: cmake --build --preset release
+          key: deps-${{ runner.os }}-${{ matrix.platform.platform }}-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: |
+            deps-${{ runner.os }}-${{ matrix.platform.platform }}-
+            deps-${{ runner.os }}-
 
       - name: Get the version
         id: get_version
         run: echo "VERSION=$(git describe --tags --always)" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: mymindstorm/setup-emsdk@v14
+        if: matrix.platform.platform == 'WEB'
         with:
-          path: ./build/release/target/
+          version: 4.0.6
+          actions-cache-folder: "emsdk-cache"
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Install linux packages
+        if: matrix.platform.runs_on == 'ubuntu-24.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --fix-missing -y \
+            cmake make ninja-build libasound2-dev libpulse-dev \
+            libaudio-dev libfribidi-dev libjack-dev libsndio-dev libusb-1.0-0-dev libx11-dev libxext-dev \
+            libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libxtst-dev libwayland-dev \
+            libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev \
+            libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev libthai-dev libpipewire-0.3-dev libdecor-0-dev
+
+      - name: Configure for Native
+        if: matrix.platform.platform != 'WEB'
+        run: cmake --preset release -DPROJECT_VERSION="3.0.0"
+
+      - name: Configure for Web
+        if: matrix.platform.platform == 'WEB'
+        run: emcmake cmake --preset release -DPROJECT_VERSION="3.0.0"
+
+      - name: Build
+        run: cmake --build --preset release
 
       - name: Deploy to A.D.S. Games
         if: startsWith(github.ref, 'refs/tags/v')
@@ -71,7 +89,17 @@ jobs:
         with:
           project-id: robotflier
           build-dir: ./build/release/target/
-          platform: WEB
+          platform: ${{ matrix.platform.platform }}
           bucket-access-key: ${{ secrets.LINODE_BUCKET_ACCESS_KEY }}
           bucket-secret-key: ${{ secrets.LINODE_BUCKET_SECRET_KEY }}
           api-key: ${{ secrets.ADSGAMES_API_KEY }}
+
+      - uses: actions/upload-pages-artifact@v3
+        if: matrix.platform.platform == 'WEB'
+        with:
+          path: ./build/release/target/
+
+      - name: Deploy to GitHub Pages
+        if: matrix.platform.platform == 'WEB'
+        id: deployment
+        uses: actions/deploy-pages@v4
