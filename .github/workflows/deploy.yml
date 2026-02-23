@@ -109,7 +109,7 @@ jobs:
         run: echo "VERSION=$(git describe --tags --always)" >> "$GITHUB_OUTPUT"
 
       - name: Configure
-        run: cmake --preset release -DPROJECT_VERSION="${{ steps.get_version.outputs.VERSION }}"
+        run: cmake --preset release -DPROJECT_VERSION="3.0.0"
 
       - name: Build and Package
         run: cmake --build --preset release --target package
@@ -119,8 +119,8 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./build/release/RobotFlier-${{ matrix.platform.type }}-${{ steps.get_version.outputs.VERSION }}.zip
-          asset_name: RobotFlier-${{ matrix.platform.cpack_type }}-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_path: ./build/release/RobotFlier-${{ matrix.platform.type }}-3.0.0.zip
+          asset_name: RobotFlier-${{ matrix.platform.cpack_type }}-v3.0.0.zip
           asset_content_type: application/zip
 
       - name: Deploy to A.D.S. Games
