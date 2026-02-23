@@ -5,12 +5,11 @@
 // Constructor
 Debris::Debris(asw::Texture sprite, asw::Sample sound, const asw::Vec2<float>& position,
     const float damage, const float motionMultiplier, const float acceleration, const float size)
-    : asw::game::GameObject()
-    , motionMultiplier(motionMultiplier)
+    : motionMultiplier(motionMultiplier)
     , acceleration(acceleration)
     , damage(damage)
-    , sound(sound)
     , texture(sprite)
+    , sound(sound)
 {
     transform.position = position;
 
