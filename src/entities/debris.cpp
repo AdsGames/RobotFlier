@@ -24,9 +24,9 @@ Debris::Debris(asw::Texture sprite, asw::Sample sound, const asw::Vec2<float>& p
 }
 
 // Logic
-void Debris::logic(const float motion, Robot* robot, const float deltaTime)
+void Debris::logic(const float motion, Robot* robot, const float dt)
 {
-    GameObject::update(deltaTime);
+    GameObject::update(dt);
 
     // Move across screen
     transform.position.x -= motion * motionMultiplier;

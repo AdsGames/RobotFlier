@@ -1,20 +1,40 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(RobotFlier VERSION 0.1.0 LANGUAGES CXX)
-
+set(PROJECT_VERSION "0.1.0" CACHE STRING "Version of the project")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/target)
 
+project(RobotFlier VERSION ${PROJECT_VERSION} LANGUAGES CXX)
+
+if (APPLE)
+  set(CMAKE_OSX_ARCHITECTURES "arm64")
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "13.3")
+endif()
+
 include(cmake/get_cpm.cmake)
-CPMAddPackage("gh:adsgames/asw@0.8.0")
+CPMAddPackage("gh:adsgames/asw#44c48b7ee3ea68aff5f8638a243fa81915fb49be")
 
 # Source code
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+
+if (APPLE)
+  add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS})            
+  set_target_properties(${PROJECT_NAME} PROPERTIES
+      BUNDLE True
+      MACOSX_BUNDLE_GUI_IDENTIFIER www.adsgames.net.${PROJECT_NAME}
+      MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
+      MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
+      MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
+      MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/cmake/plist.xml
+  )
+else()
+  add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+endif()
+
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
 target_link_libraries(${PROJECT_NAME} PRIVATE 
   asw
@@ -40,4 +60,20 @@ if(EMSCRIPTEN)
   )
 endif()
 
-file(COPY ${CMAKE_CURRENT_LIST_DIR}/assets/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/)
+if(APPLE)
+  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+      "${CMAKE_CURRENT_LIST_DIR}/assets"
+      "$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Resources/assets"
+  )
+else()
+  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+      "${CMAKE_CURRENT_LIST_DIR}/assets"
+      "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"
+  )
+endif()
+
+set(CPACK_GENERATOR "ZIP")
+set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY OFF)
+include(CPack)

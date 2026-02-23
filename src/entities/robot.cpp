@@ -61,7 +61,7 @@ Robot::Robot(const asw::Vec2<float>& position)
 }
 
 // Update
-void Robot::logic(float deltaTime)
+void Robot::logic(float dt)
 {
     // Check if you are dead!
     if (health < 1) {
@@ -71,16 +71,16 @@ void Robot::logic(float deltaTime)
 
     // Power up timers
     if (invincibleTimer > 0) {
-        invincibleTimer -= deltaTime;
+        invincibleTimer -= dt;
     }
 
     if (magneticTimer > 0) {
-        magneticTimer -= deltaTime;
+        magneticTimer -= dt;
     }
 
     // Update robots y position
     if (keyPressed) {
-        transform.position.y += (gravity - speed) * (deltaTime * 62.5F);
+        transform.position.y += (gravity - speed) * (dt * 62.5F);
     }
 
     // Emitters
@@ -88,9 +88,9 @@ void Robot::logic(float deltaTime)
     emitter_left.transform.position = transform.position + asw::Vec2<float>(21, 55);
     emitter_right.transform.position = transform.position + asw::Vec2<float>(52, 55);
 
-    emitter_smoke.update(deltaTime);
-    emitter_left.update(deltaTime);
-    emitter_right.update(deltaTime);
+    emitter_smoke.update(dt);
+    emitter_left.update(dt);
+    emitter_right.update(dt);
 
     // Death smoke
     if (settings.particlesEnabled() && !alive) {

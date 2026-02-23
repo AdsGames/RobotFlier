@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Deploy Web
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -72,6 +72,64 @@ jobs:
           project-id: robotflier
           build-dir: ./build/release/target/
           platform: WEB
+          bucket-access-key: ${{ secrets.LINODE_BUCKET_ACCESS_KEY }}
+          bucket-secret-key: ${{ secrets.LINODE_BUCKET_SECRET_KEY }}
+          api-key: ${{ secrets.ADSGAMES_API_KEY }}
+
+  deploy-binary:
+    name: Deploy Binary
+    strategy:
+      matrix:
+        platform:
+          - system: windows-2022
+            cpack_type: Windows
+            release_type: WINDOWS
+          - system: ubuntu-24.04
+            cpack_type: Linux
+            release_type: LINUX
+          - system: macos-15
+            cpack_type: Darwin
+            release_type: MACOS
+
+    runs-on: ${{ matrix.platform.system }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup cache
+        uses: actions/cache@v4
+        with:
+          path: "./build/release/_deps"
+          key: deps-binary-${{ runner.os }}
+
+      - name: Get the version
+        id: get_version
+        run: echo "VERSION=$(git describe --tags --always)" >> "$GITHUB_OUTPUT"
+
+      - name: Configure
+        run: cmake --preset release -DPROJECT_VERSION="${{ steps.get_version.outputs.VERSION }}"
+
+      - name: Build and Package
+        run: cmake --build --preset release --target package
+
+      - name: Upload Release Asset
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./build/release/RobotFlier-${{ matrix.platform.type }}-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_name: RobotFlier-${{ matrix.platform.cpack_type }}-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_content_type: application/zip
+
+      - name: Deploy to A.D.S. Games
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: adsgames/deploy-to-adsgames@v1
+        with:
+          project-id: robotflier
+          build-dir: ./build/release/target/
+          platform: ${{ matrix.platform.release_type }}
           bucket-access-key: ${{ secrets.LINODE_BUCKET_ACCESS_KEY }}
           bucket-secret-key: ${{ secrets.LINODE_BUCKET_SECRET_KEY }}
           api-key: ${{ secrets.ADSGAMES_API_KEY }}

@@ -122,20 +122,20 @@ void GameScene::changeTheme(int theme)
 }
 
 // Update logic of game
-void GameScene::update(float deltaTime)
+void GameScene::update(float dt)
 {
     using namespace asw::input;
 
     // Actual game stuff
     if (!paused) {
         // Add to ticker
-        ticker += deltaTime;
+        ticker += dt;
 
         // Check if hectar has died between logic();
         const auto hectarAlive = hectar.isAlive();
 
         // Update robot
-        hectar.logic(deltaTime);
+        hectar.logic(dt);
 
         // If its different he died play music
         if (hectarAlive != hectar.isAlive()) {
@@ -148,13 +148,13 @@ void GameScene::update(float deltaTime)
 
         // Changes speed
         if (hectar.isAlive() && hectar.hasBegun()) {
-            motion = ((score / 36) + 6) * deltaTime * 62.5F;
+            motion = ((score / 36) + 6) * dt * 62.5F;
         } else {
             motion *= 0.95F;
         }
 
         // Arrow animation
-        arrow_animation += 0.15F * deltaTime * 62.5F;
+        arrow_animation += 0.15F * dt * 62.5F;
 
         // No negative scores
         score = std::max(score, 0);
@@ -190,7 +190,7 @@ void GameScene::update(float deltaTime)
 
         // Debries
         for (auto& debris : debries) {
-            debris.logic(motion, &hectar, deltaTime);
+            debris.logic(motion, &hectar, dt);
         }
 
         std::erase_if(debries, [](const auto& debris) { return !debris.alive; });

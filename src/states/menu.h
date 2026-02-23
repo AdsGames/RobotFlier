@@ -30,7 +30,7 @@ public:
 
     // Override parent
     void init() override;
-    void update(float deltaTime) override;
+    void update(float dt) override;
     void draw() override;
 
 private:

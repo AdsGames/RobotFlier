@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <!-- Identity -->
+    <key>CFBundleName</key>
+    <string>robotflier</string>
+
+    <key>CFBundleDisplayName</key>
+    <string>Robot Flier</string>
+
+    <key>CFBundleIdentifier</key>
+    <string>net.adsgames.robotflier</string>
+
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+
+    <key>CFBundleExecutable</key>
+    <string>RobotFlier</string>
+
+    <!-- Versioning -->
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+
+    <key>CFBundleVersion</key>
+    <string>1</string>
+
+    <!-- Platform / compatibility -->
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+
+    <key>LSMinimumSystemVersion</key>
+    <string>12.0</string>
+
+    <!-- App behavior -->
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+
+    <key>NSHighResolutionCapable</key>
+    <true />
+
+    <key>NSSupportsAutomaticGraphicsSwitching</key>
+    <true />
+
+    <!-- Category (shows up in metadata / some storefront contexts) -->
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.games</string>
+
+    <!-- Icon -->
+    <key>CFBundleIconFile</key>
+    <string>RobotFlier</string>
+    <!-- Your icon file should be: Contents/Resources/RobotFlier.icns -->
+
+    <!-- Optional: stop macOS App Nap from throttling your game when it thinks it’s “idle” -->
+    <key>NSAppSleepDisabled</key>
+    <true />
+
+    <!-- Optional: if you use game controllers -->
+    <key>GCSupportsControllerUserInteraction</key>
+    <true />
+  </dict>
+</plist>

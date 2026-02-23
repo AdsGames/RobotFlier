@@ -9,9 +9,9 @@ void IntroScene::init()
 }
 
 // Update (goto menu!)
-void IntroScene::update(float deltaTime)
+void IntroScene::update(float dt)
 {
-    timer += deltaTime;
+    timer += dt;
 
     // Go to menu
     if (timer >= 3.0F || asw::input::keyboard.any_pressed) {

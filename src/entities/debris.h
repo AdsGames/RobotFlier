@@ -17,7 +17,7 @@ public:
         const float size = -1);
 
     // Logic override
-    void logic(const float motion, Robot* robot, const float deltaTime);
+    void logic(const float motion, Robot* robot, const float dt);
 
     // Draw override
     void draw() override;

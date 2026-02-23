@@ -16,7 +16,7 @@ public:
     Robot();
     Robot(const asw::Vec2<float>& position);
 
-    void logic(float deltaTime);
+    void logic(float dt);
     void draw();
     void drawOverlay();
 
